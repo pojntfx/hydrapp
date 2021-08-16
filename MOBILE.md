@@ -13,11 +13,11 @@ $ export ANDROID_BUILD_TOOLS_VERSION=31.0.0
 $ export ANDROID_API_VERSION=21
 $ curl -L -o /tmp/commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
 $ unzip -d /tmp/ /tmp/commandlinetools.zip
-$ mkdir -p ~/Projects/android-sdk
-$ yes | /tmp/cmdline-tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS_VERSION}" "cmdline-tools;latest" "platform-tools" "platforms;android-${ANDROID_API_VERSION}" "ndk-bundle" --sdk_root=$HOME/Projects/android-sdk
-$ echo 'export ANDROID_HOME=$HOME/Projects/android-sdk' >>~/.bashrc
-$ echo 'export ANDROID_SDK_ROOT=$HOME/Projects/android-sdk' >>~/.bashrc
-$ echo 'export ANDROID_NDK_ROOT=$HOME/Projects/android-sdk/ndk-bundle' >>~/.bashrc
+$ mkdir -p ~/Android/Sdk
+$ yes | /tmp/cmdline-tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS_VERSION}" "cmdline-tools;latest" "platform-tools" "platforms;android-${ANDROID_API_VERSION}" "ndk-bundle" --sdk_root=$HOME/Android/Sdk
+$ echo 'export ANDROID_HOME=$HOME/Android/Sdk' >>~/.bashrc
+$ echo 'export ANDROID_SDK_ROOT=$HOME/Android/Sdk' >>~/.bashrc
+$ echo 'export ANDROID_NDK_ROOT=$HOME/Android/Sdk/ndk-bundle' >>~/.bashrc
 $ source ~/.bashrc
 $ go env -w GO111MODULE=auto
 $ go get golang.org/x/mobile/cmd/gomobile
