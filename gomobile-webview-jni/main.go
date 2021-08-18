@@ -7,6 +7,6 @@ import (
 
 func main() {
 	app.Main(func(a app.App) {
-		bindings.ShowToast()
+		bindings.ShowToast("Hello from Go!")
 	})
 }
