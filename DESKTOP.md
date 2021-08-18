@@ -45,7 +45,12 @@ $ firefox -P "${HYDRAP_ID}" "${HYDRAP_URL}" --class="${HYDRAP_NAME}"
 ## GNOME Web
 
 ```shell
+# For Flatpak
+$ alias epiphany="flatpak run org.gnome.Epiphany"
+$ export PROFILE_DIR=$HOME/Downloads/org.gnome.Epiphany.WebApp-${HYDRAP_ID}
+# For native:
 $ export PROFILE_DIR=$HOME/.local/share/org.gnome.Epiphany.WebApp-${HYDRAP_ID}
+# For both:
 $ mkdir -p ${PROFILE_DIR}/.app
 $ cat <<EOT>${PROFILE_DIR}/org.gnome.Epiphany.WebApp-${HYDRAP_ID}.desktop
 [Desktop Entry]
