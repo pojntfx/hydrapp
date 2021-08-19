@@ -13,8 +13,6 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getActionBar().hide();
-
         Context context = getApplicationContext();
         super.onCreate(savedInstanceState);
 
