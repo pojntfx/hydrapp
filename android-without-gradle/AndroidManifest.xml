@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.helloandroid" android:compileSdkVersionCodename="30" platformBuildVersionName="30">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.helloandroid">
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
-        android:allowBackup="true"
-        android:label="A Hello Android"
-        android:supportsRtl="true">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+    <application android:allowBackup="true" android:label="A Hello Android" android:supportsRtl="true">
+        <activity android:name=".MainActivity" android:exported="true" android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,9 +12,4 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-sdk android:minSdkVersion="21"
-          android:targetSdkVersion="30"          />
 </manifest>
