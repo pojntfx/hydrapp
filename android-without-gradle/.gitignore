@@ -1,0 +1,6 @@
+*apk*
+*.dex
+*.keystore
+*.zip
+obj
+R.java
