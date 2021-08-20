@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import go.Seq;
 
 public class MainActivity extends Activity {
     @Override
@@ -24,5 +25,12 @@ public class MainActivity extends Activity {
         layout.addView(view);
 
         setContentView(layout);
+
+        try {
+            Seq.setContext(getApplicationContext());
+            bindings.Bindings.showToast("Hello, world!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
