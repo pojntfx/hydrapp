@@ -3,9 +3,7 @@
 package main
 
 /*
-#cgo LDFLAGS: -llog
-
-#include "main.h"
+#include "toast.h"
 */
 import "C"
 import (
