@@ -5,7 +5,7 @@ package main
 /*
 #cgo LDFLAGS: -llog
 
-#include <jni.h>
+#include "main.h"
 */
 import "C"
 import (
@@ -15,8 +15,10 @@ import (
 )
 
 //export Java_com_pojtinger_gomobilefreeexperiments_MainActivity_showToast
-func Java_com_pojtinger_gomobilefreeexperiments_MainActivity_showToast(env *C.JNIEnv, _ C.jobject, ctx C.jobject, msg C.jstring) {
-	if err := bindings.ShowToast(uintptr(unsafe.Pointer(env)), uintptr(ctx), "Hello, world!"); err != nil {
+func Java_com_pojtinger_gomobilefreeexperiments_MainActivity_showToast(env *C.JNIEnv, _ C.jobject, ctx C.jobject, raw_msg C.jstring) {
+	msg := C.CGoGetStringUTFChars(env, raw_msg)
+
+	if err := bindings.ShowToast(uintptr(unsafe.Pointer(env)), uintptr(ctx), C.GoString(msg)); err != nil {
 		panic(err)
 	}
 }
