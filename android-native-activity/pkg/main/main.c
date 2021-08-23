@@ -1,14 +1,11 @@
+#include "main.h"
 #include "android/native_activity.h"
-
-ANativeActivity *global_android_activity;
 
 void ANativeActivity_onCreate(ANativeActivity *activity, void *savedState,
                               size_t savedStateSize) {
-  global_android_activity = activity;
-
   // Cast the Java env and context
-  JNIEnv *env = global_android_activity->env;
-  jobject context = global_android_activity->clazz;
+  JNIEnv *env = activity->env;
+  jobject context = activity->clazz;
 
   // Get the toast functions
   jclass toast_cls = (*env)->FindClass(env, "android/widget/Toast");
@@ -29,4 +26,7 @@ void ANativeActivity_onCreate(ANativeActivity *activity, void *savedState,
   jmethodID toast_obj_class_show =
       (*env)->GetMethodID(env, toast_obj_class, "show", "()V");
   (*env)->CallVoidMethod(env, toast_obj, toast_obj_class_show);
+
+  // Start the main loop
+  GoLoop(activity);
 }
