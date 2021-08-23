@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application android:label="Android Native Activity Go Example" android:hasCode="false">
-        <activity android:name="android.app.NativeActivity">
+        <activity android:name="android.app.NativeActivity" android:theme="@android:style/Theme.NoTitleBar">
             <meta-data android:name="android.app.lib_name" android:value="nativeactivity" />
 
             <intent-filter>
