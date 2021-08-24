@@ -8,24 +8,28 @@ package main
 import "C"
 
 var (
-	events = make(chan func(*C.ANativeActivity))
+	events = make(chan func(env *C.JNIEnv, activity C.jobject))
 )
 
 //export GoLoop
-func GoLoop(activity *C.ANativeActivity) {
+func GoLoop(env *C.JNIEnv, activity C.jobject) {
 	go main()
 
 	for event := range events {
-		event(activity)
+		event(env, activity)
 	}
 }
 
-func Queue(event func(*C.ANativeActivity)) {
+func Queue(event func(env *C.JNIEnv, activity C.jobject)) {
 	events <- event
 }
 
 func main() {
-	Queue(func(aa *C.ANativeActivity) {
-		panic("Hey!")
+	Queue(func(env *C.JNIEnv, activity C.jobject) {
+		C.show_toast(env, activity)
+	})
+
+	Queue(func(env *C.JNIEnv, activity C.jobject) {
+		close(events)
 	})
 }
