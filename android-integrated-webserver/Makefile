@@ -1,6 +1,7 @@
 all: build
 
 check:
+# export APP_ID=com.pojtinger.felicitas.integratedWebserverExample && export CERT_PASSWORD=123456 && export ANDROID_BUILD_TOOLS_VERSION=31.0.0 && export ANDROID_API_VERSION=30 && export ANDROID_LEGACY_HOME=$ANDROID_HOME/ndk/android-ndk-r10e && export ANDROID_LEGACY_API_VERSION=8
 ifndef APP_ID
 	$(error APP_ID env variable is undefined)
 endif
@@ -13,11 +14,24 @@ endif
 ifndef ANDROID_API_VERSION
 	$(error ANDROID_API_VERSION env variable is undefined)
 endif
+ifndef ANDROID_HOME
+	$(error ANDROID_HOME env variable is undefined)
+endif
+ifndef ANDROID_LEGACY_HOME
+	$(error ANDROID_LEGACY_HOME env variable is undefined)
+endif
+ifndef ANDROID_LEGACY_API_VERSION
+	$(error ANDROID_LEGACY_API_VERSION env variable is undefined)
+endif
 
 build: check
 	mkdir -p out
 	bash -O extglob -c 'cd out && rm -rf -- !(*.jar)'
-	CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang++" go build -buildmode=c-shared -o=out/lib/arm64-v8a/libbackend.so ./pkg/main/;\
+	CGO_ENABLED=1 GOOS=android GOARCH=386 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/x86/libbackend.so ./pkg/main/;\
+	CGO_ENABLED=1 GOOS=android GOARCH=amd64 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/x86_64/libbackend.so ./pkg/main/;\
+	CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=5 CGO_LDFLAGS="--sysroot $$ANDROID_LEGACY_HOME/platforms/android-$$ANDROID_LEGACY_API_VERSION/arch-arm" CGO_CFLAGS="--sysroot $$ANDROID_LEGACY_HOME/platforms/android-$$ANDROID_LEGACY_API_VERSION/arch-arm" CC="$$ANDROID_LEGACY_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc" CXX="$$ANDROID_LEGACY_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++" go build -tags netgo -buildmode=c-shared -o=out/lib/armeabi/libbackend.so ./pkg/main/;\
+	CGO_ENABLED=1 GOOS=android GOARCH=arm CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/armeabi-v7a/libbackend.so ./pkg/main/;\
+	CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/arm64-v8a/libbackend.so ./pkg/main/;\
 	cd out || exit 1;\
 	cp ../*.java ../AndroidManifest.xml .;\
 	javac -source 1.8 -target 1.8 -cp *.jar -cp $$ANDROID_HOME/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/core-lambda-stubs.jar -bootclasspath $${ANDROID_HOME}/platforms/android-$${ANDROID_API_VERSION}/android.jar *.java;\

@@ -1,8 +1,10 @@
 package com.pojtinger.felicitas.integratedWebserverExample;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.webkit.PermissionRequest;
@@ -15,13 +17,13 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 public class MainActivity extends Activity {
+    private ValueCallback<Uri[]> fileChooserCallback;
+
     static {
         System.loadLibrary("backend");
     }
 
     private native String LaunchBackend();
-
-    private ValueCallback<Uri[]> fileChooserCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,9 @@ public class MainActivity extends Activity {
                 LinearLayout.LayoutParams.MATCH_PARENT));
 
         WebSettings settings = view.getSettings();
-        settings.setAllowContentAccess(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            settings.setAllowContentAccess(true);
+        }
         settings.setAllowFileAccess(true);
         settings.setDatabaseEnabled(true);
         settings.setDomStorageEnabled(true);
@@ -42,10 +46,26 @@ public class MainActivity extends Activity {
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setJavaScriptEnabled(true);
         settings.setLoadsImagesAutomatically(true);
-        settings.setMediaPlaybackRequiresUserGesture(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            settings.setMediaPlaybackRequiresUserGesture(false);
+        }
         settings.setSupportMultipleWindows(true);
 
         view.setWebViewClient(new WebViewClient() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView vw, String url) {
+                if (url.contains(home.getHost())) {
+                    vw.loadUrl(url);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    vw.getContext().startActivity(intent);
+                }
+
+                return true;
+            }
+
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean shouldOverrideUrlLoading(WebView vw, WebResourceRequest request) {
                 if (request.getUrl().toString().contains(home.getHost())) {
@@ -61,7 +81,9 @@ public class MainActivity extends Activity {
         view.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
-                request.grant(request.getResources());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    request.grant(request.getResources());
+                }
             }
 
             @Override
