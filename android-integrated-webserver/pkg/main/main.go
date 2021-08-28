@@ -10,6 +10,7 @@ import (
 	"log"
 
 	"github.com/pojntfx/multi-browser-electron/android-integrated-webserver/pkg/backend"
+	_ "github.com/pojntfx/multi-browser-electron/android-integrated-webserver/pkg/fixes"
 )
 
 //export Java_com_pojtinger_felicitas_integratedWebserverExample_MainActivity_LaunchBackend

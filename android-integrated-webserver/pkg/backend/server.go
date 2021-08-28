@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"fmt"
+	"io"
 	"net"
 	"net/http"
 	"net/url"
@@ -18,8 +18,8 @@ func StartServer() (string, error) {
 	}
 	laddr := net.JoinHostPort("localhost", strconv.Itoa(port))
 
-	// Start a Hello, world server in the background
-	http.HandleFunc("/", HelloWorldServer)
+	// Start an example server in the background
+	http.HandleFunc("/", ExampleServer)
 
 	lis, err := net.Listen("tcp", laddr)
 	if err != nil {
@@ -37,6 +37,27 @@ func StartServer() (string, error) {
 	return url.String(), nil
 }
 
-func HelloWorldServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, world!")
+func ExampleServer(w http.ResponseWriter, r *http.Request) {
+	res, err := http.Get("https://jsonplaceholder.typicode.com/users/1")
+	if err != nil {
+		if _, err := w.Write([]byte(err.Error())); err != nil {
+			panic(err)
+		}
+
+		return
+	}
+	defer res.Body.Close()
+
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
+		if _, err := w.Write([]byte(err.Error())); err != nil {
+			panic(err)
+		}
+
+		return
+	}
+
+	if _, err := w.Write(data); err != nil {
+		panic(err)
+	}
 }
