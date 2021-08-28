@@ -1,8 +1,15 @@
 #!/bin/bash
 
-# Install native dependencies
+# Install native dependencies for all available architectures
+export available_architectures=(amd64 i386 armel armhf arm64 mips64el mipsel ppc64el s390x)
+export packages=(build-essential dh-make devscripts lintian)
+for arch in "${available_architectures[@]}"; do
+    dpkg --add-architecture "${arch}"
+    packages+=("crossbuild-essential-${arch}")
+done
+
 apt update
-apt install -y build-essential dh-make devscripts lintian
+apt install -y "${packages[@]}"
 
 # Move to temporary directory
 export SRC_DIR="${PWD}"
@@ -16,11 +23,14 @@ mkdir -p "${OUT_DIR}"
 cp -r "${SRC_DIR}" "${WORK_DIR}"
 cd "${WORK_DIR}" || exit
 
-# Install build dependencies
-apt build-dep -y .
+# Build for all available architectures
+for arch in "${available_architectures[@]}"; do
+    # Install build dependencies
+    apt build-dep -y -a "${arch}" .
 
-# Build
-debuild -us -uc -i -I
+    # Build package
+    debuild -us -uc -i -I -a "${arch}"
+done
 
 # Copy output to output directory
-cp ${OUT_DIR}/* "${DST_DIR}" || exit 0
+cp ${OUT_DIR}/* "${DST_DIR}" || echo
