@@ -46,6 +46,9 @@ build: check
 install: build
 	$$ANDROID_HOME/platform-tools/adb install out/$${APP_ID}.apk
 
+uninstall: check
+	$$ANDROID_HOME/platform-tools/adb uninstall $${APP_ID}
+
 run: install
 	$$ANDROID_HOME/platform-tools/adb shell am start -n $${APP_ID}/$${APP_ID}.MainActivity
 
