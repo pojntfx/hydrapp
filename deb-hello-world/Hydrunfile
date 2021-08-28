@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Install native dependencies
+apt update
+apt install -y build-essential dh-make devscripts lintian
+
+# Move to temporary directory
+export SRC_DIR="${PWD}"
+export DST_DIR="${SRC_DIR}/out"
+export OUT_DIR="/out"
+export WORK_DIR="${OUT_DIR}/src"
+
+mkdir -p "${DST_DIR}"
+mkdir -p "${OUT_DIR}"
+
+cp -r "${SRC_DIR}" "${WORK_DIR}"
+cd "${WORK_DIR}" || exit
+
+# Install build dependencies
+apt build-dep -y .
+
+# Build
+debuild -us -uc -i -I
+
+# Copy output to output directory
+cp ${OUT_DIR}/* "${DST_DIR}" || exit 0
