@@ -1,0 +1,6 @@
+out
+debian/.debhelper
+debian/deb-hello-world
+debian/debhelper-build-stamp
+debian/*.substvars
+debian/files

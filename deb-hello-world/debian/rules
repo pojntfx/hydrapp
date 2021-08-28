@@ -1,0 +1,6 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_auto_install:
+	install -D -m 0755 out/deb-hello-world $$(pwd)/debian/deb-hello-world/usr/bin/deb-hello-world
