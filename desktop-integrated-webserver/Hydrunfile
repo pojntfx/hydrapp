@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install native dependencies for all available architectures
-export available_architectures=(amd64)
+export available_architectures=(amd64 i386 armel armhf arm64 mips64el mipsel ppc64el s390x)
 export packages=(build-essential dh-make devscripts lintian)
 for arch in "${available_architectures[@]}"; do
     dpkg --add-architecture "${arch}"
@@ -33,4 +33,4 @@ for arch in "${available_architectures[@]}"; do
 done
 
 # Copy output to output directory
-cp ${OUT_DIR}/* "${DST_DIR}" || echo
+cp ${OUT_DIR}/* "${DST_DIR}" || :

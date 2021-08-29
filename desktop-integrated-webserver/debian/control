@@ -12,5 +12,6 @@ Rules-Requires-Root: no
 Package: desktop-integrated-webserver
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: chromium (>= 90)
 Description: simple hello world example
  A simple hello world example to demonstrate DEB packaging.

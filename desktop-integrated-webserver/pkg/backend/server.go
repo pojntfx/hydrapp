@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"io"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -54,7 +54,7 @@ func ExampleServer(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.Body.Close()
 
-	data, err := io.ReadAll(res.Body)
+	data, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		if _, err := w.Write([]byte(err.Error())); err != nil {
 			panic(err)
