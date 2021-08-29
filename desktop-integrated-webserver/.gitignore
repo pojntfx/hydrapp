@@ -1,6 +1,6 @@
 out
 debian/.debhelper
-debian/deb-hello-world
+debian/desktop-integrated-webserver
 debian/debhelper-build-stamp
 debian/*.substvars
 debian/files

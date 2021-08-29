@@ -1,4 +1,4 @@
-Source: deb-hello-world
+Source: desktop-integrated-webserver
 Section: utils
 Priority: optional
 Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
@@ -9,7 +9,7 @@ Vcs-Browser: https://github.com/pojntfx/multi-browser-electron
 Vcs-Git: https://github.com/pojntfx/multi-browser-electron.git
 Rules-Requires-Root: no
 
-Package: deb-hello-world
+Package: desktop-integrated-webserver
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: simple hello world example
