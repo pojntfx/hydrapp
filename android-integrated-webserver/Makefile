@@ -25,13 +25,14 @@ ifndef ANDROID_LEGACY_API_VERSION
 endif
 
 build: check
+	mkdir -p out
 	bash -O extglob -c 'cd out && rm -rf -- !(*.jar)'
 	mkdir -p out/drawable
-	CGO_ENABLED=1 GOOS=android GOARCH=386 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/x86/libbackend.so ./pkg/main/
-	CGO_ENABLED=1 GOOS=android GOARCH=amd64 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/x86_64/libbackend.so ./pkg/main
-	CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=5 CGO_LDFLAGS="--sysroot $$ANDROID_LEGACY_HOME/platforms/android-$$ANDROID_LEGACY_API_VERSION/arch-arm" CGO_CFLAGS="--sysroot $$ANDROID_LEGACY_HOME/platforms/android-$$ANDROID_LEGACY_API_VERSION/arch-arm" CC="$$ANDROID_LEGACY_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc" CXX="$$ANDROID_LEGACY_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++" go build -tags "netgo,androiddnsfix,tlscertembed" -buildmode=c-shared -o=out/lib/armeabi/libbackend.so ./pkg/main
-	CGO_ENABLED=1 GOOS=android GOARCH=arm CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/armeabi-v7a/libbackend.so ./pkg/main
-	CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/arm64-v8a/libbackend.so ./pkg/main
+	CGO_ENABLED=1 GOOS=android GOARCH=386 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/x86/libbackend.so
+	CGO_ENABLED=1 GOOS=android GOARCH=amd64 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/x86_64/libbackend.so
+	CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=5 CGO_LDFLAGS="--sysroot $$ANDROID_LEGACY_HOME/platforms/android-$$ANDROID_LEGACY_API_VERSION/arch-arm" CGO_CFLAGS="--sysroot $$ANDROID_LEGACY_HOME/platforms/android-$$ANDROID_LEGACY_API_VERSION/arch-arm" CC="$$ANDROID_LEGACY_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc" CXX="$$ANDROID_LEGACY_HOME/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++" go build -tags "netgo,androiddnsfix,tlscertembed" -buildmode=c-shared -o=out/lib/armeabi/libbackend.so
+	CGO_ENABLED=1 GOOS=android GOARCH=arm CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/armeabi-v7a/libbackend.so
+	CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$${ANDROID_API_VERSION}-clang" CXX="$$ANDROID_HOME/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android$${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/arm64-v8a/libbackend.so
 	cd out || exit 1;\
 	cp ../*.java ../AndroidManifest.xml .;\
 	cp ../icon.png drawable;\
@@ -46,7 +47,7 @@ build: check
 	$$ANDROID_HOME/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ~/.android-certs/$${APP_ID}.keystore --ks-pass pass:$${CERT_PASSWORD} --key-pass pass:$${CERT_PASSWORD} $${APP_ID}.apk;\
 
 install: build
-	$$ANDROID_HOME/platform-tools/adb install out/$${APP_ID}.apk
+	$$ANDROID_HOME/platform-tools/adb install -r out/$${APP_ID}.apk
 
 uninstall: check
 	$$ANDROID_HOME/platform-tools/adb uninstall $${APP_ID}
