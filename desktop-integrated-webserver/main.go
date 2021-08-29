@@ -23,8 +23,8 @@ var knownBrowsers = []string{
 	"microsoft-edge",
 	"microsoft-edge-beta",
 	"microsoft-edge-dev",
-	"chromium-browser",
 	"ungoogled-chromium",
+	"chromium-browser",
 }
 
 func main() {
