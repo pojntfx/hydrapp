@@ -1,4 +1,5 @@
 //go:build androiddnsfix
+// +build androiddnsfix
 
 package fixes
 

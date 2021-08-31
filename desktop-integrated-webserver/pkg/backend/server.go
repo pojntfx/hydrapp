@@ -10,40 +10,35 @@ import (
 	"github.com/phayes/freeport"
 )
 
-func StartServer() (string, chan error, func() error, error) {
-	// Create a server which can be closed
-	srv := &http.Server{}
-
-	// Get free local socket
+func StartServer() (string, func() error, error) {
+	// Get a free port
 	port, err := freeport.GetFreePort()
 	if err != nil {
-		return "", nil, nil, err
+		return "", nil, err
 	}
+
+	// Bind to localhost
 	laddr := net.JoinHostPort("localhost", strconv.Itoa(port))
-
-	// Start an example server in the background
-	http.HandleFunc("/", ExampleServer)
-
 	lis, err := net.Listen("tcp", laddr)
 	if err != nil {
-		return "", nil, nil, err
+		return "", nil, err
 	}
 
-	done := make(chan error)
-	go func() {
-		done <- srv.Serve(lis)
-	}()
+	// Start the server
+	srv := &http.Server{}
+	http.HandleFunc("/", ExampleHandler)
+	go srv.Serve(lis)
 
-	// Get the URL for the free local socket
+	// Construct the URL on which the server is being served
 	url := url.URL{
 		Scheme: "http",
 		Host:   laddr,
 	}
 
-	return url.String(), done, srv.Close, nil
+	return url.String(), srv.Close, nil
 }
 
-func ExampleServer(w http.ResponseWriter, r *http.Request) {
+func ExampleHandler(w http.ResponseWriter, r *http.Request) {
 	res, err := http.Get("https://jsonplaceholder.typicode.com/users/1")
 	if err != nil {
 		if _, err := w.Write([]byte(err.Error())); err != nil {
