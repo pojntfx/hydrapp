@@ -1,6 +1,10 @@
 #!/usr/bin/make -f
+SIZES ?= 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512 1024x1024
+
 %:
 	dh $@
 
 override_dh_auto_install:
 	install -D -m 0755 out/desktop-integrated-webserver $$(pwd)/debian/desktop-integrated-webserver/usr/bin/desktop-integrated-webserver
+	install -D -m 0755 desktop-integrated-webserver.desktop $$(pwd)/debian/desktop-integrated-webserver/usr/share/applications/desktop-integrated-webserver.desktop
+	for icon in $(SIZES); do install -D -m 0644 out/icon-$${icon}.png $$(pwd)/debian/desktop-integrated-webserver/usr/share/icons/hicolor/$${icon}/apps/desktop-integrated-webserver.png; done
