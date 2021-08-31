@@ -1,4 +1,5 @@
 //go:build tlscertembed
+// +build tlscertembed
 
 package fixes
 

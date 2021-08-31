@@ -1,4 +1,5 @@
 //go:build android
+// +build android
 
 package main
 
@@ -15,7 +16,7 @@ import (
 
 //export Java_com_pojtinger_felicitas_integratedWebserverExample_MainActivity_LaunchBackend
 func Java_com_pojtinger_felicitas_integratedWebserverExample_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
-	url, _, _, err := backend.StartServer()
+	url, _, err := backend.StartServer()
 	if err != nil {
 		log.Fatalln("could not start integrated webserver:", err)
 	}

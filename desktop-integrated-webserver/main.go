@@ -1,12 +1,13 @@
 //go:build !android
+// +build !android
 
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/pojntfx/multi-browser-electron/desktop-integrated-webserver/pkg/backend"
 )
@@ -27,15 +28,20 @@ var knownBrowsers = []string{
 	"chromium-browser",
 }
 
+const (
+	name = "Integrated Webserver Example"
+	id   = "com.pojtinger.felicitas.integratedWebserverExample"
+)
+
 func main() {
-	url, done, stop, err := backend.StartServer()
+	// Start the integrated webserver server
+	url, stop, err := backend.StartServer()
 	if err != nil {
 		log.Fatalln("could not start integrated webserver:", err)
 	}
+	defer stop()
 
-	name := "Integrated Webserver Example"
-	// id := "com.pojtinger.felicitas.integratedWebserverExample"
-
+	// Use the user-prefered browser if specified
 	browser := os.Getenv("HYDRAPP_BROWSER")
 	if browser == "" {
 		for _, knownBrowser := range knownBrowsers {
@@ -51,32 +57,35 @@ func main() {
 		}
 	}
 
-	// This will be used for non-Chromium based browsers
-	// userConfigDir, err := os.UserConfigDir()
-	// if err != nil {
-	// 	log.Fatal("could not get user's config dir:", err)
-	// }
-	// userDataDir := filepath.Join(userConfigDir, id)
+	// Create a profile for the app
+	userConfigDir, err := os.UserConfigDir()
+	if err != nil {
+		log.Fatal("could not get user's config dir:", err)
+	}
+	userDataDir := filepath.Join(userConfigDir, id)
 
-	output, err := exec.Command(
+	// Create the browser instance
+	cmd := exec.Command(
 		browser,
 		append(
 			[]string{
 				"--app=" + url,
 				"--class=" + name,
+				"--user-data-dir=" + userDataDir,
 				"--no-first-run",
 				"--no-default-browser-check",
 			},
 			os.Args[1:]...,
 		)...,
-	).CombinedOutput()
-	if err != nil {
-		stop()
+	)
 
-		log.Fatal("could not launch browser:", string(output)+":", err)
+	// Use systemd stdout, stderr and stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+
+	// Start the browser and wait for the user to close it
+	if err := cmd.Run(); err != nil {
+		log.Fatal("could not launch browser:", err)
 	}
-
-	fmt.Print(string(output))
-
-	<-done
 }
