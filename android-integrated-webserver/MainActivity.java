@@ -20,7 +20,13 @@ public class MainActivity extends Activity {
     private ValueCallback<Uri[]> fileChooserCallback;
 
     static {
-        System.loadLibrary("backend");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Support for modern Android and hardware floats
+            System.loadLibrary("backend");
+        } else {
+            // Support for legacy Android and software floats
+            System.loadLibrary("backend_compat");
+        }
     }
 
     private native String LaunchBackend();
