@@ -1,0 +1,15 @@
+#!/bin/bash
+
+dnf install -y fedora-packager @development-tools
+
+rpmdev-setuptree
+
+tar -cvzf ~/rpmbuild/SOURCES/desktop-integrated-webserver-rpm-0.0.1.tar.gz --exclude out --transform 's,^,desktop-integrated-webserver-rpm-0.0.1/,' .
+
+rpmlint .
+
+dnf builddep -y desktop-integrated-webserver-rpm.spec
+
+rpmbuild -ba desktop-integrated-webserver-rpm.spec
+
+rpmlint ~/rpmbuild/RPMS/x86_64/desktop-integrated-webserver-rpm-0.0.1-1.fc34.x86_64.rpm
