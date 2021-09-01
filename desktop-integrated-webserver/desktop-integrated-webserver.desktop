@@ -6,4 +6,3 @@ Comment=A simple hello world example to demonstrate DEB packaging.
 Exec=desktop-integrated-webserver
 Icon=desktop-integrated-webserver
 Categories=Utility;
-Actions=new-window;new-private-window;

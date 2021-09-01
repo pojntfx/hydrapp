@@ -25,11 +25,13 @@ make PREFIX=/usr %{?_smp_mflags}
 make PREFIX=/usr DESTDIR=%{?buildroot} install
 mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man1/
 mv docs/desktop-integrated-webserver-rpm.1 $RPM_BUILD_ROOT/%{_mandir}/man1/desktop-integrated-webserver-rpm.1
+desktop-file-install --dir=%{buildroot}/%{_datadir}/applications desktop-integrated-webserver-rpm.desktop
 
 %files
 %license LICENSE
 %{_bindir}/desktop-integrated-webserver-rpm
 %{_mandir}/man1/desktop-integrated-webserver-rpm.1*
+%{_datadir}/applications/desktop-integrated-webserver-rpm.desktop
 
 
 %changelog
