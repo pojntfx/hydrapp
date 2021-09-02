@@ -1,15 +1,32 @@
 #!/bin/bash
 
-dnf install -y fedora-packager @development-tools
+# Configuration
+export UPSTREAM_ID="desktop-integrated-webserver-rpm-0.0.1"
+export DOWNSTREAM_ID="1.fc34"
+export SPEC_FILE="desktop-integrated-webserver-rpm.spec"
+export TARGET_DISTROS=(epel-8-x86_64 fedora-34-x86_64 opensuse-tumbleweed-x86_64)
 
+# Install native dependencies
+dnf install -y fedora-packager @development-tools qemu-user-static
+
+# Setup directories
 rpmdev-setuptree
 
-tar -cvzf ~/rpmbuild/SOURCES/desktop-integrated-webserver-rpm-0.0.1.tar.gz --exclude out --transform 's,^,desktop-integrated-webserver-rpm-0.0.1/,' .
+# Create and lint source package
+tar -cvzf "${HOME}/rpmbuild/SOURCES/${UPSTREAM_ID}.tar.gz" --exclude out --transform "s,^,${UPSTREAM_ID}/," .
+rpmbuild -bs "${SPEC_FILE}"
+rpmlint "${HOME}/rpmbuild/SRPMS/${UPSTREAM_ID}-${DOWNSTREAM_ID}.src.rpm"
 
-rpmlint .
+# Create and lint binary package
+mkdir -p out
+for distro in "${TARGET_DISTROS[@]}"; do
+    # Build the binary package
+    mock -r "${distro}" "${HOME}/rpmbuild/SRPMS/${UPSTREAM_ID}-${DOWNSTREAM_ID}.src.rpm" --enable-network
 
-dnf builddep -y desktop-integrated-webserver-rpm.spec
+    # Lint the binary package
+    rm /var/lib/mock/"${distro}"/result/*.src.rpm
+    rpmlint /var/lib/mock/"${distro}"/result/*.rpm
 
-rpmbuild -ba desktop-integrated-webserver-rpm.spec
-
-rpmlint ~/rpmbuild/RPMS/x86_64/desktop-integrated-webserver-rpm-0.0.1-1.fc34.x86_64.rpm
+    # Copy output to output directory
+    cp /var/lib/mock/"${distro}"/result/*.rpm out || exit 1
+done

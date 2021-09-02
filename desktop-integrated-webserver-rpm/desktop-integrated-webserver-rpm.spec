@@ -7,12 +7,18 @@ License:        AGPLv3
 URL:            https://github.com/pojntfx/multi-browser-electron
 Source0:        %{name}-%{version}.tar.gz
 
-BuildRequires:  golang >= 1.15, ImageMagick >= 6
+%if 0%{?suse_version}
+BuildRequires: go >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0
+%else
+BuildRequires: golang >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0
+%endif
 
 Suggests: chromium >= 90
 
 %description
 A simple hello world example to demonstrate RPM packaging.
+
+%global debug_package %{nil}
 
 %prep
 %autosetup
