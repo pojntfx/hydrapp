@@ -1,36 +1,51 @@
 #!/bin/bash
 
-# Install native dependencies for all available architectures
-export available_architectures=(amd64 i386 armel armhf arm64 mips64el mipsel ppc64el s390x)
-export packages=(build-essential dh-make devscripts lintian)
-for arch in "${available_architectures[@]}"; do
-    dpkg --add-architecture "${arch}"
-    packages+=("crossbuild-essential-${arch}")
-done
+# Build tarball and source package
+export PACKAGE="desktop-integrated-webserver_0.0.1"
 
 apt update
-apt install -y "${packages[@]}"
+apt install -y dpkg-dev
 
-# Move to temporary directory
-export SRC_DIR="${PWD}"
-export DST_DIR="${SRC_DIR}/out"
-export OUT_DIR="/out"
-export WORK_DIR="${OUT_DIR}/src"
+dpkg-source -b .
 
-mkdir -p "${DST_DIR}"
-mkdir -p "${OUT_DIR}"
+mkdir -p out
+cp "../${PACKAGE}.dsc" "../${PACKAGE}.tar.xz" out # || exit 1
 
-cp -r "${SRC_DIR}" "${WORK_DIR}"
-cd "${WORK_DIR}" || exit
+# Build chroot
+export DSC="out/${PACKAGE}.dsc"
+declare -A TARGETS
+export TARGETS=(["bullseye|http://http.us.debian.org/debian"]="amd64 i386 armel armhf arm64 mips64el mipsel ppc64el s390x")
 
-# Build for all available architectures
-for arch in "${available_architectures[@]}"; do
-    # Install build dependencies
-    apt build-dep -y -a "${arch}" .
+apt update
+apt install -y pbuilder
 
-    # Build package
-    debuild -us -uc -i -I -a "${arch}"
+for DIST_MIRROR in "${!TARGETS[@]}"; do
+    DIST="$(cut -d'|' -f1 <<<"${DIST_MIRROR}")"
+    export DIST
+    MIRROR="$(cut -d'|' -f2 <<<"${DIST_MIRROR}")"
+    export MIRROR
+
+    mkdir -p "/var/cache/pbuilder/${DIST}"/{aptcache,result}
+    cat <<EOT >~/.pbuilderrc
+PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+
+if [ -n "\${DIST}" ]; then
+    BASETGZ="\$(dirname \${BASETGZ})/\${DIST}-base.tgz"
+    DISTRIBUTION="\${DIST}"
+    BUILDRESULT="/var/cache/pbuilder/\${DIST}/result/"
+    APTCACHE="/var/cache/pbuilder/\${DIST}/aptcache/"
+fi
+EOT
+
+    pbuilder create --mirror "${MIRROR}"
+
+    # Build binary package
+    for ARCH in ${TARGETS[$DIST_MIRROR]}; do
+        pbuilder build --host-arch "${ARCH}" "${DSC}"
+
+        mkdir -p out
+        for FILE in {"${ARCH}.deb","${ARCH}.buildinfo","${ARCH}.changes","source.changes"}; do
+            cp "/var/cache/pbuilder/${DIST}/result/${PACKAGE}_${FILE}" "out/${DIST}.${PACKAGE}_${FILE}" # || exit 1
+        done
+    done
 done
-
-# Copy output to output directory
-cp ${OUT_DIR}/* "${DST_DIR}" || :
