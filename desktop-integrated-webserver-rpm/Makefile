@@ -14,3 +14,11 @@ install: build
 	install -m 0755 out/desktop-integrated-webserver-rpm $(DESTDIR)$(PREFIX)/bin
 	desktop-file-install --dir=$(DESTDIR)$(PREFIX)/share/applications desktop-integrated-webserver-rpm.desktop
 	for icon in $(SIZES); do install -D -m 0644 out/icon-$${icon}.png $(DESTDIR)$(PREFIX)/share/icons/hicolor/$${icon}/apps/desktop-integrated-webserver-rpm.png; done
+
+uninstall:
+	rm $(DESTDIR)$(PREFIX)/bin/desktop-integrated-webserver-rpm
+	rm $(DESTDIR)$(PREFIX)/share/applications/desktop-integrated-webserver-rpm.desktop
+	for icon in $(SIZES); do rm $(DESTDIR)$(PREFIX)/share/icons/hicolor/$${icon}/apps/desktop-integrated-webserver-rpm.png; done
+
+clean:
+	rm -rf out
