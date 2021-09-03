@@ -1,32 +1,38 @@
 #!/bin/bash
 
-# Configuration
-export UPSTREAM_ID="desktop-integrated-webserver-rpm-0.0.1"
-export DOWNSTREAM_ID="1.fc34"
-export SPEC_FILE="desktop-integrated-webserver-rpm.spec"
-export TARGET_DISTROS=(epel-8-x86_64 fedora-34-x86_64 opensuse-tumbleweed-x86_64)
+# Build tarball and source package
+export PACKAGE="desktop-integrated-webserver-rpm-0.0.1"
+export SUFFIX="1.fc34"
+export SPEC="desktop-integrated-webserver-rpm.spec"
 
-# Install native dependencies
 dnf install -y fedora-packager @development-tools qemu-user-static
 
-# Setup directories
 rpmdev-setuptree
 
-# Create and lint source package
-tar -cvzf "${HOME}/rpmbuild/SOURCES/${UPSTREAM_ID}.tar.gz" --exclude out --transform "s,^,${UPSTREAM_ID}/," .
-rpmbuild -bs "${SPEC_FILE}"
-rpmlint "${HOME}/rpmbuild/SRPMS/${UPSTREAM_ID}-${DOWNSTREAM_ID}.src.rpm"
+export TARBALL="${HOME}/rpmbuild/SOURCES/${PACKAGE}.tar.gz"
+export DSC="${HOME}/rpmbuild/SRPMS/${PACKAGE}-${SUFFIX}.src.rpm"
 
-# Create and lint binary package
+tar -cvzf "${TARBALL}" --exclude out --transform "s,^,${PACKAGE}/," .
+rpmbuild -bs "${SPEC}"
+
+rpmlint "${DSC}"
+
 mkdir -p out
-for distro in "${TARGET_DISTROS[@]}"; do
-    # Build the binary package
-    mock -r "${distro}" "${HOME}/rpmbuild/SRPMS/${UPSTREAM_ID}-${DOWNSTREAM_ID}.src.rpm" --enable-network
+cp "${TARBALL}" "${DSC}" out || exit 1
 
-    # Lint the binary package
-    rm /var/lib/mock/"${distro}"/result/*.src.rpm
-    rpmlint /var/lib/mock/"${distro}"/result/*.rpm
+# Build chroot
+declare -A TARGETS
+export TARGETS=(["epel-8"]="x86_64" ["fedora-34"]="x86_64" ["opensuse-tumbleweed"]="x86_64")
 
-    # Copy output to output directory
-    cp /var/lib/mock/"${distro}"/result/*.rpm out || exit 1
+for DIST in "${!TARGETS[@]}"; do
+    # Build binary package
+    for ARCH in ${TARGETS[$DIST]}; do
+        mock -r "${DIST}-${ARCH}" "${DSC}" --enable-network
+
+        rm /var/lib/mock/"${DIST}-${ARCH}"/result/*.src.rpm
+        rpmlint /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm
+
+        cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm out || exit 1
+        mv out/*.src.rpm "out/${PACKAGE}.src.rpm" || exit 1
+    done
 done
