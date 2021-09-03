@@ -9,7 +9,7 @@ apt install -y dpkg-dev
 dpkg-source -b .
 
 mkdir -p out
-cp "../${PACKAGE}.dsc" "../${PACKAGE}.tar.xz" out # || exit 1
+cp "../${PACKAGE}.dsc" "../${PACKAGE}.tar.xz" out || exit 1
 
 # Build chroot
 export DSC="out/${PACKAGE}.dsc"
@@ -43,9 +43,8 @@ EOT
     for ARCH in ${TARGETS[$DIST_MIRROR]}; do
         pbuilder build --host-arch "${ARCH}" "${DSC}"
 
-        mkdir -p out
         for FILE in {"${ARCH}.deb","${ARCH}.buildinfo","${ARCH}.changes","source.changes"}; do
-            cp "/var/cache/pbuilder/${DIST}/result/${PACKAGE}_${FILE}" "out/${DIST}.${PACKAGE}_${FILE}" # || exit 1
+            cp "/var/cache/pbuilder/${DIST}/result/${PACKAGE}_${FILE}" "out/${DIST}.${PACKAGE}_${FILE}" || exit 1
         done
     done
 done
