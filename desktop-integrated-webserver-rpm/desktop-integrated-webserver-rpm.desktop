@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Integrated Webserver Example RPM
-Comment=A simple hello world example to demonstrate RPM packaging.
-Exec=desktop-integrated-webserver-rpm
-Icon=desktop-integrated-webserver-rpm
-Categories=Utility;

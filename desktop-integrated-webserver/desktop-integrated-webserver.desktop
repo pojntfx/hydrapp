@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Name=Integrated Webserver Example
-Comment=A simple hello world example to demonstrate DEB packaging.
+Comment=A simple hello world example to demonstrate packaging.
 Exec=desktop-integrated-webserver
 Icon=desktop-integrated-webserver
 Categories=Utility;
