@@ -14,8 +14,8 @@ import (
 	_ "github.com/pojntfx/multi-browser-electron/desktop-integrated-webserver/pkg/fixes"
 )
 
-//export Java_com_pojtinger_felicitas_integratedWebserverExample_MainActivity_LaunchBackend
-func Java_com_pojtinger_felicitas_integratedWebserverExample_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
+//export Java_com_pojtinger_felicitas_desktopIntegratedWebserverExample_MainActivity_LaunchBackend
+func Java_com_pojtinger_felicitas_desktopIntegratedWebserverExample_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
 	url, _, err := backend.StartServer()
 	if err != nil {
 		log.Fatalln("could not start integrated webserver:", err)

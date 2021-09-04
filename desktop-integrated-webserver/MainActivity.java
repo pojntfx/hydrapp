@@ -1,4 +1,4 @@
-package com.pojtinger.felicitas.integratedWebserverExample;
+package com.pojtinger.felicitas.desktopIntegratedWebserverExample;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
