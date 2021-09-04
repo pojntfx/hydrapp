@@ -1,32 +1,70 @@
 #!/bin/bash
 
-# Build tarball and source package
-export PACKAGE="desktop-integrated-webserver_0.0.1"
+if [ "$1" = "rpm" ]; then
+    # Build tarball and source package
+    export PACKAGE="desktop-integrated-webserver-0.0.1"
+    export SUFFIX="1.fc34"
+    export SPEC="desktop-integrated-webserver.spec"
 
-apt update
-apt install -y dpkg-dev
+    dnf install -y fedora-packager @development-tools qemu-user-static
 
-dpkg-source -b .
+    rpmdev-setuptree
 
-mkdir -p out
-cp "../${PACKAGE}.dsc" "../${PACKAGE}.tar.xz" out || exit 1
+    export TARBALL="${HOME}/rpmbuild/SOURCES/${PACKAGE}.tar.gz"
+    export DSC="${HOME}/rpmbuild/SRPMS/${PACKAGE}-${SUFFIX}.src.rpm"
 
-# Build chroot
-export DSC="out/${PACKAGE}.dsc"
-declare -A TARGETS
-export TARGETS=(["bullseye|http://http.us.debian.org/debian"]="amd64 i386 armel armhf arm64 mips64el mipsel ppc64el s390x")
+    tar -cvzf "${TARBALL}" --exclude out --transform "s,^,${PACKAGE}/," .
+    rpmbuild -bs "${SPEC}"
 
-apt update
-apt install -y pbuilder
+    rpmlint "${DSC}"
 
-for DIST_MIRROR in "${!TARGETS[@]}"; do
-    DIST="$(cut -d'|' -f1 <<<"${DIST_MIRROR}")"
-    export DIST
-    MIRROR="$(cut -d'|' -f2 <<<"${DIST_MIRROR}")"
-    export MIRROR
+    mkdir -p out
+    cp "${TARBALL}" "${DSC}" out || exit 1
 
-    mkdir -p "/var/cache/pbuilder/${DIST}"/{aptcache,result}
-    cat <<EOT >~/.pbuilderrc
+    # Build chroot
+    declare -A TARGETS
+    export TARGETS=(["epel-8"]="x86_64" ["fedora-34"]="x86_64" ["opensuse-tumbleweed"]="x86_64")
+
+    for DIST in "${!TARGETS[@]}"; do
+        # Build binary package
+        for ARCH in ${TARGETS[$DIST]}; do
+            mock -r "${DIST}-${ARCH}" "${DSC}" --enable-network
+
+            rm /var/lib/mock/"${DIST}-${ARCH}"/result/*.src.rpm
+            rpmlint /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm
+
+            cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm out || exit 1
+            mv out/*.src.rpm "out/${PACKAGE}.src.rpm" || exit 1
+        done
+    done
+else
+    # Build tarball and source package
+    export PACKAGE="desktop-integrated-webserver_0.0.1"
+
+    apt update
+    apt install -y dpkg-dev
+
+    dpkg-source -b .
+
+    mkdir -p out
+    cp "../${PACKAGE}.dsc" "../${PACKAGE}.tar.xz" out || exit 1
+
+    # Build chroot
+    export DSC="out/${PACKAGE}.dsc"
+    declare -A TARGETS
+    export TARGETS=(["bullseye|http://http.us.debian.org/debian"]="amd64 i386 armel armhf arm64 mips64el mipsel ppc64el s390x")
+
+    apt update
+    apt install -y pbuilder
+
+    for DIST_MIRROR in "${!TARGETS[@]}"; do
+        DIST="$(cut -d'|' -f1 <<<"${DIST_MIRROR}")"
+        export DIST
+        MIRROR="$(cut -d'|' -f2 <<<"${DIST_MIRROR}")"
+        export MIRROR
+
+        mkdir -p "/var/cache/pbuilder/${DIST}"/{aptcache,result}
+        cat <<EOT >~/.pbuilderrc
 PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
 
 if [ -n "\${DIST}" ]; then
@@ -37,14 +75,15 @@ if [ -n "\${DIST}" ]; then
 fi
 EOT
 
-    pbuilder create --mirror "${MIRROR}"
+        pbuilder create --mirror "${MIRROR}"
 
-    # Build binary package
-    for ARCH in ${TARGETS[$DIST_MIRROR]}; do
-        pbuilder build --host-arch "${ARCH}" "${DSC}"
+        # Build binary package
+        for ARCH in ${TARGETS[$DIST_MIRROR]}; do
+            pbuilder build --host-arch "${ARCH}" "${DSC}"
 
-        for FILE in {"${ARCH}.deb","${ARCH}.buildinfo","${ARCH}.changes","source.changes"}; do
-            cp "/var/cache/pbuilder/${DIST}/result/${PACKAGE}_${FILE}" "out/${DIST}.${PACKAGE}_${FILE}" || exit 1
+            for FILE in {"${ARCH}.deb","${ARCH}.buildinfo","${ARCH}.changes","source.changes"}; do
+                cp "/var/cache/pbuilder/${DIST}/result/${PACKAGE}_${FILE}" "out/${DIST}.${PACKAGE}_${FILE}" || exit 1
+            done
         done
     done
-done
+fi

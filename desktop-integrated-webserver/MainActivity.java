@@ -1,4 +1,4 @@
-package com.pojtinger.felix.integratedWebserverExampleRPM;
+package com.pojtinger.felix.integratedWebserverExample;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

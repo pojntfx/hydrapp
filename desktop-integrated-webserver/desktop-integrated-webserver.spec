@@ -1,4 +1,4 @@
-Name:           desktop-integrated-webserver-rpm
+Name:           desktop-integrated-webserver
 Version:        0.0.1
 Release:        1%{?dist}
 Summary:        Simple hello world example
@@ -16,7 +16,7 @@ BuildRequires: golang >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git 
 Suggests: chromium >= 90
 
 %description
-A simple hello world example to demonstrate RPM packaging.
+A simple hello world example to demonstrate packaging.
 
 %global debug_package %{nil}
 
@@ -29,17 +29,16 @@ make PREFIX=/usr %{?_smp_mflags}
 
 %install
 make PREFIX=/usr DESTDIR=%{?buildroot} install
-mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man1/
-install -D -m0644 desktop-integrated-webserver-rpm.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/desktop-integrated-webserver-rpm.metainfo.xml
-cp docs/desktop-integrated-webserver-rpm.1 $RPM_BUILD_ROOT/%{_mandir}/man1/desktop-integrated-webserver-rpm.1
+install -D -m0644 desktop-integrated-webserver.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/desktop-integrated-webserver.metainfo.xml
+install -D -m0644 docs/desktop-integrated-webserver.1 $RPM_BUILD_ROOT/%{_mandir}/man1/desktop-integrated-webserver.1
 
 %files
 %license LICENSE
-%{_bindir}/desktop-integrated-webserver-rpm
-%{_mandir}/man1/desktop-integrated-webserver-rpm.1*
-%{_datadir}/applications/desktop-integrated-webserver-rpm.desktop
-%{_datadir}/metainfo/desktop-integrated-webserver-rpm.metainfo.xml
-%{_datadir}/icons/hicolor/*/apps/desktop-integrated-webserver-rpm.png
+%{_bindir}/desktop-integrated-webserver
+%{_mandir}/man1/desktop-integrated-webserver.1*
+%{_datadir}/applications/desktop-integrated-webserver.desktop
+%{_datadir}/metainfo/desktop-integrated-webserver.metainfo.xml
+%{_datadir}/icons/hicolor/*/apps/desktop-integrated-webserver.png
 
 
 %changelog
