@@ -1,0 +1,16 @@
+app-id: com.pojtinger.flatpakIntegratedWebserver
+runtime: org.freedesktop.Platform
+runtime-version: "20.08"
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+command: flatpak-integrated-webserver
+modules:
+  - name: flatpak-integrated-webserver
+    buildsystem: simple
+    build-commands:
+      - . /usr/lib/sdk/golang/enable.sh; make PREFIX=/app
+      - . /usr/lib/sdk/golang/enable.sh; make install PREFIX=/app
+    sources:
+      - type: dir
+        path: .
