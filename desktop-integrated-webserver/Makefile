@@ -10,8 +10,7 @@ build:
 	for icon in $(SIZES); do convert icon.png -resize $${icon} out/icon-$${icon}.png; done
 
 install: build
-	install -m 0755 -d $(DESTDIR)$(PREFIX)/bin
-	install -m 0755 out/desktop-integrated-webserver $(DESTDIR)$(PREFIX)/bin
+	install -D -m 0755 out/desktop-integrated-webserver $(DESTDIR)$(PREFIX)/bin
 	desktop-file-install --dir=$(DESTDIR)$(PREFIX)/share/applications desktop-integrated-webserver.desktop
 	for icon in $(SIZES); do install -D -m 0644 out/icon-$${icon}.png $(DESTDIR)$(PREFIX)/share/icons/hicolor/$${icon}/apps/desktop-integrated-webserver.png; done
 
