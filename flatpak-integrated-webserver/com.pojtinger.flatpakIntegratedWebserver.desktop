@@ -4,5 +4,5 @@ Type=Application
 Name=Integrated Webserver Example Flatpak
 Comment=A simple hello world example to demonstrate packaging.
 Exec=flatpak-integrated-webserver
-Icon=flatpak-integrated-webserver
+Icon=com.pojtinger.flatpakIntegratedWebserver
 Categories=Utility;
