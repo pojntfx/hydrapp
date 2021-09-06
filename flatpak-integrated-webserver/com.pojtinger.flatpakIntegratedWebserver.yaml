@@ -6,11 +6,26 @@ sdk-extensions:
   - org.freedesktop.Sdk.Extension.golang
 command: flatpak-integrated-webserver
 modules:
+  # TODO: This should be a build-time dependency or custom SDK extension, not a runtime dependency/module
+  - name: imagemagick
+    config-opts:
+      - --enable-shared
+      - --disable-static
+      - --with-modules
+    sources:
+      - type: archive
+        url: https://imagemagick.org/download/releases/ImageMagick-7.1.0-6.tar.xz
+        sha256: 2477c6bc0f933a5bc0971d4fef7ad652fe5072a83ca39d12522f56d92f18539e
+    cleanup:
+      - /share/doc
   - name: flatpak-integrated-webserver
     buildsystem: simple
     build-commands:
       - . /usr/lib/sdk/golang/enable.sh; make PREFIX=/app
       - . /usr/lib/sdk/golang/enable.sh; make install PREFIX=/app
+    build-options:
+      build-args:
+        - "--share=network"
     sources:
       - type: dir
         path: .
