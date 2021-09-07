@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>com.pojtinger.flatpakIntegratedWebserver</id>
+    <metadata_license>AGPL-3.0+</metadata_license>
+    <project_license>AGPL-3.0-or-later</project_license>
+    <name>Integrated Webserver Example Flatpak</name>
+    <summary>simple hello world example</summary>
+
+    <description>
+        <p>A simple hello world example to demonstrate packaging.</p>
+    </description>
+
+    <launchable type="desktop-id">com.pojtinger.flatpakIntegratedWebserver.desktop</launchable>
+
+    <url type="homepage">https://github.com/pojntfx/multi-browser-electron</url>
+
+    <provides>
+        <binary>flatpak-integrated-webserver</binary>
+    </provides>
+
+    <releases>
+        <release version="0.0.1" date="2021-08-28">
+            <description>
+                <p>Initial Release</p>
+            </description>
+        </release>
+    </releases>
+</component>
