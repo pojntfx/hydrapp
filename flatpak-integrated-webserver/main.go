@@ -4,12 +4,16 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"unicode"
 
+	"github.com/ncruces/zenity"
 	"github.com/pojntfx/multi-browser-electron/flatpak-integrated-webserver/pkg/backend"
+	_ "github.com/pojntfx/multi-browser-electron/flatpak-integrated-webserver/pkg/fixes"
 )
 
 var knownBrowsers = []string{
@@ -41,7 +45,7 @@ func main() {
 	// Start the integrated webserver server
 	url, stop, err := backend.StartServer()
 	if err != nil {
-		log.Fatalln("could not start integrated webserver:", err)
+		crash("could not start integrated webserver", err)
 	}
 	defer stop()
 
@@ -81,13 +85,13 @@ func main() {
 	}
 
 	if browser[0] == "" {
-		log.Fatalf("could not find a supported browser, tried preferred browser (set with the HYDRAPP_BROWSER env variable) \"%v\" and known browsers \"%v\"", browser, knownBrowsers)
+		crash("could not find a supported browser", fmt.Errorf("tried preferred browser (set with the HYDRAPP_BROWSER env variable) \"%v\" and known browsers \"%v\"", browser, knownBrowsers))
 	}
 
 	// Create a profile for the app
 	userConfigDir, err := os.UserConfigDir()
 	if err != nil {
-		log.Fatal("could not get user's config dir:", err)
+		crash("could not get user's config directory", err)
 	}
 	userDataDir := filepath.Join(userConfigDir, id)
 
@@ -117,6 +121,42 @@ func main() {
 
 	// Start the browser and wait for the user to close it
 	if err := cmd.Run(); err != nil {
-		log.Fatal("could not launch browser:", err)
+		crash("could not launch browser", err)
 	}
+}
+
+func crash(msg string, err error) {
+	// Create user-friendly error message
+	body := fmt.Sprintf(`%v has encountered a fatal error and can't continue. The error message is:
+
+%v
+
+The following information might help you in fixing the problem:
+
+%v`,
+		name,
+		capitalize(msg),
+		capitalize(err.Error()),
+	)
+
+	// Show error message visually using a dialog
+	if err := zenity.Error(
+		body,
+		zenity.Title("Fatal Error"),
+		zenity.Width(320),
+	); err != nil {
+		log.Println("could not display fatal error dialog:", err)
+	}
+
+	// Log error message and exit with non-zero exit code
+	log.Fatalln(body)
+}
+
+func capitalize(msg string) string {
+	// Capitalize the first letter of the message if it is longer than two characters
+	if len(msg) >= 2 {
+		return string(unicode.ToUpper([]rune(msg)[0])) + msg[1:]
+	}
+
+	return msg
 }
