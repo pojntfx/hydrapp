@@ -34,7 +34,7 @@ var knownBrowsers = []string{
 
 const (
 	name = "Integrated Webserver Example Flatpak"
-	id   = "com.pojtinger.flatpakIntegratedWebserver"
+	id   = "com.pojtinger.flatpakintegratedwebserver"
 
 	spawnCmd  = "flatpak-spawn"
 	spawnHost = "--host"
