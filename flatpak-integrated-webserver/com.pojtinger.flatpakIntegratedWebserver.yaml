@@ -9,6 +9,9 @@ command: flatpak-integrated-webserver
 finish-args:
   - --socket=session-bus
   - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
 modules:
   - name: flatpak-integrated-webserver
     buildsystem: simple
