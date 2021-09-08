@@ -66,6 +66,7 @@ else
         mkdir -p "/var/cache/pbuilder/${DIST}"/{aptcache,result}
         cat <<EOT >~/.pbuilderrc
 PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+USENETWORK=yes
 
 if [ -n "\${DIST}" ]; then
     BASETGZ="\$(dirname \${BASETGZ})/\${DIST}-base.tgz"

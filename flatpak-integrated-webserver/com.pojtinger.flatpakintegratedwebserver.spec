@@ -29,8 +29,8 @@ make PREFIX=/usr %{?_smp_mflags}
 
 %install
 make PREFIX=/usr DESTDIR=%{?buildroot} install
-install -D -m0644 com.pojtinger.flatpakintegratedwebserver.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/com.pojtinger.flatpakintegratedwebserver.metainfo.xml
-install -D -m0644 docs/com.pojtinger.flatpakintegratedwebserver.1 $RPM_BUILD_ROOT/%{_mandir}/man1/com.pojtinger.flatpakintegratedwebserver.1
+install -D -m 0644 com.pojtinger.flatpakintegratedwebserver.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/com.pojtinger.flatpakintegratedwebserver.metainfo.xml
+install -D -m 0644 docs/com.pojtinger.flatpakintegratedwebserver.1 $RPM_BUILD_ROOT/%{_mandir}/man1/com.pojtinger.flatpakintegratedwebserver.1
 
 %files
 %license LICENSE
