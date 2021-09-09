@@ -1,42 +1,42 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
-    <Product Id='4d33d6c1-558c-4afd-bd58-98f57cbc851d' UpgradeCode='778082df-b1fd-4adb-bb14-d7792e9c4ddb' Name='hydrapp example MSI' Manufacturer='Felicitas Pojtinger' Version='1.0.0' Language='1033' Codepage='1252'>
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" UpgradeCode="61e3c3dd-fea6-47b1-8585-eeae6ae3de85" Name="hydrapp example MSI" Manufacturer="Felicitas Pojtinger" Version="1.0.0" Language="1033" Codepage="1252">
         <!-- Metadata -->
-        <Package Id='ff7bfaec-c8a1-4327-a797-4c6885180699' Keywords='Installer' Description='hydrapp example MSI Installer' Comments='Windows Installer Package' Manufacturer='Felicitas Pojtinger' InstallScope='perMachine' InstallerVersion='200' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+        <Package Id="ff7bfaec-c8a1-4327-a797-4c6885180699" Keywords="Installer" Description="hydrapp example MSI Installer" Comments="Windows Installer Package" Manufacturer="Felicitas Pojtinger" InstallScope="perMachine" InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
         <!-- Launch after installation -->
-        <CustomAction Id='ff82757c-fa17-47c4-b74e-6cd15ea2c4d8' Execute='immediate' Impersonate='no' Return='asyncNoWait' FileKey='c5fa7d4f-3f45-4fca-96f6-0601d6437004' ExeCommand='' />
+        <CustomAction Id="ff82757c-fa17-47c4-b74e-6cd15ea2c4d8" Execute="immediate" Impersonate="no" Return="asyncNoWait" FileKey="c5fa7d4f-3f45-4fca-96f6-0601d6437004" ExeCommand="" />
         <InstallExecuteSequence>
-            <RemoveExistingProducts Before='InstallInitialize' />
-            <Custom Action='ff82757c-fa17-47c4-b74e-6cd15ea2c4d8' After='InstallFinalize' />
+            <RemoveExistingProducts Before="InstallInitialize" />
+            <Custom Action="ff82757c-fa17-47c4-b74e-6cd15ea2c4d8" After="InstallFinalize" />
         </InstallExecuteSequence>
 
         <!-- Media config -->
-        <Media Id='1' Cabinet='app.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />
-        <Property Id='DiskPrompt' Value='hydrapp example MSI Installer [1]' />
+        <Media Id="1" Cabinet="app.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1" />
+        <Property Id="DiskPrompt" Value="hydrapp example MSI Installer [1]" />
 
         <!-- Icon -->
-        <Icon Id='icon.ico' SourceFile='icon.ico' />
-        <Property Id='ARPPRODUCTICON' Value='icon.ico' />
+        <Icon Id="icon.ico" SourceFile="icon.ico" />
+        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
-        <Directory Id='TARGETDIR' Name='SourceDir'>
-            <Directory Id='ProgramFilesFolder' Name='PFiles'>
-                <Directory Id='3992e2a6-ba62-401e-8849-1e62675c472d' Name='Felicitas Pojtinger'>
-                    <Directory Id='INSTALLDIR' Name='hydrapp example MSI'>
-                        <Component Id='App' Guid='cb8d16f7-6d3d-46a7-9070-b1158e2d40a4'>
-                            <File Id='c5fa7d4f-3f45-4fca-96f6-0601d6437004' Source='out/hydrapp-example-msi.exe' Name='hydrapp-example-msi.exe' KeyPath='yes' DiskId='1' />
-                            <File Id='5812b0c0-3f7c-462d-a5be-cdc31ee424e7' Source='icon.ico' Name='icon.ico' DiskId='1' />
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder" Name="PFiles">
+                <Directory Id="3992e2a6-ba62-401e-8849-1e62675c472d" Name="Felicitas Pojtinger">
+                    <Directory Id="INSTALLDIR" Name="hydrapp example MSI">
+                        <Component Id="App" Guid="99ece8b5-9c26-41a0-a5b8-b7c11821de29">
+                            <File Id="c5fa7d4f-3f45-4fca-96f6-0601d6437004" Source="out/hydrappexample-msi.exe" Name="hydrappexample-msi.exe" KeyPath="yes" DiskId="1" />
+                            <File Id="5812b0c0-3f7c-462d-a5be-cdc31ee424e7" Source="icon.ico" Name="icon.ico" DiskId="1" />
 
-                            <Shortcut Id='0db98d7f-c3f7-429b-b235-819717ee2181' Advertise='yes' Icon='icon.ico' Name='hydrapp example MSI' Directory='ProgramMenuFolder' WorkingDirectory='INSTALLDIR' Description='hydrapp example MSI app' />
-                            <Shortcut Id='0db98d7f-c3f7-429b-b235-819717ee2181' Advertise='yes' Icon='icon.ico' Name='hydrapp example MSI' Directory='DesktopFolder' WorkingDirectory='INSTALLDIR' Description='hydrapp example MSI app' />
+                            <Shortcut Id="0db98d7f-c3f7-429b-b235-819717ee2181" Advertise="yes" Icon="icon.ico" Name="hydrapp example MSI" Directory="ProgramMenuFolder" WorkingDirectory="INSTALLDIR" Description="hydrapp example MSI app" />
+                            <Shortcut Id="3d94a42f-72b6-4470-baf9-21d51e663fed" Advertise="yes" Icon="icon.ico" Name="hydrapp example MSI" Directory="DesktopFolder" WorkingDirectory="INSTALLDIR" Description="hydrapp example MSI app" />
                         </Component>
                     </Directory>
                 </Directory>
             </Directory>
         </Directory>
 
-        <Feature Id='Complete' Level='1'>
-            <ComponentRef Id='App' />
+        <Feature Id="Complete" Level="1">
+            <ComponentRef Id="App" />
         </Feature>
     </Product>
 </Wix>
