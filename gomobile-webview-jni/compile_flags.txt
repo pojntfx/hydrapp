@@ -1,2 +1,0 @@
--I
-/home/pojntfx/Projects/android-sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include

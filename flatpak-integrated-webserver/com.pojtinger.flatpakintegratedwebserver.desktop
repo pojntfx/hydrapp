@@ -1,8 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Integrated Webserver Example Flatpak
-Comment=A simple hello world example to demonstrate packaging.
-Exec=com.pojtinger.flatpakintegratedwebserver
-Icon=com.pojtinger.flatpakintegratedwebserver
-Categories=Utility;
