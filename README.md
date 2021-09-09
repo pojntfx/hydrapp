@@ -1,6 +1,6 @@
 # multi-browser-electron
 
-A repo for experiments around a Lorca/Electron-like framework with the choice of multiple browsers (Chromium, Firefox, GNOME Web) and mobile support.
+A repo for experiments around a Lorca/Electron-like framework ("Hydrapp") with the choice of multiple browsers (Chromium, Firefox, GNOME Web) and mobile support.
 
 ## Overview
 

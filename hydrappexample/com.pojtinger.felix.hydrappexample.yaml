@@ -1,0 +1,28 @@
+app-id: com.pojtinger.felicitas.hydrappexample
+runtime: org.freedesktop.Platform
+runtime-version: "21.08"
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+  - org.freedesktop.Sdk.Extension.ImageMagick
+command: com.pojtinger.felicitas.hydrappexample
+finish-args:
+  - --socket=session-bus
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+modules:
+  - name: com.pojtinger.felicitas.hydrappexample
+    buildsystem: simple
+    build-commands:
+      - . /usr/lib/sdk/golang/enable.sh; . /usr/lib/sdk/ImageMagick/enable.sh; make PREFIX=/app
+      - . /usr/lib/sdk/golang/enable.sh; . /usr/lib/sdk/ImageMagick/enable.sh; make install PREFIX=/app
+      - appstream-util validate-relax com.pojtinger.felicitas.hydrappexample.metainfo.xml
+      - install -D -m 0644 com.pojtinger.felicitas.hydrappexample.metainfo.xml /app/share/metainfo/com.pojtinger.felicitas.hydrappexample.metainfo.xml
+    build-options:
+      build-args:
+        - "--share=network"
+    sources:
+      - type: dir
+        path: .

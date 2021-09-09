@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Hydrapp Example
+Comment=A simple Hydrapp example app.
+Exec=com.pojtinger.felicitas.hydrappexample
+Icon=com.pojtinger.felicitas.hydrappexample
+Categories=Utility;

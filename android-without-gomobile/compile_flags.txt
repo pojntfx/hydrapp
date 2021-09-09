@@ -1,4 +1,0 @@
--I
-/home/pojntfx/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include
--I
-/home/pojntfx/Android/Sdk/ndk-bundle/sources/android/native_app_glue
