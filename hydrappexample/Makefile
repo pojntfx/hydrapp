@@ -76,7 +76,7 @@ build-android: check-android
 	mkdir -p ../.android-certs;\
 	[ ! -f ../.android-certs/$${APP_ID}.keystore ] && keytool -genkeypair -validity 365 -keystore ../.android-certs/$${APP_ID}.keystore -keyalg RSA -keysize 2048 -keypass $${CERT_PASSWORD} -storepass $${CERT_PASSWORD} -dname CN=$${APP_ID};\
 	$${ANDROID_HOME}/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/zipalign -f -p 4 $${APP_ID}.unsigned.apk $${APP_ID}.apk;\
-	$${ANDROID_HOME}/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ../.android-certs/$${APP_ID}.keystore --ks-pass pass:$${CERT_PASSWORD} --key-pass pass:$${CERT_PASSWORD} $${APP_ID}.apk;\
+	$${ANDROID_HOME}/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ../.android-certs/$${APP_ID}.keystore --ks-pass pass:$${CERT_PASSWORD} --key-pass pass:$${CERT_PASSWORD} $${APP_ID}.apk
 
 install-android: build-android
 	$${ANDROID_HOME}/platform-tools/adb install -r out/$${APP_ID}.apk
@@ -95,3 +95,10 @@ depend-android: clean-android
 	# mkdir -p out
 	# curl -Lo /tmp/Android-AdvancedWebView-v3.2.1.aar https://jitpack.io/com/github/delight-im/Android-AdvancedWebView/v3.2.1/Android-AdvancedWebView-v3.2.1.aar
 	# unzip -p /tmp/Android-AdvancedWebView-v3.2.1.aar classes.jar > out/Android-AdvancedWebView-v3.2.1.jar
+
+build-windows:
+	GOOS=windows go build -o out/com.pojtinger.felicitas.hydrappexample.exe
+	convert -resize x16 -gravity center -crop 16x16+0+0 -flatten -colors 256 -background transparent icon.png out/icon.ico
+	cd out || exit 1;\
+	cp ../com.pojtinger.felicitas.hydrappexample.wxl .;\
+	wixl -o com.pojtinger.felicitas.hydrappexample.msi com.pojtinger.felicitas.hydrappexample.wxl
