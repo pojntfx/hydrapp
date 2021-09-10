@@ -97,8 +97,23 @@ depend-android: clean-android
 	# unzip -p /tmp/Android-AdvancedWebView-v3.2.1.aar classes.jar > out/Android-AdvancedWebView-v3.2.1.jar
 
 build-windows:
-	GOOS=windows go build -o out/com.pojtinger.felicitas.hydrappexample.exe
+	GOOS=windows go build -o out/com.pojtinger.felicitas.hydrappexample.exe .
 	convert -resize x16 -gravity center -crop 16x16+0+0 -flatten -colors 256 -background transparent icon.png out/icon.ico
 	cd out || exit 1;\
 	cp ../com.pojtinger.felicitas.hydrappexample.wxl .;\
 	wixl -o com.pojtinger.felicitas.hydrappexample.msi com.pojtinger.felicitas.hydrappexample.wxl
+
+build-macos:
+	GOOS=darwin go build -o out/com.pojtinger.felicitas.hydrappexample .
+	convert icon.png out/icon.icns
+	cp Info.plist out/
+
+	dd if=/dev/zero of=out/com.pojtinger.felicitas.hydrappexample.dmg bs=1M count=50 status=progress
+	mkfs.hfsplus -v "Install Hydrapp Example" out/com.pojtinger.felicitas.hydrappexample.dmg
+
+	mkdir -p out/com.pojtinger.felicitas.hydrappexample.dmg.mnt
+	mount -o loop out/com.pojtinger.felicitas.hydrappexample.dmg out/com.pojtinger.felicitas.hydrappexample.dmg.mnt
+
+	cp out/com.pojtinger.felicitas.hydrappexample out/icon.icns out/Info.plist out/com.pojtinger.felicitas.hydrappexample.dmg.mnt
+
+	umount out/com.pojtinger.felicitas.hydrappexample.dmg.mnt

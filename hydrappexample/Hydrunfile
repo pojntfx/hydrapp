@@ -100,6 +100,16 @@ elif [ "$1" = "windows" ]; then
 
     # Build app
     make build-windows
+elif [ "$1" = "macos" ]; then
+    # Enable non-free repos for `hfsprogs`
+    sed -i /etc/apt/sources.list -e 's/bullseye main/bullseye main non-free/g'
+
+    # Install native dependencies
+    apt update
+    apt install -y hfsprogs make imagemagick
+
+    # Build app
+    make build-macos
 else
     # Build tarball and source package
     export PACKAGE="com.pojtinger.felicitas.hydrappexample_0.0.1"
