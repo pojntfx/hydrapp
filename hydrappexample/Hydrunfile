@@ -93,6 +93,13 @@ elif [ "$1" = "android" ]; then
     export ANDROID_LEGACY_NDK_VERSION=16
 
     make build-android
+elif [ "$1" = "windows" ]; then
+    # Install native dependencies
+    apt update
+    apt install -y wixl make imagemagick
+
+    # Build app
+    make build-windows
 else
     # Build tarball and source package
     export PACKAGE="com.pojtinger.felicitas.hydrappexample_0.0.1"
