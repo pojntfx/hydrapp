@@ -25,10 +25,10 @@ A simple Hydrapp example app.
 
 
 %build
-make PREFIX=/usr %{?_smp_mflags}
+CGO_ENABLED=1 make PREFIX=/usr %{?_smp_mflags}
 
 %install
-make PREFIX=/usr DESTDIR=%{?buildroot} install
+CGO_ENABLED=1 make PREFIX=/usr DESTDIR=%{?buildroot} install
 install -D -m 0644 com.pojtinger.felicitas.hydrappexample.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/com.pojtinger.felicitas.hydrappexample.metainfo.xml
 install -D -m 0644 docs/com.pojtinger.felicitas.hydrappexample.1 $RPM_BUILD_ROOT/%{_mandir}/man1/com.pojtinger.felicitas.hydrappexample.1
 

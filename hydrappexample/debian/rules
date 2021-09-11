@@ -7,8 +7,8 @@ export HOME = $(CURDIR)
 	dh $@
 
 override_dh_auto_build:
-	make PREFIX=/usr
+	CGO_ENABLED=1 make PREFIX=/usr
 
 override_dh_auto_install:
-	make PREFIX=/usr DESTDIR=$$(pwd)/debian/com.pojtinger.felicitas.hydrappexample install
+	CGO_ENABLED=1 make PREFIX=/usr DESTDIR=$$(pwd)/debian/com.pojtinger.felicitas.hydrappexample install
 	install -D -m 0644 com.pojtinger.felicitas.hydrappexample.metainfo.xml $$(pwd)/debian/com.pojtinger.felicitas.hydrappexample/usr/share/metainfo/com.pojtinger.felicitas.hydrappexample.metainfo.xml

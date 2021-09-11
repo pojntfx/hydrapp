@@ -6,7 +6,7 @@ SIZES ?= 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 2
 all: build
 
 build:
-	go build -ldflags=-linkmode=external -o out/com.pojtinger.felicitas.hydrappexample
+	go build -o out/com.pojtinger.felicitas.hydrappexample
 	for icon in $(SIZES); do convert icon.png -resize $${icon} out/icon-$${icon}.png; done
 
 install: build
@@ -95,13 +95,6 @@ depend-android: clean-android
 	# mkdir -p out
 	# curl -Lo /tmp/Android-AdvancedWebView-v3.2.1.aar https://jitpack.io/com/github/delight-im/Android-AdvancedWebView/v3.2.1/Android-AdvancedWebView-v3.2.1.aar
 	# unzip -p /tmp/Android-AdvancedWebView-v3.2.1.aar classes.jar > out/Android-AdvancedWebView-v3.2.1.jar
-
-build-windows:
-	GOOS=windows go build -o out/com.pojtinger.felicitas.hydrappexample.exe .
-	convert -resize x16 -gravity center -crop 16x16+0+0 -flatten -colors 256 -background transparent icon.png out/icon.ico
-	cd out || exit 1;\
-	cp ../com.pojtinger.felicitas.hydrappexample.wxl .;\
-	wixl -o com.pojtinger.felicitas.hydrappexample.msi com.pojtinger.felicitas.hydrappexample.wxl
 
 build-macos:
 	GOOS=darwin go build -o out/com.pojtinger.felicitas.hydrappexample .

@@ -99,7 +99,21 @@ elif [ "$1" = "windows" ]; then
     apt install -y wixl make imagemagick
 
     # Build app
-    make build-windows
+    mkdir -p out
+    convert -resize x16 -gravity center -crop 16x16+0+0 -flatten -colors 256 -background transparent icon.png out/icon.ico
+
+    declare -A TARGETS
+    export TARGETS=(["windows"]="386 amd64 arm arm64")
+
+    for DIST in "${!TARGETS[@]}"; do
+        for ARCH in ${TARGETS[$DIST]}; do
+            export GOOS="$DIST"
+            export GOARCH="$ARCH"
+
+            go build -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.exe" .
+            wixl -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.msi" <(sed "s@Source=\"com.pojtinger.felicitas.hydrappexample.exe\"@Source=\"out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.exe\"@g" com.pojtinger.felicitas.hydrappexample.wxl | sed 's@SourceFile="icon.ico"@SourceFile="out/icon.ico"@g' | sed 's@Source="icon.ico"@Source="out/icon.ico"@g')
+        done
+    done
 elif [ "$1" = "macos" ]; then
     # Enable non-free repos for `hfsprogs`
     sed -i /etc/apt/sources.list -e 's/bullseye main/bullseye main non-free/g'
