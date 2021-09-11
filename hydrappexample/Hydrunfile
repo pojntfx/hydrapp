@@ -123,7 +123,33 @@ elif [ "$1" = "macos" ]; then
     apt install -y hfsprogs make imagemagick
 
     # Build app
-    make build-macos
+    mkdir -p out
+    convert icon.png out/icon.icns
+
+    declare -A TARGETS
+    export TARGETS=(["darwin"]="amd64 arm64")
+
+    for DIST in "${!TARGETS[@]}"; do
+        for ARCH in ${TARGETS[$DIST]}; do
+            export GOOS="$DIST"
+            export GOARCH="$ARCH"
+
+            go build -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}" .
+
+            cp Info.plist out/
+
+            dd if=/dev/zero of="out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg" bs=1M count=50 status=progress
+            mkfs.hfsplus -v "Install Hydrapp Example" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg"
+
+            mkdir -p "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+            mount -o loop "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+
+            cp "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt/com.pojtinger.felicitas.hydrappexample"
+            cp out/icon.icns out/Info.plist "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+
+            umount "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+        done
+    done
 else
     # Build tarball and source package
     export PACKAGE="com.pojtinger.felicitas.hydrappexample_0.0.1"

@@ -95,18 +95,3 @@ depend-android: clean-android
 	# mkdir -p out
 	# curl -Lo /tmp/Android-AdvancedWebView-v3.2.1.aar https://jitpack.io/com/github/delight-im/Android-AdvancedWebView/v3.2.1/Android-AdvancedWebView-v3.2.1.aar
 	# unzip -p /tmp/Android-AdvancedWebView-v3.2.1.aar classes.jar > out/Android-AdvancedWebView-v3.2.1.jar
-
-build-macos:
-	GOOS=darwin go build -o out/com.pojtinger.felicitas.hydrappexample .
-	convert icon.png out/icon.icns
-	cp Info.plist out/
-
-	dd if=/dev/zero of=out/com.pojtinger.felicitas.hydrappexample.dmg bs=1M count=50 status=progress
-	mkfs.hfsplus -v "Install Hydrapp Example" out/com.pojtinger.felicitas.hydrappexample.dmg
-
-	mkdir -p out/com.pojtinger.felicitas.hydrappexample.dmg.mnt
-	mount -o loop out/com.pojtinger.felicitas.hydrappexample.dmg out/com.pojtinger.felicitas.hydrappexample.dmg.mnt
-
-	cp out/com.pojtinger.felicitas.hydrappexample out/icon.icns out/Info.plist out/com.pojtinger.felicitas.hydrappexample.dmg.mnt
-
-	umount out/com.pojtinger.felicitas.hydrappexample.dmg.mnt
