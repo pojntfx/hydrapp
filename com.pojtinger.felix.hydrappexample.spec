@@ -25,10 +25,13 @@ A simple Hydrapp example app.
 
 
 %build
+for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert icon.png -resize ${icon} out/icon-${icon}.png; done
 CGO_ENABLED=1 make PREFIX=/usr %{?_smp_mflags}
 
 %install
 CGO_ENABLED=1 make PREFIX=/usr DESTDIR=%{?buildroot} install
+desktop-file-install --dir=%{?buildroot}/usr/share/applications com.pojtinger.felicitas.hydrappexample.desktop
+for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png %{?buildroot}/usr/share/icons/hicolor/${icon}/apps/com.pojtinger.felicitas.hydrappexample.png; done
 install -D -m 0644 com.pojtinger.felicitas.hydrappexample.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/com.pojtinger.felicitas.hydrappexample.metainfo.xml
 install -D -m 0644 docs/com.pojtinger.felicitas.hydrappexample.1 $RPM_BUILD_ROOT/%{_mandir}/man1/com.pojtinger.felicitas.hydrappexample.1
 
