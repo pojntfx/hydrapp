@@ -22,6 +22,12 @@ jobs:
             flags: -e '--privileged'
             cmd: ./Hydrunfile msi
             dst: example/out/*.msi
+          - id: example-app
+            src: example
+            os: golang:bullseye
+            flags: -e '--privileged'
+            cmd: ./Hydrunfile app
+            dst: example/out/*.dmg
 
     steps:
       - name: Checkout
