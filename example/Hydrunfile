@@ -55,7 +55,7 @@ elif [ "$1" = "flatpak" ]; then
     # Export `.flatpak` to `out` dir
     mkdir -p out
     flatpak build-bundle repo out/com.pojtinger.felicitas.hydrapp.example.flatpak com.pojtinger.felicitas.hydrapp.example
-elif [ "$1" = "android" ]; then
+elif [ "$1" = "apk" ]; then
     # Install native dependencies
     apt update
     apt install -y curl unzip default-jdk make zip
@@ -114,7 +114,7 @@ elif [ "$1" = "android" ]; then
     [ ! -f ../.android-certs/${APP_ID}.keystore ] && keytool -genkeypair -validity 365 -keystore ../.android-certs/${APP_ID}.keystore -keyalg RSA -keysize 2048 -keypass ${CERT_PASSWORD} -storepass ${CERT_PASSWORD} -dname CN=${APP_ID}
     ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign -f -p 4 ${APP_ID}.unsigned.apk ${APP_ID}.apk
     ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ../.android-certs/${APP_ID}.keystore --ks-pass pass:${CERT_PASSWORD} --key-pass pass:${CERT_PASSWORD} ${APP_ID}.apk
-elif [ "$1" = "windows" ]; then
+elif [ "$1" = "msi" ]; then
     # Install native dependencies
     apt update
     apt install -y wixl make imagemagick
@@ -135,7 +135,7 @@ elif [ "$1" = "windows" ]; then
             wixl -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.msi" <(sed "s@Source=\"com.pojtinger.felicitas.hydrapp.example.exe\"@Source=\"out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.exe\"@g" com.pojtinger.felicitas.hydrapp.example.wxl | sed 's@SourceFile="icon.ico"@SourceFile="out/icon.ico"@g' | sed 's@Source="icon.ico"@Source="out/icon.ico"@g')
         done
     done
-elif [ "$1" = "macos" ]; then
+elif [ "$1" = "app" ]; then
     # Enable non-free repos for `hfsprogs`
     sed -i /etc/apt/sources.list -e 's/bullseye main/bullseye main non-free/g'
 
