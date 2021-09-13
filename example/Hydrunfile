@@ -135,12 +135,9 @@ elif [ "$1" = "msi" ]; then
         done
     done
 elif [ "$1" = "dmg" ]; then
-    # Enable non-free repos for `hfsprogs`
-    sed -i /etc/apt/sources.list -e 's/bullseye main/bullseye main non-free/g'
-
     # Install native dependencies
     apt update
-    apt install -y hfsprogs make imagemagick
+    apt install -y genisoimage make imagemagick
 
     # Build app
     mkdir -p out
@@ -155,19 +152,14 @@ elif [ "$1" = "dmg" ]; then
             export GOARCH="$ARCH"
 
             go build -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" .
-
             cp Info.plist out/
 
-            dd if=/dev/zero of="out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg" bs=1M count=50 status=progress
-            mkfs.hfsplus -v "Install Hydrapp Example" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg"
+            mkdir -p "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents/"{MacOS,Resources}
+            cp "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents/MacOS/com.pojtinger.felicitas.hydrapp.example"
+            cp out/Info.plist "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents"
+            cp out/icon.icns "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents/Resources"
 
-            mkdir -p "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
-            mount -o loop "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
-
-            cp "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/com.pojtinger.felicitas.hydrapp.example"
-            cp out/icon.icns out/Info.plist "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
-
-            umount "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
+            genisoimage -V "Install Hydrapp Example" -D -R -apple -no-pad -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
         done
     done
 elif [ "$1" = "deb" ]; then

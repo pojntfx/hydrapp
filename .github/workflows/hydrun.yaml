@@ -19,13 +19,13 @@ jobs:
           - id: example-msi
             src: example
             os: golang:bullseye
-            flags: -e '--privileged'
-            cmd: ""
+            flags: ""
+            cmd: ./Hydrunfile msi
             dst: example/out/*.msi
           - id: example-dmg
             src: example
             os: golang:bullseye
-            flags: -e '--privileged'
+            flags: ""
             cmd: ./Hydrunfile dmg
             dst: example/out/*.dmg
           - id: example-apk
@@ -46,12 +46,6 @@ jobs:
         run: |
           curl -L -o /tmp/hydrun "https://github.com/pojntfx/hydrun/releases/latest/download/hydrun.linux-$(uname -m)"
           sudo install /tmp/hydrun /usr/local/bin
-      - name: Set up HFS Plus
-        run: |
-          sudo apt update
-          sudo apt install -y hfsprogs hfsplus
-          sudo depmod
-          sudo modprobe hfsplus
       - name: Build with hydrun
         working-directory: ${{ matrix.target.src }}
         env:
