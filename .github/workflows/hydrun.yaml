@@ -51,7 +51,7 @@ jobs:
         env:
           ANDROID_CERT_PASSWORD: ${{ secrets.ANDROID_CERT_PASSWORD }}
           ANDROID_CERT: ${{ secrets.ANDROID_CERT }}
-        run: ANDROID_CERT_PASSWORD="${ANDROID_CERT_PASSWORD}" ANDROID_CERT="${ANDROID_CERT}" hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} '${{ matrix.target.cmd }}'
+        run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} "ANDROID_CERT_PASSWORD=\"${ANDROID_CERT_PASSWORD}\" ANDROID_CERT=\"${ANDROID_CERT}\" ${{ matrix.target.cmd }}"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Upload output
