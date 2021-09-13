@@ -10,7 +10,11 @@ jobs:
     strategy:
       matrix:
         target:
-          - hydrapp-example
+          - id: example-binaries
+            src: example
+            os: golang:bullseye
+            cmd: ./Hydrunfile
+            dst: example/out/*
 
     steps:
       - name: Checkout
@@ -24,16 +28,15 @@ jobs:
           curl -L -o /tmp/hydrun "https://github.com/pojntfx/hydrun/releases/latest/download/hydrun.linux-$(uname -m)"
           sudo install /tmp/hydrun /usr/local/bin
       - name: Build with hydrun
-        working-directory: ${{ matrix.target }}
-        run: hydrun -o golang:bullseye ./Hydrunfile
+        working-directory: ${{ matrix.target.src }}
+        run: hydrun -o ${{ matrix.target.os }} '${{ matrix.target.cmd }}'
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Upload output
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.target }}
-          path: |
-            ${{ matrix.target }}/out/*
+          name: ${{ matrix.target.id }}
+          path: ${{ matrix.target.dst }}
   publish-linux:
     runs-on: ubuntu-latest
     needs: build-linux
