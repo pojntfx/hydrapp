@@ -1,0 +1,235 @@
+#!/bin/bash
+
+if [ "$1" = "rpm" ]; then
+    # Build tarball and source package
+    export PACKAGE="com.pojtinger.felicitas.hydrappexample-0.0.1"
+    export SUFFIX="1.fc34"
+    export SPEC="com.pojtinger.felicitas.hydrappexample.spec"
+
+    dnf install -y fedora-packager @development-tools qemu-user-static
+
+    rpmdev-setuptree
+
+    export TARBALL="${HOME}/rpmbuild/SOURCES/${PACKAGE}.tar.gz"
+    export DSC="${HOME}/rpmbuild/SRPMS/${PACKAGE}-${SUFFIX}.src.rpm"
+
+    tar -cvzf "${TARBALL}" --exclude out --transform "s,^,${PACKAGE}/," .
+    rpmbuild -bs "${SPEC}"
+
+    rpmlint "${DSC}"
+
+    mkdir -p out
+    cp "${TARBALL}" "${DSC}" out || exit 1
+
+    # Build chroot
+    declare -A TARGETS
+    export TARGETS=(["epel-8"]="x86_64" ["fedora-34"]="x86_64" ["opensuse-tumbleweed"]="x86_64")
+
+    for DIST in "${!TARGETS[@]}"; do
+        # Build binary package
+        for ARCH in ${TARGETS[$DIST]}; do
+            mock -r "${DIST}-${ARCH}" "${DSC}" --enable-network
+
+            rm /var/lib/mock/"${DIST}-${ARCH}"/result/*.src.rpm
+            rpmlint /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm
+
+            cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm out || exit 1
+            mv out/*.src.rpm "out/${PACKAGE}.src.rpm" || exit 1
+        done
+    done
+elif [ "$1" = "flatpak" ]; then
+    # Install native dependencies
+    apt update
+    apt install -y flatpak-builder xz-utils
+
+    # Install Flatpak dependencies
+    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    flatpak install -y flathub org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 org.freedesktop.Sdk.Extension.golang//21.08
+
+    # Build SDK
+    flatpak-builder --repo=repo --user --install --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
+
+    # Build app
+    flatpak-builder --repo=repo --user --install --force-clean build-dir com.pojtinger.felicitas.hydrappexample.yaml
+
+    # Export `.flatpak` to `out` dir
+    mkdir -p out
+    flatpak build-bundle repo out/com.pojtinger.felicitas.hydrappexample.flatpak com.pojtinger.felicitas.hydrappexample
+elif [ "$1" = "android" ]; then
+    # Install native dependencies
+    apt update
+    apt install -y curl unzip default-jdk make zip
+
+    # Install the Android SDK and NDK
+    export ANDROID_BUILD_TOOLS_VERSION=31.0.0
+    export ANDROID_API_VERSION=30
+
+    curl -L -o /tmp/commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+    rm -rf /tmp/cmdline-tools
+    unzip -d /tmp/ /tmp/commandlinetools.zip
+
+    rm -rf ~/Android/Sdk
+    mkdir -p ~/Android/Sdk
+    yes | /tmp/cmdline-tools/bin/sdkmanager "build-tools;${ANDROID_BUILD_TOOLS_VERSION}" "cmdline-tools;latest" "platform-tools" "platforms;android-${ANDROID_API_VERSION}" "ndk-bundle" --sdk_root=$HOME/Android/Sdk
+
+    echo 'export ANDROID_HOME=$HOME/Android/Sdk' >>~/.bashrc
+    echo 'export ANDROID_SDK_ROOT=$HOME/Android/Sdk' >>~/.bashrc
+    echo 'export ANDROID_NDK_ROOT=$HOME/Android/Sdk/ndk-bundle' >>~/.bashrc
+    echo 'export PATH=$PATH:$ANDROID_HOME/platform-tools' >>~/.bashrc
+
+    source ~/.bashrc
+
+    # Install the legacy Android NDK
+    export ANDROID_LEGACY_HOME="${ANDROID_HOME}/ndk/android-ndk-r10e"
+    curl -L -o /tmp/sdk-legacy.zip https://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip
+    rm -rf "${ANDROID_LEGACY_HOME}"
+    unzip -d "${ANDROID_HOME}/ndk" /tmp/sdk-legacy.zip
+
+    # Build app
+    export APP_ID=com.pojtinger.felicitas.hydrappexample
+    export CERT_PASSWORD=123456
+    export ANDROID_NDK_VERSION=30
+    export ANDROID_LEGACY_API_VERSION=8
+    export ANDROID_LEGACY_NDK_VERSION=16
+
+    mkdir -p out
+    bash -O extglob -c 'cd out && rm -rf -- !(*.jar)'
+    mkdir -p out/drawable
+    CGO_ENABLED=1 GOOS=android GOARCH=386 CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android${ANDROID_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/i686-linux-android${ANDROID_NDK_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/x86/libbackend.so
+    CGO_ENABLED=1 GOOS=android GOARCH=amd64 CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android${ANDROID_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android${ANDROID_NDK_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/x86_64/libbackend.so
+    CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=5 CGO_LDFLAGS="--sysroot ${ANDROID_LEGACY_HOME}/platforms/android-${ANDROID_LEGACY_API_VERSION}/arch-arm" CGO_CFLAGS="--sysroot ${ANDROID_LEGACY_HOME}/platforms/android-${ANDROID_LEGACY_API_VERSION}/arch-arm" CC="${ANDROID_LEGACY_HOME}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc" CXX="${ANDROID_LEGACY_HOME}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++" go build -tags "netgo,androiddnsfix,tlscertembed" -buildmode=c-shared -o=out/lib/armeabi/libbackend_compat.so
+    CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=5 CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_LEGACY_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_LEGACY_NDK_VERSION}-clang++" go build -tags "netgo,androiddnsfix,tlscertembed" -buildmode=c-shared -o=out/lib/armeabi-v7a/libbackend_compat.so
+    CGO_ENABLED=1 GOOS=android GOARCH=arm CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_API_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_API_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/armeabi-v7a/libbackend.so
+    CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${ANDROID_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${ANDROID_NDK_VERSION}-clang++" go build -buildmode=c-shared -o=out/lib/arm64-v8a/libbackend.so
+    cd out || exit 1
+    cp ../*.java ../AndroidManifest.xml .
+    cp ../icon.png drawable
+    javac -source 1.8 -target 1.8 -cp *.jar -cp ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/core-lambda-stubs.jar -bootclasspath ${ANDROID_HOME}/platforms/android-${ANDROID_API_VERSION}/android.jar *.java
+    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/d8 *.class --release
+    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/aapt2 compile drawable/icon.png -o .
+    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/aapt2 link -o ${APP_ID}.unsigned.apk -I ${ANDROID_HOME}/platforms/android-${ANDROID_API_VERSION}/android.jar *.flat --manifest AndroidManifest.xml
+    zip -ur ${APP_ID}.unsigned.apk lib classes.dex
+    mkdir -p ../.android-certs # Append *.jar here to use an external library
+    # Append -I *.jar here to use an external library
+    [ ! -f ../.android-certs/${APP_ID}.keystore ] && keytool -genkeypair -validity 365 -keystore ../.android-certs/${APP_ID}.keystore -keyalg RSA -keysize 2048 -keypass ${CERT_PASSWORD} -storepass ${CERT_PASSWORD} -dname CN=${APP_ID}
+    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign -f -p 4 ${APP_ID}.unsigned.apk ${APP_ID}.apk
+    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ../.android-certs/${APP_ID}.keystore --ks-pass pass:${CERT_PASSWORD} --key-pass pass:${CERT_PASSWORD} ${APP_ID}.apk
+elif [ "$1" = "windows" ]; then
+    # Install native dependencies
+    apt update
+    apt install -y wixl make imagemagick
+
+    # Build app
+    mkdir -p out
+    convert -resize x16 -gravity center -crop 16x16+0+0 -flatten -colors 256 -background transparent icon.png out/icon.ico
+
+    declare -A TARGETS
+    export TARGETS=(["windows"]="386 amd64 arm arm64")
+
+    for DIST in "${!TARGETS[@]}"; do
+        for ARCH in ${TARGETS[$DIST]}; do
+            export GOOS="$DIST"
+            export GOARCH="$ARCH"
+
+            go build -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.exe" .
+            wixl -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.msi" <(sed "s@Source=\"com.pojtinger.felicitas.hydrappexample.exe\"@Source=\"out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.exe\"@g" com.pojtinger.felicitas.hydrappexample.wxl | sed 's@SourceFile="icon.ico"@SourceFile="out/icon.ico"@g' | sed 's@Source="icon.ico"@Source="out/icon.ico"@g')
+        done
+    done
+elif [ "$1" = "macos" ]; then
+    # Enable non-free repos for `hfsprogs`
+    sed -i /etc/apt/sources.list -e 's/bullseye main/bullseye main non-free/g'
+
+    # Install native dependencies
+    apt update
+    apt install -y hfsprogs make imagemagick
+
+    # Build app
+    mkdir -p out
+    convert icon.png out/icon.icns
+
+    declare -A TARGETS
+    export TARGETS=(["darwin"]="amd64 arm64")
+
+    for DIST in "${!TARGETS[@]}"; do
+        for ARCH in ${TARGETS[$DIST]}; do
+            export GOOS="$DIST"
+            export GOARCH="$ARCH"
+
+            go build -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}" .
+
+            cp Info.plist out/
+
+            dd if=/dev/zero of="out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg" bs=1M count=50 status=progress
+            mkfs.hfsplus -v "Install Hydrapp Example" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg"
+
+            mkdir -p "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+            mount -o loop "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+
+            cp "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt/com.pojtinger.felicitas.hydrappexample"
+            cp out/icon.icns out/Info.plist "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+
+            umount "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+        done
+    done
+elif [ "$1" = "deb" ]; then
+    # Build tarball and source package
+    export PACKAGE="com.pojtinger.felicitas.hydrappexample_0.0.1"
+
+    apt update
+    apt install -y dpkg-dev
+
+    dpkg-source -b .
+
+    mkdir -p out
+    cp "../${PACKAGE}.dsc" "../${PACKAGE}.tar.xz" out || exit 1
+
+    # Build chroot
+    export DSC="out/${PACKAGE}.dsc"
+    declare -A TARGETS
+    export TARGETS=(["bullseye|http://http.us.debian.org/debian"]="amd64 i386 armel armhf arm64 mips64el mipsel ppc64el s390x")
+
+    apt update
+    apt install -y pbuilder
+
+    for DIST_MIRROR in "${!TARGETS[@]}"; do
+        DIST="$(cut -d'|' -f1 <<<"${DIST_MIRROR}")"
+        export DIST
+        MIRROR="$(cut -d'|' -f2 <<<"${DIST_MIRROR}")"
+        export MIRROR
+
+        mkdir -p "/var/cache/pbuilder/${DIST}"/{aptcache,result}
+        cat <<EOT >~/.pbuilderrc
+PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+USENETWORK=yes
+
+if [ -n "\${DIST}" ]; then
+    BASETGZ="\$(dirname \${BASETGZ})/\${DIST}-base.tgz"
+    DISTRIBUTION="\${DIST}"
+    BUILDRESULT="/var/cache/pbuilder/\${DIST}/result/"
+    APTCACHE="/var/cache/pbuilder/\${DIST}/aptcache/"
+fi
+EOT
+
+        pbuilder create --mirror "${MIRROR}"
+
+        # Build binary package
+        for ARCH in ${TARGETS[$DIST_MIRROR]}; do
+            pbuilder build --host-arch "${ARCH}" "${DSC}"
+
+            for FILE in {"${ARCH}.deb","${ARCH}.buildinfo","${ARCH}.changes","source.changes"}; do
+                cp "/var/cache/pbuilder/${DIST}/result/${PACKAGE}_${FILE}" "out/${DIST}.${PACKAGE}_${FILE}" || exit 1
+            done
+        done
+    done
+else
+    # Install native dependencies
+    apt update
+    apt install -y curl make
+
+    # Install bagop
+    curl -L -o /tmp/bagop "https://github.com/pojntfx/bagop/releases/latest/download/bagop.linux-$(uname -m)"
+    install /tmp/bagop /usr/local/bin
+
+    # Install dependencies
+    bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrappexample -x '(android/*|ios/*|js/wasm)' -p 'make DST=$DST'
+fi
