@@ -1,4 +1,4 @@
-Source: com.pojtinger.felicitas.hydrappexample
+Source: com.pojtinger.felicitas.hydrapp.example
 Section: utils
 Priority: optional
 Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
@@ -9,7 +9,7 @@ Vcs-Browser: https://github.com/pojntfx/multi-browser-electron
 Vcs-Git: https://github.com/pojntfx/multi-browser-electron.git
 Rules-Requires-Root: no
 
-Package: com.pojtinger.felicitas.hydrappexample
+Package: com.pojtinger.felicitas.hydrapp.example
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: chromium (>= 90)

@@ -12,8 +12,8 @@ import (
 	"unicode"
 
 	"github.com/ncruces/zenity"
-	"github.com/pojntfx/multi-browser-electron/hydrappexample/pkg/backend"
-	_ "github.com/pojntfx/multi-browser-electron/hydrappexample/pkg/fixes"
+	"github.com/pojntfx/hydrapp/example/pkg/backend"
+	_ "github.com/pojntfx/hydrapp/example/pkg/fixes"
 )
 
 var knownBrowsers = []string{
@@ -34,7 +34,7 @@ var knownBrowsers = []string{
 
 const (
 	name = "Hydrapp Example"
-	id   = "com.pojtinger.felicitas.hydrappexample"
+	id   = "com.pojtinger.felicitas.hydrapp.example"
 
 	spawnCmd  = "flatpak-spawn"
 	spawnHost = "--host"

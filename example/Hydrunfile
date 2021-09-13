@@ -2,9 +2,9 @@
 
 if [ "$1" = "rpm" ]; then
     # Build tarball and source package
-    export PACKAGE="com.pojtinger.felicitas.hydrappexample-0.0.1"
+    export PACKAGE="com.pojtinger.felicitas.hydrapp.example-0.0.1"
     export SUFFIX="1.fc34"
-    export SPEC="com.pojtinger.felicitas.hydrappexample.spec"
+    export SPEC="com.pojtinger.felicitas.hydrapp.example.spec"
 
     dnf install -y fedora-packager @development-tools qemu-user-static
 
@@ -50,11 +50,11 @@ elif [ "$1" = "flatpak" ]; then
     flatpak-builder --repo=repo --user --install --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
 
     # Build app
-    flatpak-builder --repo=repo --user --install --force-clean build-dir com.pojtinger.felicitas.hydrappexample.yaml
+    flatpak-builder --repo=repo --user --install --force-clean build-dir com.pojtinger.felicitas.hydrapp.example.yaml
 
     # Export `.flatpak` to `out` dir
     mkdir -p out
-    flatpak build-bundle repo out/com.pojtinger.felicitas.hydrappexample.flatpak com.pojtinger.felicitas.hydrappexample
+    flatpak build-bundle repo out/com.pojtinger.felicitas.hydrapp.example.flatpak com.pojtinger.felicitas.hydrapp.example
 elif [ "$1" = "android" ]; then
     # Install native dependencies
     apt update
@@ -86,7 +86,7 @@ elif [ "$1" = "android" ]; then
     unzip -d "${ANDROID_HOME}/ndk" /tmp/sdk-legacy.zip
 
     # Build app
-    export APP_ID=com.pojtinger.felicitas.hydrappexample
+    export APP_ID=com.pojtinger.felicitas.hydrapp.example
     export CERT_PASSWORD=123456
     export ANDROID_NDK_VERSION=30
     export ANDROID_LEGACY_API_VERSION=8
@@ -131,8 +131,8 @@ elif [ "$1" = "windows" ]; then
             export GOOS="$DIST"
             export GOARCH="$ARCH"
 
-            go build -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.exe" .
-            wixl -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.msi" <(sed "s@Source=\"com.pojtinger.felicitas.hydrappexample.exe\"@Source=\"out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.exe\"@g" com.pojtinger.felicitas.hydrappexample.wxl | sed 's@SourceFile="icon.ico"@SourceFile="out/icon.ico"@g' | sed 's@Source="icon.ico"@Source="out/icon.ico"@g')
+            go build -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.exe" .
+            wixl -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.msi" <(sed "s@Source=\"com.pojtinger.felicitas.hydrapp.example.exe\"@Source=\"out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.exe\"@g" com.pojtinger.felicitas.hydrapp.example.wxl | sed 's@SourceFile="icon.ico"@SourceFile="out/icon.ico"@g' | sed 's@Source="icon.ico"@Source="out/icon.ico"@g')
         done
     done
 elif [ "$1" = "macos" ]; then
@@ -155,25 +155,25 @@ elif [ "$1" = "macos" ]; then
             export GOOS="$DIST"
             export GOARCH="$ARCH"
 
-            go build -o "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}" .
+            go build -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" .
 
             cp Info.plist out/
 
-            dd if=/dev/zero of="out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg" bs=1M count=50 status=progress
-            mkfs.hfsplus -v "Install Hydrapp Example" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg"
+            dd if=/dev/zero of="out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg" bs=1M count=50 status=progress
+            mkfs.hfsplus -v "Install Hydrapp Example" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg"
 
-            mkdir -p "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
-            mount -o loop "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+            mkdir -p "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
+            mount -o loop "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
 
-            cp "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}" "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt/com.pojtinger.felicitas.hydrappexample"
-            cp out/icon.icns out/Info.plist "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+            cp "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/com.pojtinger.felicitas.hydrapp.example"
+            cp out/icon.icns out/Info.plist "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
 
-            umount "out/com.pojtinger.felicitas.hydrappexample.${GOOS}-${GOARCH}.dmg.mnt"
+            umount "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
         done
     done
 elif [ "$1" = "deb" ]; then
     # Build tarball and source package
-    export PACKAGE="com.pojtinger.felicitas.hydrappexample_0.0.1"
+    export PACKAGE="com.pojtinger.felicitas.hydrapp.example_0.0.1"
 
     apt update
     apt install -y dpkg-dev
@@ -231,5 +231,5 @@ else
     install /tmp/bagop /usr/local/bin
 
     # Install dependencies
-    bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrappexample -x '(android/*|ios/*|js/wasm)' -p 'make DST=$DST'
+    bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrapp.example -x '(android/*|ios/*|js/wasm)' -p 'make DST=$DST'
 fi

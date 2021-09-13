@@ -1,24 +1,22 @@
+DESTDIR ?=
+PREFIX ?= /usr/local
+DST ?= out/com.pojtinger.felicitas.hydrapp.example
+
+SIZES ?= 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512
+
 all: build
 
-build: clean
-	mkdir -p out;\
-	cd out;\
-	cp ../*.java .;\
-	gomobile bind -target android -androidapi 21 ../...;\
-	javac -source 1.8 -target 1.8 -cp *.jar -bootclasspath $${ANDROID_HOME}/platforms/android-$${ANDROID_API_VERSION}/android.jar *.java;\
-	for aar in *.aar; do unzip -p -j $${aar} classes.jar > $${aar}.classes.jar; unzip bindings.aar jni/*; mkdir -p lib; cp -f -r jni/* lib; rm -rf jni; done;\
-	$$ANDROID_HOME/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/d8 *.classes.jar *.class --release;\
-	cp ../AndroidManifest.xml .;\
-	$$ANDROID_HOME/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/aapt2 link -o $${APP_ID}.unsigned.apk -I $$ANDROID_HOME/platforms/android-$${ANDROID_API_VERSION}/android.jar --manifest AndroidManifest.xml;\
-	zip -ur $${APP_ID}.unsigned.apk classes.dex;\
-	zip -ur $${APP_ID}.unsigned.apk lib;\
-	mkdir -p ~/.android-certs;\
-	[ ! -f ~/.android-certs/$${APP_ID}.keystore ] && keytool -genkeypair -validity 365 -keystore ~/.android-certs/$${APP_ID}.keystore -keyalg RSA -keysize 2048 -keypass $${CERT_PASSWORD} -storepass $${CERT_PASSWORD} -dname CN=$${APP_ID};\
-	$$ANDROID_HOME/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/zipalign -f -p 4 $${APP_ID}.unsigned.apk $${APP_ID}.apk;\
-	$$ANDROID_HOME/build-tools/$${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ~/.android-certs/$${APP_ID}.keystore --ks-pass pass:$${CERT_PASSWORD} --key-pass pass:$${CERT_PASSWORD} $${APP_ID}.apk;\
+build:
+	go build -o $(DST)
 
 install: build
-	$$ANDROID_HOME/platform-tools/adb install out/$${APP_ID}.apk
+	install -D -m 0755 $(DST) $(DESTDIR)$(PREFIX)/bin/com.pojtinger.felicitas.hydrapp.example
+
+uninstall:
+	rm $(DESTDIR)$(PREFIX)/bin/com.pojtinger.felicitas.hydrapp.example
+
+run: build
+	out/com.pojtinger.felicitas.hydrapp.example
 
 clean:
-	rm -rf out
+	rm -rf out .flatpak-builder build-dir repo

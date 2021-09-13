@@ -1,5 +1,5 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: com.pojtinger.felicitas.hydrappexample
+Upstream-Name: com.pojtinger.felicitas.hydrapp.example
 Upstream-Contact: Felicitas Pojtinger <felicitas@pojtinger.com>
 Source: https://github.com/pojntfx/multi-browser-electron
 

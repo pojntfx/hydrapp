@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-    <id>com.pojtinger.felicitas.hydrappexample</id>
+    <id>com.pojtinger.felicitas.hydrapp.example</id>
     <metadata_license>AGPL-3.0+</metadata_license>
     <project_license>AGPL-3.0-or-later</project_license>
     <name>Hydrapp Example</name>
@@ -10,12 +10,12 @@
         <p>A simple Hydrapp example app.</p>
     </description>
 
-    <launchable type="desktop-id">com.pojtinger.felicitas.hydrappexample.desktop</launchable>
+    <launchable type="desktop-id">com.pojtinger.felicitas.hydrapp.example.desktop</launchable>
 
     <url type="homepage">https://github.com/pojntfx/multi-browser-electron</url>
 
     <provides>
-        <binary>com.pojtinger.felicitas.hydrappexample</binary>
+        <binary>com.pojtinger.felicitas.hydrapp.example</binary>
     </provides>
 
     <releases>

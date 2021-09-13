@@ -5,11 +5,11 @@
         <key>CFBundleName</key>
         <string>Hydrapp Example</string>
         <key>CFBundleExecutable</key>
-        <string>com.pojtinger.felicitas.hydrappexample</string>
+        <string>com.pojtinger.felicitas.hydrapp.example</string>
         <key>CFBundleIconFile</key>
         <string>icon.icns</string>
         <key>CFBundleIdentifier</key>
-        <string>com.pojtinger.felicitas.hydrappexample</string>
+        <string>com.pojtinger.felicitas.hydrapp.example</string>
         <key>CFBundleShortVersionString</key>
         <string>1.0.0</string>
         <key>CFBundleVersion</key>
