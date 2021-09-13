@@ -20,14 +20,20 @@ jobs:
             src: example
             os: golang:bullseye
             flags: -e '--privileged'
-            cmd: ./Hydrunfile msi
+            cmd: ""
             dst: example/out/*.msi
-          - id: example-app
+          - id: example-dmg
             src: example
             os: golang:bullseye
             flags: -e '--privileged'
-            cmd: ./Hydrunfile app
+            cmd: ./Hydrunfile dmg
             dst: example/out/*.dmg
+          - id: example-apk
+            src: example
+            os: golang:bullseye
+            flags: ""
+            cmd: ./Hydrunfile apk
+            dst: example/out/*.apk
 
     steps:
       - name: Checkout
@@ -42,7 +48,10 @@ jobs:
           sudo install /tmp/hydrun /usr/local/bin
       - name: Build with hydrun
         working-directory: ${{ matrix.target.src }}
-        run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} '${{ matrix.target.cmd }}'
+        env:
+          ANDROID_CERT_PASSWORD: ${{ secrets.ANDROID_CERT_PASSWORD }}
+          ANDROID_CERT: ${{ secrets.ANDROID_CERT }}
+        run: ANDROID_CERT_PASSWORD="${ANDROID_CERT_PASSWORD}" ANDROID_CERT="${ANDROID_CERT}" hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} '${{ matrix.target.cmd }}'
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Upload output

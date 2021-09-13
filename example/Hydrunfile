@@ -87,7 +87,6 @@ elif [ "$1" = "apk" ]; then
 
     # Build app
     export APP_ID=com.pojtinger.felicitas.hydrapp.example
-    export CERT_PASSWORD=123456
     export ANDROID_NDK_VERSION=30
     export ANDROID_LEGACY_API_VERSION=8
     export ANDROID_LEGACY_NDK_VERSION=16
@@ -104,16 +103,16 @@ elif [ "$1" = "apk" ]; then
     cd out || exit 1
     cp ../*.java ../AndroidManifest.xml .
     cp ../icon.png drawable
-    javac -source 1.8 -target 1.8 -cp *.jar -cp ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/core-lambda-stubs.jar -bootclasspath ${ANDROID_HOME}/platforms/android-${ANDROID_API_VERSION}/android.jar *.java
-    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/d8 *.class --release
-    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/aapt2 compile drawable/icon.png -o .
-    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/aapt2 link -o ${APP_ID}.unsigned.apk -I ${ANDROID_HOME}/platforms/android-${ANDROID_API_VERSION}/android.jar *.flat --manifest AndroidManifest.xml
-    zip -ur ${APP_ID}.unsigned.apk lib classes.dex
+    javac -source 1.8 -target 1.8 -cp *.jar -cp "${ANDROID_HOME}"/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/core-lambda-stubs.jar -bootclasspath "${ANDROID_HOME}"/platforms/android-${ANDROID_API_VERSION}/android.jar *.java
+    "${ANDROID_HOME}"/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/d8 *.class --release
+    "${ANDROID_HOME}"/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/aapt2 compile drawable/icon.png -o .
+    "${ANDROID_HOME}"/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/aapt2 link -o ${APP_ID}.apk.unsigned -I "${ANDROID_HOME}"/platforms/android-${ANDROID_API_VERSION}/android.jar *.flat --manifest AndroidManifest.xml
+    zip -ur ${APP_ID}.apk.unsigned lib classes.dex
     mkdir -p ../.android-certs # Append *.jar here to use an external library
     # Append -I *.jar here to use an external library
-    [ ! -f ../.android-certs/${APP_ID}.keystore ] && keytool -genkeypair -validity 365 -keystore ../.android-certs/${APP_ID}.keystore -keyalg RSA -keysize 2048 -keypass ${CERT_PASSWORD} -storepass ${CERT_PASSWORD} -dname CN=${APP_ID}
-    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign -f -p 4 ${APP_ID}.unsigned.apk ${APP_ID}.apk
-    ${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ../.android-certs/${APP_ID}.keystore --ks-pass pass:${CERT_PASSWORD} --key-pass pass:${CERT_PASSWORD} ${APP_ID}.apk
+    echo "${ANDROID_CERT}" | base64 -d >../.android-certs/${APP_ID}.keystore
+    "${ANDROID_HOME}"/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign -f -p 4 ${APP_ID}.apk.unsigned ${APP_ID}.apk
+    "${ANDROID_HOME}"/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ../.android-certs/${APP_ID}.keystore --ks-pass pass:"${ANDROID_CERT_PASSWORD}" --key-pass pass:"${ANDROID_CERT_PASSWORD}" ${APP_ID}.apk
 elif [ "$1" = "msi" ]; then
     # Install native dependencies
     apt update
@@ -135,7 +134,7 @@ elif [ "$1" = "msi" ]; then
             wixl -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.msi" <(sed "s@Source=\"com.pojtinger.felicitas.hydrapp.example.exe\"@Source=\"out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.exe\"@g" com.pojtinger.felicitas.hydrapp.example.wxl | sed 's@SourceFile="icon.ico"@SourceFile="out/icon.ico"@g' | sed 's@Source="icon.ico"@Source="out/icon.ico"@g')
         done
     done
-elif [ "$1" = "app" ]; then
+elif [ "$1" = "dmg" ]; then
     # Enable non-free repos for `hfsprogs`
     sed -i /etc/apt/sources.list -e 's/bullseye main/bullseye main non-free/g'
 
