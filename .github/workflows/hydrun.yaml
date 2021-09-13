@@ -49,7 +49,8 @@ jobs:
       - name: Set up HFS Plus
         run: |
           sudo apt update
-          sudo apt install -y hfsprogs
+          sudo apt install -y hfsprogs hfsplus
+          sudo depmod
           sudo modprobe hfsplus
       - name: Build with hydrun
         working-directory: ${{ matrix.target.src }}
