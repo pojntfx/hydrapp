@@ -40,6 +40,12 @@ jobs:
             flags: -e '--privileged'
             cmd: ./Hydrunfile flatpak
             dst: example/out/*.flatpak
+          - id: example-deb
+            src: example
+            os: debian:bullseye
+            flags: ""
+            cmd: ./Hydrunfile deb
+            dst: example/out/*
 
     steps:
       - name: Checkout
