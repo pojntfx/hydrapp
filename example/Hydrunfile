@@ -217,7 +217,7 @@ HOOKDIR="/var/cache/pbuilder/hook.d/"
 EOT
 
     declare -A TARGETS
-    export TARGETS=(["debian|bullseye|http://http.us.debian.org/debian|main contrib"]="amd64 i386 armel armhf arm64 ppc64el s390x") # MIPS is not supported
+    export TARGETS=(["debian|bullseye|http://http.us.debian.org/debian|main contrib"]="amd64 i386 armel armhf arm64 ppc64el") # MIPS and s390x are not supported due to buggy Go builds and TLS cert validation issues
 
     for TARGET in "${!TARGETS[@]}"; do
         OS="$(cut -d'|' -f1 <<<"${TARGET}")"
