@@ -12,7 +12,7 @@
 
     <launchable type="desktop-id">com.pojtinger.felicitas.hydrapp.example.desktop</launchable>
 
-    <url type="homepage">https://github.com/pojntfx/multi-browser-electron</url>
+    <url type="homepage">https://github.com/pojntfx/hydrapp</url>
 
     <provides>
         <binary>com.pojtinger.felicitas.hydrapp.example</binary>

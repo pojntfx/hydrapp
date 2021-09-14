@@ -34,7 +34,7 @@ if [ "$1" = "rpm" ]; then
             rpmlint /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm
 
             cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm out || exit 1
-            mv out/*.src.rpm "out/${PACKAGE}.src.rpm" || exit 1
+            mv out/*.src.rpm "out/${PACKAGE}.src.rpm"
         done
     done
 elif [ "$1" = "flatpak" ]; then

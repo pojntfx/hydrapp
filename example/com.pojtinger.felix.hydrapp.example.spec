@@ -1,14 +1,14 @@
 Name:           com.pojtinger.felicitas.hydrapp.example
 Version:        0.0.1
 Release:        1%{?dist}
-Summary:        hydrapp example app
+Summary:        Hydrapp example app
 
 License:        AGPLv3
-URL:            https://github.com/pojntfx/multi-browser-electron
+URL:            https://github.com/pojntfx/hydrapp
 Source0:        %{name}-%{version}.tar.gz
 
 %if 0%{?suse_version}
-BuildRequires: go >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, libappstream-glib >= 0.7.14
+BuildRequires: go >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, appstream-glib >= 0.7.16
 %else
 BuildRequires: golang >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, libappstream-glib >= 0.7.14
 %endif
