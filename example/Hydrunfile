@@ -44,17 +44,35 @@ elif [ "$1" = "flatpak" ]; then
 
     # Install Flatpak dependencies
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    flatpak install -y flathub org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 org.freedesktop.Sdk.Extension.golang//21.08
 
-    # Build SDK
-    flatpak-builder --repo=repo --user --install --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
+    # Build targets
+    declare -A TARGETS
+    export TARGETS=(["linux"]="x86_64")
 
-    # Build app
-    flatpak-builder --repo=repo --user --install --force-clean build-dir com.pojtinger.felicitas.hydrapp.example.yaml
+    HOST_ARCH="$(uname -m)"
+    export HOST_ARCH
 
-    # Export `.flatpak` to `out` dir
-    mkdir -p out
-    flatpak build-bundle repo out/com.pojtinger.felicitas.hydrapp.example.flatpak com.pojtinger.felicitas.hydrapp.example
+    for DIST in "${!TARGETS[@]}"; do
+        # Build binary package
+        for ARCH in ${TARGETS[$DIST]}; do
+            # Install pre-build SDKs
+            # No need to quote; the word splitting is intentional
+            flatpak install $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") -y flathub org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 org.freedesktop.Sdk.Extension.golang//21.08
+
+            # Build SDK
+            # No need to quote; the word splitting is intentional
+            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --repo=repo --user --install --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
+
+            # Build app
+            # No need to quote; the word splitting is intentional
+            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --repo=repo --user --install --force-clean build-dir com.pojtinger.felicitas.hydrapp.example.yaml
+
+            # Export `.flatpak` to `out` dir
+            # No need to quote; the word splitting is intentional
+            mkdir -p out
+            flatpak $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") build-bundle repo "out/com.pojtinger.felicitas.hydrapp.example.${DIST}-${ARCH}.flatpak" com.pojtinger.felicitas.hydrapp.example
+        done
+    done
 elif [ "$1" = "apk" ]; then
     # Install native dependencies
     apt update
