@@ -189,47 +189,58 @@ elif [ "$1" = "deb" ]; then
 
     dpkg-source -b .
 
-    mkdir -p out
-    cp "../${PACKAGE}.dsc" "../${PACKAGE}.tar.xz" out || exit 1
-
-    # Build chroot
-    export DSC="out/${PACKAGE}.dsc"
-    declare -A TARGETS
-    export TARGETS=(["bullseye|http://http.us.debian.org/debian"]="amd64 i386 armel armhf arm64 mips64el mipsel ppc64el s390x")
-
+    # Build chroot and binary package
     apt update
-    apt install -y pbuilder
+    apt install -y pbuilder qemu-user-static
 
-    for DIST_MIRROR in "${!TARGETS[@]}"; do
-        DIST="$(cut -d'|' -f1 <<<"${DIST_MIRROR}")"
-        export DIST
-        MIRROR="$(cut -d'|' -f2 <<<"${DIST_MIRROR}")"
-        export MIRROR
+    cat <<EOT >~/.pbuilderrc
+#!/bin/bash
 
-        mkdir -p "/var/cache/pbuilder/${DIST}"/{aptcache,result}
-        cat <<EOT >~/.pbuilderrc
-PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
-USENETWORK=yes
+set -e
 
-if [ -n "\${DIST}" ]; then
-    BASETGZ="\$(dirname \${BASETGZ})/\${DIST}-base.tgz"
-    DISTRIBUTION="\${DIST}"
-    BUILDRESULT="/var/cache/pbuilder/\${DIST}/result/"
-    APTCACHE="/var/cache/pbuilder/\${DIST}/aptcache/"
+NAME="\${OS}-\${DIST}-\${ARCH}"
+mkdir -p "/var/cache/pbuilder/\${NAME}/"{aptcache,result}
+
+if [ "\${ARCH}" != "\$(dpkg --print-architecture)" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
 fi
+
+PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+USENETWORK="yes"
+DEBOOTSTRAPOPTS=("\${DEBOOTSTRAPOPTS[@]}" "--arch=\${ARCH}")
+BASETGZ="/var/cache/pbuilder/\${NAME}-base.tgz"
+DISTRIBUTION="\$DIST"
+BUILDRESULT="/var/cache/pbuilder/\${NAME}/result/"
+APTCACHE="/var/cache/pbuilder/\${NAME}/aptcache/"
+BUILDPLACE="/var/cache/pbuilder/build"
+HOOKDIR="/var/cache/pbuilder/hook.d/"
 EOT
 
-        pbuilder create --mirror "${MIRROR}"
+    declare -A TARGETS
+    export TARGETS=(["debian|bullseye|http://http.us.debian.org/debian|main contrib"]="amd64 i386 armel armhf arm64 ppc64el s390x") # MIPS is not supported
 
-        # Build binary package
-        for ARCH in ${TARGETS[$DIST_MIRROR]}; do
-            pbuilder build --host-arch "${ARCH}" "${DSC}"
+    for TARGET in "${!TARGETS[@]}"; do
+        OS="$(cut -d'|' -f1 <<<"${TARGET}")"
+        DIST="$(cut -d'|' -f2 <<<"${TARGET}")"
+        MIRRORSITE="$(cut -d'|' -f3 <<<"${TARGET}")"
+        COMPONENTS="$(cut -d'|' -f4 <<<"${TARGET}")"
 
-            for FILE in {"${ARCH}.deb","${ARCH}.buildinfo","${ARCH}.changes","source.changes"}; do
-                cp "/var/cache/pbuilder/${DIST}/result/${PACKAGE}_${FILE}" "out/${DIST}.${PACKAGE}_${FILE}" || exit 1
-            done
+        export OS
+        export DIST
+        export MIRRORSITE
+        export COMPONENTS
+
+        for ARCH in ${TARGETS[$TARGET]}; do
+            export ARCH
+
+            pbuilder --create
+            pbuilder build "../${PACKAGE}.dsc"
+
+            mkdir -p out
+            cp "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"* out
         done
     done
+
 else
     # Install native dependencies
     apt update
