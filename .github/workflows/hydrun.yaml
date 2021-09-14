@@ -46,6 +46,12 @@ jobs:
             flags: -e '--privileged'
             cmd: ./Hydrunfile deb
             dst: example/out/*
+          - id: example-rpm
+            src: example
+            os: fedora:34
+            flags: -e '--privileged'
+            cmd: ./Hydrunfile rpm
+            dst: example/out/*
 
     steps:
       - name: Checkout
