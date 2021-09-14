@@ -16,9 +16,9 @@ modules:
   - name: com.pojtinger.felicitas.hydrapp.example
     buildsystem: simple
     build-commands:
-      - . /usr/lib/sdk/golang/enable.sh; . /usr/lib/sdk/ImageMagick/enable.sh; make PREFIX=/app
-      - for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert icon.png -resize ${icon} out/icon-${icon}.png; done
-      - . /usr/lib/sdk/golang/enable.sh; . /usr/lib/sdk/ImageMagick/enable.sh; make install PREFIX=/app
+      - . /usr/lib/sdk/golang/enable.sh; make PREFIX=/app
+      - . /usr/lib/sdk/ImageMagick/enable.sh; for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert icon.png -resize ${icon} out/icon-${icon}.png; done
+      - . /usr/lib/sdk/golang/enable.sh; make install PREFIX=/app
       - desktop-file-install --dir=/app/share/applications com.pojtinger.felicitas.hydrapp.example.desktop
       - appstream-util validate-relax com.pojtinger.felicitas.hydrapp.example.metainfo.xml
       - install -D -m 0644 com.pojtinger.felicitas.hydrapp.example.metainfo.xml /app/share/metainfo/com.pojtinger.felicitas.hydrapp.example.metainfo.xml
