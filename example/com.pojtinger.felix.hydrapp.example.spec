@@ -8,9 +8,9 @@ URL:            https://github.com/pojntfx/multi-browser-electron
 Source0:        %{name}-%{version}.tar.gz
 
 %if 0%{?suse_version}
-BuildRequires: go >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0
+BuildRequires: go >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, libappstream-glib >= 0.7.14
 %else
-BuildRequires: golang >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0
+BuildRequires: golang >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, libappstream-glib >= 0.7.14
 %endif
 
 Suggests: chromium >= 90
@@ -31,6 +31,7 @@ CGO_ENABLED=1 make PREFIX=/usr %{?_smp_mflags}
 %install
 CGO_ENABLED=1 make PREFIX=/usr DESTDIR=%{?buildroot} install
 desktop-file-install --dir=%{?buildroot}/usr/share/applications com.pojtinger.felicitas.hydrapp.example.desktop
+appstream-util validate-relax com.pojtinger.felicitas.hydrapp.example.metainfo.xml
 for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png %{?buildroot}/usr/share/icons/hicolor/${icon}/apps/com.pojtinger.felicitas.hydrapp.example.png; done
 install -D -m 0644 com.pojtinger.felicitas.hydrapp.example.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/com.pojtinger.felicitas.hydrapp.example.metainfo.xml
 install -D -m 0644 docs/com.pojtinger.felicitas.hydrapp.example.1 $RPM_BUILD_ROOT/%{_mandir}/man1/com.pojtinger.felicitas.hydrapp.example.1

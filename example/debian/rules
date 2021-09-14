@@ -13,5 +13,6 @@ override_dh_auto_build:
 override_dh_auto_install:
 	CGO_ENABLED=1 make PREFIX=/usr DESTDIR=$$(pwd)/debian/com.pojtinger.felicitas.hydrapp.example install
 	desktop-file-install --dir=$$(pwd)/debian/com.pojtinger.felicitas.hydrapp.example/usr/share/applications com.pojtinger.felicitas.hydrapp.example.desktop
+	appstream-util validate-relax com.pojtinger.felicitas.hydrapp.example.metainfo.xml
 	for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png $$(pwd)/debian/com.pojtinger.felicitas.hydrapp.example/usr/share/icons/hicolor/${icon}/apps/com.pojtinger.felicitas.hydrapp.example.png; done
 	install -D -m 0644 com.pojtinger.felicitas.hydrapp.example.metainfo.xml $$(pwd)/debian/com.pojtinger.felicitas.hydrapp.example/usr/share/metainfo/com.pojtinger.felicitas.hydrapp.example.metainfo.xml

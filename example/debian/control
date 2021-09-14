@@ -2,7 +2,7 @@ Source: com.pojtinger.felicitas.hydrapp.example
 Section: utils
 Priority: optional
 Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
-Build-Depends: debhelper-compat (= 13), golang-go (>= 1.15), imagemagick (>= 8), ca-certificates (>= 20200601), desktop-file-utils (>= 0.26-1)
+Build-Depends: debhelper-compat (= 13), golang-go (>= 1.15), imagemagick (>= 8), ca-certificates (>= 20200601), desktop-file-utils (>= 0.26-1), appstream-util (>= 0.7.18-1)
 Standards-Version: 4.5.1
 Homepage: https://github.com/pojntfx/multi-browser-electron
 Vcs-Browser: https://github.com/pojntfx/multi-browser-electron
