@@ -43,7 +43,7 @@ jobs:
           - id: example-deb
             src: example
             os: debian:bullseye
-            flags: ""
+            flags: -e '--privileged'
             cmd: ./Hydrunfile deb
             dst: example/out/*
 
