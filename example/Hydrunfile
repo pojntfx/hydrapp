@@ -185,7 +185,7 @@ elif [ "$1" = "deb" ]; then
     export PACKAGE="com.pojtinger.felicitas.hydrapp.example_0.0.1"
 
     apt update
-    apt install -y dpkg-dev
+    apt install -y dpkg-dev apt-utils
 
     dpkg-source -b .
 
@@ -236,11 +236,62 @@ EOT
             pbuilder --create
             pbuilder build "../${PACKAGE}.dsc"
 
-            mkdir -p out
-            cp "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"* out
+            mkdir -p "out/repositories/${OS}/pool/main"
+            cp "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"* "out/repositories/${OS}/pool/main" || :
         done
-    done
 
+        cd out/repositories || exit 1
+
+        for ARCH in ${TARGETS[$TARGET]}; do
+            mkdir -p "${OS}/dists/${DIST}/main/binary-${ARCH}"
+        done
+
+        mkdir -p "${OS}/dists/${DIST}/main/source"
+        mkdir -p cache
+
+        cat >apt-ftparchive.conf <<EOT
+Dir {
+	ArchiveDir "./${OS}";
+	CacheDir "./cache";
+};
+Default {
+	Packages::Compress ". gzip bzip2";
+	Sources::Compress ". gzip bzip2";
+	Contents::Compress ". gzip bzip2";
+};
+TreeDefault {
+	BinCacheDB "packages-\$(SECTION)-\$(ARCH).db";
+	Directory "pool/\$(SECTION)";
+	Packages "\$(DIST)/\$(SECTION)/binary-\$(ARCH)/Packages";
+	SrcDirectory "pool/\$(SECTION)";
+	Sources "\$(DIST)/\$(SECTION)/source/Sources";
+	Contents "\$(DIST)/Contents-\$(ARCH)";
+};
+Tree "dists/${DIST}" {
+	Sections "main";
+	Architectures "${TARGETS[$TARGET]} source";
+}
+EOT
+
+        apt-ftparchive generate apt-ftparchive.conf
+
+        cat >"${DIST}.conf" <<EOT
+APT::FTPArchive::Release::Codename "${DIST}";
+APT::FTPArchive::Release::Origin "Hydrapp APT repo";
+APT::FTPArchive::Release::Components "main";
+APT::FTPArchive::Release::Label "Packages for Hydrapp";
+APT::FTPArchive::Release::Architectures "${TARGETS[$TARGET]} source";
+APT::FTPArchive::Release::Suite "${DIST}";
+EOT
+
+        apt-ftparchive -c "${DIST}.conf" release "${OS}/dists/${DIST}" >"${OS}/dists/${DIST}/Release"
+
+        echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
+        echo "${GPG_KEY_PASSWORD}" | base64 -d | gpg --import --yes --passphrase-fd 0 --pinentry-mode loopback /tmp/private.gpg
+        echo "${GPG_KEY_PASSWORD}" | base64 -d | gpg --yes --passphrase-fd 0 --pinentry-mode loopback --output "${OS}/dists/${DIST}/Release.gpg" -ba "${OS}/dists/${DIST}/Release"
+
+        cd ../..
+    done
 else
     # Install native dependencies
     apt update
