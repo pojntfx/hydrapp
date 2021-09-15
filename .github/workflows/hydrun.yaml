@@ -73,7 +73,7 @@ jobs:
           ANDROID_CERT: ${{ secrets.ANDROID_CERT }}
           GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
           GPG_KEY: ${{ secrets.GPG_KEY }}
-        run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} "ANDROID_CERT_PASSWORD=\"${ANDROID_CERT_PASSWORD}\" ANDROID_CERT=\"${ANDROID_CERT}\" "GPG_KEY_PASSWORD=\"${GPG_KEY_PASSWORD}\" GPG_KEY=\"${GPG_KEY}\" ${{ matrix.target.cmd }}"
+        run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} "ANDROID_CERT_PASSWORD=\"${ANDROID_CERT_PASSWORD}\" ANDROID_CERT=\"${ANDROID_CERT}\" GPG_KEY_PASSWORD=\"${GPG_KEY_PASSWORD}\" GPG_KEY=\"${GPG_KEY}\" ${{ matrix.target.cmd }}"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Upload output
