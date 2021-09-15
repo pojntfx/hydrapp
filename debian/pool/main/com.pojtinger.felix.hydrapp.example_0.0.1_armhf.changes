@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Sat, 28 Aug 2021 19:03:11 +0000
+Source: com.pojtinger.felix.hydrapp.example
+Binary: com.pojtinger.felix.hydrapp.example
+Architecture: source armhf
+Version: 0.0.1
+Distribution: unstable
+Urgency: medium
+Maintainer: Felix Pojtinger <felix@pojtinger.com>
+Changed-By: Felix Pojtinger <felix@pojtinger.com>
+Description:
+ com.pojtinger.felix.hydrapp.example - hydrapp example app
+Changes:
+ com.pojtinger.felix.hydrapp.example (0.0.1) unstable; urgency=medium
+ .
+   * Initial Release.
+Checksums-Sha1:
+ d18312c92733f305e36c31116340d62c244f0783 961 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 51edbd15b45344c185eba1b81796007fdac91709 120504 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 220126bd6892eafeb86a305f16c137083f08ebff 7549 com.pojtinger.felix.hydrapp.example_0.0.1_armhf.buildinfo
+ 3697db7d7562333c58f6f70c1fdce931bf15fdfa 1663276 com.pojtinger.felix.hydrapp.example_0.0.1_armhf.deb
+Checksums-Sha256:
+ b328945f414526d4a033c6c0de7f10dad5ae1273fab004e0fb3866d59cd6f369 961 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 1ff9abf6e92c83be2bf096f25ecc03862a873fdee8c8da5848ca7b3c1bd2f9eb 120504 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 4bee2314caabf79edeb15de4b473f71a674b4371825dcb8e6bfaf51676d32fc5 7549 com.pojtinger.felix.hydrapp.example_0.0.1_armhf.buildinfo
+ adaf2adace0ebbe2fc952ce0755f055b83a5ee449ea4afa8f43a5fb0b126ebc1 1663276 com.pojtinger.felix.hydrapp.example_0.0.1_armhf.deb
+Files:
+ 5c0f40685816441bd029606d300030e0 961 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ dad4d6e18bf41d42510267c468c4eb7c 120504 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 4b7148747d7a07af0322f811af2144e8 7549 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_armhf.buildinfo
+ 88daf3a958f1873a7ab2a0ed5dac281c 1663276 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_armhf.deb

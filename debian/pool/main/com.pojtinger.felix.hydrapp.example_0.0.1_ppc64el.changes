@@ -1,0 +1,34 @@
+Format: 1.8
+Date: Sat, 28 Aug 2021 19:03:11 +0000
+Source: com.pojtinger.felix.hydrapp.example
+Binary: com.pojtinger.felix.hydrapp.example com.pojtinger.felix.hydrapp.example-dbgsym
+Architecture: source ppc64el
+Version: 0.0.1
+Distribution: unstable
+Urgency: medium
+Maintainer: Felix Pojtinger <felix@pojtinger.com>
+Changed-By: Felix Pojtinger <felix@pojtinger.com>
+Description:
+ com.pojtinger.felix.hydrapp.example - hydrapp example app
+Changes:
+ com.pojtinger.felix.hydrapp.example (0.0.1) unstable; urgency=medium
+ .
+   * Initial Release.
+Checksums-Sha1:
+ d18312c92733f305e36c31116340d62c244f0783 961 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 51edbd15b45344c185eba1b81796007fdac91709 120504 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ fb4e97752db7403f6261790d012ed2c953187982 1507080 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_ppc64el.deb
+ 12c6cb7895ff3774cc076f6fb963abec47b58e4e 8079 com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
+ d834b7691681ec6483c41036173cea28ed70dd7c 1616172 com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.deb
+Checksums-Sha256:
+ b328945f414526d4a033c6c0de7f10dad5ae1273fab004e0fb3866d59cd6f369 961 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 1ff9abf6e92c83be2bf096f25ecc03862a873fdee8c8da5848ca7b3c1bd2f9eb 120504 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 9dd31a6421e89703b423691b037db71651de31c245a0aa6b01d72d1a86f2720d 1507080 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_ppc64el.deb
+ fdd58a7c691a8c636cd249e0554ea2eb095bd7c23ee4e94a6c4533e2bfd3b061 8079 com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
+ bf3816206f36e68173156afa15592952ba14c46e21bb9038cee146d25a9e689b 1616172 com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.deb
+Files:
+ 5c0f40685816441bd029606d300030e0 961 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ dad4d6e18bf41d42510267c468c4eb7c 120504 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ cfa25ca86da3c7f45cdd54329fd6d779 1507080 debug optional com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_ppc64el.deb
+ 1cb77bbf42d6d8eb1c49310b393c97f6 8079 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
+ 68f1526fccbca5180da95202b4549b68 1616172 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.deb
