@@ -66,7 +66,7 @@ EOT
 $ epiphany --application-mode --profile=${PROFILE_DIR} "${HYDRAP_URL}" --class="${HYDRAP_NAME}"
 ```
 
-## Example App Installation on `APT`-based distributions (i.e. Debian)
+## Example App Installation on Debian
 
 ```shell
 apt update
@@ -84,7 +84,7 @@ EOT
 
 apt update
 
-# Install binary pacakge
+# Install binary package
 apt install -y com.pojtinger.felicitas.hydrapp.example
 
 # Alternatively install from source
@@ -93,4 +93,34 @@ apt install -y dpkg-dev
 apt -y build-dep com.pojtinger.felicitas.hydrapp.example
 apt source -y --build com.pojtinger.felicitas.hydrapp.example
 apt install -y ./com.pojtinger.felicitas.hydrapp.example_*.deb
+```
+
+## Example App Installation on Fedora
+
+```shell
+dnf install -y gnupg2 'dnf-command(config-manager)'
+
+gpg --keyserver keyserver.ubuntu.com --recv-keys 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
+
+mkdir -p /usr/local/share/keyrings
+gpg --output /usr/local/share/keyrings/hydrapp.gpg --export 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
+
+echo "[hydrapp-repo]
+name=Hydrapp YUM repo
+baseurl=https://pojntfx.github.io/hydrapp/yum/fedora-\$releasever
+enabled=1
+gpgcheck=1
+gpgkey=file:///usr/local/share/keyrings/hydrapp.gpg" >/tmp/hydrapp.repo
+dnf config-manager --add-repo /tmp/hydrapp.repo
+
+# Install binary package
+dnf install -y com.pojtinger.felicitas.hydrapp.example
+
+# Alternatively install from source
+sudo dnf install -y rpm-build
+
+dnf download --source -y com.pojtinger.felicitas.hydrapp.example
+dnf builddep -y com.pojtinger.felicitas.hydrapp.example-*.rpm
+rpmbuild --rebuild com.pojtinger.felicitas.hydrapp.example-*.rpm
+sudo dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/com.pojtinger.felicitas.hydrapp.example-*.rpm
 ```
