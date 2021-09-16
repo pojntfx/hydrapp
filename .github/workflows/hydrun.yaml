@@ -94,9 +94,11 @@ jobs:
       - name: Isolate the repositories
         run: |
           mkdir -p /tmp/out/github-pages/{apt,yum}
+          mkdir -p /tmp/out/example-deb-source-packages
 
           cp -r /tmp/out/example-deb/repositories/* /tmp/out/github-pages/apt
           cp -r /tmp/out/example-rpm/repositories/* /tmp/out/github-pages/yum
+          cp -r /tmp/out/example-deb/repositories/*/pool/main/{*.dsc,*.xz,*.changes} /tmp/out/example-deb-source-packages || :
       - name: Publish pre-release to GitHub releases
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: marvinpinto/action-automatic-releases@latest
@@ -107,7 +109,9 @@ jobs:
           files: |
             /tmp/out/*/*
             /tmp/out/example-deb/repositories/*/pool/main/*.deb
+            /tmp/out/example-deb/repositories/*/pool/main/*.buildinfo
             /tmp/out/example-rpm/repositories/*/*.rpm
+            /tmp/out/example-deb-source-packages/*
       - name: Publish release to GitHub releases
         if: startsWith(github.ref, 'refs/tags/v')
         uses: marvinpinto/action-automatic-releases@latest
@@ -117,7 +121,9 @@ jobs:
           files: |
             /tmp/out/*/*
             /tmp/out/example-deb/repositories/*/pool/main/*.deb
+            /tmp/out/example-deb/repositories/*/pool/main/*.buildinfo
             /tmp/out/example-rpm/repositories/*/*.rpm
+            /tmp/out/example-deb-source-packages/*
       - name: Publish release to GitHub pages
         if: ${{ github.ref == 'refs/heads/main' }}
         # if: startsWith(github.ref, 'refs/tags/v') # Enable this after releases are ready
