@@ -12,14 +12,14 @@ Changes:
  .
    * Initial Release.
 Checksums-Sha1:
- 0ec9ecd6432c8e60812179e72749dfd87d97427f 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- b034a9a017bca982c86d02f3ae76fe43afea26aa 120916 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- e7bde83e8e4746f8797adf5a32a406f7973858eb 7675 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
+ a3220881f5de1d194ca7af79ec75e829b2a258b6 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 19d944f119ef4ef1b912908119bd70ce769d1723 120752 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ fce628fd1d7e6e1190af28c642773cabbe16a91e 8079 com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
 Checksums-Sha256:
- 79903698b8580edb8766950ab54aa1c81e8cd78937f316372f9fd93d85a93d71 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- e2198b4c5137ae2c826776c0e894e423c548793ae6d505720ab6e1e5fb17c46c 120916 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- 187b77a75aeae950725799dfd4e8f703e0a612a7a6ca5452643f51526c75332b 7675 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
+ 17c07fb7266c7408a31fd5cea91cd0337377a11c038eda5e388cc8cacae571b5 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ acfaa72d26a120117bf3159ab32fc541eb679f769b60c50aff4ac00fe0edb0ce 120752 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 078f4f6834b215b3d9ccedf93325cd4e2ee63bbb39f39dc48b7c73e0af1737db 8079 com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
 Files:
- 3be214ca834ab1cd4af827c7edecce48 933 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- 57e0132837e73eb25ab2f87a60e8bec0 120916 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- 6e58c9ec96b579a2dec8797c71178097 7675 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
+ c4a27e60d74629602481bd6be174450e 933 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ dff5ac5ca82f8f76e08fc8a84632ec21 120752 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 8fe517f221f69baf575df5be685d14ea 8079 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
