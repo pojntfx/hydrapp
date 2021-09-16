@@ -211,7 +211,7 @@ elif [ "$1" = "deb" ]; then
     export PACKAGE="com.pojtinger.felicitas.hydrapp.example_0.0.1"
 
     apt update
-    apt install -y dpkg-dev apt-utils ubuntu-keyring
+    apt install -y dpkg-dev apt-utils ubuntu-keyring debian-ports-archive-keyring
 
     dpkg-source -b .
 
@@ -233,7 +233,7 @@ fi
 
 PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
 USENETWORK="yes"
-DEBOOTSTRAPOPTS=("\${DEBOOTSTRAPOPTS[@]}" "--arch=\${ARCH}")
+DEBOOTSTRAPOPTS=("\${DEBOOTSTRAPOPTS}" "--arch=\${ARCH}")
 BASETGZ="/var/cache/pbuilder/\${NAME}-base.tgz"
 DISTRIBUTION="\$DIST"
 BUILDRESULT="/var/cache/pbuilder/\${NAME}/result/"
@@ -244,27 +244,34 @@ EOT
 
     declare -A TARGETS
     export TARGETS=(
-        ["debian|sid|http://http.us.debian.org/debian|main contrib"]="amd64 i386 armel armhf arm64 ppc64el"
-        ["debian|bullseye|http://http.us.debian.org/debian|main contrib"]="amd64 i386 armel armhf arm64 ppc64el"
-        ["ubuntu|focal|http://archive.ubuntu.com/ubuntu/|main restricted universe multiverse"]="amd64"
-    ) # MIPS and s390x are not supported due to buggy Go builds and TLS cert validation issues
+        ["debian|sid|http://ftp.ports.debian.org/debian-ports|main|--keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg"]="riscv64"
+        ["debian|bullseye|http://http.us.debian.org/debian|main contrib|"]="amd64" # i386 armel armhf arm64 ppc64el are also available
+        ["debian|sid|http://http.us.debian.org/debian|main contrib|"]="amd64"      # i386 armel armhf arm64 ppc64el are also available
+        ["ubuntu|focal|http://archive.ubuntu.com/ubuntu|main restricted universe multiverse|"]="amd64"
+        ["ubuntu|focal|http://ports.ubuntu.com/ubuntu-ports|main restricted universe multiverse|"]="arm64" # armhf ppc64el are also available; riscv64 is disabled due to buggy Go builds
+    )                                                                                                      # MIPS and s390x are not supported due to buggy Go builds and TLS cert validation issues
 
     for TARGET in "${!TARGETS[@]}"; do
         OS="$(cut -d'|' -f1 <<<"${TARGET}")"
         DIST="$(cut -d'|' -f2 <<<"${TARGET}")"
         MIRRORSITE="$(cut -d'|' -f3 <<<"${TARGET}")"
         COMPONENTS="$(cut -d'|' -f4 <<<"${TARGET}")"
+        DEBOOTSTRAPOPTS="$(cut -d'|' -f5 <<<"${TARGET}")"
 
         export OS
         export DIST
         export MIRRORSITE
         export COMPONENTS
+        export DEBOOTSTRAPOPTS
 
         for ARCH in ${TARGETS[$TARGET]}; do
             export ARCH
 
-            pbuilder --create --mirror "${MIRRORSITE}" --components "${COMPONENTS}"
-            pbuilder build --mirror "${MIRRORSITE}" --components "${COMPONENTS}" "../${PACKAGE}.dsc"
+            # Word splitting is intentional here
+            pbuilder --create --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $("${DEBOOTSTRAPOPTS}" != "" && echo --debootstrapopts "${DEBOOTSTRAPOPTS}")
+
+            # Word splitting is intentional here
+            pbuilder build --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $("${DEBOOTSTRAPOPTS}" != "" && echo --debootstrapopts "${DEBOOTSTRAPOPTS}") "../${PACKAGE}.dsc"
 
             mkdir -p "out/repositories/${OS}/pool/main"
             cp "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"* "out/repositories/${OS}/pool/main" || :
