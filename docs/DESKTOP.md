@@ -78,8 +78,8 @@ mkdir -p /usr/local/share/keyrings
 gpg --output /usr/local/share/keyrings/hydrapp.gpg --export 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
 
 cat >/etc/apt/sources.list.d/hydrapp.list <<EOT
-deb [signed-by=/usr/local/share/keyrings/hydrapp.gpg] https://pojntfx.github.io/hydrapp/debian/ bullseye main
-deb-src [signed-by=/usr/local/share/keyrings/hydrapp.gpg] https://pojntfx.github.io/hydrapp/debian/ bullseye main
+deb [signed-by=/usr/local/share/keyrings/hydrapp.gpg] https://pojntfx.github.io/hydrapp/apt/debian/ bullseye main
+deb-src [signed-by=/usr/local/share/keyrings/hydrapp.gpg] https://pojntfx.github.io/hydrapp/apt/debian/ bullseye main
 EOT
 
 apt update
