@@ -268,10 +268,10 @@ EOT
             export ARCH
 
             # Word splitting is intentional here
-            pbuilder --create --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $("${DEBOOTSTRAPOPTS}" != "" && echo --debootstrapopts "${DEBOOTSTRAPOPTS}")
+            pbuilder --create --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $([ "${DEBOOTSTRAPOPTS}" != "" ] && echo --debootstrapopts "${DEBOOTSTRAPOPTS}")
 
             # Word splitting is intentional here
-            pbuilder build --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $("${DEBOOTSTRAPOPTS}" != "" && echo --debootstrapopts "${DEBOOTSTRAPOPTS}") "../${PACKAGE}.dsc"
+            pbuilder build --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $([ "${DEBOOTSTRAPOPTS}" != "" ] && echo --debootstrapopts "${DEBOOTSTRAPOPTS}") "../${PACKAGE}.dsc"
 
             for FILE in "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"*; do
                 mv "${FILE}" "${FILE//_${ARCH}/_${OS}_${DIST}_${ARCH}}" || :
