@@ -7,7 +7,7 @@ Maintainer: Felix Pojtinger <felix@pojtinger.com>
 Installed-Size: 5862
 Depends: libc6 (>= 2.4)
 Recommends: chromium (>= 90)
-Filename: pool/main/com.pojtinger.felix.hydrapp.example_0.0.1_amd64.deb
+Filename: pool/main/com.pojtinger.felix.hydrapp.example_0.0.1_ubuntu_focal_amd64.deb
 Size: 2038944
 MD5sum: d123cb66fface19cc99fc3a197c80244
 SHA1: 7a6e40bb56932e35e1930ae40c0baeb0bfd510c5

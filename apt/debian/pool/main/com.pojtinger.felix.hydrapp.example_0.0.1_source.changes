@@ -12,14 +12,14 @@ Changes:
  .
    * Initial Release.
 Checksums-Sha1:
- a3220881f5de1d194ca7af79ec75e829b2a258b6 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- 19d944f119ef4ef1b912908119bd70ce769d1723 120752 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- fce628fd1d7e6e1190af28c642773cabbe16a91e 8079 com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
+ 5bfd2142573542983b9e0029ab8e1bfa5798ea85 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 9cee7572732265d04fce231f677e61f3e5229ab1 120992 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ b0ea0e03a3d6058388985cf65543712610ca4b98 7675 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
 Checksums-Sha256:
- 17c07fb7266c7408a31fd5cea91cd0337377a11c038eda5e388cc8cacae571b5 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- acfaa72d26a120117bf3159ab32fc541eb679f769b60c50aff4ac00fe0edb0ce 120752 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- 078f4f6834b215b3d9ccedf93325cd4e2ee63bbb39f39dc48b7c73e0af1737db 8079 com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
+ 9dd254a824b976727fc2efc4d6e1b9c521946ec34444617c6e0d3ded53bf2f19 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ b431a48df92badfcdd813fb7d1157c126085824aacba7489f7c63d08cf8c3c60 120992 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 5cd125979962f758045d483ec61f4c484bcea814a9b9e24c21a7980ab9797822 7675 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
 Files:
- c4a27e60d74629602481bd6be174450e 933 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- dff5ac5ca82f8f76e08fc8a84632ec21 120752 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- 8fe517f221f69baf575df5be685d14ea 8079 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_ppc64el.buildinfo
+ 4064275c6f0849628f9b9e8564344acd 933 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 45c23bf2eb28b55030da86a7b40a5d94 120992 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 95971a376d43a742c1041326a6c0384a 7675 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
