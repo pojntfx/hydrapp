@@ -65,3 +65,32 @@ X-Purism-FormFactor=Workstation;Mobile;
 EOT
 $ epiphany --application-mode --profile=${PROFILE_DIR} "${HYDRAP_URL}" --class="${HYDRAP_NAME}"
 ```
+
+## Example App Installation on `APT`-based distributions (i.e. Debian)
+
+```shell
+apt update
+apt install -y ca-certificates gnupg2
+
+gpg --keyserver keyserver.ubuntu.com --recv-keys 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
+
+mkdir -p /usr/local/share/keyrings
+gpg --output /usr/local/share/keyrings/hydrapp.gpg --export 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
+
+cat >/etc/apt/sources.list.d/hydrapp.list <<EOT
+deb [signed-by=/usr/local/share/keyrings/hydrapp.gpg] https://pojntfx.github.io/hydrapp/debian/ bullseye main
+deb-src [signed-by=/usr/local/share/keyrings/hydrapp.gpg] https://pojntfx.github.io/hydrapp/debian/ bullseye main
+EOT
+
+apt update
+
+# Install binary pacakge
+apt install -y com.pojtinger.felicitas.hydrapp.example
+
+# Alternatively install from source
+apt install -y dpkg-dev
+
+apt -y build-dep com.pojtinger.felicitas.hydrapp.example
+apt source -y --build com.pojtinger.felicitas.hydrapp.example
+apt install -y ./com.pojtinger.felicitas.hydrapp.example_*.deb
+```
