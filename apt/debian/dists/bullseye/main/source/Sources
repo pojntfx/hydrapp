@@ -1,0 +1,27 @@
+Package: com.pojtinger.felix.hydrapp.example
+Format: 3.0 (native)
+Binary: com.pojtinger.felix.hydrapp.example
+Architecture: any
+Version: 0.0.1
+Maintainer: Felix Pojtinger <felix@pojtinger.com>
+Standards-Version: 4.5.1
+Build-Depends: debhelper-compat (= 13), golang-go (>= 1.15), imagemagick (>= 8), ca-certificates (>= 20200601), desktop-file-utils (>= 0.26-1), appstream-util (>= 0.7.18-1)
+Homepage: https://github.com/pojntfx/hydrapp
+Vcs-Browser: https://github.com/pojntfx/hydrapp
+Vcs-Git: https://github.com/pojntfx/hydrapp.git
+Directory: pool/main
+Package-List:
+ com.pojtinger.felix.hydrapp.example deb utils optional arch=any
+Files:
+ 88aed6f865162f246b12bcccfb87db7b 961 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 782a074a31c7a6a373e9ac19c46baa7c 120744 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+Checksums-Sha1:
+ 8711d4f32f216ab662875ad7a0c30ff483ac04ea 961 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 0640127511626491983fe29bd731ca352673ace1 120744 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+Checksums-Sha256:
+ cc91f6055f4eda6d94c692ed07905d8b3516637b5e4df61c5ecbea6d4bf61a60 961 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ a46f8afe90c002112ea47fa7b9159e1680ce3b29de5d39356d8127ba4d1e4530 120744 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+Checksums-Sha512:
+ 6220dda4d88701be1b526226d7a55b524e56d7d2bd2bbc3be4240ba33a91212018de85227748f2dea74d6426701d9463c41c4545cc7e6bf4d6370713e95b8faf 961 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ e7fcebf3cefc856d99612956531fedd811c79e5340fdd4a783694d4fcf2e711491174e6a77a91ffa15622665912b0d614445dcf3fa38cb300653943b9a496c85 120744 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+
