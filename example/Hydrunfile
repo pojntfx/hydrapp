@@ -6,7 +6,7 @@ if [ "$1" = "rpm" ]; then
     export SUFFIX="1.fc34"
     export SPEC="com.pojtinger.felicitas.hydrapp.example.spec"
 
-    dnf install -y fedora-packager @development-tools qemu-user-static rpm-sign expect
+    dnf install -y fedora-packager @development-tools qemu-user-static rpm-sign
 
     rpmdev-setuptree
 
@@ -19,14 +19,19 @@ if [ "$1" = "rpm" ]; then
     rpmlint "${DSC}"
 
     # Prepare GPG
-    echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
-    echo "${GPG_KEY_PASSWORD}" | base64 -d | gpg --import --yes --passphrase-fd 0 --pinentry-mode loopback /tmp/private.gpg
-    echo "%_signature gpg
-%_gpg_name ${GPG_KEY_ID}" >~/.rpmmacros
+    echo "${GPG_KEY_PASSWORD}" | base64 -d >/tmp/gpg-pass
+    mkdir -p ~/.gnupg
     cat >~/.gnupg/gpg.conf <<EOT
 yes
+passphrase-file /tmp/gpg-pass
 pinentry-mode loopback
 EOT
+
+    echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
+    gpg --import /tmp/private.gpg
+
+    echo "%_signature gpg
+%_gpg_name ${GPG_KEY_ID}" >~/.rpmmacros
 
     # Build chroot
     declare -A TARGETS
@@ -42,25 +47,11 @@ EOT
             mkdir -p "out/repositories/${DIST}"
             \cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm "out/repositories/${DIST}"
 
-            /usr/bin/expect <<EOT
-set timeout -1
-spawn bash -c "rpm --resign out/repositories/${DIST}/*.rpm"
-expect {
-    "Enter passphrase:" {
-        send -- "$(echo "${GPG_KEY_PASSWORD}" | base64 -d | sed -e 's/\$/\\\$/g')\r"
-    }
-    "already contains identical signature, skipping" {
-        exp_continue
-    }
-    eof
-}
-EOT
+            rpm --addsign out/repositories/"${DIST}"/*.rpm
 
             createrepo "out/repositories/${DIST}"
 
-            echo "${GPG_KEY_PASSWORD}" | base64 -d | gpg --yes --passphrase-fd 0 --pinentry-mode loopback --detach-sign --armor "out/repositories/${DIST}/repodata/repomd.xml"
-
-            rm -f "out/repositories/${DIST}"/*.sig # Prevent empty files from being published; signatures are embedded in the RPMs
+            gpg --detach-sign --armor "out/repositories/${DIST}/repodata/repomd.xml"
         done
     done
 elif [ "$1" = "flatpak" ]; then

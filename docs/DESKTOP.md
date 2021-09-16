@@ -95,7 +95,7 @@ apt source -y --build com.pojtinger.felicitas.hydrapp.example
 apt install -y ./com.pojtinger.felicitas.hydrapp.example_*.deb
 ```
 
-## Example App Installation on Fedora
+## Example App Installation on Fedora and CentOS
 
 ```shell
 dnf install -y gnupg2 'dnf-command(config-manager)'
@@ -105,9 +105,11 @@ gpg --keyserver keyserver.ubuntu.com --recv-keys 638840CAE7660B1B69ADEE9041DDCDD
 mkdir -p /usr/local/share/keyrings
 gpg --output /usr/local/share/keyrings/hydrapp.gpg --export 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
 
+source /etc/os-release
+
 echo "[hydrapp-repo]
 name=Hydrapp YUM repo
-baseurl=https://pojntfx.github.io/hydrapp/yum/fedora-\$releasever
+baseurl=https://pojntfx.github.io/hydrapp/yum/$([ "${ID}" = "centos" ] && echo "epel" || echo "${ID}")-\$releasever
 enabled=1
 gpgcheck=1
 gpgkey=file:///usr/local/share/keyrings/hydrapp.gpg" >/tmp/hydrapp.repo
