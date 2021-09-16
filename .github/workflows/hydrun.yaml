@@ -67,10 +67,11 @@ jobs:
       - name: Build with hydrun
         working-directory: ${{ matrix.target.src }}
         env:
-          ANDROID_CERT_PASSWORD: ${{ secrets.ANDROID_CERT_PASSWORD }}
           ANDROID_CERT: ${{ secrets.ANDROID_CERT }}
-          GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
+          ANDROID_CERT_PASSWORD: ${{ secrets.ANDROID_CERT_PASSWORD }}
           GPG_KEY: ${{ secrets.GPG_KEY }}
+          GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
+          GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
         run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} "ANDROID_CERT=\"${ANDROID_CERT}\" ANDROID_CERT_PASSWORD=\"${ANDROID_CERT_PASSWORD}\" GPG_KEY=\"${GPG_KEY}\" GPG_KEY_PASSWORD=\"${GPG_KEY_PASSWORD}\" GPG_KEY_ID=\"${GPG_KEY_ID}\" ${{ matrix.target.cmd }}"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
@@ -106,6 +107,7 @@ jobs:
           files: |
             /tmp/out/*/*
             /tmp/out/example-deb/repositories/*/pool/main/*
+            /tmp/out/example-rpm/repositories/*/*
       - name: Publish release to GitHub releases
         if: startsWith(github.ref, 'refs/tags/v')
         uses: marvinpinto/action-automatic-releases@latest
