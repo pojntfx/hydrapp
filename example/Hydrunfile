@@ -273,6 +273,10 @@ EOT
             # Word splitting is intentional here
             pbuilder build --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $("${DEBOOTSTRAPOPTS}" != "" && echo --debootstrapopts "${DEBOOTSTRAPOPTS}") "../${PACKAGE}.dsc"
 
+            for FILE in "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"*; do
+                mv "${FILE}" "${FILE//_${ARCH}/_${OS}_${DIST}_${ARCH}}" || :
+            done
+
             mkdir -p "out/repositories/${OS}/pool/main"
             cp "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"* "out/repositories/${OS}/pool/main" || :
         done
