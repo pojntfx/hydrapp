@@ -14,7 +14,7 @@ Checksums-Sha256:
  6572a5dd3b7d087795498bb113cbf3722bf691f6f843e9be8e905139895c6d92 1819976 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Thu, 16 Sep 2021 20:36:40 +0000
+Build-Date: Thu, 16 Sep 2021 21:31:14 +0000
 Build-Path: /build/com.pojtinger.felix.hydrapp.example-0.0.1
 Installed-Build-Depends:
  adduser (= 3.118),
@@ -228,7 +228,7 @@ Installed-Build-Depends:
  libxau6 (= 1:1.0.9-1),
  libxcb1 (= 1.14-3),
  libxdmcp6 (= 1:1.1.2-3),
- libxext6 (= 2:1.3.3-1.1),
+ libxext6 (= 2:1.3.4-1),
  libxml2 (= 2.9.12+dfsg-4),
  libyaml-0-2 (= 0.2.2-1),
  libzstd1 (= 1.4.8+dfsg-2.1),
