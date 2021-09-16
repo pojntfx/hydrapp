@@ -6,7 +6,7 @@ if [ "$1" = "rpm" ]; then
     export SUFFIX="1.fc34"
     export SPEC="com.pojtinger.felicitas.hydrapp.example.spec"
 
-    dnf install -y fedora-packager @development-tools qemu-user-static
+    dnf install -y fedora-packager @development-tools qemu-user-static rpm-sign expect
 
     rpmdev-setuptree
 
@@ -18,8 +18,15 @@ if [ "$1" = "rpm" ]; then
 
     rpmlint "${DSC}"
 
-    mkdir -p out
-    cp "${TARBALL}" "${DSC}" out || exit 1
+    # Prepare GPG
+    echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
+    echo "${GPG_KEY_PASSWORD}" | base64 -d | gpg --import --yes --passphrase-fd 0 --pinentry-mode loopback /tmp/private.gpg
+    echo "%_signature gpg
+%_gpg_name ${GPG_KEY_ID}" >~/.rpmmacros
+    cat >~/.gnupg/gpg.conf <<EOT
+yes
+pinentry-mode loopback
+EOT
 
     # Build chroot
     declare -A TARGETS
@@ -30,11 +37,28 @@ if [ "$1" = "rpm" ]; then
         for ARCH in ${TARGETS[$DIST]}; do
             mock -r "${DIST}-${ARCH}" "${DSC}" --enable-network
 
-            rm /var/lib/mock/"${DIST}-${ARCH}"/result/*.src.rpm
             rpmlint /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm
 
-            cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm out || exit 1
-            mv out/*.src.rpm "out/${PACKAGE}.src.rpm" || :
+            mkdir -p "out/repositories/${DIST}"
+            \cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm "${TARBALL}" "out/repositories/${DIST}"
+
+            /usr/bin/expect <<EOT
+set timeout -1
+spawn bash -c "rpm --resign out/repositories/${DIST}/*.rpm"
+expect {
+    "Enter passphrase:" {
+        send -- "$(echo "${GPG_KEY_PASSWORD}" | base64 -d | sed -e 's/\$/\\\$/g')\r"
+    }
+    "already contains identical signature, skipping" {
+        exp_continue
+    }
+    eof
+}
+EOT
+
+            createrepo "out/repositories/${DIST}"
+
+            echo "${GPG_KEY_PASSWORD}" | base64 -d | gpg --yes --passphrase-fd 0 --pinentry-mode loopback --detach-sign --armor "out/repositories/${DIST}/repodata/repomd.xml"
         done
     done
 elif [ "$1" = "flatpak" ]; then

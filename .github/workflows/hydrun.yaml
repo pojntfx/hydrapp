@@ -71,7 +71,7 @@ jobs:
           ANDROID_CERT: ${{ secrets.ANDROID_CERT }}
           GPG_KEY_PASSWORD: ${{ secrets.GPG_KEY_PASSWORD }}
           GPG_KEY: ${{ secrets.GPG_KEY }}
-        run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} "ANDROID_CERT_PASSWORD=\"${ANDROID_CERT_PASSWORD}\" ANDROID_CERT=\"${ANDROID_CERT}\" GPG_KEY_PASSWORD=\"${GPG_KEY_PASSWORD}\" GPG_KEY=\"${GPG_KEY}\" ${{ matrix.target.cmd }}"
+        run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} "ANDROID_CERT=\"${ANDROID_CERT}\" ANDROID_CERT_PASSWORD=\"${ANDROID_CERT_PASSWORD}\" GPG_KEY=\"${GPG_KEY}\" GPG_KEY_PASSWORD=\"${GPG_KEY_PASSWORD}\" GPG_KEY_ID=\"${GPG_KEY_ID}\" ${{ matrix.target.cmd }}"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Upload output
@@ -90,6 +90,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: /tmp/out
+      - name: Isolate the repositories
+        run: |
+          mkdir -p /tmp/out/github-pages/{apt,yum}
+
+          cp -r /tmp/out/example-deb/repositories/* /tmp/out/github-pages/apt
+          cp -r /tmp/out/example-rpm/repositories/* /tmp/out/github-pages/yum
       - name: Publish pre-release to GitHub releases
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: marvinpinto/action-automatic-releases@latest
@@ -114,6 +120,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
           branch: gh-pages
-          folder: /tmp/out/example-deb/repositories
+          folder: /tmp/out/github-pages
           git-config-name: GitHub Pages Bot
           git-config-email: bot@example.com
