@@ -40,7 +40,7 @@ EOT
             rpmlint /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm
 
             mkdir -p "out/repositories/${DIST}"
-            \cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm "${TARBALL}" "out/repositories/${DIST}"
+            \cp /var/lib/mock/"${DIST}-${ARCH}"/result/*.rpm "out/repositories/${DIST}"
 
             /usr/bin/expect <<EOT
 set timeout -1
@@ -211,7 +211,7 @@ elif [ "$1" = "deb" ]; then
     export PACKAGE="com.pojtinger.felicitas.hydrapp.example_0.0.1"
 
     apt update
-    apt install -y dpkg-dev apt-utils
+    apt install -y dpkg-dev apt-utils ubuntu-keyring
 
     dpkg-source -b .
 
@@ -243,7 +243,11 @@ HOOKDIR="/var/cache/pbuilder/hook.d/"
 EOT
 
     declare -A TARGETS
-    export TARGETS=(["debian|bullseye|http://http.us.debian.org/debian|main contrib"]="amd64 i386 armel armhf arm64 ppc64el") # MIPS and s390x are not supported due to buggy Go builds and TLS cert validation issues
+    export TARGETS=(
+        ["debian|sid|http://http.us.debian.org/debian|main contrib"]="amd64 i386 armel armhf arm64 ppc64el"
+        ["debian|bullseye|http://http.us.debian.org/debian|main contrib"]="amd64 i386 armel armhf arm64 ppc64el"
+        ["ubuntu|focal|http://archive.ubuntu.com/ubuntu/|main restricted universe multiverse"]="amd64"
+    ) # MIPS and s390x are not supported due to buggy Go builds and TLS cert validation issues
 
     for TARGET in "${!TARGETS[@]}"; do
         OS="$(cut -d'|' -f1 <<<"${TARGET}")"
@@ -259,8 +263,8 @@ EOT
         for ARCH in ${TARGETS[$TARGET]}; do
             export ARCH
 
-            pbuilder --create
-            pbuilder build "../${PACKAGE}.dsc"
+            pbuilder --create --mirror "${MIRRORSITE}" --components "${COMPONENTS}"
+            pbuilder build --mirror "${MIRRORSITE}" --components "${COMPONENTS}" "../${PACKAGE}.dsc"
 
             mkdir -p "out/repositories/${OS}/pool/main"
             cp "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"* "out/repositories/${OS}/pool/main" || :
