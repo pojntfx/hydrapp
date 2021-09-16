@@ -42,7 +42,7 @@ jobs:
             dst: example/out/*.flatpak
           - id: example-deb
             src: example
-            os: debian:bullseye
+            os: debian:sid
             flags: -e '--privileged'
             cmd: ./Hydrunfile deb
             dst: example/out/*
