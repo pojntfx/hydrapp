@@ -316,7 +316,7 @@ EOT
 
         apt-ftparchive generate apt-ftparchive.conf
 
-        cat >"${DIST}.conf" <<EOT
+        cat >"${OS}-${DIST}.conf" <<EOT
 APT::FTPArchive::Release::Codename "${DIST}";
 APT::FTPArchive::Release::Origin "Hydrapp APT repo";
 APT::FTPArchive::Release::Components "main";
@@ -325,7 +325,7 @@ APT::FTPArchive::Release::Architectures "${TARGETS[$TARGET]} source";
 APT::FTPArchive::Release::Suite "${DIST}";
 EOT
 
-        apt-ftparchive -c "${DIST}.conf" release "${OS}/dists/${DIST}" >"${OS}/dists/${DIST}/Release"
+        apt-ftparchive -c "${OS}-${DIST}.conf" release "${OS}/dists/${DIST}" >"${OS}/dists/${DIST}/Release"
 
         echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
         echo "${GPG_KEY_PASSWORD}" | base64 -d | gpg --import --yes --passphrase-fd 0 --pinentry-mode loopback /tmp/private.gpg
