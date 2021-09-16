@@ -1,0 +1,75 @@
+Architectures: riscv64 source
+Codename: sid
+Components: main
+Date: Thu, 16 Sep 2021 19:11:56 +0000
+Label: Packages for Hydrapp
+Origin: Hydrapp APT repo
+Suite: sid
+MD5Sum:
+ ca54a59da3ec040d995c69c9a0a1afaf             2148 Contents-amd64
+ f4ee60789717a24ad9339bc324b2f2b3              332 Contents-amd64.bz2
+ 423975ea84363a7fea4db30c5cacfcb1              265 Contents-amd64.gz
+ d41d8cd98f00b204e9800998ecf8427e                0 Contents-riscv64
+ 0902e5a0182062319472ac442793db1b               28 Contents-riscv64.bz2
+ e62ff0123a74adfc6903d59a449cbdb0               40 Contents-riscv64.gz
+ 5e18c5c35beb8bd235c59599c903805b              163 Release
+ b6f3b116b3a035ef1ee91ccb55ae9e10              733 main/binary-amd64/Packages
+ 1bb3240bbf2b2c3d1a34fb21badb636a              538 main/binary-amd64/Packages.bz2
+ ed28ea399106a2e8c7d77442a2a9ae1e              512 main/binary-amd64/Packages.gz
+ d41d8cd98f00b204e9800998ecf8427e                0 main/binary-riscv64/Packages
+ 0902e5a0182062319472ac442793db1b               28 main/binary-riscv64/Packages.bz2
+ e62ff0123a74adfc6903d59a449cbdb0               40 main/binary-riscv64/Packages.gz
+ c12076d6c55fe36f6ac86c73106fe5e0             1632 main/source/Sources
+ 5a78cb53be5a0e3e71a2d27ca25df767              866 main/source/Sources.bz2
+ 59ecb21a8341213876be14850361b023              778 main/source/Sources.gz
+SHA1:
+ 30a3018775fbce5057c69841406b35394ef43f21             2148 Contents-amd64
+ 41ac7c6ec6131a90c7168c7d94fd1bedfc5f48db              332 Contents-amd64.bz2
+ f66fcd07795195fdfaf734a398f845fb88a7f638              265 Contents-amd64.gz
+ da39a3ee5e6b4b0d3255bfef95601890afd80709                0 Contents-riscv64
+ dcddcbc89128ee4d36fe584b2a982131e8f70d53               28 Contents-riscv64.bz2
+ e3f4c61a216c2c9613cd3bdd1420dde095b296b3               40 Contents-riscv64.gz
+ 65b5edb617d8e337796faa3daa8a21eb0152c9c1              163 Release
+ 16bb3af350722318e77d2d4afebd9cc080178c9f              733 main/binary-amd64/Packages
+ 9798b471a3368e1d5b7617ce327b2eea50f96084              538 main/binary-amd64/Packages.bz2
+ 403ef7baac77efe7a0868da859e3bff3ea3a50b7              512 main/binary-amd64/Packages.gz
+ da39a3ee5e6b4b0d3255bfef95601890afd80709                0 main/binary-riscv64/Packages
+ dcddcbc89128ee4d36fe584b2a982131e8f70d53               28 main/binary-riscv64/Packages.bz2
+ e3f4c61a216c2c9613cd3bdd1420dde095b296b3               40 main/binary-riscv64/Packages.gz
+ 62bd94da76f4112cddcdb22bbfe2ae13a9f18648             1632 main/source/Sources
+ b13b5bb4581f814d2ba562d3b1e0057149323c77              866 main/source/Sources.bz2
+ 91eb2af61e5084846e41a6cab0ed36440be90c26              778 main/source/Sources.gz
+SHA256:
+ 2721cb33227283fe76301bbc3cc7a6721a52a2ff9fae5271da47be969870dc95             2148 Contents-amd64
+ 3bff4ffce850ca75170d4bab274e400526e8109724770e8c179bd4b6d0d41ba9              332 Contents-amd64.bz2
+ b4af5a9f2217b46cebb79627e2c4d7019e0188e219c38fdb6c161469d39ee11c              265 Contents-amd64.gz
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855                0 Contents-riscv64
+ f43ffa97e8272d81422a41aa2b1599c418bd3c361fe23ebdd391676379dfe771               28 Contents-riscv64.bz2
+ e7ab72b8f37c7c9c9f6386fb8e3dfa40bf6fe4b67876703c5927e47cb8664ce4               40 Contents-riscv64.gz
+ 697ec4de2fdd6020f30c796f1ff21ac4e14a430caee7d5fe8a129ff11949111d              163 Release
+ b6d6f4a90f2199d400720e49b35d6c74ba2586b600d0ba6652a61b9e8ae6f73d              733 main/binary-amd64/Packages
+ 86e07b5a64f8d7530b2b80684451c582fe9bbee05f13937213174340d5de38bc              538 main/binary-amd64/Packages.bz2
+ dd5dc3a6881687429bd2964902d4b71714a73b8cc07b33dabefcbb54f8280c61              512 main/binary-amd64/Packages.gz
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855                0 main/binary-riscv64/Packages
+ f43ffa97e8272d81422a41aa2b1599c418bd3c361fe23ebdd391676379dfe771               28 main/binary-riscv64/Packages.bz2
+ e7ab72b8f37c7c9c9f6386fb8e3dfa40bf6fe4b67876703c5927e47cb8664ce4               40 main/binary-riscv64/Packages.gz
+ 86f317e5314def875d3f69985d048b2ce864a30d54b4c9634244bfc8c6b4dba1             1632 main/source/Sources
+ 69b4691a1cea858f47d59137a5d6027f189554f1b10f2a9071e2e599099b93c7              866 main/source/Sources.bz2
+ d1c71d994f74f490623496408697b2c204dbb9ef0cb1e35d67c6da32acd6a170              778 main/source/Sources.gz
+SHA512:
+ 4cb23f8aa5e8298586eb6ecee0b572d3c88844fa92c8dec36df978c2c2a0d88d96eb124d1f9d650427b898f13f61b46659f42b795d5a91c54443de588f20d861             2148 Contents-amd64
+ 3947f151be079f28a9b978f3e58a9e587f40e5554967c4419fc2d49117d747f9621eb443eb91c4332feee4d83abf3598eeef9ee4d837a5ae70e55b3b4b9d7e3b              332 Contents-amd64.bz2
+ c97fccf0a4cf6978c61c285d084b5c1103b3d6c7e20abeb5dac9f56bdc0aba7616d566ff811f979c476089353685171c747a61ce9db2de598ec75d4e15ce5b88              265 Contents-amd64.gz
+ cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e                0 Contents-riscv64
+ 37a17e9952eed92a1dfa196475721d1f8a96a58aac1a17e46a5df6b466a26655f151cc0b3b3005e442cd01feadf28ca095df66df47b7582992e1ceacc2cc632f               28 Contents-riscv64.bz2
+ 4837cb0c747b88cd66d2e8a7cb7fe2808a8fd9f967e467810a0dddfee9befdef8891f3be5c26e319d2ac8a869cb9e39d5ba1fb484db73231cec9fd66d1d5df33               40 Contents-riscv64.gz
+ 9f17e3852bbe8d8a4bfcef675dbb705e925b407d781890bde8873730435926678df426bc91940f6fa52d5b4daf4c1032e21538233a1b6781d4cd0d27a86093f0              163 Release
+ 5fcba045a1443e49eae8ac5abb7f2d1bcfd9defd7394cca1d37c3d1859bd8481dc5564a8725ade1379fc2ef55db9c471c5b2ae3ea65ef578ff23dbfb5df27449              733 main/binary-amd64/Packages
+ bda34846e2bb1f3f11c1e20b658d914ddf57d1eaa3787bf5a555cdc9a8ee83371ebf110e0d5fa4c01423c8fadaf15f6c5578320f985dd6c8c25ed8856d2dc42b              538 main/binary-amd64/Packages.bz2
+ 3f79e380c52cb898462e27814d154cdaf7bfe92222858792738c1da6cc7a0c9176af1be57c4b5439d6eaa76855be851905fa20fcb4fe89be65f045d811ecbbd5              512 main/binary-amd64/Packages.gz
+ cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e                0 main/binary-riscv64/Packages
+ 37a17e9952eed92a1dfa196475721d1f8a96a58aac1a17e46a5df6b466a26655f151cc0b3b3005e442cd01feadf28ca095df66df47b7582992e1ceacc2cc632f               28 main/binary-riscv64/Packages.bz2
+ 4837cb0c747b88cd66d2e8a7cb7fe2808a8fd9f967e467810a0dddfee9befdef8891f3be5c26e319d2ac8a869cb9e39d5ba1fb484db73231cec9fd66d1d5df33               40 main/binary-riscv64/Packages.gz
+ a222d91c8895758cfa259992b1040754839ccd75a81f219325ab5fe2b805c31a7aee55c72e5830b2943bc45a4d447914e2e497cb3f9db6fef0379b06f9f945a6             1632 main/source/Sources
+ af278da12ef555920f9d86a636d64026eae3f4d1a80a709ddae17d78de718b3ee1723cd68727b73684f8c3a5e4d483a5ee8c590c225acb2b77a99fe2f33d3727              866 main/source/Sources.bz2
+ c9e420b28220d9c91df37c642fe8b563f0bc02834d79082955b2916d70e51fbea5e31c60ec8b8fff4d11987e92f6cdd537c108e4f80620d9914dc4ef60ed903d              778 main/source/Sources.gz
