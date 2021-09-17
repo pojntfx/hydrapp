@@ -92,7 +92,7 @@ EOT
 
             # Build SDK and export to repo
             # No need to quote; the word splitting is intentional
-            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" --repo=out/repositories --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
+            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" --repo=out/repositories --user --install --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
 
             # Build app and export to repo
             # No need to quote; the word splitting is intentional
