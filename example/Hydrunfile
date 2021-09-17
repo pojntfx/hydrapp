@@ -69,6 +69,18 @@ elif [ "$1" = "flatpak" ]; then
     HOST_ARCH="$(uname -m)"
     export HOST_ARCH
 
+    # Prepare GPG
+    echo "${GPG_KEY_PASSWORD}" | base64 -d >/tmp/gpg-pass
+    mkdir -p ~/.gnupg
+    cat >~/.gnupg/gpg.conf <<EOT
+yes
+passphrase-file /tmp/gpg-pass
+pinentry-mode loopback
+EOT
+
+    echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
+    gpg --import /tmp/private.gpg
+
     for DIST in "${!TARGETS[@]}"; do
         # Build binary package
         for ARCH in ${TARGETS[$DIST]}; do
@@ -76,18 +88,19 @@ elif [ "$1" = "flatpak" ]; then
             # No need to quote; the word splitting is intentional
             flatpak install $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") -y flathub org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 org.freedesktop.Sdk.Extension.golang//21.08
 
-            # Build SDK
-            # No need to quote; the word splitting is intentional
-            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --repo=repo --user --install --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
+            mkdir -p out/repositories
 
-            # Build app
+            # Build SDK and export to repo
             # No need to quote; the word splitting is intentional
-            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --repo=repo --user --install --force-clean build-dir com.pojtinger.felicitas.hydrapp.example.yaml
+            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" --repo=out/repositories --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
+
+            # Build app and export to repo
+            # No need to quote; the word splitting is intentional
+            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" --repo=out/repositories --force-clean build-dir com.pojtinger.felicitas.hydrapp.example.yaml
 
             # Export `.flatpak` to `out` dir
             # No need to quote; the word splitting is intentional
-            mkdir -p out
-            flatpak $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") build-bundle repo "out/com.pojtinger.felicitas.hydrapp.example.${DIST}-${ARCH}.flatpak" com.pojtinger.felicitas.hydrapp.example
+            flatpak $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" build-bundle out/repositories "out/com.pojtinger.felicitas.hydrapp.example.${DIST}-${ARCH}.flatpak" com.pojtinger.felicitas.hydrapp.example
         done
     done
 elif [ "$1" = "apk" ]; then

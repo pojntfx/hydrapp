@@ -93,11 +93,12 @@ jobs:
           path: /tmp/out
       - name: Isolate the repositories
         run: |
-          mkdir -p /tmp/out/github-pages/{apt,yum}
+          mkdir -p /tmp/out/github-pages/{apt,yum,flatpak}
           mkdir -p /tmp/out/example-deb-source-packages
 
           cp -r /tmp/out/example-deb/repositories/* /tmp/out/github-pages/apt
           cp -r /tmp/out/example-rpm/repositories/* /tmp/out/github-pages/yum
+          cp -r /tmp/out/example-flatpak/repositories/* /tmp/out/github-pages/flatpak
           cp -r /tmp/out/example-deb/repositories/*/pool/main/{*.dsc,*.xz,*.changes} /tmp/out/example-deb-source-packages || :
       - name: Publish pre-release to GitHub releases
         if: ${{ github.ref == 'refs/heads/main' }}
