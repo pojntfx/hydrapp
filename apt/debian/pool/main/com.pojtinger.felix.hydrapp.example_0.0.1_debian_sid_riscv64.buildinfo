@@ -4,20 +4,20 @@ Binary: com.pojtinger.felix.hydrapp.example com.pojtinger.felix.hydrapp.example-
 Architecture: riscv64 source
 Version: 0.0.1
 Checksums-Md5:
- 521eeac066fc82e1825efd8ea6dfbe7a 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ aaac5f6a75639d43f595f343008cd570 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  fc05983a6cb9bd6715da89660269adc6 1494632 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
  f1bcb74e6a094a1246deffbc22f69445 1689240 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
 Checksums-Sha1:
- acad74d15a66e5cf6910cfe2c60dc0520af2a2f7 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ ae058c69b07071a61dbd0b678f1197bc3f4fceb4 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  c3045a5b6f900e501118816ef0bb4acc418e0aa0 1494632 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
  be5b6c04a80e257bcb928af1a6f5560320fd3ecc 1689240 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
 Checksums-Sha256:
- 3507e12db9e77e867fb2d7acc49248257aa60cb3e5610be3487800cc3ebafee4 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 7e5533475a04fe99b2a729a2b815c42357cc50a14ba5f97fd78ad6a56a9783a1 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  b6a7b8d6c03d5e344d66f7afb58cae1b930664287452e5e9e6235f3e8b49e0d3 1494632 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
  e7658b060908c074001450a7c29aef33f2ba0aca03a5539dd21ba6abd7e41bca 1689240 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
 Build-Origin: Debian
 Build-Architecture: riscv64
-Build-Date: Fri, 17 Sep 2021 00:22:20 +0000
+Build-Date: Fri, 17 Sep 2021 11:48:33 +0000
 Build-Path: /build/com.pojtinger.felix.hydrapp.example-0.0.1
 Installed-Build-Depends:
  adduser (= 3.118),
@@ -71,7 +71,7 @@ Installed-Build-Depends:
  glib-networking (= 2.68.2-2),
  glib-networking-common (= 2.68.2-2),
  glib-networking-services (= 2.68.2-2),
- golang-1.16-go (= 1.16.8-1),
+ golang-1.16-go (= 1.16.8-1+b1),
  golang-1.16-src (= 1.16.8-1),
  golang-go (= 2:1.16~1),
  golang-src (= 2:1.16~1),
@@ -126,7 +126,7 @@ Installed-Build-Depends:
  libdevmapper1.02.1 (= 2:1.02.175-2.1),
  libdpkg-perl (= 1.20.9),
  libelf1 (= 0.185-2),
- libexpat1 (= 2.4.1-2),
+ libexpat1 (= 2.4.1-2+b1),
  libffi7 (= 3.3-6),
  libfftw3-double3 (= 3.3.8-2),
  libfile-stripnondeterminism-perl (= 1.12.0-1),
@@ -218,7 +218,7 @@ Installed-Build-Depends:
  libwebp6 (= 0.6.1-2.1),
  libwebpdemux2 (= 0.6.1-2.1),
  libwebpmux3 (= 0.6.1-2.1),
- libx11-6 (= 2:1.7.2-2),
+ libx11-6 (= 2:1.7.2-2+b1),
  libx11-data (= 2:1.7.2-2),
  libx265-192 (= 3.4-2),
  libxau6 (= 1:1.0.9-1),
