@@ -141,12 +141,11 @@ if [ "${ID}" = "opensuse-tumbleweed" ]; then
 
     zypper --no-gpg-checks install -y /usr/src/packages/RPMS/"$(uname -m)"/com.pojtinger.felix.hydrapp.example-*.rpm
 else
-    sudo dnf install -y rpm-build
+    dnf install -y rpm-build
 
     dnf download --source -y com.pojtinger.felix.hydrapp.example
     dnf builddep -y com.pojtinger.felix.hydrapp.example-*.rpm
     rpmbuild --rebuild com.pojtinger.felix.hydrapp.example-*.rpm
-    sudo dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/com.pojtinger.felix.hydrapp.example-*.rpm
+    dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/com.pojtinger.felix.hydrapp.example-*.rpm
 fi
-
 ```
