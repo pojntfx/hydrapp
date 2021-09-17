@@ -39,7 +39,7 @@ jobs:
             os: debian:bullseye
             flags: -e '--privileged'
             cmd: ./Hydrunfile flatpak
-            dst: example/out/*.flatpak
+            dst: example/out/*
           - id: example-deb
             src: example
             os: debian:sid

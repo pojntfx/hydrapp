@@ -149,3 +149,24 @@ else
     dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/com.pojtinger.felicitas.hydrapp.example-*.rpm
 fi
 ```
+
+## Example App Installation with Flatpak
+
+```shell
+gpg --keyserver keyserver.ubuntu.com --recv-keys 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
+
+mkdir -p /usr/local/share/keyrings
+gpg --output /usr/local/share/keyrings/hydrapp.gpg --export 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
+
+echo "[Flatpak Repo]
+Title=Hydrapp Flatpak repo
+Url=https://pojntfx.github.io/hydrapp/flatpak/
+Homepage=https://github.com/pojntfx/hydrapp/
+Description=Flatpaks for Hydrapp
+GPGKey=$(base64 -w 0 /usr/local/share/keyrings/hydrapp.gpg)
+" >/tmp/hydrapp.flatpakrepo
+
+flatpak remote-add hydrapp --from file:///tmp/hydrapp.flatpakrepo
+
+flatpak install -y com.pojtinger.felicitas.hydrapp.example
+```
