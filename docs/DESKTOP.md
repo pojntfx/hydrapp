@@ -95,34 +95,58 @@ apt source -y --build com.pojtinger.felicitas.hydrapp.example
 apt install -y ./com.pojtinger.felicitas.hydrapp.example_*.deb
 ```
 
-## Example App Installation on Fedora and CentOS
+## Example App Installation on Fedora, CentOS and OpenSUSE
 
 ```shell
-dnf install -y gnupg2 'dnf-command(config-manager)'
+source /etc/os-release
+
+if [ "${ID}" = "opensuse-tumbleweed" ]; then
+    zypper install -y gpg2 dirmngr
+else
+    dnf install -y gnupg2 'dnf-command(config-manager)'
+fi
 
 gpg --keyserver keyserver.ubuntu.com --recv-keys 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
 
 mkdir -p /usr/local/share/keyrings
-gpg --output /usr/local/share/keyrings/hydrapp.gpg --export 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
-
-source /etc/os-release
+gpg --output /usr/local/share/keyrings/hydrapp.gpg --armor --export 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
 
 echo "[hydrapp-repo]
 name=Hydrapp YUM repo
-baseurl=https://pojntfx.github.io/hydrapp/yum/$([ "${ID}" = "centos" ] && echo "epel" || echo "${ID}")-\$releasever
+baseurl=https://pojntfx.github.io/hydrapp/yum/$([ "${ID}" = "centos" ] && echo "epel" || echo "${ID}")$([ "${ID}" = "opensuse-tumbleweed" ] && echo "" || echo "-\$releasever")
 enabled=1
 gpgcheck=1
 gpgkey=file:///usr/local/share/keyrings/hydrapp.gpg" >/tmp/hydrapp.repo
-dnf config-manager --add-repo /tmp/hydrapp.repo
+if [ "${ID}" = "opensuse-tumbleweed" ]; then
+    rpm --import /usr/local/share/keyrings/hydrapp.gpg
+    zypper addrepo /tmp/hydrapp.repo
+else
+    dnf config-manager --add-repo /tmp/hydrapp.repo
+fi
 
 # Install binary package
-dnf install -y com.pojtinger.felicitas.hydrapp.example
+if [ "${ID}" = "opensuse-tumbleweed" ]; then
+    zypper install -y com.pojtinger.felicitas.hydrapp.example
+else
+    dnf install -y com.pojtinger.felicitas.hydrapp.example
+fi
 
 # Alternatively install from source
-sudo dnf install -y rpm-build
+if [ "${ID}" = "opensuse-tumbleweed" ]; then
+    zypper install -y rpm-build
 
-dnf download --source -y com.pojtinger.felicitas.hydrapp.example
-dnf builddep -y com.pojtinger.felicitas.hydrapp.example-*.rpm
-rpmbuild --rebuild com.pojtinger.felicitas.hydrapp.example-*.rpm
-sudo dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/com.pojtinger.felicitas.hydrapp.example-*.rpm
+    zypper -n source-install com.pojtinger.felicitas.hydrapp.example
+
+    rpmbuild -ba /usr/src/packages/SPECS/com.pojtinger.felicitas.hydrapp.example.spec
+
+    zypper --no-gpg-checks install -y /usr/src/packages/RPMS/"$(uname -m)"/com.pojtinger.felicitas.hydrapp.example-*.rpm
+else
+    sudo dnf install -y rpm-build
+
+    dnf download --source -y com.pojtinger.felicitas.hydrapp.example
+    dnf builddep -y com.pojtinger.felicitas.hydrapp.example-*.rpm
+    rpmbuild --rebuild com.pojtinger.felicitas.hydrapp.example-*.rpm
+    sudo dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/com.pojtinger.felicitas.hydrapp.example-*.rpm
+fi
+
 ```
