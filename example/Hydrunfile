@@ -58,10 +58,10 @@ EOT
             # Add repo file
             echo "[hydrapp-repo]
 name=Hydrapp YUM repo
-baseurl=https://pojntfx.github.io/hydrapp/yum/${DIST}-\$releasever
+baseurl=https://pojntfx.github.io/hydrapp/yum/${DIST}
 enabled=1
 gpgcheck=1
-gpgkey=https://pojntfx.github.io/hydrapp/yum/${DIST}-\$releasever/repodata/repo.gpg" >"out/repositories/${DIST}/repodata/hydrapp.repo"
+gpgkey=https://pojntfx.github.io/hydrapp/yum/${DIST}/repodata/repo.gpg" >"out/repositories/${DIST}/repodata/hydrapp.repo"
         done
     done
 elif [ "$1" = "flatpak" ]; then
