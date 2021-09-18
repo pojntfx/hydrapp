@@ -70,12 +70,10 @@ $ epiphany --application-mode --profile=${PROFILE_DIR} "${HYDRAP_URL}" --class="
 
 ```shell
 apt update
-apt install -y ca-certificates gnupg2 lsb-release
-
-gpg --keyserver keyserver.ubuntu.com --recv-keys 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
+apt install -y ca-certificates lsb-release
 
 mkdir -p /usr/local/share/keyrings
-gpg --output /usr/local/share/keyrings/hydrapp.gpg --export 638840CAE7660B1B69ADEE9041DDCDD3AFF03AC7
+curl -L -o /usr/local/share/keyrings/hydrapp.gpg https://pojntfx.github.io/hydrapp/apt/repo.gpg
 
 cat >/etc/apt/sources.list.d/hydrapp.list <<EOT
 deb [signed-by=/usr/local/share/keyrings/hydrapp.gpg] https://pojntfx.github.io/hydrapp/apt/$(lsb_release -i -s | tr '[:upper:]' '[:lower:]')/ $(lsb_release -c -s) main
@@ -101,9 +99,9 @@ apt install -y ./com.pojtinger.felicitas.hydrapp.example_*.deb
 source /etc/os-release
 
 if [ "${ID}" = "opensuse-tumbleweed" ]; then
-    zypper install -y gpg2 dirmngr
+    zypper install -y dirmngr
 else
-    dnf install -y gnupg2 'dnf-command(config-manager)'
+    dnf install -y 'dnf-command(config-manager)'
 fi
 
 if [ "${ID}" = "opensuse-tumbleweed" ]; then
