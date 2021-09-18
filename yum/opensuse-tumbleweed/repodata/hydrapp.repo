@@ -1,0 +1,6 @@
+[hydrapp-repo]
+name=Hydrapp YUM repo
+baseurl=https://pojntfx.github.io/hydrapp/yum/opensuse-tumbleweed-$releasever
+enabled=1
+gpgcheck=1
+gpgkey=https://pojntfx.github.io/hydrapp/yum/opensuse-tumbleweed-$releasever/repodata/repo.gpg

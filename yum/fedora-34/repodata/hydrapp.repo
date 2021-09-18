@@ -1,0 +1,6 @@
+[hydrapp-repo]
+name=Hydrapp YUM repo
+baseurl=https://pojntfx.github.io/hydrapp/yum/fedora-34-$releasever
+enabled=1
+gpgcheck=1
+gpgkey=https://pojntfx.github.io/hydrapp/yum/fedora-34-$releasever/repodata/repo.gpg
