@@ -52,6 +52,16 @@ EOT
             createrepo "out/repositories/${DIST}"
 
             gpg --detach-sign --armor "out/repositories/${DIST}/repodata/repomd.xml"
+
+            gpg --output "out/repositories/${DIST}/repodata/repo.gpg" --armor --export
+
+            # Add repo file
+            echo "[hydrapp-repo]
+name=Hydrapp YUM repo
+baseurl=https://pojntfx.github.io/hydrapp/yum/${DIST}-\$releasever
+enabled=1
+gpgcheck=1
+gpgkey=https://pojntfx.github.io/hydrapp/yum/${DIST}-\$releasever/repodata/repo.gpg" >"out/repositories/${DIST}/repodata/hydrapp.repo"
         done
     done
 elif [ "$1" = "flatpak" ]; then
@@ -81,6 +91,8 @@ EOT
     echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
     gpg --import /tmp/private.gpg
 
+    gpg --output /tmp/public.gpg --armor --export
+
     for DIST in "${!TARGETS[@]}"; do
         # Build binary package
         for ARCH in ${TARGETS[$DIST]}; do
@@ -97,6 +109,15 @@ EOT
             # Build app and export to repo
             # No need to quote; the word splitting is intentional
             flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" --repo=out/repositories --force-clean build-dir com.pojtinger.felicitas.hydrapp.example.yaml
+
+            # Add repo file
+            echo "[Flatpak Repo]
+Title=Hydrapp Flatpak repo
+Url=https://pojntfx.github.io/hydrapp/flatpak/
+Homepage=https://github.com/pojntfx/hydrapp/
+Description=Flatpaks for Hydrapp
+GPGKey=$(base64 -w 0 /tmp/public.gpg)
+" >out/repositories/hydrapp.flatpakrepo
 
             # Export `.flatpak` to `out` dir
             # No need to quote; the word splitting is intentional
