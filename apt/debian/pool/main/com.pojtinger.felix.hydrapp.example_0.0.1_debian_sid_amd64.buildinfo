@@ -4,17 +4,17 @@ Binary: com.pojtinger.felix.hydrapp.example
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 8420262003036e6783f62a7087bc2772 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 4f5b16454b30ade93929f48f20b4231b 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  f6162621ef70f9a4c0c76709de466cd1 1821188 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.deb
 Checksums-Sha1:
- eda554493e92f95f4061a50745e240f43d68cece 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 3db007a9f8f7ba562be3bf6491d4b458da8173b6 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  37af89e5a9202509628cfb05fe18b82804c5e499 1821188 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.deb
 Checksums-Sha256:
- 0720a0176567cbca4249842685ed8256135c13f118610e60c591966ecf6ce377 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ d28107925cbaa58a438fe591a27f8c638f7512aa16b99212ba66579ac3cd724d 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  131b1b91aa821ff9b8a55e7db023b87e57c75068f025a4a9c3b171f38d271896 1821188 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sat, 18 Sep 2021 18:14:25 +0000
+Build-Date: Sun, 19 Sep 2021 13:57:42 +0000
 Build-Path: /build/com.pojtinger.felix.hydrapp.example-0.0.1
 Installed-Build-Depends:
  adduser (= 3.118),
@@ -44,7 +44,7 @@ Installed-Build-Depends:
  dconf-service (= 0.40.0-2),
  debconf (= 1.5.77),
  debhelper (= 13.5.1),
- debianutils (= 5.4-4),
+ debianutils (= 5.5-1),
  desktop-file-utils (= 0.26-1),
  dh-autoreconf (= 20),
  dh-strip-nondeterminism (= 1.12.0-1),
@@ -113,7 +113,7 @@ Installed-Build-Depends:
  libcryptsetup12 (= 2:2.4.0-1),
  libctf-nobfd0 (= 2.37-5),
  libctf0 (= 2.37-5),
- libdav1d5 (= 0.9.2-1),
+ libdav1d5 (= 0.9.2-1+b1),
  libdb5.3 (= 5.3.28+dfsg1-0.8),
  libdbus-1-3 (= 1.12.20-2),
  libdconf1 (= 0.40.0-2),
@@ -132,7 +132,7 @@ Installed-Build-Depends:
  libfreetype6 (= 2.10.4+dfsg-1),
  libgcc-10-dev (= 10.3.0-10),
  libgcc-s1 (= 11.2.0-5),
- libgcrypt20 (= 1.9.4-3),
+ libgcrypt20 (= 1.9.4-3+b1),
  libgdbm-compat4 (= 1.21-1),
  libgdbm6 (= 1.21-1),
  libgdk-pixbuf-2.0-0 (= 2.42.6+dfsg-2),
