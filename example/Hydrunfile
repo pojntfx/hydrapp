@@ -227,6 +227,18 @@ elif [ "$1" = "dmg" ]; then
     mkdir -p out
     convert icon.png out/icon.icns
 
+    # Prepare GPG
+    echo "${GPG_KEY_PASSWORD}" | base64 -d >/tmp/gpg-pass
+    mkdir -p ~/.gnupg
+    cat >~/.gnupg/gpg.conf <<EOT
+yes
+passphrase-file /tmp/gpg-pass
+pinentry-mode loopback
+EOT
+
+    echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
+    gpg --import /tmp/private.gpg
+
     declare -A TARGETS
     export TARGETS=(["darwin"]="amd64 arm64")
 
@@ -236,14 +248,18 @@ elif [ "$1" = "dmg" ]; then
             export GOARCH="$ARCH"
 
             go build -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" .
+            gpg --detach-sign --armor "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}"
+
             cp Info.plist out/
 
             mkdir -p "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents/"{MacOS,Resources}
             cp "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents/MacOS/com.pojtinger.felicitas.hydrapp.example"
+            cp "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.asc" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents/MacOS/com.pojtinger.felicitas.hydrapp.example.asc"
             cp out/Info.plist "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents"
             cp out/icon.icns "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt/Hydrapp Example.app/Contents/Resources"
 
             genisoimage -V "Install Hydrapp Example" -D -R -apple -no-pad -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
+            gpg --detach-sign --armor "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg"
         done
     done
 elif [ "$1" = "deb" ]; then
