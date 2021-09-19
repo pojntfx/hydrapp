@@ -12,14 +12,14 @@ Changes:
  .
    * Initial Release.
 Checksums-Sha1:
- 3db007a9f8f7ba562be3bf6491d4b458da8173b6 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- 69176823d9d6e216c96d1a3de54cecfb4fcda3e6 121088 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- 518524e77933a72671cf61f1d72905cb8f90a13d 8341 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
+ 24bd347f20b43615922fd3dd6c44946212dfd75f 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ a48d47a516e64b9a3671b3c050392dd2639f218e 121148 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 5b9e7e30e835dabfa373ccb16ec51821ce693a52 8341 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
 Checksums-Sha256:
- d28107925cbaa58a438fe591a27f8c638f7512aa16b99212ba66579ac3cd724d 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- bac20339067fe195b70728ab5ee9f872b40535e436738b9a8ca10dfda3fca94a 121088 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- ce46a7a608dbb64ab45c149ee3e70c972ca2a0b032d842c7aee178367375bed4 8341 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
+ 4f8bb58833471b43103e3bfa149bc06736aa5318043d4d3566465da5ed36a8e1 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ c1a807a7e0fff2fc6b0da3aecae1c1da27afa2489e3fc570403eb50df1eaea25 121148 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 5727992b730694864babc194500efb3a532803991e6f7d0ff22b0cc0305b6493 8341 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
 Files:
- 4f5b16454b30ade93929f48f20b4231b 933 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- 629801bb380f3def041f8ad67e590ad6 121088 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- 78c831e863164d789c402f6d29e92aae 8341 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
+ 97d7fee570f2d964af5a3c067531f357 933 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 633f7e23afa704c51a4e88a512e03f9c 121148 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 9513cb6f8980391e8e0f8b28391e5400 8341 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_amd64.buildinfo
