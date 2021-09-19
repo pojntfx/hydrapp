@@ -33,7 +33,7 @@ jobs:
             os: golang:bullseye
             flags: ""
             cmd: ./Hydrunfile apk
-            dst: example/out/*.apk
+            dst: example/out/*.apk*
           - id: example-flatpak
             src: example
             os: debian:bullseye
