@@ -425,6 +425,20 @@ else
     curl -L -o /tmp/bagop "https://github.com/pojntfx/bagop/releases/latest/download/bagop.linux-$(uname -m)"
     install /tmp/bagop /usr/local/bin
 
+    # Prepare GPG
+    echo "${GPG_KEY_PASSWORD}" | base64 -d >/tmp/gpg-pass
+    mkdir -p ~/.gnupg
+    cat >~/.gnupg/gpg.conf <<EOT
+yes
+passphrase-file /tmp/gpg-pass
+pinentry-mode loopback
+EOT
+
+    echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
+    gpg --import /tmp/private.gpg
+
     # Install dependencies
     bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrapp.example -x '(android/*|ios/*|js/wasm)' -p 'make DST=$DST'
+
+    gpg --detach-sign --armor out/*
 fi
