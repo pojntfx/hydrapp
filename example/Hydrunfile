@@ -275,6 +275,8 @@ EOT
 
             genisoimage -V "Install Hydrapp Example" -D -R -apple -no-pad -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg" "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
             gpg --detach-sign --armor "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg"
+
+            rm -rf "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
         done
     done
 elif [ "$1" = "deb" ]; then
@@ -440,5 +442,7 @@ EOT
     # Install dependencies
     bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrapp.example -x '(android/*|ios/*|js/wasm)' -p 'make DST=$DST'
 
-    gpg --detach-sign --armor out/*
+    for FILE in out/*; do
+        gpg --detach-sign --armor "${FILE}"
+    done
 fi
