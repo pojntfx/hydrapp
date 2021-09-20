@@ -21,13 +21,13 @@ jobs:
             os: golang:bullseye
             flags: ""
             cmd: ./Hydrunfile msi
-            dst: example/out/*.msi
+            dst: example/out/*.msi*
           - id: example-dmg
             src: example
             os: golang:bullseye
             flags: ""
             cmd: ./Hydrunfile dmg
-            dst: example/out/*.dmg
+            dst: example/out/*.dmg*
           - id: example-apk
             src: example
             os: golang:bullseye
