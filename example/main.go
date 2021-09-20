@@ -5,10 +5,12 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"unicode"
 
 	"github.com/ncruces/zenity"
@@ -16,30 +18,65 @@ import (
 	_ "github.com/pojntfx/hydrapp/example/pkg/fixes"
 )
 
-var knownBrowsers = []string{
-	"google-chrome",
-	"google-chrome-stable",
-	"google-chrome-beta",
-	"google-chrome-unstable",
-	"brave-browser",
-	"brave-browser-stable",
-	"brave-browser-beta",
-	"brave-browser-nightly",
-	"microsoft-edge",
-	"microsoft-edge-beta",
-	"microsoft-edge-dev",
-	"ungoogled-chromium",
-	"chromium-browser",
-}
-
 const (
 	name = "Hydrapp Example"
 	id   = "com.pojtinger.felicitas.hydrapp.example"
 
 	spawnCmd  = "flatpak-spawn"
 	spawnHost = "--host"
-	whichCmd  = "which"
+
+	browserTypeChromium = "chromium"
+	browserTypeFirefox  = "firefox"
+
+	firefoxPrefs = `user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+user_pref("browser.tabs.drawInTitlebar", false);`
+	firefoxUserChrome = `TabsToolbar {
+  visibility: collapse;
+}
+:root:not([customizing]) #navigator-toolbox:not(:hover):not(:focus-within) {
+  max-height: 1px;
+  min-height: calc(0px);
+  overflow: hidden;
+}
+#navigator-toolbox::after {
+  display: none !important;
+}
+#main-window[sizemode="maximized"] #content-deck {
+  padding-top: 8px;
+}`
 )
+
+type BrowserType struct {
+	Name     string
+	Binaries []string
+}
+
+var chromiumLikeBrowsers = BrowserType{
+	Name: browserTypeChromium,
+	Binaries: []string{
+		"google-chrome",
+		"google-chrome-stable",
+		"google-chrome-beta",
+		"google-chrome-unstable",
+		"brave-browser",
+		"brave-browser-stable",
+		"brave-browser-beta",
+		"brave-browser-nightly",
+		"microsoft-edge",
+		"microsoft-edge-beta",
+		"microsoft-edge-dev",
+		"ungoogled-chromium",
+		"chromium-browser",
+		"chromium",
+	},
+}
+
+var firefoxLikeBrowsers = BrowserType{
+	Name: browserTypeFirefox,
+	Binaries: []string{
+		"firefox",
+	},
+}
 
 func main() {
 	// Start the integrated webserver server
@@ -49,8 +86,9 @@ func main() {
 	}
 	defer stop()
 
-	// Use the user-prefered browser if specified
-	browser := []string{os.Getenv("HYDRAPP_BROWSER")}
+	// Use the user-prefered browser binary and type if specified
+	browserBinary := []string{os.Getenv("HYDRAPP_BROWSER_BINARY")}
+	browserType := os.Getenv("HYDRAPP_BROWSER_TYPE")
 
 	// Check if we are in flatpak
 	runningInFlatpak := false
@@ -58,70 +96,210 @@ func main() {
 		runningInFlatpak = true
 	}
 
-	// Find supported browser
-	if browser[0] == "" {
-		for _, knownBrowser := range knownBrowsers {
-			if runningInFlatpak {
-				// Find supported browser in Flatpak install
-				if err := exec.Command(spawnCmd, spawnHost, whichCmd, knownBrowser).Run(); err == nil {
-					browser = []string{spawnCmd, spawnHost, knownBrowser}
+	// Find browser binary
+	// Order matters; whatever is discovered first will be used
+	knownBrowserTypes := []BrowserType{chromiumLikeBrowsers, firefoxLikeBrowsers}
+	if browserBinary[0] == "" {
+	i:
+		for _, knownBrowserType := range knownBrowserTypes {
+			for _, knownBrowserBinary := range knownBrowserType.Binaries {
+				if runningInFlatpak {
+					// Find supported browser from Flatpak
+					if err := exec.Command(spawnCmd, spawnHost, "which", knownBrowserBinary).Run(); err == nil {
+						browserBinary = []string{spawnCmd, spawnHost, knownBrowserBinary}
 
-					break
-				}
-			} else {
-				// Find supported browser in native install
-				if _, err := exec.LookPath(knownBrowser); err == nil {
-					browser = []string{knownBrowser}
+						break i
+					}
+				} else {
+					// Find supported browser in native install
+					if _, err := exec.LookPath(knownBrowserBinary); err == nil {
+						browserBinary = []string{knownBrowserBinary}
 
-					break
+						break i
+					}
 				}
 			}
 		}
 	} else {
 		if runningInFlatpak {
 			// Allow same override in Flatpak by spawning the prefered browser on the host
-			browser = append([]string{spawnCmd, spawnHost}, browser...)
+			browserBinary = append([]string{spawnCmd, spawnHost}, browserBinary...)
 		}
 	}
 
-	if browser[0] == "" {
-		crash("could not find a supported browser", fmt.Errorf("tried preferred browser (set with the HYDRAPP_BROWSER env variable) \"%v\" and known browsers \"%v\"", browser, knownBrowsers))
+	// Abort if browser binary could not be found
+	if browserBinary[0] == "" {
+		crash("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER_BINARY env variable) \"%v\" and known binaries \"%v\"", browserBinary, knownBrowserTypes))
 	}
 
-	// Create a profile for the app
-	userConfigDir, err := os.UserConfigDir()
-	if err != nil {
-		crash("could not get user's config directory", err)
+	// Find browser type
+	if browserType == "" {
+	j:
+		for _, knownBrowserType := range knownBrowserTypes {
+			for _, knownBrowserBinary := range knownBrowserType.Binaries {
+				if browserBinary[0] == knownBrowserBinary {
+					browserType = knownBrowserType.Name
+
+					break j
+				}
+			}
+		}
 	}
-	userDataDir := filepath.Join(userConfigDir, id)
 
-	// Create the browser instance
-	execLine := append(
-		browser,
-		append(
-			[]string{
-				"--app=" + url,
-				"--class=" + name,
-				"--user-data-dir=" + userDataDir,
-				"--no-first-run",
-				"--no-default-browser-check",
-			},
-			os.Args[1:]...,
-		)...,
-	)
-	cmd := exec.Command(
-		execLine[0],
-		execLine[1:]...,
-	)
+	// Abort if browser type could not be found
+	if browserType == "" {
+		crash("could not launch unknown browser type", fmt.Errorf("tried to launch prefered browser type (set with the HYDRAPP_BROWSER_TYPE env variable) \"%v\" and known types \"%v\"", browserType, knownBrowserTypes))
+	}
 
-	// Use systemd stdout, stderr and stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
+	switch browserType {
+	// Launch Firefox-like browser
+	case browserTypeFirefox:
+		// Create a profile for the app
+		if err := exec.Command(browserBinary[0], "--createprofile", id).Run(); err != nil {
+			crash("could not create profile", err)
+		}
 
-	// Start the browser and wait for the user to close it
-	if err := cmd.Run(); err != nil {
-		crash("could not launch browser", err)
+		// Get the user's home directory in which the profiles can be found
+		home, err := os.UserHomeDir()
+		if err != nil {
+			crash("could not get user's home directory", err)
+		}
+
+		// Get the profile's directory
+		firefoxDir := filepath.Join(home, ".mozilla", browserBinary[0])
+		filesInFirefoxDir, err := ioutil.ReadDir(firefoxDir)
+		if err != nil {
+			crash("could not get files in profiles directory", err)
+		}
+
+		profileSuffix := ""
+		for _, file := range filesInFirefoxDir {
+			if strings.HasSuffix(file.Name(), id) {
+				profileSuffix = file.Name()
+
+				break
+			}
+		}
+
+		if profileSuffix == "" {
+			crash("could not find profile directory generated by Firefox", fmt.Errorf("the profile's directory does not exist"))
+		}
+
+		profileDir := filepath.Join(firefoxDir, profileSuffix)
+		if err := os.Setenv("PROFILE_DIR", profileDir); err != nil {
+			crash("could not set profile directory", err)
+		}
+
+		// Add PWA styling using the preferences file
+		prefsFile, err := os.OpenFile(filepath.Join(profileDir, "prefs.js"), os.O_APPEND|os.O_CREATE|os.O_RDWR, 0600)
+		if err != nil {
+			crash("could not open preferences file", err)
+		}
+		defer prefsFile.Close()
+
+		prefsFileContent, err := ioutil.ReadAll(prefsFile)
+		if err != nil {
+			crash("could not read preferences file", err)
+		}
+
+		for _, line := range strings.Split(firefoxPrefs, "\n") {
+			if !strings.Contains(string(prefsFileContent), line) {
+				if _, err := prefsFile.WriteString("\n" + line); err != nil {
+					crash("could not write to preferences file", err)
+				}
+			}
+		}
+
+		// Add PWA styling using the userChrome file
+		userChromeDir := filepath.Join(profileDir, "chrome")
+		if err := os.MkdirAll(userChromeDir, 0755); err != nil {
+			crash("could not create user chrome directory", err)
+		}
+
+		userChromeFile, err := os.OpenFile(filepath.Join(userChromeDir, "userChrome.css"), os.O_APPEND|os.O_CREATE|os.O_RDWR, 0664)
+		if err != nil {
+			crash("could not create user chrome file", err)
+		}
+		defer userChromeFile.Close()
+
+		userChromeContent, err := ioutil.ReadAll(userChromeFile)
+		if err != nil {
+			crash("could not read user chrome file", err)
+		}
+
+		if !strings.Contains(string(userChromeContent), firefoxUserChrome) {
+			if _, err := userChromeFile.WriteString("\n" + firefoxUserChrome); err != nil {
+				crash("could not write to user chrome file", err)
+			}
+		}
+
+		// Create the browser instance
+		execLine := append(
+			browserBinary,
+			append(
+				[]string{
+					"-P",
+					id,
+					"--new-window",
+					url,
+					"--class=" + name,
+				},
+				os.Args[1:]...,
+			)...,
+		)
+
+		cmd := exec.Command(
+			execLine[0],
+			execLine[1:]...,
+		)
+
+		// Use system stdout, stderr and stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Stdin = os.Stdin
+
+		// Start the browser and wait for the user to close it
+		if err := cmd.Run(); err != nil {
+			crash("could not launch browser", err)
+		}
+
+	// Launch Chromium-like browser
+	case browserTypeChromium:
+		// Create a profile for the app
+		userConfigDir, err := os.UserConfigDir()
+		if err != nil {
+			crash("could not get user's config directory", err)
+		}
+		userDataDir := filepath.Join(userConfigDir, id)
+
+		// Create the browser instance
+		execLine := append(
+			browserBinary,
+			append(
+				[]string{
+					"--app=" + url,
+					"--class=" + name,
+					"--user-data-dir=" + userDataDir,
+					"--no-first-run",
+					"--no-default-browser-check",
+				},
+				os.Args[1:]...,
+			)...,
+		)
+		cmd := exec.Command(
+			execLine[0],
+			execLine[1:]...,
+		)
+
+		// Use system stdout, stderr and stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Stdin = os.Stdin
+
+		// Start the browser and wait for the user to close it
+		if err := cmd.Run(); err != nil {
+			crash("could not launch browser", err)
+		}
 	}
 }
 
