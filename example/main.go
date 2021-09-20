@@ -13,6 +13,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/ncruces/zenity"
 	"github.com/pojntfx/hydrapp/example/pkg/backend"
 	_ "github.com/pojntfx/hydrapp/example/pkg/fixes"
@@ -261,6 +262,50 @@ func main() {
 		// Start the browser and wait for the user to close it
 		if err := cmd.Run(); err != nil {
 			crash("could not launch browser", err)
+		}
+
+		// Check if browser has exited
+		lockfile := filepath.Join(profileDir, "cookies.sqlite-wal")
+		if _, err := os.Stat(lockfile); err == nil {
+			// Wait until browser has exited
+			watcher, err := fsnotify.NewWatcher()
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer watcher.Close()
+
+			done := make(chan struct{})
+			go func() {
+				for {
+					select {
+					case event, ok := <-watcher.Events:
+						if !ok {
+							return
+						}
+
+						// Stop the app
+						if event.Op&fsnotify.Remove == fsnotify.Remove {
+							done <- struct{}{}
+
+							return
+						}
+
+					case err, ok := <-watcher.Errors:
+						if !ok {
+							return
+						}
+
+						crash("could not continue watching lockfile", err)
+					}
+				}
+			}()
+
+			err = watcher.Add(lockfile)
+			if err != nil {
+				crash("could not watch lockfile", err)
+			}
+
+			<-done
 		}
 
 	// Launch Chromium-like browser
