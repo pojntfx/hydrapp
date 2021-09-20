@@ -3,4 +3,4 @@ name=Hydrapp YUM repo
 baseurl=https://pojntfx.github.io/hydrapp/yum/epel-8
 enabled=1
 gpgcheck=1
-gpgkey=https://pojntfx.github.io/hydrapp/yum/epel-8/repodata/repo.gpg
+gpgkey=https://pojntfx.github.io/hydrapp/yum/epel-8/repodata/repo.asc
