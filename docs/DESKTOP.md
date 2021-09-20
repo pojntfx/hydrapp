@@ -73,7 +73,8 @@ apt update
 apt install -y ca-certificates lsb-release
 
 mkdir -p /usr/local/share/keyrings
-curl -L -o /usr/local/share/keyrings/hydrapp.gpg https://pojntfx.github.io/hydrapp/apt/repo.gpg
+curl -L -o /tmp/hydrapp.asc https://pojntfx.github.io/hydrapp/apt/repo.asc
+gpg --dearmor --output /usr/local/share/keyrings/hydrapp.gpg /tmp/hydrapp.asc
 
 cat >/etc/apt/sources.list.d/hydrapp.list <<EOT
 deb [signed-by=/usr/local/share/keyrings/hydrapp.gpg] https://pojntfx.github.io/hydrapp/apt/$(lsb_release -i -s | tr '[:upper:]' '[:lower:]')/ $(lsb_release -c -s) main
@@ -106,7 +107,6 @@ fi
 
 if [ "${ID}" = "opensuse-tumbleweed" ]; then
     zypper addrepo https://pojntfx.github.io/hydrapp/yum/opensuse-tumbleweed/repodata/hydrapp.repo
-elif
 else
     dnf config-manager --add-repo https://pojntfx.github.io/hydrapp/yum/$([ "${ID}" = "centos" ] && echo "epel" || echo "${ID}")-"${VERSION_ID}"/repodata/hydrapp.repo
 fi
