@@ -53,7 +53,7 @@ EOT
 
             gpg --detach-sign --armor "out/repositories/${DIST}/repodata/repomd.xml"
 
-            gpg --output "out/repositories/${DIST}/repodata/repo.gpg" --armor --export
+            gpg --output "out/repositories/${DIST}/repodata/repo.asc" --armor --export
 
             # Add repo file
             echo "[hydrapp-repo]
@@ -61,7 +61,7 @@ name=Hydrapp YUM repo
 baseurl=https://pojntfx.github.io/hydrapp/yum/${DIST}
 enabled=1
 gpgcheck=1
-gpgkey=https://pojntfx.github.io/hydrapp/yum/${DIST}/repodata/repo.gpg" >"out/repositories/${DIST}/repodata/hydrapp.repo"
+gpgkey=https://pojntfx.github.io/hydrapp/yum/${DIST}/repodata/repo.asc" >"out/repositories/${DIST}/repodata/hydrapp.repo"
         done
     done
 elif [ "$1" = "flatpak" ]; then
@@ -412,7 +412,7 @@ EOT
 
         apt-ftparchive -c "${OS}-${DIST}.conf" release "${OS}/dists/${DIST}" >"${OS}/dists/${DIST}/Release"
 
-        gpg --output "repo.gpg" --armor --export
+        gpg --output "repo.asc" --armor --export
 
         gpg --output "${OS}/dists/${DIST}/Release.gpg" -ba "${OS}/dists/${DIST}/Release"
 
