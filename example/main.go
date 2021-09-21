@@ -28,6 +28,7 @@ const (
 
 	browserTypeChromium = "chromium"
 	browserTypeFirefox  = "firefox"
+	browserTypeEpiphany = "epiphany"
 
 	firefoxPrefs = `user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.tabs.drawInTitlebar", false);`
@@ -45,6 +46,16 @@ user_pref("browser.tabs.drawInTitlebar", false);`
 #main-window[sizemode="maximized"] #content-deck {
   padding-top: 8px;
 }`
+
+	epiphanyDesktopFileTemplate = `[Desktop Entry]
+Name=%v
+Exec=epiphany --name="%v" --class="%v" --new-window --application-mode --profile="%v" "%v"
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;
+StartupWMClass=%v
+X-Purism-FormFactor=Workstation;Mobile;`
 )
 
 type BrowserType struct {
@@ -79,6 +90,13 @@ var firefoxLikeBrowsers = BrowserType{
 	},
 }
 
+var epiphanyLikeBrowsers = BrowserType{
+	Name: browserTypeEpiphany,
+	Binaries: []string{
+		"epiphany",
+	},
+}
+
 func main() {
 	// Start the integrated webserver server
 	url, stop, err := backend.StartServer()
@@ -91,7 +109,7 @@ func main() {
 	browserBinary := []string{os.Getenv("HYDRAPP_BROWSER")}
 	browserType := os.Getenv("HYDRAPP_TYPE")
 
-	// Check if we are in flatpak
+	// Check if we are in Flatpak
 	runningInFlatpak := false
 	if _, err := exec.LookPath(spawnCmd); err == nil {
 		runningInFlatpak = true
@@ -99,7 +117,7 @@ func main() {
 
 	// Find browser binary
 	// Order matters; whatever is discovered first will be used
-	knownBrowserTypes := []BrowserType{chromiumLikeBrowsers, firefoxLikeBrowsers}
+	knownBrowserTypes := []BrowserType{chromiumLikeBrowsers, firefoxLikeBrowsers, epiphanyLikeBrowsers}
 	if browserBinary[0] == "" {
 	i:
 		for _, knownBrowserType := range knownBrowserTypes {
@@ -153,6 +171,48 @@ func main() {
 	}
 
 	switch browserType {
+	// Launch Chromium-like browser
+	case browserTypeChromium:
+		// Create a profile for the app
+		userConfigDir, err := os.UserConfigDir()
+		if err != nil {
+			crash("could not get user's config directory", err)
+		}
+		userDataDir := filepath.Join(userConfigDir, id)
+
+		// Create the browser instance
+		execLine := append(
+			browserBinary,
+			append(
+				[]string{
+					"--name=" + name,
+					"--class=" + name,
+					"--user-data-dir=" + userDataDir,
+					"--no-first-run",
+					"--no-default-browser-check",
+					"--app=" + url,
+				},
+				os.Args[1:]...,
+			)...,
+		)
+		cmd := exec.Command(
+			execLine[0],
+			execLine[1:]...,
+		)
+
+		// Use system stdout, stderr and stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Stdin = os.Stdin
+
+		// Start the browser
+		if err := cmd.Run(); err != nil {
+			crash("could not launch browser", err)
+		}
+
+		// Wait till lock for browser has been removed
+		waitForLock(filepath.Join(userDataDir, "SingletonSocket"))
+
 	// Launch Firefox-like browser
 	case browserTypeFirefox:
 		// Create a profile for the app
@@ -239,11 +299,12 @@ func main() {
 			browserBinary,
 			append(
 				[]string{
+					"--name=" + name,
+					"--class=" + name,
+					"--new-window",
 					"-P",
 					id,
-					"--new-window",
 					url,
-					"--class=" + name,
 				},
 				os.Args[1:]...,
 			)...,
@@ -267,29 +328,54 @@ func main() {
 		// Wait till lock for browser has been removed
 		waitForLock(filepath.Join(profileDir, "cookies.sqlite-wal"))
 
-	// Launch Chromium-like browser
-	case browserTypeChromium:
-		// Create a profile for the app
-		userConfigDir, err := os.UserConfigDir()
+	// Launch Epiphany-like browser
+	case browserTypeEpiphany:
+		// Get the user's home directory in which the profiles should be created
+		home, err := os.UserHomeDir()
 		if err != nil {
-			crash("could not get user's config directory", err)
+			crash("could not get user's home directory", err)
 		}
-		userDataDir := filepath.Join(userConfigDir, id)
+
+		// Create the profile directory
+		epiphanyID := "org.gnome.Epiphany.WebApp-" + id
+		profileDir := filepath.Join(home, ".local", "share", epiphanyID)
+
+		if err := os.MkdirAll(filepath.Join(profileDir, ".app"), 0755); err != nil {
+			crash("could not create profile directory", err)
+		}
+
+		// Create the .desktop file
+		if err := ioutil.WriteFile(
+			filepath.Join(profileDir, epiphanyID+".desktop"),
+			[]byte(fmt.Sprintf(
+				epiphanyDesktopFileTemplate,
+				name,
+				name,
+				profileDir,
+				url,
+				name,
+				epiphanyID,
+			)),
+			0664); err != nil {
+			crash("could not write desktop file", err)
+		}
 
 		// Create the browser instance
 		execLine := append(
 			browserBinary,
 			append(
 				[]string{
-					"--app=" + url,
+					"--name=" + name,
 					"--class=" + name,
-					"--user-data-dir=" + userDataDir,
-					"--no-first-run",
-					"--no-default-browser-check",
+					"--new-window",
+					"--application-mode",
+					"--profile=" + profileDir,
+					url,
 				},
 				os.Args[1:]...,
 			)...,
 		)
+
 		cmd := exec.Command(
 			execLine[0],
 			execLine[1:]...,
@@ -306,7 +392,7 @@ func main() {
 		}
 
 		// Wait till lock for browser has been removed
-		waitForLock(filepath.Join(userDataDir, "SingletonSocket"))
+		waitForLock(filepath.Join(profileDir, "ephy-history.db-wal"))
 	}
 }
 

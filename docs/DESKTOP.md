@@ -63,7 +63,7 @@ Categories=GNOME;GTK;
 StartupWMClass=org.gnome.Epiphany.WebApp-${HYDRAP_ID}
 X-Purism-FormFactor=Workstation;Mobile;
 EOT
-$ epiphany --application-mode --profile=${PROFILE_DIR} "${HYDRAP_URL}" --class="${HYDRAP_NAME}"
+$ epiphany --new-window --application-mode --profile=${PROFILE_DIR} "${HYDRAP_URL}" --class="${HYDRAP_NAME}"
 ```
 
 ## Example App Installation on Debian and Ubuntu
