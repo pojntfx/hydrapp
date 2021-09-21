@@ -88,8 +88,8 @@ func main() {
 	defer stop()
 
 	// Use the user-prefered browser binary and type if specified
-	browserBinary := []string{os.Getenv("HYDRAPP_BROWSER_BINARY")}
-	browserType := os.Getenv("HYDRAPP_BROWSER_TYPE")
+	browserBinary := []string{os.Getenv("HYDRAPP_BROWSER")}
+	browserType := os.Getenv("HYDRAPP_TYPE")
 
 	// Check if we are in flatpak
 	runningInFlatpak := false
@@ -130,7 +130,7 @@ func main() {
 
 	// Abort if browser binary could not be found
 	if browserBinary[0] == "" {
-		crash("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER_BINARY env variable) \"%v\" and known binaries \"%v\"", browserBinary, knownBrowserTypes))
+		crash("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER env variable) \"%v\" and known binaries \"%v\"", browserBinary, knownBrowserTypes))
 	}
 
 	// Find browser type
@@ -149,7 +149,7 @@ func main() {
 
 	// Abort if browser type could not be found
 	if browserType == "" {
-		crash("could not launch unknown browser type", fmt.Errorf("tried to launch prefered browser type (set with the HYDRAPP_BROWSER_TYPE env variable) \"%v\" and known types \"%v\"", browserType, knownBrowserTypes))
+		crash("could not launch unknown browser type", fmt.Errorf("tried to launch prefered browser type (set with the HYDRAPP_TYPE env variable) \"%v\" and known types \"%v\"", browserType, knownBrowserTypes))
 	}
 
 	switch browserType {
@@ -259,54 +259,13 @@ func main() {
 		cmd.Stderr = os.Stderr
 		cmd.Stdin = os.Stdin
 
-		// Start the browser and wait for the user to close it
+		// Start the browser
 		if err := cmd.Run(); err != nil {
 			crash("could not launch browser", err)
 		}
 
-		// Check if browser has exited
-		lockfile := filepath.Join(profileDir, "cookies.sqlite-wal")
-		if _, err := os.Stat(lockfile); err == nil {
-			// Wait until browser has exited
-			watcher, err := fsnotify.NewWatcher()
-			if err != nil {
-				log.Fatal(err)
-			}
-			defer watcher.Close()
-
-			done := make(chan struct{})
-			go func() {
-				for {
-					select {
-					case event, ok := <-watcher.Events:
-						if !ok {
-							return
-						}
-
-						// Stop the app
-						if event.Op&fsnotify.Remove == fsnotify.Remove {
-							done <- struct{}{}
-
-							return
-						}
-
-					case err, ok := <-watcher.Errors:
-						if !ok {
-							return
-						}
-
-						crash("could not continue watching lockfile", err)
-					}
-				}
-			}()
-
-			err = watcher.Add(lockfile)
-			if err != nil {
-				crash("could not watch lockfile", err)
-			}
-
-			<-done
-		}
+		// Wait till lock for browser has been removed
+		waitForLock(filepath.Join(profileDir, "cookies.sqlite-wal"))
 
 	// Launch Chromium-like browser
 	case browserTypeChromium:
@@ -341,10 +300,13 @@ func main() {
 		cmd.Stderr = os.Stderr
 		cmd.Stdin = os.Stdin
 
-		// Start the browser and wait for the user to close it
+		// Start the browser
 		if err := cmd.Run(); err != nil {
 			crash("could not launch browser", err)
 		}
+
+		// Wait till lock for browser has been removed
+		waitForLock(filepath.Join(userDataDir, "SingletonSocket"))
 	}
 }
 
@@ -382,4 +344,48 @@ func capitalize(msg string) string {
 	}
 
 	return msg
+}
+
+func waitForLock(path string) {
+	if _, err := os.Stat(path); err == nil {
+		// Wait until browser has exited
+		watcher, err := fsnotify.NewWatcher()
+		if err != nil {
+			crash("could not start lockfile watcher", err)
+		}
+		defer watcher.Close()
+
+		done := make(chan struct{})
+		go func() {
+			for {
+				select {
+				case event, ok := <-watcher.Events:
+					if !ok {
+						return
+					}
+
+					// Stop the app
+					if event.Op&fsnotify.Remove == fsnotify.Remove {
+						done <- struct{}{}
+
+						return
+					}
+
+				case err, ok := <-watcher.Errors:
+					if !ok {
+						return
+					}
+
+					crash("could not continue watching lockfile", err)
+				}
+			}
+		}()
+
+		err = watcher.Add(path)
+		if err != nil {
+			crash("could not watch lockfile", err)
+		}
+
+		<-done
+	}
 }
