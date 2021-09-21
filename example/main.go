@@ -125,7 +125,7 @@ func main() {
 				if runningInFlatpak {
 					// Find supported browser from Flatpak
 					if err := exec.Command(spawnCmd, spawnHost, "which", knownBrowserBinary).Run(); err == nil {
-						browserBinary = []string{spawnCmd, spawnHost, knownBrowserBinary}
+						browserBinary = []string{knownBrowserBinary}
 
 						break i
 					}
@@ -138,11 +138,6 @@ func main() {
 					}
 				}
 			}
-		}
-	} else {
-		if runningInFlatpak {
-			// Allow same override in Flatpak by spawning the prefered browser on the host
-			browserBinary = append([]string{spawnCmd, spawnHost}, browserBinary...)
 		}
 	}
 
@@ -163,6 +158,11 @@ func main() {
 				}
 			}
 		}
+	}
+
+	// Add Flatpak prefix if running in Flatpak
+	if runningInFlatpak {
+		browserBinary = append([]string{spawnCmd, spawnHost}, browserBinary...)
 	}
 
 	// Abort if browser type could not be found
@@ -216,8 +216,19 @@ func main() {
 	// Launch Firefox-like browser
 	case browserTypeFirefox:
 		// Create a profile for the app
-		if err := exec.Command(browserBinary[0], "--createprofile", id).Run(); err != nil {
-			crash("could not create profile", err)
+		execLine := append(
+			browserBinary,
+			[]string{
+				"--createprofile",
+				id,
+			}...,
+		)
+
+		if output, err := exec.Command(
+			execLine[0],
+			execLine[1:]...,
+		).CombinedOutput(); err != nil {
+			crash("could not create profile", fmt.Errorf("%v: %v", err, string(output)))
 		}
 
 		// Get the user's home directory in which the profiles can be found
@@ -227,7 +238,7 @@ func main() {
 		}
 
 		// Get the profile's directory
-		firefoxDir := filepath.Join(home, ".mozilla", browserBinary[0])
+		firefoxDir := filepath.Join(home, ".mozilla", "firefox")
 		filesInFirefoxDir, err := ioutil.ReadDir(firefoxDir)
 		if err != nil {
 			crash("could not get files in profiles directory", err)
@@ -295,7 +306,7 @@ func main() {
 		}
 
 		// Create the browser instance
-		execLine := append(
+		execLine = append(
 			browserBinary,
 			append(
 				[]string{
