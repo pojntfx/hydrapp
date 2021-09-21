@@ -4,20 +4,20 @@ Binary: com.pojtinger.felix.hydrapp.example com.pojtinger.felix.hydrapp.example-
 Architecture: riscv64 source
 Version: 0.0.1
 Checksums-Md5:
- c991d9c648951a932fcf168e35db7f7e 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- fc05983a6cb9bd6715da89660269adc6 1494632 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
- f1bcb74e6a094a1246deffbc22f69445 1689240 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
+ 98b35379a1f1db41061ca39fc56aa275 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 3115525fcdda17475557533c254dfbb2 1560472 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
+ 79074b3e89cd086ac5c38fd3b88b6735 1700536 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
 Checksums-Sha1:
- 61b63affdbd7c9ff58cccb4cdb8b84377787a895 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- c3045a5b6f900e501118816ef0bb4acc418e0aa0 1494632 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
- be5b6c04a80e257bcb928af1a6f5560320fd3ecc 1689240 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
+ 9211c59e0949b12a83af6942e10cf2adace2d7dd 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 9c5a25ba3617c2930a00c0c99a6c161b2ea9a3d4 1560472 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
+ 58e51ecfc707325b4c5e02fd189edcf4ca181eef 1700536 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
 Checksums-Sha256:
- 88f5bf33e477af703a53fffc42ec5d0208c2221f4fac75536498f67ccc8ac040 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- b6a7b8d6c03d5e344d66f7afb58cae1b930664287452e5e9e6235f3e8b49e0d3 1494632 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
- e7658b060908c074001450a7c29aef33f2ba0aca03a5539dd21ba6abd7e41bca 1689240 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
+ 1b1682055ac31a4fe53cfd2540013c1cd5248e42bb5eb0ad993807a81b5c51ae 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 00a3d72df7e1999d7513e9615f84f866f9c9cf4b04caa56b88f05b7e70b5b99f 1560472 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
+ a1abf31e0b128ec526a247e08ccd4500710190763bfdda4b51d65b57e6ac7b7b 1700536 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
 Build-Origin: Debian
 Build-Architecture: riscv64
-Build-Date: Mon, 20 Sep 2021 16:57:29 +0000
+Build-Date: Tue, 21 Sep 2021 19:24:41 +0000
 Build-Path: /build/com.pojtinger.felix.hydrapp.example-0.0.1
 Installed-Build-Depends:
  adduser (= 3.118),
@@ -29,9 +29,9 @@ Installed-Build-Depends:
  base-files (= 12),
  base-passwd (= 3.5.51),
  bash (= 5.1-3+b1),
- binutils (= 2.37-6),
- binutils-common (= 2.37-6),
- binutils-riscv64-linux-gnu (= 2.37-6),
+ binutils (= 2.37-7),
+ binutils-common (= 2.37-7),
+ binutils-riscv64-linux-gnu (= 2.37-7),
  bsdextrautils (= 2.37.2-2),
  bsdutils (= 1:2.37.2-2),
  build-essential (= 12.9),
@@ -68,16 +68,16 @@ Installed-Build-Depends:
  gcc-11-base (= 11.2.0-7),
  gettext (= 0.21-4),
  gettext-base (= 0.21-4),
- glib-networking (= 2.68.2-2),
- glib-networking-common (= 2.68.2-2),
- glib-networking-services (= 2.68.2-2),
+ glib-networking (= 2.70.0-1),
+ glib-networking-common (= 2.70.0-1),
+ glib-networking-services (= 2.70.0-1),
  golang-1.16-go (= 1.16.8-1+b1),
  golang-1.16-src (= 1.16.8-1),
  golang-go (= 2:1.16~1),
  golang-src (= 2:1.16~1),
  grep (= 3.7-1),
  groff-base (= 1.22.4-7),
- gsettings-desktop-schemas (= 40.0-2),
+ gsettings-desktop-schemas (= 41.0-1),
  gzip (= 1.10-4),
  hicolor-icon-theme (= 0.17-2),
  hostname (= 3.23),
@@ -97,7 +97,7 @@ Installed-Build-Depends:
  libattr1 (= 1:2.5.1-1),
  libaudit-common (= 1:3.0.5-1),
  libaudit1 (= 1:3.0.5-1),
- libbinutils (= 2.37-6),
+ libbinutils (= 2.37-7),
  libblkid1 (= 2.37.2-2),
  libbrotli1 (= 1.0.9-2+b2),
  libbsd0 (= 0.11.3-1),
@@ -113,8 +113,8 @@ Installed-Build-Depends:
  libcrypt-dev (= 1:4.4.25-2),
  libcrypt1 (= 1:4.4.25-2),
  libcryptsetup12 (= 2:2.4.0-1),
- libctf-nobfd0 (= 2.37-6),
- libctf0 (= 2.37-6),
+ libctf-nobfd0 (= 2.37-7),
+ libctf0 (= 2.37-7),
  libdav1d5 (= 0.9.2-1+b1),
  libdb5.3 (= 5.3.28+dfsg1-0.8),
  libdbus-1-3 (= 1.12.20-2),
@@ -201,7 +201,7 @@ Installed-Build-Depends:
  libssl1.1 (= 1.1.1l-1),
  libstdc++-10-dev (= 10.3.0-10),
  libstdc++6 (= 11.2.0-7),
- libstemmer0d (= 2.1.0-1),
+ libstemmer0d (= 2.1.0-2),
  libsub-override-perl (= 0.09-2),
  libsystemd0 (= 247.9-1),
  libtasn1-6 (= 4.17.0-2),
@@ -225,7 +225,7 @@ Installed-Build-Depends:
  libxcb1 (= 1.14-3),
  libxdmcp6 (= 1:1.1.2-3),
  libxext6 (= 2:1.3.4-1),
- libxml2 (= 2.9.12+dfsg-4),
+ libxml2 (= 2.9.12+dfsg-5),
  libyaml-0-2 (= 0.2.2-1),
  libzstd1 (= 1.4.8+dfsg-2.1),
  linux-libc-dev (= 5.14.6-2),

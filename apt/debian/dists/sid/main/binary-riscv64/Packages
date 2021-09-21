@@ -6,16 +6,16 @@ Priority: optional
 Section: debug
 Source: com.pojtinger.felix.hydrapp.example
 Maintainer: Felix Pojtinger <felix@pojtinger.com>
-Installed-Size: 1834
+Installed-Size: 1902
 Depends: com.pojtinger.felix.hydrapp.example (= 0.0.1)
 Filename: pool/main/com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_debian_sid_riscv64.deb
-Size: 1494632
-MD5sum: fc05983a6cb9bd6715da89660269adc6
-SHA1: c3045a5b6f900e501118816ef0bb4acc418e0aa0
-SHA256: b6a7b8d6c03d5e344d66f7afb58cae1b930664287452e5e9e6235f3e8b49e0d3
-SHA512: 7909338ca9de87453a7aba1cded636ee2051e8601fd8e4edf74dfa152a64d9132168310e2a95dba755fe2327af7623d298490deeb331e95fa5ded5c86f0fcd7c
+Size: 1560472
+MD5sum: 3115525fcdda17475557533c254dfbb2
+SHA1: 9c5a25ba3617c2930a00c0c99a6c161b2ea9a3d4
+SHA256: 00a3d72df7e1999d7513e9615f84f866f9c9cf4b04caa56b88f05b7e70b5b99f
+SHA512: 6019240ad41b221fb10628bf360afafa7693fd106f16be5e0b0020beeaa1ada0bc93be7778698f6498ed455a95e2afbf52609b5ecbb61732d74ed1e89fa3af44
 Description: debug symbols for com.pojtinger.felix.hydrapp.example
-Build-Ids: b275fb15a808b7709f4efea65202bb627ca1351e
+Build-Ids: 6cacce45f3b73ecf17e34311b78e2683cb4cfc08
 
 Package: com.pojtinger.felix.hydrapp.example
 Architecture: riscv64
@@ -23,15 +23,15 @@ Version: 0.0.1
 Priority: optional
 Section: utils
 Maintainer: Felix Pojtinger <felix@pojtinger.com>
-Installed-Size: 5032
+Installed-Size: 5072
 Depends: libc6 (>= 2.32)
 Recommends: chromium (>= 90)
 Filename: pool/main/com.pojtinger.felix.hydrapp.example_0.0.1_debian_sid_riscv64.deb
-Size: 1689240
-MD5sum: f1bcb74e6a094a1246deffbc22f69445
-SHA1: be5b6c04a80e257bcb928af1a6f5560320fd3ecc
-SHA256: e7658b060908c074001450a7c29aef33f2ba0aca03a5539dd21ba6abd7e41bca
-SHA512: f24f3f8a3b87006b03556fe7b5d78406395f31a8b14d6c5fef8b0a2f1800b84fa5ab1da898af928714f962349f7c96bd5b3b8f741e4210f5dfd98238bc0fec0e
+Size: 1700536
+MD5sum: 79074b3e89cd086ac5c38fd3b88b6735
+SHA1: 58e51ecfc707325b4c5e02fd189edcf4ca181eef
+SHA256: a1abf31e0b128ec526a247e08ccd4500710190763bfdda4b51d65b57e6ac7b7b
+SHA512: 6b729cfb525ef7cd5607c434ff61f6540e7a43216a6d5fa986ea053a82986202bdc7ea8783f031c81f127efcd67953a2d108561484a4ec1b5f8bf93d95c9404c
 Homepage: https://github.com/pojntfx/hydrapp
 Description: hydrapp example app
  A simple Hydrapp example app.
