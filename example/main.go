@@ -23,8 +23,12 @@ const (
 	name = "Hydrapp Example"
 	id   = "com.pojtinger.felicitas.hydrapp.example"
 
-	spawnCmd  = "flatpak-spawn"
-	spawnHost = "--host"
+	flatpakSpawnCmd  = "flatpak-spawn"
+	flatpakSpawnHost = "--host"
+
+	flatpakCmd     = "flatpak"
+	flatpakList    = "list"
+	flatpakColumns = "--columns=application"
 
 	browserTypeChromium = "chromium"
 	browserTypeFirefox  = "firefox"
@@ -61,6 +65,7 @@ X-Purism-FormFactor=Workstation;Mobile;`
 type BrowserType struct {
 	Name     string
 	Binaries []string
+	Flatpaks []string
 }
 
 var chromiumLikeBrowsers = BrowserType{
@@ -81,6 +86,10 @@ var chromiumLikeBrowsers = BrowserType{
 		"chromium-browser",
 		"chromium",
 	},
+	Flatpaks: []string{
+		"org.chromium.Chromium",
+		"com.github.Eloston.UngoogledChromium",
+	},
 }
 
 var firefoxLikeBrowsers = BrowserType{
@@ -88,12 +97,18 @@ var firefoxLikeBrowsers = BrowserType{
 	Binaries: []string{
 		"firefox",
 	},
+	Flatpaks: []string{
+		"org.mozilla.firefox",
+	},
 }
 
 var epiphanyLikeBrowsers = BrowserType{
 	Name: browserTypeEpiphany,
 	Binaries: []string{
 		"epiphany",
+	},
+	Flatpaks: []string{
+		"org.gnome.Epiphany",
 	},
 }
 
@@ -111,20 +126,22 @@ func main() {
 
 	// Check if we are in Flatpak
 	runningInFlatpak := false
-	if _, err := exec.LookPath(spawnCmd); err == nil {
+	if _, err := exec.LookPath(flatpakSpawnCmd); err == nil {
 		runningInFlatpak = true
 	}
 
 	// Find browser binary
 	// Order matters; whatever is discovered first will be used
 	knownBrowserTypes := []BrowserType{chromiumLikeBrowsers, firefoxLikeBrowsers, epiphanyLikeBrowsers}
+	browserIsFlatpak := false
 	if browserBinary[0] == "" {
 	i:
 		for _, knownBrowserType := range knownBrowserTypes {
+			// Find native browser
 			for _, knownBrowserBinary := range knownBrowserType.Binaries {
 				if runningInFlatpak {
 					// Find supported browser from Flatpak
-					if err := exec.Command(spawnCmd, spawnHost, "which", knownBrowserBinary).Run(); err == nil {
+					if err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, "which", knownBrowserBinary).Run(); err == nil {
 						browserBinary = []string{knownBrowserBinary}
 
 						break i
@@ -135,6 +152,39 @@ func main() {
 						browserBinary = []string{knownBrowserBinary}
 
 						break i
+					}
+				}
+			}
+
+			// Find Flatpak browser
+			if _, err := exec.LookPath(flatpakCmd); err == nil {
+				for _, knownBrowserFlatpak := range knownBrowserType.Flatpaks {
+					if runningInFlatpak {
+						// Find supported browser from Flatpak
+						apps, err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
+						if err != nil {
+							crash("could not list available browser flatpaks", err)
+						}
+
+						if strings.Contains(string(apps), knownBrowserFlatpak) {
+							browserBinary = []string{knownBrowserFlatpak}
+							browserIsFlatpak = true
+
+							break i
+						}
+					} else {
+						// Find supported browser in native install
+						apps, err := exec.Command(flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
+						if err != nil {
+							crash("could not list available browser flatpaks", err)
+						}
+
+						if strings.Contains(string(apps), knownBrowserFlatpak) {
+							browserBinary = []string{knownBrowserFlatpak}
+							browserIsFlatpak = true
+
+							break i
+						}
 					}
 				}
 			}
@@ -150,7 +200,7 @@ func main() {
 	if browserType == "" {
 	j:
 		for _, knownBrowserType := range knownBrowserTypes {
-			for _, knownBrowserBinary := range knownBrowserType.Binaries {
+			for _, knownBrowserBinary := range append(knownBrowserType.Binaries, knownBrowserType.Flatpaks...) {
 				if browserBinary[0] == knownBrowserBinary {
 					browserType = knownBrowserType.Name
 
@@ -160,9 +210,14 @@ func main() {
 		}
 	}
 
-	// Add Flatpak prefix if running in Flatpak
+	// Add `flatpak-run` prefix if browser is Flatpak
+	if browserIsFlatpak {
+		browserBinary = append([]string{flatpakCmd, "run", "--filesystem=home", "--socket=wayland"}, browserBinary...) // These Flatpak flags are required for Wayland support under Firefox and profile support under Epiphany
+	}
+
+	// Add `flatpak-spawn` prefix if running in Flatpak
 	if runningInFlatpak {
-		browserBinary = append([]string{spawnCmd, spawnHost}, browserBinary...)
+		browserBinary = append([]string{flatpakSpawnCmd, flatpakSpawnHost}, browserBinary...)
 	}
 
 	// Abort if browser type could not be found
