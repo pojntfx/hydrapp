@@ -8,11 +8,11 @@ Installed-Size: 5285
 Depends: libc6 (>= 2.32)
 Recommends: chromium (>= 90)
 Filename: pool/main/com.pojtinger.felix.hydrapp.example_0.0.1_debian_sid_amd64.deb
-Size: 1834236
-MD5sum: eef02430e8a68c3d953c6c420385d046
-SHA1: dcdd192d6a4ec03225231f39f83c6000e95965df
-SHA256: a76e268c3a3357ea9d01967f2c697b65138381cb549d2fdc4aada3ea29770bae
-SHA512: 0f5a4af724c317baa83d0923407e8059e66bbfeb43ee78aae8512f45cdef0b089cd2e3f7b9cf811932358efd9abf54b09b3f5e1c2494dd75fc178af2e5637e1f
+Size: 1835180
+MD5sum: 5e267b82e405e0f1b5192f2a489edaca
+SHA1: dd07ba461132d9d2188527c91742e0d4be9945cc
+SHA256: 47f9e8ec064d1be2aeb5f369e1957e963387923ff5275fa732c5e6f5aac0ae01
+SHA512: 0b5f751ca94628a747594705c9f2dbb0be1f5a11a72233a98a1cb558049abc31b8d3c8255753f07b5c9506e7642f78269830b24e326c19aa7716205666db7109
 Homepage: https://github.com/pojntfx/hydrapp
 Description: hydrapp example app
  A simple Hydrapp example app.
