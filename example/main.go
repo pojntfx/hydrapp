@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"unicode"
 
@@ -63,14 +64,15 @@ X-Purism-FormFactor=Workstation;Mobile;`
 )
 
 type BrowserType struct {
-	Name     string
-	Binaries []string
-	Flatpaks []string
+	Name            string
+	LinuxBinaries   []string
+	Flatpaks        []string
+	WindowsBinaries [][]string
 }
 
 var chromiumLikeBrowsers = BrowserType{
 	Name: browserTypeChromium,
-	Binaries: []string{
+	LinuxBinaries: []string{
 		"google-chrome",
 		"google-chrome-stable",
 		"google-chrome-beta",
@@ -90,26 +92,44 @@ var chromiumLikeBrowsers = BrowserType{
 		"org.chromium.Chromium",
 		"com.github.Eloston.UngoogledChromium",
 	},
+	WindowsBinaries: [][]string{
+		{"Google", "Chrome", "Application", "chrome.exe"},
+		{"Google", "Chrome Beta", "Application", "chrome.exe"},
+		{"Google", "Chrome SxS", "Application", "chrome.exe"},
+		{"BraveSoftware", "Brave-Browser", "Application", "brave.exe"},
+		{"BraveSoftware", "Brave-Browser-Beta", "Application", "brave.exe"},
+		{"BraveSoftware", "Brave-Browser-Nightly", "Application", "brave.exe"},
+		{"Microsoft", "Edge", "Application", "msedge.exe"},
+		{"Microsoft", "Edge Beta", "Application", "msedge.exe"},
+		{"Microsoft", "Edge Dev", "Application", "msedge.exe"},
+		{"Chromium", "Application", "chrome.exe"},
+	},
 }
 
 var firefoxLikeBrowsers = BrowserType{
 	Name: browserTypeFirefox,
-	Binaries: []string{
+	LinuxBinaries: []string{
 		"firefox",
+		"firefox-esr",
 	},
 	Flatpaks: []string{
 		"org.mozilla.firefox",
+	},
+	WindowsBinaries: [][]string{
+		{"Mozilla Firefox", "firefox.exe"},
+		{"Firefox Nightly", "firefox.exe"},
 	},
 }
 
 var epiphanyLikeBrowsers = BrowserType{
 	Name: browserTypeEpiphany,
-	Binaries: []string{
+	LinuxBinaries: []string{
 		"epiphany",
 	},
 	Flatpaks: []string{
 		"org.gnome.Epiphany",
 	},
+	WindowsBinaries: [][]string{},
 }
 
 func main() {
@@ -138,7 +158,7 @@ func main() {
 	i:
 		for _, knownBrowserType := range knownBrowserTypes {
 			// Find native browser
-			for _, knownBrowserBinary := range knownBrowserType.Binaries {
+			for _, knownBrowserBinary := range knownBrowserType.LinuxBinaries {
 				if runningInFlatpak {
 					// Find supported browser from Flatpak
 					if err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, "which", knownBrowserBinary).Run(); err == nil {
@@ -188,6 +208,24 @@ func main() {
 					}
 				}
 			}
+
+			// Find Windows browser
+			if runtime.GOOS == "windows" {
+				for _, knownBrowserSuffix := range knownBrowserType.WindowsBinaries {
+					for _, knownBrowserPath := range []string{
+						filepath.Join(append([]string{os.Getenv("LocalAppData")}, knownBrowserSuffix...)...),
+						filepath.Join(append([]string{os.Getenv("ProgramFiles")}, knownBrowserSuffix...)...),
+						filepath.Join(append([]string{os.Getenv("ProgramFiles(x86)")}, knownBrowserSuffix...)...),
+					} {
+						if _, err := os.Stat(knownBrowserPath); err == nil {
+							browserBinary = []string{knownBrowserPath}
+							browserType = knownBrowserType.Name
+
+							break i
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -196,15 +234,17 @@ func main() {
 		crash("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER env variable) \"%v\" and known binaries \"%v\"", browserBinary, knownBrowserTypes))
 	}
 
-	// Find browser type
-	if browserType == "" {
-	j:
-		for _, knownBrowserType := range knownBrowserTypes {
-			for _, knownBrowserBinary := range append(knownBrowserType.Binaries, knownBrowserType.Flatpaks...) {
-				if browserBinary[0] == knownBrowserBinary {
-					browserType = knownBrowserType.Name
+	// Find browser type (Windows is handled above)
+	if runtime.GOOS != "windows" {
+		if browserType == "" {
+		j:
+			for _, knownBrowserType := range knownBrowserTypes {
+				for _, knownBrowserBinary := range append(knownBrowserType.LinuxBinaries, knownBrowserType.Flatpaks...) {
+					if browserBinary[0] == knownBrowserBinary {
+						browserType = knownBrowserType.Name
 
-					break j
+						break j
+					}
 				}
 			}
 		}
