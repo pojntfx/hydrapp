@@ -63,34 +63,34 @@ StartupWMClass=%v
 X-Purism-FormFactor=Workstation;Mobile;`
 )
 
-type BrowserType struct {
+type Browser struct {
 	Name            string
-	LinuxBinaries   []string
-	Flatpaks        []string
+	LinuxBinaries   [][]string
+	Flatpaks        [][]string
 	WindowsBinaries [][]string
 }
 
-var chromiumLikeBrowsers = BrowserType{
+var chromiumLikeBrowsers = Browser{
 	Name: browserTypeChromium,
-	LinuxBinaries: []string{
-		"google-chrome",
-		"google-chrome-stable",
-		"google-chrome-beta",
-		"google-chrome-unstable",
-		"brave-browser",
-		"brave-browser-stable",
-		"brave-browser-beta",
-		"brave-browser-nightly",
-		"microsoft-edge",
-		"microsoft-edge-beta",
-		"microsoft-edge-dev",
-		"ungoogled-chromium",
-		"chromium-browser",
-		"chromium",
+	LinuxBinaries: [][]string{
+		{"google-chrome"},
+		{"google-chrome-stable"},
+		{"google-chrome-beta"},
+		{"google-chrome-unstable"},
+		{"brave-browser"},
+		{"brave-browser-stable"},
+		{"brave-browser-beta"},
+		{"brave-browser-nightly"},
+		{"microsoft-edge"},
+		{"microsoft-edge-beta"},
+		{"microsoft-edge-dev"},
+		{"ungoogled-chromium"},
+		{"chromium-browser"},
+		{"chromium"},
 	},
-	Flatpaks: []string{
-		"org.chromium.Chromium",
-		"com.github.Eloston.UngoogledChromium",
+	Flatpaks: [][]string{
+		{"org.chromium.Chromium"},
+		{"com.github.Eloston.UngoogledChromium"},
 	},
 	WindowsBinaries: [][]string{
 		{"Google", "Chrome", "Application", "chrome.exe"},
@@ -106,14 +106,14 @@ var chromiumLikeBrowsers = BrowserType{
 	},
 }
 
-var firefoxLikeBrowsers = BrowserType{
+var firefoxLikeBrowsers = Browser{
 	Name: browserTypeFirefox,
-	LinuxBinaries: []string{
-		"firefox",
-		"firefox-esr",
+	LinuxBinaries: [][]string{
+		{"firefox"},
+		{"firefox-esr"},
 	},
-	Flatpaks: []string{
-		"org.mozilla.firefox",
+	Flatpaks: [][]string{
+		{"org.mozilla.firefox"},
 	},
 	WindowsBinaries: [][]string{
 		{"Mozilla Firefox", "firefox.exe"},
@@ -121,13 +121,13 @@ var firefoxLikeBrowsers = BrowserType{
 	},
 }
 
-var epiphanyLikeBrowsers = BrowserType{
+var epiphanyLikeBrowsers = Browser{
 	Name: browserTypeEpiphany,
-	LinuxBinaries: []string{
-		"epiphany",
+	LinuxBinaries: [][]string{
+		{"epiphany"},
 	},
-	Flatpaks: []string{
-		"org.gnome.Epiphany",
+	Flatpaks: [][]string{
+		{"org.gnome.Epiphany"},
 	},
 	WindowsBinaries: [][]string{},
 }
@@ -144,6 +144,35 @@ func main() {
 	browserBinary := []string{os.Getenv("HYDRAPP_BROWSER")}
 	browserType := os.Getenv("HYDRAPP_TYPE")
 
+	// Process the browser types
+	// Order matters; whatever comes first and is discovered first will be used
+	rawBrowsers := []Browser{chromiumLikeBrowsers, firefoxLikeBrowsers, epiphanyLikeBrowsers}
+	browsers := []Browser{}
+	for _, browser := range rawBrowsers {
+		// Keep already processed fields
+		processedBrowser := Browser{
+			browser.Name,
+			browser.LinuxBinaries,
+			browser.Flatpaks,
+			[][]string{},
+		}
+
+		// Process Windows binaries
+		if runtime.GOOS == "windows" {
+			for _, suffix := range browser.WindowsBinaries {
+				for _, fullPath := range []string{
+					filepath.Join(append([]string{os.Getenv("LocalAppData")}, suffix...)...),
+					filepath.Join(append([]string{os.Getenv("ProgramFiles")}, suffix...)...),
+					filepath.Join(append([]string{os.Getenv("ProgramFiles(x86)")}, suffix...)...),
+				} {
+					processedBrowser.WindowsBinaries = append(processedBrowser.WindowsBinaries, []string{fullPath})
+				}
+			}
+		}
+
+		browsers = append(browsers, processedBrowser)
+	}
+
 	// Check if we are in Flatpak
 	runningInFlatpak := false
 	if _, err := exec.LookPath(flatpakSpawnCmd); err == nil {
@@ -151,25 +180,23 @@ func main() {
 	}
 
 	// Find browser binary
-	// Order matters; whatever is discovered first will be used
-	knownBrowserTypes := []BrowserType{chromiumLikeBrowsers, firefoxLikeBrowsers, epiphanyLikeBrowsers}
 	browserIsFlatpak := false
 	if browserBinary[0] == "" {
 	i:
-		for _, knownBrowserType := range knownBrowserTypes {
+		for _, browser := range browsers {
 			// Find native browser
-			for _, knownBrowserBinary := range knownBrowserType.LinuxBinaries {
+			for _, binary := range browser.LinuxBinaries {
 				if runningInFlatpak {
 					// Find supported browser from Flatpak
-					if err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, "which", knownBrowserBinary).Run(); err == nil {
-						browserBinary = []string{knownBrowserBinary}
+					if err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, "which", binary[0]).Run(); err == nil {
+						browserBinary = []string{binary[0]}
 
 						break i
 					}
 				} else {
 					// Find supported browser in native install
-					if _, err := exec.LookPath(knownBrowserBinary); err == nil {
-						browserBinary = []string{knownBrowserBinary}
+					if _, err := exec.LookPath(binary[0]); err == nil {
+						browserBinary = []string{binary[0]}
 
 						break i
 					}
@@ -178,7 +205,7 @@ func main() {
 
 			// Find Flatpak browser
 			if _, err := exec.LookPath(flatpakCmd); err == nil {
-				for _, knownBrowserFlatpak := range knownBrowserType.Flatpaks {
+				for _, flatpak := range browser.Flatpaks {
 					if runningInFlatpak {
 						// Find supported browser from Flatpak
 						apps, err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
@@ -186,8 +213,8 @@ func main() {
 							crash("could not list available browser flatpaks", err)
 						}
 
-						if strings.Contains(string(apps), knownBrowserFlatpak) {
-							browserBinary = []string{knownBrowserFlatpak}
+						if strings.Contains(string(apps), flatpak[0]) {
+							browserBinary = []string{flatpak[0]}
 							browserIsFlatpak = true
 
 							break i
@@ -199,8 +226,8 @@ func main() {
 							crash("could not list available browser flatpaks", err)
 						}
 
-						if strings.Contains(string(apps), knownBrowserFlatpak) {
-							browserBinary = []string{knownBrowserFlatpak}
+						if strings.Contains(string(apps), flatpak[0]) {
+							browserBinary = []string{flatpak[0]}
 							browserIsFlatpak = true
 
 							break i
@@ -211,18 +238,11 @@ func main() {
 
 			// Find Windows browser
 			if runtime.GOOS == "windows" {
-				for _, knownBrowserSuffix := range knownBrowserType.WindowsBinaries {
-					for _, knownBrowserPath := range []string{
-						filepath.Join(append([]string{os.Getenv("LocalAppData")}, knownBrowserSuffix...)...),
-						filepath.Join(append([]string{os.Getenv("ProgramFiles")}, knownBrowserSuffix...)...),
-						filepath.Join(append([]string{os.Getenv("ProgramFiles(x86)")}, knownBrowserSuffix...)...),
-					} {
-						if _, err := os.Stat(knownBrowserPath); err == nil {
-							browserBinary = []string{knownBrowserPath}
-							browserType = knownBrowserType.Name
+				for _, binary := range browser.WindowsBinaries {
+					if _, err := os.Stat(binary[0]); err == nil {
+						browserBinary = []string{binary[0]}
 
-							break i
-						}
+						break i
 					}
 				}
 			}
@@ -231,20 +251,24 @@ func main() {
 
 	// Abort if browser binary could not be found
 	if browserBinary[0] == "" {
-		crash("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER env variable) \"%v\" and known binaries \"%v\"", browserBinary, knownBrowserTypes))
+		crash("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER env variable) \"%v\" and known binaries \"%v\"", browserBinary, browsers))
 	}
 
-	// Find browser type (Windows is handled above)
-	if runtime.GOOS != "windows" {
-		if browserType == "" {
-		j:
-			for _, knownBrowserType := range knownBrowserTypes {
-				for _, knownBrowserBinary := range append(knownBrowserType.LinuxBinaries, knownBrowserType.Flatpaks...) {
-					if browserBinary[0] == knownBrowserBinary {
-						browserType = knownBrowserType.Name
+	// Find browser type
+	if browserType == "" {
+	j:
+		for _, browser := range browsers {
+			for _, binary := range append(
+				append(
+					browser.LinuxBinaries,
+					browser.Flatpaks...,
+				),
+				browser.WindowsBinaries...,
+			) {
+				if browserBinary[0] == binary[0] {
+					browserType = browser.Name
 
-						break j
-					}
+					break j
 				}
 			}
 		}
@@ -262,7 +286,7 @@ func main() {
 
 	// Abort if browser type could not be found
 	if browserType == "" {
-		crash("could not launch unknown browser type", fmt.Errorf("tried to launch prefered browser type (set with the HYDRAPP_TYPE env variable) \"%v\" and known types \"%v\"", browserType, knownBrowserTypes))
+		crash("could not launch unknown browser type", fmt.Errorf("tried to launch prefered browser type (set with the HYDRAPP_TYPE env variable) \"%v\" and known types \"%v\"", browserType, browsers))
 	}
 
 	switch browserType {
