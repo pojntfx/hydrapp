@@ -4,17 +4,17 @@ Binary: com.pojtinger.felix.hydrapp.example
 Architecture: arm64 source
 Version: 0.0.1
 Checksums-Md5:
- a4185a28e1706f75cc8fc8db907913d0 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- 53ef2a3db3efc9e844ea5f5c56734614 1820484 com.pojtinger.felix.hydrapp.example_0.0.1_arm64.deb
+ bd36e8e6e9376efd3e0563d073aebb4f 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 974e3c8086d0608b318fe77b874b357c 1820268 com.pojtinger.felix.hydrapp.example_0.0.1_arm64.deb
 Checksums-Sha1:
- 91ee0d315580e0c623ef46d452aea7f689fff695 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- 737ed02a0ad6cefaa83370300d5263c4777e5f6e 1820484 com.pojtinger.felix.hydrapp.example_0.0.1_arm64.deb
+ b591d5d68ac379e7559b93796c82b2ee4c947f7b 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 92c62deca742a34cd0a92740f8185a55f30241aa 1820268 com.pojtinger.felix.hydrapp.example_0.0.1_arm64.deb
 Checksums-Sha256:
- 827f80667aecd3cfec76257d7a3d36eef322d0845ed84d3a3f7550f29c2bad4b 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- 75647d7324b5c8e475724bab343fae0a3de2f7773b2f6f8db8380dc823d0ad6f 1820484 com.pojtinger.felix.hydrapp.example_0.0.1_arm64.deb
+ 18f7af152692434933b9faf671f479bb62be3d461dbb303d6d3caf1c69d18a06 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ ab2aa997f0314da16660bd175ba1a15444c47136c80a4468754435f833415a1c 1820268 com.pojtinger.felix.hydrapp.example_0.0.1_arm64.deb
 Build-Origin: Ubuntu
 Build-Architecture: arm64
-Build-Date: Thu, 23 Sep 2021 13:17:01 +0000
+Build-Date: Thu, 23 Sep 2021 20:35:31 +0000
 Build-Path: /build/com.pojtinger.felix.hydrapp.example-0.0.1
 Installed-Build-Depends:
  adduser (= 3.118ubuntu2),
