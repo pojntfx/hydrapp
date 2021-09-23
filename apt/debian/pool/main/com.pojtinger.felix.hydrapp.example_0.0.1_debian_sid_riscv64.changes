@@ -15,20 +15,20 @@ Changes:
  .
    * Initial Release.
 Checksums-Sha1:
- 6634846b23e665bc71a1c502bd2f78a3d89b2691 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- a9f4b70d86055c2a0d9a1cab791b1bd728a930d2 123456 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- d29b94671ac72b539ba948e99370cbc056ab0d06 1562784 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
- dc1cf981089597b16f13e9c85363a3667f1bace4 7943 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.buildinfo
- 05dda6245bc964158b4cc0d36561a011d213a0bd 1703156 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
+ 91ee0d315580e0c623ef46d452aea7f689fff695 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 13af464b8a9f89a9ffc2bd52ff7f44104531362b 123724 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ f9a92fbf018fed1849618ba26d7deae5c5f3e196 1562788 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
+ 6fbae50dc48b410eac15de7846d850dee14001e1 7911 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.buildinfo
+ e1ea21c544c7bafbe713fce6ccb9b0e6543c833e 1703332 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
 Checksums-Sha256:
- 879b7c02c350f4af34b20e4cf6bf212c2d0eabe0f09e3ad8150f8534220f19f0 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- f7ce25d307783b98f21a6fc591a7f8a19782403f2ea5637f3480931ff5b8a17c 123456 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- f71a66d0f6899736ef729e2ff361c2d29e63b9d18ac5fd1d1ba7ba5b9a3384f0 1562784 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
- d838ed0c0aa6d9daa0aaf5866bc3e04d7e586ec77bf21321cb8f4185092e8cfa 7943 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.buildinfo
- 193c524f950287cb70e2fa1aeca56d9117308c6e1eb1e23623faf5d02bd5ddb6 1703156 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
+ 827f80667aecd3cfec76257d7a3d36eef322d0845ed84d3a3f7550f29c2bad4b 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 3ea4850e112191f056a3e728800ae328d061a0c85ee26dc80be0e42e7ec17541 123724 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ b7644ee9643c219371775a046b37c3dc1e8755643e4d4d8299ad272b903e1242 1562788 com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
+ fc8661f86437c3bb30b54608e84efa435916b8a013ae49bafb1bdcf816eef153 7911 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.buildinfo
+ 05a696314906722427c48d38a165b7932709be7b846e43ecbf9134ba70945cc5 1703332 com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
 Files:
- 28ac181bf895edc48a36f6d553a93f3b 933 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
- afac3652297c46f3786df3fe9c2a4ee4 123456 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
- 4bfcabbea2eb0e9c0c72ebcc5a8c5de1 1562784 debug optional com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
- d7fc489dd1c5363692bfb6c7e53a2b20 7943 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.buildinfo
- e266a033aa203407a93f6f826570194a 1703156 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
+ a4185a28e1706f75cc8fc8db907913d0 933 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 693d4fe1a93d2723b3016613b38042c2 123724 utils optional com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ c74d6c2573f5b1a6ab5e2bdbe0cfe4ca 1562788 debug optional com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_riscv64.deb
+ 847b775a5a89bbfbee18ccf01e406591 7911 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.buildinfo
+ 8cb970afb4be34df26c75f4db42354db 1703332 utils optional com.pojtinger.felix.hydrapp.example_0.0.1_riscv64.deb
