@@ -358,6 +358,10 @@ func main() {
 
 		// Get the profile's directory
 		firefoxDir := filepath.Join(home, ".mozilla", "firefox")
+		if runtime.GOOS == "windows" {
+			firefoxDir = filepath.Join(os.Getenv("AppData"), "Mozilla", "Firefox", "Profiles")
+		}
+
 		filesInFirefoxDir, err := ioutil.ReadDir(firefoxDir)
 		if err != nil {
 			crash("could not get files in profiles directory", err)
@@ -432,6 +436,7 @@ func main() {
 					"--name=" + name,
 					"--class=" + name,
 					"--new-window",
+					"--no-first-run",
 					"-P",
 					id,
 					url,
