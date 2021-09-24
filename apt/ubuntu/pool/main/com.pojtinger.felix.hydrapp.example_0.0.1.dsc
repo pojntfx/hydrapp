@@ -12,8 +12,8 @@ Build-Depends: debhelper (>= 12.10), golang-go (>= 1.14), imagemagick, ca-certif
 Package-List:
  com.pojtinger.felix.hydrapp.example deb utils optional arch=any
 Checksums-Sha1:
- 488fc5743d2d33ac77f89eac3e866efa3ea37822 124132 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ ceb64121991a156a82898e678cfe5b8de16859ae 124132 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
 Checksums-Sha256:
- a84ff3c3645b66d3c47c1af9b226e074eecec5cec250746c7393b766c679ad73 124132 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 62e31913e8f483a17073d39d272f9e9668ac4dd860bcdb009613ad55590ff5fe 124132 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
 Files:
- 9b2b03b1cd3c5dab9a42579bfa448578 124132 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
+ 338fbadd386826ff6575231123cd7187 124132 com.pojtinger.felix.hydrapp.example_0.0.1.tar.xz
