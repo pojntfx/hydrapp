@@ -8,11 +8,11 @@ Installed-Size: 5924
 Depends: libc6 (>= 2.4)
 Recommends: chromium (>= 90)
 Filename: pool/main/com.pojtinger.felix.hydrapp.example_0.0.1_ubuntu_focal_amd64.deb
-Size: 2056232
-MD5sum: 0dd7ea5808e4c22a57e01e802321ca21
-SHA1: 5dd70c993b31a44b3f2836643b5680fb507224a6
-SHA256: f6df98e710e21073f9dbf8045eae73e21dd86fa9913be33d9fdfab32ee2fc583
-SHA512: 7607aad4122b899dee76ed70ca0bea1dc46c22436be6f79391c8fda61065e10d83074bba80188e3e1e9b65c5ba8bd6aac106841bd9c31a367857c807e55cb147
+Size: 2055692
+MD5sum: 5b7199626125c6b6de4162dda24a1675
+SHA1: 326b5098326b252a2817656eb86b2db2342b3170
+SHA256: 31f78a5a741ef3b5abe57e3acb6711a205342ce381e842e2f29808f457ea9d1b
+SHA512: e7745c4077215fabdd491f7c82166a722d809a36133a84caac36a32499113a0331be5d5f5628372c80f7da664d9f1ebd8c2ab065208ec2178454ad3749a6af0e
 Homepage: https://github.com/pojntfx/hydrapp
 Description: hydrapp example app
  A simple Hydrapp example app.
