@@ -198,7 +198,7 @@ func main() {
 		// Process macOS binaries
 		if runtime.GOOS == osTypeMacOS {
 			for _, suffix := range browser.MacOSBinaries {
-				processedBrowser.MacOSBinaries = append(processedBrowser.MacOSBinaries, []string{filepath.Join(append([]string{"Applications"}, suffix...)...)})
+				processedBrowser.MacOSBinaries = append(processedBrowser.MacOSBinaries, []string{filepath.Join(append([]string{"/Applications"}, suffix...)...)})
 			}
 		}
 
