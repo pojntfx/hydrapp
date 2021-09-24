@@ -35,6 +35,9 @@ const (
 	browserTypeFirefox  = "firefox"
 	browserTypeEpiphany = "epiphany"
 
+	osTypeWindows = "windows"
+	osTypeMacOS   = "darwin"
+
 	firefoxPrefs = `user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.tabs.drawInTitlebar", false);`
 	firefoxUserChrome = `TabsToolbar {
@@ -68,6 +71,7 @@ type Browser struct {
 	LinuxBinaries   [][]string
 	Flatpaks        [][]string
 	WindowsBinaries [][]string
+	MacOSBinaries   [][]string
 }
 
 var chromiumLikeBrowsers = Browser{
@@ -84,6 +88,7 @@ var chromiumLikeBrowsers = Browser{
 		{"microsoft-edge"},
 		{"microsoft-edge-beta"},
 		{"microsoft-edge-dev"},
+		{"microsoft-edge-canary"},
 		{"ungoogled-chromium"},
 		{"chromium-browser"},
 		{"chromium"},
@@ -102,7 +107,21 @@ var chromiumLikeBrowsers = Browser{
 		{"Microsoft", "Edge", "Application", "msedge.exe"},
 		{"Microsoft", "Edge Beta", "Application", "msedge.exe"},
 		{"Microsoft", "Edge Dev", "Application", "msedge.exe"},
+		{"Microsoft", "Edge Canary", "Application", "msedge.exe"},
 		{"Chromium", "Application", "chrome.exe"},
+	},
+	MacOSBinaries: [][]string{
+		{"Google Chrome.app", "Contents", "MacOS", "Google Chrome"},
+		{"Google Chrome Beta.app", "Contents", "MacOS", "Google Chrome Beta"},
+		{"Google Chrome Canary.app", "Contents", "MacOS", "Google Chrome Canary"},
+		{"Brave Browser.app", "Contents", "MacOS", "Brave Browser"},
+		{"Brave Browser Beta.app", "Contents", "MacOS", "Brave Browser Beta"},
+		{"Brave Browser Nightly.app", "Contents", "MacOS", "Brave Browser Nightly"},
+		{"Microsoft Edge.app", "Contents", "MacOS", "Microsoft Edge"},
+		{"Microsoft Edge Beta.app", "Contents", "MacOS", "Microsoft Edge Beta"},
+		{"Microsoft Edge Dev.app", "Contents", "MacOS", "Microsoft Edge Dev"},
+		{"Microsoft Edge Canary.app", "Contents", "MacOS", "Microsoft Edge Canary"},
+		{"Chromium.app", "Contents", "MacOS", "Chromium"},
 	},
 }
 
@@ -119,6 +138,10 @@ var firefoxLikeBrowsers = Browser{
 		{"Mozilla Firefox", "firefox.exe"},
 		{"Firefox Nightly", "firefox.exe"},
 	},
+	MacOSBinaries: [][]string{
+		{"Firefox.app", "Contents", "MacOS", "firefox"},
+		{"Firefox Nightly.app", "Contents", "MacOS", "firefox"},
+	},
 }
 
 var epiphanyLikeBrowsers = Browser{
@@ -130,6 +153,7 @@ var epiphanyLikeBrowsers = Browser{
 		{"org.gnome.Epiphany"},
 	},
 	WindowsBinaries: [][]string{},
+	MacOSBinaries:   [][]string{},
 }
 
 func main() {
@@ -155,10 +179,11 @@ func main() {
 			browser.LinuxBinaries,
 			browser.Flatpaks,
 			[][]string{},
+			[][]string{},
 		}
 
 		// Process Windows binaries
-		if runtime.GOOS == "windows" {
+		if runtime.GOOS == osTypeWindows {
 			for _, suffix := range browser.WindowsBinaries {
 				for _, fullPath := range []string{
 					filepath.Join(append([]string{os.Getenv("LocalAppData")}, suffix...)...),
@@ -167,6 +192,13 @@ func main() {
 				} {
 					processedBrowser.WindowsBinaries = append(processedBrowser.WindowsBinaries, []string{fullPath})
 				}
+			}
+		}
+
+		// Process macOS binaries
+		if runtime.GOOS == osTypeMacOS {
+			for _, suffix := range browser.MacOSBinaries {
+				processedBrowser.MacOSBinaries = append(processedBrowser.MacOSBinaries, append([]string{"Applications"}, suffix...))
 			}
 		}
 
@@ -237,8 +269,19 @@ func main() {
 			}
 
 			// Find Windows browser
-			if runtime.GOOS == "windows" {
+			if runtime.GOOS == osTypeWindows {
 				for _, binary := range browser.WindowsBinaries {
+					if _, err := os.Stat(binary[0]); err == nil {
+						browserBinary = []string{binary[0]}
+
+						break i
+					}
+				}
+			}
+
+			// Find macOS browser
+			if runtime.GOOS == osTypeMacOS {
+				for _, binary := range browser.MacOSBinaries {
 					if _, err := os.Stat(binary[0]); err == nil {
 						browserBinary = []string{binary[0]}
 
@@ -260,10 +303,13 @@ func main() {
 		for _, browser := range browsers {
 			for _, binary := range append(
 				append(
-					browser.LinuxBinaries,
-					browser.Flatpaks...,
+					append(
+						browser.LinuxBinaries,
+						browser.Flatpaks...,
+					),
+					browser.WindowsBinaries...,
 				),
-				browser.WindowsBinaries...,
+				browser.MacOSBinaries...,
 			) {
 				if browserBinary[0] == binary[0] {
 					browserType = browser.Name
@@ -358,12 +404,17 @@ func main() {
 
 		// Get the profile's directory
 		firefoxDir := filepath.Join(home, ".mozilla", "firefox")
-		if runtime.GOOS == "windows" {
+		if runtime.GOOS == osTypeWindows || runtime.GOOS == osTypeMacOS {
 			userConfigDir, err := os.UserConfigDir()
 			if err != nil {
 				crash("could not get user's config directory", err)
 			}
-			firefoxDir = filepath.Join(userConfigDir, "Mozilla", "Firefox", "Profiles")
+
+			if runtime.GOOS == osTypeWindows {
+				firefoxDir = filepath.Join(userConfigDir, "Mozilla", "Firefox", "Profiles")
+			} else {
+				firefoxDir = filepath.Join(userConfigDir, "Firefox", "Profiles")
+			}
 		}
 
 		filesInFirefoxDir, err := ioutil.ReadDir(firefoxDir)
