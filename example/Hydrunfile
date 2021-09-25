@@ -440,7 +440,7 @@ EOT
     gpg --import /tmp/private.gpg
 
     # Install dependencies
-    bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrapp.example -x '(android/*|ios/*|js/wasm|aix/ppc64|plan9/*)' -p 'make DST=$DST'
+    CGO_ENABLED=0 bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrapp.example -x '(android/*|ios/*|js/wasm|aix/ppc64|plan9/*)' -p 'make DST=$DST'
 
     for FILE in out/*; do
         gpg --detach-sign --armor "${FILE}"
