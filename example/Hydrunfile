@@ -197,6 +197,35 @@ EOT
     "${ANDROID_HOME}"/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner sign --ks ../.android-certs/${APP_ID}.keystore --ks-pass pass:"${ANDROID_CERT_PASSWORD}" --key-pass pass:"${ANDROID_CERT_PASSWORD}" ${APP_ID}.apk
 
     gpg --detach-sign --armor "${APP_ID}.apk"
+
+    # Setup repository
+    apt install -y fdroidserver
+
+    mkdir -p repositories
+    cd repositories || exit 1
+
+    fdroid init
+    cat >config.yml <<EOT
+---
+sdk_path: "${ANDROID_HOME}"
+repo_url: https://hydrapp-example-fdroid.loca.lt
+repo_name: Hydrapp F-Droid Repo
+repo_description: >-
+  Android apps for Hydrapp.
+repo_icon: icon.png
+repo_keyalias: fb88a1d2c9ed
+keystore: "${APP_ID}"
+keystorepass: $(echo "${ANDROID_CERT_PASSWORD}" | base64)
+keypass: $(echo "${ANDROID_CERT_PASSWORD}" | base64)
+keydname: CN=fb88a1d2c9ed, OU=F-Droid
+apksigner: /usr/bin/apksigner
+EOT
+
+    cp ${APP_ID} repo/
+
+    fdroid update --create-metadata
+    fdroid gpgsign
+
 elif [ "$1" = "msi" ]; then
     # Install native dependencies
     apt update
