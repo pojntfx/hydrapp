@@ -4,17 +4,17 @@ Binary: com.pojtinger.felix.hydrapp.example
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 6c7a72e1642c813609eeb7d6dfcaccb9 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 8d63622aa15414087b0cf49480ef97dd 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  a5f5fb4d0ea64eef2bc58de8aa1dd80b 1836716 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.deb
 Checksums-Sha1:
- f4abd4974000a4c2ec5652ae0e9b307a23d5d843 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ b1276766381d308b96cd492bc59272db548fdbb1 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  a5f7ed5468d9e52d88f697c20deb7e84ba89bced 1836716 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.deb
 Checksums-Sha256:
- a607c7ffff4bf630effaa11bff21771b4ea0ea1e3694439b477393c8b02e226b 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
+ 9887732f9df6d1509400cad85d0d503ac791a5b19c34901c87791e7141b78e8c 933 com.pojtinger.felix.hydrapp.example_0.0.1.dsc
  ade5470f24cacbd4109f577a5dbd65f16bc09f525ebc6e9886be272dbcfc6aa5 1836716 com.pojtinger.felix.hydrapp.example_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Fri, 24 Sep 2021 21:29:59 +0000
+Build-Date: Sat, 25 Sep 2021 10:22:16 +0000
 Build-Path: /build/com.pojtinger.felix.hydrapp.example-0.0.1
 Installed-Build-Depends:
  adduser (= 3.118),
@@ -24,7 +24,7 @@ Installed-Build-Depends:
  autopoint (= 0.21-4),
  autotools-dev (= 20180224.1+nmu1),
  base-files (= 12),
- base-passwd (= 3.5.51),
+ base-passwd (= 3.5.52),
  bash (= 5.1-3+b1),
  binutils (= 2.37-7),
  binutils-common (= 2.37-7),
@@ -181,11 +181,11 @@ Installed-Build-Depends:
  libpam-modules (= 1.4.0-10),
  libpam-modules-bin (= 1.4.0-10),
  libpam-runtime (= 1.4.0-10),
- libpam-systemd (= 247.9-2),
+ libpam-systemd (= 247.9-2+b1),
  libpam0g (= 1.4.0-10),
  libpcre2-8-0 (= 10.36-2),
  libpcre3 (= 2:8.39-13),
- libperl5.32 (= 5.32.1-5),
+ libperl5.32 (= 5.32.1-6),
  libpipeline1 (= 1.5.3-1),
  libpng16-16 (= 1.6.37-3),
  libproxy1v5 (= 0.4.17-1),
@@ -205,7 +205,7 @@ Installed-Build-Depends:
  libstdc++6 (= 11.2.0-8),
  libstemmer0d (= 2.1.0-2),
  libsub-override-perl (= 0.09-2),
- libsystemd0 (= 247.9-2),
+ libsystemd0 (= 247.9-2+b1),
  libtasn1-6 (= 4.17.0-2),
  libtiff5 (= 4.3.0-2),
  libtinfo6 (= 6.2+20210905-1),
@@ -216,7 +216,7 @@ Installed-Build-Depends:
  libtsan0 (= 11.2.0-8),
  libubsan1 (= 11.2.0-8),
  libuchardet0 (= 0.0.7-1),
- libudev1 (= 247.9-2),
+ libudev1 (= 247.9-2+b1),
  libunistring2 (= 0.9.10-6),
  libuuid1 (= 2.37.2-3),
  libwebp6 (= 0.6.1-2.1),
@@ -245,16 +245,16 @@ Installed-Build-Depends:
  openssl (= 1.1.1l-1),
  passwd (= 1:4.8.1-1),
  patch (= 2.7.6-7),
- perl (= 5.32.1-5),
- perl-base (= 5.32.1-5),
- perl-modules-5.32 (= 5.32.1-5),
+ perl (= 5.32.1-6),
+ perl-base (= 5.32.1-6),
+ perl-modules-5.32 (= 5.32.1-6),
  po-debconf (= 1.0.21+nmu1),
  rpcsvc-proto (= 1.4.2-4),
  sed (= 4.8-1),
  sensible-utils (= 0.0.17),
  shared-mime-info (= 2.0-1),
- systemd (= 247.9-2),
- systemd-sysv (= 247.9-2),
+ systemd (= 247.9-2+b1),
+ systemd-sysv (= 247.9-2+b1),
  sysvinit-utils (= 3.00-1),
  tar (= 1.34+dfsg-1),
  ucf (= 3.0043),

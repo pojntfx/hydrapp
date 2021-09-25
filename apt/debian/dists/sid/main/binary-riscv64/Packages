@@ -1,0 +1,38 @@
+Package: com.pojtinger.felix.hydrapp.example-dbgsym
+Architecture: riscv64
+Version: 0.0.1
+Auto-Built-Package: debug-symbols
+Priority: optional
+Section: debug
+Source: com.pojtinger.felix.hydrapp.example
+Maintainer: Felix Pojtinger <felix@pojtinger.com>
+Installed-Size: 1907
+Depends: com.pojtinger.felix.hydrapp.example (= 0.0.1)
+Filename: pool/main/com.pojtinger.felix.hydrapp.example-dbgsym_0.0.1_debian_sid_riscv64.deb
+Size: 1563420
+MD5sum: e151df0d4b173a32d86cfb8a27f9f54e
+SHA1: 036ebacf06c8341b92b41172c8ef900ddf3e2ce3
+SHA256: 5aaa5283e5975e7e2b584fd1c5ad8300b8f9fad0d509dbf1f4d504eb731a101b
+SHA512: 3dc25e7703b1eb10aaa53cfbbda3292c9b2de4bcb8ed6ff7d296daaa7e01ed5a2b58191b9b46cc07649103ddf243768fe05ce098cd252128d95528d1ded06bf2
+Description: debug symbols for com.pojtinger.felix.hydrapp.example
+Build-Ids: cb45d0ddd380393c44e0d275c04cd32ed6bc3f4d
+
+Package: com.pojtinger.felix.hydrapp.example
+Architecture: riscv64
+Version: 0.0.1
+Priority: optional
+Section: utils
+Maintainer: Felix Pojtinger <felix@pojtinger.com>
+Installed-Size: 5088
+Depends: libc6 (>= 2.32)
+Recommends: chromium (>= 90)
+Filename: pool/main/com.pojtinger.felix.hydrapp.example_0.0.1_debian_sid_riscv64.deb
+Size: 1704716
+MD5sum: a8806159179e5cd4e81c1574bccd3149
+SHA1: 6471b25ebb0f953b6204e740b8a50b7d2ccfdf2f
+SHA256: 7b73751f5b01066edfacc703c7d411ccc51f49a73305b058719bc4918f7e2c1c
+SHA512: 70733708f15abab5f8f9fe0b3790d618ae78b6f64ed7ac13524e65554d429091dbd4534e7d1a8205c5276c35e63350c195afa1985cfc0c125aae5b74e72c2c37
+Homepage: https://github.com/pojntfx/hydrapp
+Description: hydrapp example app
+ A simple Hydrapp example app.
+
