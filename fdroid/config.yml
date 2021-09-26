@@ -1,13 +1,13 @@
 ---
 sdk_path: "/root/Android/Sdk"
-repo_url: https://hydrapp-example-fdroid.loca.lt
+repo_url: https://pojntfx.github.io/hydrapp/fdroid
 repo_name: Hydrapp F-Droid Repo
 repo_description: >-
   Android apps for Hydrapp.
 repo_icon: icon.png
-repo_keyalias: fb88a1d2c9ed
-keystore: "com.pojtinger.felix.hydrapp.example"
-keystorepass: MTIzNDU2Cg==
-keypass: MTIzNDU2Cg==
-keydname: CN=fb88a1d2c9ed, OU=F-Droid
+repo_keyalias: com.pojtinger.felix.hydrapp.example
+keystore: keystore.p12
+keystorepass: "123456"
+keypass: "123456"
+keydname: CN=com.pojtinger.felix.hydrapp.example
 apksigner: /usr/bin/apksigner
