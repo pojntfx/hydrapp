@@ -2,7 +2,7 @@
   "METADATA_VERSION": 20000,
   "allow_disabled_algorithms": false,
   "com.pojtinger.felix.hydrapp.example.apk": {
-    "hash": "a3622db09d51a09cf90a9401fcfcdc77f490db046cbc272042a87ba87d3bda7e",
+    "hash": "01f09280b9d0a720c235c4b0ca9b7038547cd3250ee79708d5f0760361f1b147",
     "hashType": "sha256",
     "uses-permission": [
       [
@@ -40,6 +40,6 @@
     "size": 21087972,
     "apkName": "com.pojtinger.felix.hydrapp.example.apk",
     "icon": "com.pojtinger.felix.hydrapp.example.1.png",
-    "added": 1632693358.787637
+    "added": 1632779529.024913
   }
 }
