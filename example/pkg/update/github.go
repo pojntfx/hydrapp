@@ -7,14 +7,45 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strconv"
+	"strings"
 	"syscall"
 
 	"github.com/blang/semver"
 	"github.com/ncruces/zenity"
 	"github.com/rhysd/go-github-selfupdate/selfupdate"
 )
+
+// See https://github.com/pojntfx/bagop/blob/main/main.go#L33
+func getBinIdentifier(goOS, goArch string) string {
+	if goOS == "windows" {
+		return ".exe"
+	}
+
+	if goOS == "js" && goArch == "wasm" {
+		return ".wasm"
+	}
+
+	return ""
+}
+
+// See https://github.com/pojntfx/bagop/blob/main/main.go#L45
+func getArchIdentifier(goArch string) string {
+	switch goArch {
+	case "386":
+		return "i686"
+	case "amd64":
+		return "x86_64"
+	case "arm":
+		return "armv7l" // Best effort, could also be `armv6l` etc. depending on `GOARCH`
+	case "arm64":
+		return "aarch64"
+	default:
+		return goArch
+	}
+}
 
 func Update(repo string, version string, state *BrowserState) error {
 	// Get the latest version
@@ -24,8 +55,7 @@ func Update(repo string, version string, state *BrowserState) error {
 	}
 
 	// Stop if we are already up to day
-	v := semver.MustParse(version)
-	if !found || latest.Version.LTE(v) {
+	if !found || latest.Version.LTE(semver.MustParse(version)) {
 		return nil
 	}
 
@@ -46,7 +76,24 @@ func Update(repo string, version string, state *BrowserState) error {
 		return err
 	}
 
-	if err := selfupdate.UpdateTo(latest.AssetURL, self); err != nil {
+	// Remove the leading paths
+	self = filepath.Base(self)
+
+	// Reduce it to the app ID
+	self = strings.TrimSuffix(self, ".exe")
+
+	// Add the OS identifier
+	// See https://github.com/pojntfx/bagop/blob/main/main.go#L155
+	self += "." + runtime.GOOS + "-"
+
+	// Add the arch identifier
+	// See https://github.com/pojntfx/bagop/blob/main/main.go#L157-L165
+	self += getArchIdentifier(runtime.GOARCH)
+
+	// Add the binary identifier
+	self += getBinIdentifier(runtime.GOOS, runtime.GOARCH)
+
+	if err := selfupdate.UpdateTo(latest.AssetURL, strings.TrimSuffix(self, ".exe")); err != nil {
 		return err
 	}
 
