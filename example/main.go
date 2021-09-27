@@ -18,11 +18,14 @@ import (
 	"github.com/ncruces/zenity"
 	"github.com/pojntfx/hydrapp/example/pkg/backend"
 	_ "github.com/pojntfx/hydrapp/example/pkg/fixes"
+	"github.com/pojntfx/hydrapp/example/pkg/update"
 )
 
 const (
-	name = "Hydrapp Example"
-	id   = "com.pojtinger.felicitas.hydrapp.example"
+	name    = "Hydrapp Example"
+	id      = "com.pojtinger.felicitas.hydrapp.example"
+	repo    = "pojntfx/hydrapp"
+	version = "0.0.1"
 
 	flatpakSpawnCmd  = "flatpak-spawn"
 	flatpakSpawnHost = "--host"
@@ -157,6 +160,16 @@ var epiphanyLikeBrowsers = Browser{
 }
 
 func main() {
+	// Apply the self-update if not disabled
+	browserState := &update.BrowserState{}
+	if os.Getenv("HYDRAPP_SELFUPDATE") != "false" {
+		go func() {
+			if err := update.Update(repo, version, browserState); err != nil {
+				crash("could not check for updates (disable it by setting the HYDRAPP_SELFUPDATE env variable to false)", err)
+			}
+		}()
+	}
+
 	// Start the integrated webserver server
 	url, stop, err := backend.StartServer()
 	if err != nil {
@@ -360,18 +373,19 @@ func main() {
 				os.Args[1:]...,
 			)...,
 		)
-		cmd := exec.Command(
+
+		browserState.Cmd = exec.Command(
 			execLine[0],
 			execLine[1:]...,
 		)
 
 		// Use system stdout, stderr and stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Stdin = os.Stdin
+		browserState.Cmd.Stdout = os.Stdout
+		browserState.Cmd.Stderr = os.Stderr
+		browserState.Cmd.Stdin = os.Stdin
 
 		// Start the browser
-		if err := cmd.Run(); err != nil {
+		if err := browserState.Cmd.Run(); err != nil {
 			crash("could not launch browser", err)
 		}
 
@@ -500,18 +514,18 @@ func main() {
 			)...,
 		)
 
-		cmd := exec.Command(
+		browserState.Cmd = exec.Command(
 			execLine[0],
 			execLine[1:]...,
 		)
 
 		// Use system stdout, stderr and stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Stdin = os.Stdin
+		browserState.Cmd.Stdout = os.Stdout
+		browserState.Cmd.Stderr = os.Stderr
+		browserState.Cmd.Stdin = os.Stdin
 
 		// Start the browser
-		if err := cmd.Run(); err != nil {
+		if err := browserState.Cmd.Run(); err != nil {
 			crash("could not launch browser", err)
 		}
 
@@ -566,18 +580,18 @@ func main() {
 			)...,
 		)
 
-		cmd := exec.Command(
+		browserState.Cmd = exec.Command(
 			execLine[0],
 			execLine[1:]...,
 		)
 
 		// Use system stdout, stderr and stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Stdin = os.Stdin
+		browserState.Cmd.Stdout = os.Stdout
+		browserState.Cmd.Stderr = os.Stderr
+		browserState.Cmd.Stdin = os.Stdin
 
 		// Start the browser
-		if err := cmd.Run(); err != nil {
+		if err := browserState.Cmd.Run(); err != nil {
 			crash("could not launch browser", err)
 		}
 

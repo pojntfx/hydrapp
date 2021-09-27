@@ -269,7 +269,7 @@ EOT
             export GOOS="$DIST"
             export GOARCH="$ARCH"
 
-            go build -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.exe" .
+            GOFLAGS='-tags=selfupdate' go build -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.exe" .
             gpg --detach-sign --armor "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.exe"
 
             wixl -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.msi" <(sed "s@Source=\"com.pojtinger.felicitas.hydrapp.example.exe\"@Source=\"out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.exe\"@g" com.pojtinger.felicitas.hydrapp.example.wxl | sed 's@SourceFile="icon.ico"@SourceFile="out/icon.ico"@g' | sed 's@Source="icon.ico"@Source="out/icon.ico"@g')
@@ -305,7 +305,7 @@ EOT
             export GOOS="$DIST"
             export GOARCH="$ARCH"
 
-            go build -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" .
+            GOFLAGS='-tags=selfupdate' go build -o "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}" .
             gpg --detach-sign --armor "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}"
 
             cp Info.plist out/
@@ -483,7 +483,7 @@ EOT
     gpg --import /tmp/private.gpg
 
     # Install dependencies
-    CGO_ENABLED=0 bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrapp.example -x '(android/*|ios/*|js/wasm|aix/ppc64|plan9/*)' -p 'make DST=$DST'
+    GOFLAGS='-tags=selfupdate' CGO_ENABLED=0 bagop -j "$(nproc)" -b com.pojtinger.felicitas.hydrapp.example -x '(android/*|ios/*|js/wasm|aix/ppc64|plan9/*)' -p 'make DST=$DST'
 
     for FILE in out/*; do
         gpg --detach-sign --armor "${FILE}"
