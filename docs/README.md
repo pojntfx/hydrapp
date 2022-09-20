@@ -1,6 +1,4 @@
-# Desktop Support
-
-Some examples on how to launch browsers in a "single-app"/PWA mode; eventually, a Go-based library for this functionality could be created.
+# Installation
 
 ## Example App Installation on Debian and Ubuntu
 
@@ -80,6 +78,12 @@ flatpak remote-add hydrapp --from https://pojntfx.github.io/hydrapp/flatpak/hydr
 
 flatpak install -y com.pojtinger.felicitas.hydrapp.example
 ```
+
+## Example App Installation for Android with F-Droid
+
+1. Add `https://github.com/pojntfx/hydrapp/tree/gh-pages/fdroid` as a repo in F-Droid
+2. Refresh indexes
+3. Search and install "Hydrapp Example"
 
 ## Other Platforms
 
