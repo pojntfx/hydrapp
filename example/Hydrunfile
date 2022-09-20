@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# RPM
 if [ "$1" = "rpm" ]; then
     # Build tarball and source package
     export PACKAGE="com.pojtinger.felicitas.hydrapp.example-0.0.1"
@@ -64,13 +65,18 @@ gpgcheck=1
 gpgkey=https://pojntfx.github.io/hydrapp/yum/${DIST}/repodata/repo.asc" >"out/repositories/${DIST}/repodata/hydrapp.repo"
         done
     done
-elif [ "$1" = "flatpak" ]; then
+
+    exit 0
+fi
+
+# Flatpak
+if [ "$1" = "flatpak" ]; then
     # Install native dependencies
     apt update
     apt install -y flatpak-builder xz-utils
 
     # Install Flatpak dependencies
-    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    flatpak remote-add --if-not-exists "flathub" "https://flathub.org/repo/flathub.flatpakrepo"
 
     # Build targets
     declare -A TARGETS
@@ -79,39 +85,38 @@ elif [ "$1" = "flatpak" ]; then
     HOST_ARCH="$(uname -m)"
     export HOST_ARCH
 
-    # Prepare GPG
-    echo "${GPG_KEY_PASSWORD}" | base64 -d >/tmp/gpg-pass
-    mkdir -p ~/.gnupg
-    cat >~/.gnupg/gpg.conf <<EOT
+    # Setup GPG
+    echo "${GPG_KEY_PASSWORD}" | base64 -d >"/tmp/gpg-pass"
+    mkdir -p "${HOME}/.gnupg"
+    cat >"${HOME}/.gnupg/gpg.conf" <<EOT
 yes
 passphrase-file /tmp/gpg-pass
 pinentry-mode loopback
 EOT
+    echo "${GPG_KEY_CONTENT}" | base64 -d >"/tmp/private.gpg"
+    gpg --import "/tmp/private.gpg"
+    gpg --output "/tmp/public.asc" --armor --export
 
-    echo "${GPG_KEY}" | base64 -d >/tmp/private.gpg
-    gpg --import /tmp/private.gpg
-
-    gpg --output /tmp/public.gpg --armor --export
-
+    # Generate dependencies and build
+    mkdir -p out/repositories
     for DIST in "${!TARGETS[@]}"; do
         # Build binary package
         for ARCH in ${TARGETS[$DIST]}; do
             # Install pre-build SDKs
-            # No need to quote; the word splitting is intentional
-            flatpak install $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") -y flathub org.freedesktop.Platform//21.08 org.freedesktop.Sdk//21.08 org.freedesktop.Sdk.Extension.golang//21.08
-
-            mkdir -p out/repositories
+            flatpak install -y --arch="${ARCH}" "flathub org.freedesktop.Platform//21.08" "org.freedesktop.Sdk//21.08" "org.freedesktop.Sdk.Extension.golang//21.08"
 
             # Build SDK and export to repo
-            # No need to quote; the word splitting is intentional
-            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" --repo=out/repositories --user --install --force-clean build-dir org.freedesktop.Sdk.Extension.ImageMagick.yaml
+            flatpak-builder -y --arch="${ARCH}" --gpg-sign="${GPG_KEY_ID}" --repo="out/repositories" --force-clean --user --install "build-dir" "org.freedesktop.Sdk.Extension.ImageMagick.yaml"
 
             # Build app and export to repo
-            # No need to quote; the word splitting is intentional
-            flatpak-builder $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" --repo=out/repositories --force-clean build-dir com.pojtinger.felicitas.hydrapp.example.yaml
+            flatpak-builder -y --arch="${ARCH}" --gpg-sign="${GPG_KEY_ID}" --repo="out/repositories" --force-clean "build-dir" "com.pojtinger.felicitas.vintangle.yaml"
 
-            # Add repo file
-            echo "[Flatpak Repo]
+            # Export `.flatpak` to `out` dir
+            flatpak --arch="${ARCH}" --gpg-sign="${GPG_KEY_ID}" build-bundle "out/repositories" "out/com.pojtinger.felicitas.vintangle.linux-${DIST}-${ARCH}.flatpak" "com.pojtinger.felicitas.vintangle"
+        done
+    done
+
+    echo "[Flatpak Repo]
 Title=Hydrapp Flatpak repo
 Url=https://pojntfx.github.io/hydrapp/flatpak/
 Homepage=https://github.com/pojntfx/hydrapp/
@@ -119,12 +124,11 @@ Description=Flatpaks for Hydrapp
 GPGKey=$(base64 -w 0 /tmp/public.gpg)
 " >out/repositories/hydrapp.flatpakrepo
 
-            # Export `.flatpak` to `out` dir
-            # No need to quote; the word splitting is intentional
-            flatpak $([ "${ARCH}" = "${HOST_ARCH}" ] || echo --arch="${ARCH}") --gpg-sign="${GPG_KEY_ID}" build-bundle out/repositories "out/com.pojtinger.felicitas.hydrapp.example.${DIST}-${ARCH}.flatpak" com.pojtinger.felicitas.hydrapp.example
-        done
-    done
-elif [ "$1" = "apk" ]; then
+    exit 0
+fi
+
+# Android
+if [ "$1" = "apk" ]; then
     # Install native dependencies
     apt update
     apt install -y curl unzip default-jdk make zip
@@ -240,7 +244,11 @@ EOT
 *config.py
 tmp" >.gitignore
 
-elif [ "$1" = "msi" ]; then
+    exit 0
+fi
+
+# Windows
+if [ "$1" = "msi" ]; then
     # Install native dependencies
     apt update
     apt install -y wixl make imagemagick
@@ -276,7 +284,12 @@ EOT
             gpg --detach-sign --armor "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.msi"
         done
     done
-elif [ "$1" = "dmg" ]; then
+
+    exit 0
+fi
+
+# macOS
+if [ "$1" = "dmg" ]; then
     # Install native dependencies
     apt update
     apt install -y genisoimage make imagemagick
@@ -322,7 +335,12 @@ EOT
             rm -rf "out/com.pojtinger.felicitas.hydrapp.example.${GOOS}-${GOARCH}.dmg.mnt"
         done
     done
-elif [ "$1" = "deb" ]; then
+
+    exit 0
+fi
+
+# Debian
+if [ "$1" = "deb" ]; then
     # Build tarball and source package
     export PACKAGE="com.pojtinger.felicitas.hydrapp.example_0.0.1"
 
@@ -461,7 +479,12 @@ EOT
 
         cd ../..
     done
-else
+
+    exit 0
+fi
+
+# Binaries
+if [ "$1" = "binaries" ]; then
     # Install native dependencies
     apt update
     apt install -y curl make
@@ -488,4 +511,6 @@ EOT
     for FILE in out/*; do
         gpg --detach-sign --armor "${FILE}"
     done
+
+    exit 0
 fi

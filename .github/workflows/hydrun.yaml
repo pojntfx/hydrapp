@@ -3,6 +3,8 @@ name: hydrun CI
 on:
   push:
   pull_request:
+  schedule:
+    - cron: "0 0 * * 0"
 
 jobs:
   build-linux:
@@ -14,7 +16,7 @@ jobs:
             src: example
             os: golang:bullseye
             flags: ""
-            cmd: ./Hydrunfile
+            cmd: ./Hydrunfile binaries
             dst: example/out/*
           - id: example-msi
             src: example
