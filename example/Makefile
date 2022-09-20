@@ -1,20 +1,48 @@
+# Public variables
 DESTDIR ?=
 PREFIX ?= /usr/local
-DST ?= out/com.pojtinger.felicitas.hydrapp.example
+OUTPUT_DIR ?= out
+DST ?=
 
-all: build
+# Private variables
+obj = com.pojtinger.felicitas.hydrapp.example
+all: $(addprefix build/,$(obj))
 
-build:
-	go build -o $(DST)
+# Build
+build: $(addprefix build/,$(obj))
+$(addprefix build/,$(obj)):
+ifdef DST
+	go build -o $(DST) .
+else
+	go build -o $(OUTPUT_DIR)/$(subst build/,,$@) .
+endif
 
-install: build
-	install -D -m 0755 $(DST) $(DESTDIR)$(PREFIX)/bin/com.pojtinger.felicitas.hydrapp.example
+# Install
+install: $(addprefix install/,$(obj))
+$(addprefix install/,$(obj)):
+	install -D -m 0755 $(OUTPUT_DIR)/$(subst install/,,$@) $(DESTDIR)$(PREFIX)/bin/$(subst install/,,$@)
 
-uninstall:
-	rm $(DESTDIR)$(PREFIX)/bin/com.pojtinger.felicitas.hydrapp.example
+# Uninstall
+uninstall: $(addprefix uninstall/,$(obj))
+$(addprefix uninstall/,$(obj)):
+	rm $(DESTDIR)$(PREFIX)/bin/$(subst uninstall/,,$@)
 
-run: build
-	out/com.pojtinger.felicitas.hydrapp.example
+# Run
+$(addprefix run/,$(obj)):
+	$(subst run/,,$@) $(ARGS)
 
+# Test
+test:
+	go test -timeout 3600s -parallel $(shell nproc) ./...
+
+# Benchmark
+benchmark:
+	go test -timeout 3600s -bench=./... ./...
+
+# Clean
 clean:
 	rm -rf out .flatpak-builder build-dir repo
+
+# Dependencies
+depend:
+	go generate ./...

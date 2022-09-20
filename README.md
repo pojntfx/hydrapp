@@ -8,6 +8,6 @@ Build apps that run everywhere with Go and a browser engine of your choice (Chro
 
 ## License
 
-hydrapp (c) 2021 Felicitas Pojtinger and contributors
+hydrapp (c) 2022 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: AGPL-3.0

@@ -41,22 +41,34 @@ const (
 	osTypeWindows = "windows"
 	osTypeMacOS   = "darwin"
 
-	firefoxPrefs = `user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-user_pref("browser.tabs.drawInTitlebar", false);`
-	firefoxUserChrome = `TabsToolbar {
-  visibility: collapse;
+	prefsJSContent = `user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+user_pref("browser.link.open_newwindow.restriction", 0);
+user_pref("browser.link.open_newwindow", 1);`
+	userChromeCSSContent = `@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#tabbrowser-tabs {
+  visibility: collapse !important;
 }
-:root:not([customizing]) #navigator-toolbox:not(:hover):not(:focus-within) {
-  max-height: 1px;
-  min-height: calc(0px);
-  overflow: hidden;
+
+browser {
+  margin-right: 0px;
+  margin-bottom: 0px;
 }
-#navigator-toolbox::after {
-  display: none !important;
+
+#main-window[chromehidden*="toolbar"] #nav-bar {
+  visibility: collapse !important;
 }
-#main-window[sizemode="maximized"] #content-deck {
-  padding-top: 8px;
-}`
+
+#nav-bar {
+  margin-top: 0;
+  margin-bottom: -42px;
+  z-index: -100;
+}
+
+#PersonalToolbar {
+  display: none;
+}
+`
 
 	epiphanyDesktopFileTemplate = `[Desktop Entry]
 Name=%v
@@ -97,6 +109,10 @@ var chromiumLikeBrowsers = Browser{
 		{"chromium"},
 	},
 	Flatpaks: [][]string{
+		{"com.google.Chrome"},
+		{"com.google.ChromeDev"},
+		{"com.brave.Browser"},
+		{"com.microsoft.Edge"},
 		{"org.chromium.Chromium"},
 		{"com.github.Eloston.UngoogledChromium"},
 	},
@@ -454,47 +470,17 @@ func main() {
 			crash("could not set profile directory", err)
 		}
 
-		// Add PWA styling using the preferences file
-		prefsFile, err := os.OpenFile(filepath.Join(profileDir, "prefs.js"), os.O_APPEND|os.O_CREATE|os.O_RDWR, 0600)
-		if err != nil {
-			crash("could not open preferences file", err)
-		}
-		defer prefsFile.Close()
-
-		prefsFileContent, err := ioutil.ReadAll(prefsFile)
-		if err != nil {
-			crash("could not read preferences file", err)
+		if err := os.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), os.ModePerm); err != nil {
+			panic(err)
 		}
 
-		for _, line := range strings.Split(firefoxPrefs, "\n") {
-			if !strings.Contains(string(prefsFileContent), line) {
-				if _, err := prefsFile.WriteString("\n" + line); err != nil {
-					crash("could not write to preferences file", err)
-				}
-			}
+		chromeDir := filepath.Join(profileDir, "chrome")
+		if err := os.MkdirAll(chromeDir, os.ModePerm); err != nil {
+			panic(err)
 		}
 
-		// Add PWA styling using the userChrome file
-		userChromeDir := filepath.Join(profileDir, "chrome")
-		if err := os.MkdirAll(userChromeDir, 0755); err != nil {
-			crash("could not create user chrome directory", err)
-		}
-
-		userChromeFile, err := os.OpenFile(filepath.Join(userChromeDir, "userChrome.css"), os.O_APPEND|os.O_CREATE|os.O_RDWR, 0664)
-		if err != nil {
-			crash("could not create user chrome file", err)
-		}
-		defer userChromeFile.Close()
-
-		userChromeContent, err := ioutil.ReadAll(userChromeFile)
-		if err != nil {
-			crash("could not read user chrome file", err)
-		}
-
-		if !strings.Contains(string(userChromeContent), firefoxUserChrome) {
-			if _, err := userChromeFile.WriteString("\n" + firefoxUserChrome); err != nil {
-				crash("could not write to user chrome file", err)
-			}
+		if err := os.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), os.ModePerm); err != nil {
+			panic(err)
 		}
 
 		// Create the browser instance
@@ -569,8 +555,6 @@ func main() {
 			browserBinary,
 			append(
 				[]string{
-					"--name=" + name,
-					"--class=" + name,
 					"--new-window",
 					"--application-mode",
 					"--profile=" + profileDir,

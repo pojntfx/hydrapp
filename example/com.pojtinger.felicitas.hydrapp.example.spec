@@ -46,5 +46,5 @@ install -D -m 0644 docs/com.pojtinger.felicitas.hydrapp.example.1 $RPM_BUILD_ROO
 
 
 %changelog
-* Mon Aug 30 2021 Felicitas Pojtinger <felicitas@pojtinger.com> 0.0.1-1
+* Tue Sep 20 2022 Felicitas Pojtinger <felicitas@pojtinger.com> 0.0.1-1
 - Initial release.
