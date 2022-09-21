@@ -42,15 +42,16 @@ jobs:
             flags: -e '--privileged'
             cmd: ./Hydrunfile flatpak
             dst: example/out/*
-          - id: example-deb
-            src: example
-            os: debian:sid
-            flags: -e '--privileged'
-            cmd: ./Hydrunfile deb
-            dst: example/out/*
+          # This currently freezes the GitHub actions builder
+          # - id: example-deb
+          #   src: example
+          #   os: debian:sid
+          #   flags: -e '--privileged'
+          #   cmd: ./Hydrunfile deb
+          #   dst: example/out/*
           - id: example-rpm
             src: example
-            os: fedora:34
+            os: fedora:36
             flags: -e '--privileged'
             cmd: ./Hydrunfile rpm
             dst: example/out/*
