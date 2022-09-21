@@ -390,11 +390,11 @@ EOT
 
     declare -A TARGETS
     export TARGETS=(
-        ["debian|sid|http://ftp.ports.debian.org/debian-ports|main|--keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg"]="riscv64"
         ["debian|bullseye|http://http.us.debian.org/debian|main contrib|"]="amd64" # i386 armel armhf arm64 ppc64el are also available
-        ["debian|sid|http://http.us.debian.org/debian|main contrib|"]="amd64"      # i386 armel armhf arm64 ppc64el are also available
+        # ["debian|sid|http://http.us.debian.org/debian|main contrib|"]="amd64"      # i386 armel armhf arm64 ppc64el are also available
+        # ["debian|sid|http://ftp.ports.debian.org/debian-ports|main|--keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg"]="riscv64"
         ["ubuntu|focal|http://archive.ubuntu.com/ubuntu|main restricted universe multiverse|"]="amd64"
-        ["ubuntu|focal|http://ports.ubuntu.com/ubuntu-ports|main restricted universe multiverse|"]="arm64" # armhf ppc64el are also available; riscv64 is disabled due to buggy Go builds
+        # ["ubuntu|focal|http://ports.ubuntu.com/ubuntu-ports|main restricted universe multiverse|"]="arm64" # armhf ppc64el are also available; riscv64 is disabled due to buggy Go builds
     )                                                                                                      # MIPS and s390x are not supported due to buggy Go builds and TLS cert validation issues
 
     for TARGET in "${!TARGETS[@]}"; do
