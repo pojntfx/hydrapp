@@ -36,7 +36,7 @@ EOT
 
     # Build chroot
     declare -A TARGETS
-    export TARGETS=(["epel-8"]="x86_64" ["fedora-34"]="x86_64" ["opensuse-tumbleweed"]="x86_64")
+    export TARGETS=(["epel-9"]="x86_64" ["fedora-36"]="x86_64" ["opensuse-tumbleweed"]="x86_64")
 
     for DIST in "${!TARGETS[@]}"; do
         # Build binary package
@@ -135,9 +135,9 @@ if [ "$1" = "apk" ]; then
 
     # Install the Android SDK and NDK
     export ANDROID_BUILD_TOOLS_VERSION=31.0.0
-    export ANDROID_API_VERSION=30
+    export ANDROID_API_VERSION=33
 
-    curl -L -o /tmp/commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip
+    curl -L -o /tmp/commandlinetools.zip https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip
     rm -rf /tmp/cmdline-tools
     unzip -d /tmp/ /tmp/commandlinetools.zip
 
@@ -172,7 +172,7 @@ EOT
 
     # Build app
     export APP_ID=com.pojtinger.felicitas.hydrapp.example
-    export ANDROID_NDK_VERSION=30
+    export ANDROID_NDK_VERSION=33
     export ANDROID_LEGACY_API_VERSION=8
     export ANDROID_LEGACY_NDK_VERSION=16
 
@@ -393,9 +393,9 @@ EOT
         ["debian|bullseye|http://http.us.debian.org/debian|main contrib|"]="amd64" # i386 armel armhf arm64 ppc64el are also available
         # ["debian|sid|http://http.us.debian.org/debian|main contrib|"]="amd64"      # i386 armel armhf arm64 ppc64el are also available
         # ["debian|sid|http://ftp.ports.debian.org/debian-ports|main|--keyring=/usr/share/keyrings/debian-ports-archive-keyring.gpg"]="riscv64"
-        ["ubuntu|focal|http://archive.ubuntu.com/ubuntu|main restricted universe multiverse|"]="amd64"
+        # ["ubuntu|focal|http://archive.ubuntu.com/ubuntu|main restricted universe multiverse|"]="amd64"
         # ["ubuntu|focal|http://ports.ubuntu.com/ubuntu-ports|main restricted universe multiverse|"]="arm64" # armhf ppc64el are also available; riscv64 is disabled due to buggy Go builds
-    )                                                                                                      # MIPS and s390x are not supported due to buggy Go builds and TLS cert validation issues
+    ) # MIPS and s390x are not supported due to buggy Go builds and TLS cert validation issues
 
     for TARGET in "${!TARGETS[@]}"; do
         OS="$(cut -d'|' -f1 <<<"${TARGET}")"
