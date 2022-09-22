@@ -122,10 +122,10 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
+          # /tmp/out/example-deb/repositories/*/pool/main/*.buildinfo # Add to files after Debian no longer freezes in GitHub actions runner
           files: |
             /tmp/out/*/*
-            /tmp/out/example-deb/repositories/*/pool/main/*.deb
-            /tmp/out/example-deb/repositories/*/pool/main/*.buildinfo
+            /tmp/out/example-deb/repositories/*/pool/main/*.deb 
             /tmp/out/example-rpm/repositories/*/*.rpm
       - name: Publish release to GitHub pages
         if: ${{ github.ref == 'refs/heads/main' }}
