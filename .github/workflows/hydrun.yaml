@@ -95,14 +95,15 @@ jobs:
         with:
           path: /tmp/out
       - name: Isolate the repositories
+        # Add to run after Debian no longer freezes in GitHub actions runner
+        # cp -r /tmp/out/example-deb/repositories/* /tmp/out/github-pages/apt
+        # cp -r /tmp/out/example-deb/repositories/*/pool/main/{*.dsc,*.xz,*.changes} /tmp/out/example-deb-source-packages || :
         run: |
           mkdir -p /tmp/out/github-pages/{apt,yum,flatpak,fdroid}
           mkdir -p /tmp/out/example-deb-source-packages
 
-          cp -r /tmp/out/example-deb/repositories/* /tmp/out/github-pages/apt
           cp -r /tmp/out/example-rpm/repositories/* /tmp/out/github-pages/yum
           cp -r /tmp/out/example-flatpak/repositories/* /tmp/out/github-pages/flatpak
-          cp -r /tmp/out/example-deb/repositories/*/pool/main/{*.dsc,*.xz,*.changes} /tmp/out/example-deb-source-packages || :
           cp -r /tmp/out/example-apk/repositories/* /tmp/out/github-pages/fdroid
       - name: Publish pre-release to GitHub releases
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -111,10 +112,11 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: unstable
           prerelease: true
+          # Add to files after Debian no longer freezes in GitHub actions runner
+          # /tmp/out/example-deb/repositories/*/pool/main/*.deb
+          # /tmp/out/example-deb/repositories/*/pool/main/*.buildinfo
           files: |
             /tmp/out/*/*
-            /tmp/out/example-deb/repositories/*/pool/main/*.deb
-            /tmp/out/example-deb/repositories/*/pool/main/*.buildinfo
             /tmp/out/example-rpm/repositories/*/*.rpm
       - name: Publish release to GitHub releases
         if: startsWith(github.ref, 'refs/tags/v')
@@ -122,10 +124,11 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          # /tmp/out/example-deb/repositories/*/pool/main/*.buildinfo # Add to files after Debian no longer freezes in GitHub actions runner
+          # Add to files after Debian no longer freezes in GitHub actions runner
+          # /tmp/out/example-deb/repositories/*/pool/main/*.buildinfo
+          # /tmp/out/example-deb/repositories/*/pool/main/*.deb
           files: |
             /tmp/out/*/*
-            /tmp/out/example-deb/repositories/*/pool/main/*.deb 
             /tmp/out/example-rpm/repositories/*/*.rpm
       - name: Publish release to GitHub pages
         if: ${{ github.ref == 'refs/heads/main' }}
