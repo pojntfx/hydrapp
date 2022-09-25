@@ -37,6 +37,11 @@ func main() {
 		}
 	}
 
+	pwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image:        *image,
 		AttachStdin:  true,
@@ -45,7 +50,11 @@ func main() {
 		OpenStdin:    true,
 		Tty:          true,
 		Env:          []string{"MESSAGE=" + *message},
-	}, nil, nil, nil, "")
+	}, &container.HostConfig{
+		Binds: []string{
+			pwd + ":/work:z",
+		},
+	}, nil, nil, "")
 	if err != nil {
 		panic(err)
 	}
