@@ -1,85 +1,48 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"fmt"
-	"os"
-	"os/exec"
-	"path/filepath"
+
+	"github.com/docker/docker/client"
+	"github.com/pojntfx/hydrapp/example/pkg/executors"
 )
 
-func runCommand(cmd *exec.Cmd, description string) error {
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("could not %v: %w", description, err)
-	}
-
-	return nil
-}
-
 func main() {
-	gpgKeyPassword := flag.String("gpg-key-password", "", " base64-encoded password for the GPG key")
+	image := flag.String("image", "ghcr.io/pojntfx/hydrapp-build-apk", "OCI image to use")
+	pull := flag.Bool("pull", true, "Whether to pull the image or not")
+	appID := flag.String("app-id", "com.pojtinger.felicitas.hydrapp.example", "Android app ID to use")
 	gpgKeyContent := flag.String("gpg-key-content", "", "base64-encoded GPG key contents")
-	// appID := flag.String("app-id", "com.pojtinger.felicitas.hydrapp.example", "Android app ID to use")
+	gpgKeyPassword := flag.String("gpg-key-password", "", " base64-encoded password for the GPG key")
+	androidCertContent := flag.String("android-cert-content", "", "base64-encoded Android cert contents")
+	androidCertPassword := flag.String("android-cert-password", "", " base64-encoded password for the Android cert")
+	baseURL := flag.String("base-url", "https://pojntfx.github.io/hydrapp/fdroid", "Base URL where the repo is to be hosted")
 
 	flag.Parse()
 
-	home, err := os.UserHomeDir()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		panic(err)
 	}
+	defer cli.Close()
 
-	gpgKeyPasswordFile, err := os.CreateTemp(os.TempDir(), "hydrapp-gpg-key-password")
-	if err != nil {
-		panic(err)
-	}
-	defer os.Remove(gpgKeyPasswordFile.Name())
-
-	if _, err := gpgKeyPasswordFile.WriteString(*gpgKeyPassword); err != nil {
-		panic(err)
-	}
-
-	gpgDir := filepath.Join(home, ".gnupg")
-	if err := os.MkdirAll(gpgDir, os.ModePerm); err != nil {
-		panic(err)
-	}
-
-	if err := os.WriteFile(
-		filepath.Join(gpgDir, "gpg.conf"),
-		[]byte(
-			fmt.Sprintf(
-				`yes
-passphrase-file %v
-pinentry-mode loopback`,
-				gpgKeyPasswordFile.Name(),
-			),
-		), os.ModePerm); err != nil {
-		panic(err)
-	}
-
-	gpgKeyContentFile, err := os.CreateTemp(os.TempDir(), "hydrapp-gpg-key-content")
-	if err != nil {
-		panic(err)
-	}
-	defer os.Remove(gpgKeyContentFile.Name())
-
-	if _, err := gpgKeyContentFile.WriteString(*gpgKeyContent); err != nil {
-		panic(err)
-	}
-
-	if err := runCommand(exec.Command("gpg", "--import", gpgKeyContentFile.Name()), "import GPG key"); err != nil {
-		panic(err)
-	}
-
-	tmpDir, err := os.MkdirTemp(os.TempDir(), "hydrapp-tempdir")
-	if err != nil {
-		panic(err)
-	}
-
-	if err := os.MkdirAll(filepath.Join(tmpDir, "drawable"), os.ModePerm); err != nil {
+	if err := executors.DockerRunImage(
+		ctx,
+		cli,
+		*image,
+		*pull,
+		map[string]string{
+			"APP_ID":                *appID,
+			"GPG_KEY_CONTENT":       *gpgKeyContent,
+			"GPG_KEY_PASSWORD":      *gpgKeyPassword,
+			"ANDROID_CERT_CONTENT":  *androidCertContent,
+			"ANDROID_CERT_PASSWORD": *androidCertPassword,
+			"BASE_URL":              *baseURL,
+		},
+	); err != nil {
 		panic(err)
 	}
 }
