@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Setup GPG
 echo "${GPG_KEY_PASSWORD}" | base64 -d >'/tmp/gpg-pass'
 mkdir -p "${HOME}/.gnupg"
@@ -10,6 +12,7 @@ pinentry-mode loopback
 EOT
 
 echo "${GPG_KEY_CONTENT}" | base64 -d >'/tmp/private.gpg'
+gpg --import /tmp/private.gpg
 
 # Prepare build environment
 export BASEDIR="${PWD}"
@@ -48,12 +51,11 @@ echo "${ANDROID_CERT_CONTENT}" | base64 -d >"${BASEDIR}/.android-certs/${APP_ID}
 # Sign package with GPG and stage
 gpg --detach-sign --armor "${APP_ID}.apk"
 
-mkdir -p "${BASEDIR}/out"
-cp "${APP_ID}.apk" "${APP_ID}.apk.asc" "${BASEDIR}/out"
+cp "${APP_ID}.apk" "${APP_ID}.apk.asc" "/dst"
 
 # Setup repository
-mkdir -p "${BASEDIR}"/out/repositories
-cd "${BASEDIR}"/out/repositories || exit 1
+mkdir -p "/dst/repositories"
+cd "/dst/repositories" || exit 1
 
 fdroid init
 cat >'config.yml' <<EOT

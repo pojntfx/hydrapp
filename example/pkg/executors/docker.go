@@ -16,6 +16,7 @@ func DockerRunImage(
 	cli *client.Client,
 	image string,
 	pull bool,
+	dst string,
 	env map[string]string,
 ) error {
 	if pull {
@@ -52,6 +53,7 @@ func DockerRunImage(
 	}, &container.HostConfig{
 		Binds: []string{
 			pwd + ":/work:z",
+			dst + ":/dst:z",
 		},
 	}, nil, nil, "")
 	if err != nil {

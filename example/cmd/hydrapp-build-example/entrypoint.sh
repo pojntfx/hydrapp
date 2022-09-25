@@ -1,3 +1,5 @@
 #!/bin/bash
 
-echo "${MESSAGE}"
+set -e
+
+echo "${MESSAGE}" >/dst/message.txt
