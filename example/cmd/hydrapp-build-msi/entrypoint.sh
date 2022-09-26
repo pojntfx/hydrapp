@@ -22,6 +22,7 @@ export GOOS="windows"
 for ARCH in ${ARCHITECTURES}; do
   export GOARCH="${ARCH}"
 
+  # See https://github.com/pojntfx/bagop/blob/main/main.go#L45
   export DEBARCH="${GOARCH}"
   if [ "${ARCH}" = "386" ]; then
     export DEBARCH="i686"
@@ -39,3 +40,5 @@ for ARCH in ${ARCHITECTURES}; do
   wixl -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(sed "s@Source=\"${APP_ID}.exe\"@Source=\"/dst/${APP_ID}.${GOOS}-${DEBARCH}.exe\"@g" ${APP_ID}.wxl | sed 's@SourceFile="icon.ico"@SourceFile="/dst/icon.ico"@g' | sed 's@Source="icon.ico"@Source="/dst/icon.ico"@g')
   gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
 done
+
+rm '/dst/icon.ico'

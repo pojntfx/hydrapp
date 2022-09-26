@@ -16,6 +16,7 @@ func DockerRunImage(
 	cli *client.Client,
 	image string,
 	pull bool,
+	privileged bool,
 	dst string,
 	env map[string]string,
 ) error {
@@ -51,6 +52,7 @@ func DockerRunImage(
 			return out
 		}(),
 	}, &container.HostConfig{
+		Privileged: privileged,
 		Binds: []string{
 			pwd + ":/work:z",
 			dst + ":/dst:z",

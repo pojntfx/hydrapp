@@ -37,6 +37,7 @@ func main() {
 		cli,
 		*image,
 		*pull,
+		false,
 		*dst,
 		map[string]string{
 			"MESSAGE": *message,

@@ -42,6 +42,7 @@ func main() {
 		cli,
 		*image,
 		*pull,
+		false,
 		*dst,
 		map[string]string{
 			"APP_ID":                *appID,
