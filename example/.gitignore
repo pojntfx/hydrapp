@@ -2,4 +2,3 @@ out
 build-dir
 .flatpak-builder
 repo
-.android-certs

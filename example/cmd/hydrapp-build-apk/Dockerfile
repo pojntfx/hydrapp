@@ -7,7 +7,6 @@ RUN apt install -y curl unzip default-jdk-headless make zip fdroidserver
 # Install the Android SDK and NDK
 ENV ANDROID_BUILD_TOOLS_VERSION='31.0.0'
 ENV ANDROID_API_VERSION='33'
-ENV ANDROID_NDK_VERSION='33'
 
 RUN curl -L -o '/tmp/commandlinetools.zip' 'https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip'
 RUN rm -rf '/tmp/cmdline-tools'
@@ -32,6 +31,8 @@ ENV ANDROID_LEGACY_HOME="${ANDROID_HOME}/ndk/android-ndk-r10e"
 RUN curl -L -o '/tmp/sdk-legacy.zip' 'https://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip'
 RUN rm -rf "${ANDROID_LEGACY_HOME}"
 RUN unzip -d "${ANDROID_HOME}/ndk" '/tmp/sdk-legacy.zip'
+
+ENV ANDROID_NDK_VERSION='30'
 
 COPY entrypoint.sh /entrypoint.sh
 

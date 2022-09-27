@@ -26,7 +26,7 @@ CGO_ENABLED=1 GOOS=android GOARCH=386 CC="${ANDROID_HOME}/ndk-bundle/toolchains/
 CGO_ENABLED=1 GOOS=android GOARCH=amd64 CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android${ANDROID_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android${ANDROID_NDK_VERSION}-clang++" go build -buildmode='c-shared' -o='/tmp/out/lib/x86_64/libbackend.so'
 CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=5 CGO_LDFLAGS="--sysroot ${ANDROID_LEGACY_HOME}/platforms/android-${ANDROID_LEGACY_API_VERSION}/arch-arm" CGO_CFLAGS="--sysroot ${ANDROID_LEGACY_HOME}/platforms/android-${ANDROID_LEGACY_API_VERSION}/arch-arm" CC="${ANDROID_LEGACY_HOME}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc" CXX="${ANDROID_LEGACY_HOME}/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++" go build -tags "netgo,androiddnsfix,tlscertembed" -buildmode='c-shared' -o='/tmp/out/lib/armeabi/libbackend_compat.so'
 CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=5 CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_LEGACY_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_LEGACY_NDK_VERSION}-clang++" go build -tags "netgo,androiddnsfix,tlscertembed" -buildmode='c-shared' -o='/tmp/out/lib/armeabi-v7a/libbackend_compat.so'
-CGO_ENABLED=1 GOOS=android GOARCH=arm CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_API_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_API_VERSION}-clang++" go build -buildmode='c-shared' -o='/tmp/out/lib/armeabi-v7a/libbackend.so'
+CGO_ENABLED=1 GOOS=android GOARCH=arm CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_API_VERSION}-clang++" go build -buildmode='c-shared' -o='/tmp/out/lib/armeabi-v7a/libbackend.so'
 CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${ANDROID_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${ANDROID_NDK_VERSION}-clang++" go build -buildmode='c-shared' -o='/tmp/out/lib/arm64-v8a/libbackend.so'
 
 # Sign native libraries with GPG
@@ -41,21 +41,19 @@ javac -source "1.8" -target "1.8" -cp *.jar -cp "${ANDROID_HOME}/build-tools/${A
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/aapt2" compile 'drawable/icon.png' -o .
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/aapt2" link -o "${APP_ID}.unsigned" -I "${ANDROID_HOME}/platforms/android-${ANDROID_API_VERSION}/android.jar" *.flat --manifest 'AndroidManifest.xml'
 zip -ur "${APP_ID}.unsigned" 'lib' 'classes.dex'
-mkdir -p "${BASEDIR}/.android-certs" # Append *.jar here to use an external library
+mkdir -p "/tmp/out/android-certs" # Append *.jar here to use an external library
 
 # Sign package with Android certificate
-echo "${ANDROID_CERT_CONTENT}" | base64 -d >"${BASEDIR}/.android-certs/${APP_ID}.keystore"
+echo "${ANDROID_CERT_CONTENT}" | base64 -d >"/tmp/out/android-certs/${APP_ID}.keystore"
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign" -f -p 4 "${APP_ID}.unsigned" "${APP_ID}.apk"
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner" sign --ks "${BASEDIR}"/.android-certs/${APP_ID}.keystore --ks-pass pass:"$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)" --key-pass pass:"$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)" "${APP_ID}.apk"
 
 # Sign package with GPG and stage
 gpg --detach-sign --armor "${APP_ID}.apk"
 
-cp "${APP_ID}.apk" "${APP_ID}.apk.asc" "/dst"
-
 # Setup repository
-mkdir -p "/dst/repositories"
-cd "/dst/repositories" || exit 1
+rm -rf "/dst/"*
+cd "/dst" || exit 1
 
 fdroid init
 cat >'config.yml' <<EOT
@@ -68,15 +66,15 @@ repo_description: >-
 repo_icon: icon.png
 repo_keyalias: ${APP_ID}
 keystore: keystore.p12
-keystorepass: "${ANDROID_CERT_PASSWORD}"
-keypass: "${ANDROID_CERT_PASSWORD}"
+keystorepass: "$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)"
+keypass: "$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)"
 keydname: CN=${APP_ID}
 apksigner: /usr/bin/apksigner
 EOT
 
 cp "/tmp/out/${APP_ID}.apk" 'repo/'
 cp "${BASEDIR}/icon.png" .
-cp "${BASEDIR}/.android-certs/${APP_ID}.keystore" 'keystore.p12'
+cp "/tmp/out/android-certs/${APP_ID}.keystore" 'keystore.p12'
 
 fdroid update --create-metadata
 fdroid gpgsign
