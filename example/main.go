@@ -470,7 +470,7 @@ func main() {
 			crash("could not set profile directory", err)
 		}
 
-		if err := os.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), os.ModePerm); err != nil {
+		if err := ioutil.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), os.ModePerm); err != nil {
 			panic(err)
 		}
 
@@ -479,7 +479,7 @@ func main() {
 			panic(err)
 		}
 
-		if err := os.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), os.ModePerm); err != nil {
+		if err := ioutil.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), os.ModePerm); err != nil {
 			panic(err)
 		}
 

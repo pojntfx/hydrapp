@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -27,13 +26,13 @@ func main() {
 
 	image := flag.String("image", "ghcr.io/pojntfx/hydrapp-build-deb", "OCI image to use")
 	pull := flag.Bool("pull", true, "Whether to pull the image or not")
-	dst := flag.String("dst", filepath.Join(pwd, "out", "apk"), "Output directory")
+	dst := flag.String("dst", filepath.Join(pwd, "out", "deb"), "Output directory")
 	appID := flag.String("app-id", "com.pojtinger.felicitas.hydrapp.example", "DEB app ID to use")
 	gpgKeyContent := flag.String("gpg-key-content", "", "base64-encoded GPG key contents")
 	gpgKeyPassword := flag.String("gpg-key-password", "", " base64-encoded password for the GPG key")
 	gpgKeyID := flag.String("gpg-key-id", "", "ID of the GPG key to use")
 	baseURL := flag.String("base-url", "https://pojntfx.github.io/hydrapp/deb", "Base URL where the repo is to be hosted")
-	targetsFlag := flag.String("targets", `[["debian", "bullseye", "http://http.us.debian.org/debian", "main contrib", "", "amd64"]]`, `List of distros and architectures to build for`)
+	targetsFlag := flag.String("targets", `[["debian", "bullseye", "http://http.us.debian.org/debian", "main contrib", "", "amd64"]]`, `List of distros and architectures to build for (in JSON format [["os", "dist", "mirrorsite", "component1 componentN", "debootstrapopts", "architecture1 architectureN"]...])`)
 	packageVersion := flag.String("package-version", "0.0.1", "DEB package version")
 
 	flag.Parse()
@@ -68,15 +67,15 @@ func main() {
 			"TARGETS": func() string {
 				targets := ""
 				for i, rawTarget := range rawTargets {
-					if len(rawTarget) < 2 {
+					if len(rawTarget) < 6 {
 						panic(errInvalidTarget)
 					}
 
 					if i != 0 {
-						targets += " "
+						targets += "@"
 					}
 
-					targets += fmt.Sprintf(`%v|"%v"`, rawTarget[0], strings.Join(rawTarget[1:], " "))
+					targets += strings.Join(rawTarget, "|")
 				}
 
 				return targets
