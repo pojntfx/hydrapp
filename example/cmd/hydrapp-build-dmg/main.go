@@ -24,6 +24,7 @@ func main() {
 	gpgKeyContent := flag.String("gpg-key-content", "", "base64-encoded GPG key contents")
 	gpgKeyPassword := flag.String("gpg-key-password", "", " base64-encoded password for the GPG key")
 	architectures := flag.String("architectures", "amd64 arm64", "Space-separated list of architectures to build for")
+	packages := flag.String("packages", "", "Space-separated list of MacPorts packages to install")
 
 	flag.Parse()
 
@@ -49,6 +50,7 @@ func main() {
 			"GPG_KEY_CONTENT":  *gpgKeyContent,
 			"GPG_KEY_PASSWORD": *gpgKeyPassword,
 			"ARCHITECTURES":    *architectures,
+			"MACPORTS":         *packages,
 		},
 	); err != nil {
 		panic(err)

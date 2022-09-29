@@ -14,12 +14,18 @@ EOT
 echo "${GPG_KEY_CONTENT}" | base64 -d >'/tmp/private.gpg'
 gpg --import /tmp/private.gpg
 
+# Install MacPorts packages
+if [ "${MACPORTS}" != "" ]; then
+  osxcross-macports install --static ${MACPORTS}
+fi
+
 # Create icons
 mkdir -p '/tmp/out'
 convert icon.png '/tmp/out/icon.icns'
 
 # Build app
 export GOOS="darwin"
+export BINARIES=""
 for ARCH in ${ARCHITECTURES}; do
   export GOARCH="${ARCH}"
 
@@ -35,19 +41,30 @@ for ARCH in ${ARCHITECTURES}; do
     export DEBARCH="aarch64"
   fi
 
-  GOFLAGS='-tags=selfupdate' go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}" .
-  gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}"
+  export CC="${DEBARCH}-apple-darwin20.4-cc"
+  export CXX="${DEBARCH}-apple-darwin20.4-c++"
+  export PKGCONFIG="${DEBARCH}-apple-darwin20.4-pkg-config"
+  export PKG_CONFIG="${DEBARCH}-apple-darwin20.4-pkg-config"
 
-  cp 'Info.plist' '/tmp/out/'
+  GOFLAGS='-tags=selfupdate' go build -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" .
+  rcodesign sign "/tmp/${APP_ID}.${GOOS}-${DEBARCH}"
 
-  mkdir -p "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg.mnt/${APP_NAME}.app/Contents/"{MacOS,Resources}
-  cp "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}" "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg.mnt/${APP_NAME}.app/Contents/MacOS/${APP_ID}"
-  cp "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.asc" "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg.mnt/${APP_NAME}.app/Contents/MacOS/${APP_ID}.asc"
-  cp '/tmp/out/Info.plist' "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg.mnt/${APP_NAME}.app/Contents"
-  cp '/tmp/out/icon.icns' "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg.mnt/${APP_NAME}.app/Contents/Resources"
-
-  genisoimage -V "Install ${APP_NAME}" -D -R -apple -no-pad -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg" "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg.mnt"
-  gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg"
-
-  cp "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.dmg" "/dst"
+  export BINARIES="${BINARIES} /tmp/${APP_ID}.${GOOS}-${DEBARCH}"
 done
+
+lipo -create -output "/tmp/out/${APP_ID}.${GOOS}" ${BINARIES}
+gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}"
+rcodesign sign "/tmp/out/${APP_ID}.${GOOS}"
+
+cp 'Info.plist' '/tmp/out/'
+
+mkdir -p "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/"{MacOS,Resources}
+cp "/tmp/out/${APP_ID}.${GOOS}" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/MacOS/${APP_ID}"
+cp "/tmp/out/${APP_ID}.${GOOS}.asc" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/MacOS/${APP_ID}.asc"
+cp '/tmp/out/Info.plist' "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents"
+cp '/tmp/out/icon.icns' "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/Resources"
+
+genisoimage -V "Install ${APP_NAME}" -D -R -apple -no-pad -o "/tmp/out/${APP_ID}.${GOOS}.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt"
+gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}.dmg"
+
+cp "/tmp/out/${APP_ID}.${GOOS}.dmg" "/dst"
