@@ -24,6 +24,7 @@
                 <Directory Id="eb8ad0cf-2695-49a6-9c14-0ba38e2e926a" Name="Felicitas Pojtinger">
                     <Directory Id="INSTALLDIR" Name="hydrapp Example">
                         <Component Id="App" Guid="38f180dd-4604-437a-8b51-e8d8f10ada72">
+                            <!-- {{ hydrapp.Files }} -->
                             <File Id="5af8d886-6bcd-4364-ab2d-fa2454ed69e2" Source="com.pojtinger.felicitas.hydrapp.example.exe" Name="com.pojtinger.felicitas.hydrapp.example.exe" KeyPath="yes" DiskId="1" />
                             <File Id="f0600add-c575-45d7-90ef-74e9766d81db" Source="icon.ico" Name="icon.ico" DiskId="1" />
 
