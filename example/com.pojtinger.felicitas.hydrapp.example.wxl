@@ -29,10 +29,21 @@
                     </Directory>
                 </Directory>
             </Directory>
+
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="hydrapp Example">
+                    <Component Id="ApplicationShortcut" Guid="26630ba6-41d5-11ed-a2d9-98fc84e23526">
+                        <Shortcut Id="ApplicationStartMenuShortcut" Name="hydrapp Example" Target="[#{{ StartID }}]" WorkingDirectory="ProgramFilesFolder" />
+                        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+                        <RegistryValue Root="HKCU" Key="Software\Felicitas Pojtinger\hydrapp Example" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                    </Component>
+                </Directory>
+            </Directory>
         </Directory>
 
         <Feature Id="Complete" Level="1">
             <ComponentRef Id="App" />
+            <ComponentRef Id="ApplicationShortcut" />
         </Feature>
     </Product>
 </Wix>

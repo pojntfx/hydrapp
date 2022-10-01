@@ -1,7 +1,7 @@
 FROM fedora:36
 
 # Install native dependencies
-RUN dnf install -y make ImageMagick msitools curl wine uuid go git
+RUN dnf install -y make ImageMagick msitools curl wine uuid go git perl-CPAN
 
 # Install MSYS2
 RUN curl -L -o /tmp/msys2.exe 'https://github.com/msys2/msys2-installer/releases/download/2021-11-30/msys2-base-x86_64-20211130.sfx.exe'
@@ -22,6 +22,8 @@ RUN rm -f '/root/.wine/drive_c/msys64/var/lib/pacman/db.lck'
 RUN sed -i /root/.wine/drive_c/msys64/mingw64/lib/pkgconfig/* -e 's/-Wl,-luuid/-luuid/g' # See https://github.com/gotk3/gotk3/wiki/Installing-on-Windows#chocolatey, fails with invalid flag in pkg-config --libs: -Wl,-luuid otherwise
 RUN mkdir -p '/root/.wine/drive_c/go' '/root/.wine/drive_c/tmp'
 RUN mkdir -p '/root/.wine/drive_c/users/root/Documents/go-workspace'
+
+RUN yes | cpan install File::Slurp
 
 COPY entrypoint.sh /entrypoint.sh
 
