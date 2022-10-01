@@ -5,7 +5,7 @@
         <Package Id="ff7bfaec-c8a1-4327-a797-4c6885180699" Keywords="Installer" Description="hydrapp Example Installer" Comments="Windows Installer Package" Manufacturer="Felicitas Pojtinger" InstallScope="perMachine" InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
         <!-- Launch after installation -->
-        <CustomAction Id="LaunchAfterInstallation" Execute="immediate" Impersonate="no" Return="asyncNoWait" FileKey="5af8d886-6bcd-4364-ab2d-fa2454ed69e2" ExeCommand="" />
+        <CustomAction Id="LaunchAfterInstallation" Execute="immediate" Impersonate="no" Return="asyncNoWait" FileKey="{{ StartID }}" ExeCommand="" />
         <InstallExecuteSequence>
             <RemoveExistingProducts Before="InstallInitialize" />
             <Custom Action="LaunchAfterInstallation" After="InstallFinalize" />
@@ -24,12 +24,7 @@
                 <Directory Id="eb8ad0cf-2695-49a6-9c14-0ba38e2e926a" Name="Felicitas Pojtinger">
                     <Directory Id="INSTALLDIR" Name="hydrapp Example">
                         <Component Id="App" Guid="38f180dd-4604-437a-8b51-e8d8f10ada72">
-                            <!-- {{ hydrapp.Files }} -->
-                            <File Id="5af8d886-6bcd-4364-ab2d-fa2454ed69e2" Source="com.pojtinger.felicitas.hydrapp.example.exe" Name="com.pojtinger.felicitas.hydrapp.example.exe" KeyPath="yes" DiskId="1" />
-                            <File Id="f0600add-c575-45d7-90ef-74e9766d81db" Source="icon.ico" Name="icon.ico" DiskId="1" />
-
-                            <Shortcut Id="6660bab7-5e23-4be9-a754-886150d96eab" Advertise="yes" Icon="icon.ico" Name="hydrapp Example" Directory="ProgramMenuFolder" WorkingDirectory="INSTALLDIR" Description="hydrapp Example app" />
-                            <Shortcut Id="d0cc5c26-1a48-4872-9187-212c5ad45688" Advertise="yes" Icon="icon.ico" Name="hydrapp Example" Directory="DesktopFolder" WorkingDirectory="INSTALLDIR" Description="hydrapp Example app" />
+                            <HydrappFiles />
                         </Component>
                     </Directory>
                 </Directory>

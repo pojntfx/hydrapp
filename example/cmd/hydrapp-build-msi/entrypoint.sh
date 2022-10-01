@@ -20,11 +20,15 @@ if [ "${MSYS2PACKAGES}" != "" ]; then
 fi
 
 # Create icons
-convert -resize 'x16' -gravity 'center' -crop '16x16+0+0' -flatten -colors '256' -background 'transparent' 'icon.png' '/dst/icon.ico'
+mkdir -p '/tmp/out'
+convert -resize 'x16' -gravity 'center' -crop '16x16+0+0' -flatten -colors '256' -background 'transparent' 'icon.png' '/tmp/out/icon.ico'
 
 # Build app
 export GOOS="windows"
+export BASEDIR="${PWD}"
 for ARCH in ${ARCHITECTURES}; do
+  cd "${BASEDIR}"
+
   export GOARCH="${ARCH}"
 
   # See https://github.com/pojntfx/bagop/blob/main/main.go#L45
@@ -40,24 +44,41 @@ for ARCH in ${ARCHITECTURES}; do
   fi
 
   if [ "${ARCH}" = "amd64" ]; then
-    for UNIXPATH in $(find . -type f); do
-      export WINDOWSPATH="$(sed s,/,\\\\,g <<<$(echo ${UNIXPATH} | sed s,^./,,g))"
-      export UUID="$(uuid)"
+    GOPATH='/root/.wine/drive_c/go' go mod download -x
 
-      echo "<File Id=\"${UUID}\" Source=\"${WINDOWSPATH}\" KeyPath=\"yes\" DiskId=\"1\" />"
+    cp -r . '/root/.wine/drive_c/users/root/Documents/go-workspace'
 
-      if [[ "${UNIXPATH}" == *${APP_ID} ]]; then
-        echo "<Shortcut Id=\"${UUID}\" Advertise=\"yes\" Icon=\"icon.ico\" Name=\"${APP_NAME}\" Directory=\"ProgramMenuFolder\" WorkingDirectory=\"INSTALLDIR\" Description=\"${APP_NAME}\" />"
-        echo "<Shortcut Id=\"${UUID}\" Advertise=\"yes\" Icon=\"icon.ico\" Name=\"${APP_NAME}\" Directory=\"DesktopFolder\" WorkingDirectory=\"INSTALLDIR\" Description=\"${APP_NAME}\" />"
-      fi
-    done
+    wine64 bash.exe -c "export PATH=$PATH:/mingw64/bin GOPATH=/c/go GOROOT=/mingw64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 && cd /c/users/root/Documents/go-workspace && go build -buildvcs=false -ldflags='-linkmode=external' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ."
+
+    # Copy binaries to staging directory
+    yes | cp -rf /root/.wine/drive_c/users/root/Documents/go-workspace/out/* '/tmp/out'
+
+    cp -r /root/.wine/drive_c/msys64/mingw64/* '/tmp/out'
   else
-    GOFLAGS='-tags=selfupdate' go build -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.exe" .
-    gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.exe"
-
-    wixl -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(sed "s@Source=\"${APP_ID}.exe\"@Source=\"/dst/${APP_ID}.${GOOS}-${DEBARCH}.exe\"@g" ${APP_ID}.wxl | sed 's@SourceFile="icon.ico"@SourceFile="/dst/icon.ico"@g' | sed 's@Source="icon.ico"@Source="/dst/icon.ico"@g')
-    gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
+    GOFLAGS='-tags=selfupdate' go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" .
   fi
-done
 
-rm '/dst/icon.ico'
+  cd '/tmp/out'
+
+  # Prepare WiX installer
+  export FILES=""
+  export STARTID=""
+  for UNIXPATH in $(find . -type f); do
+    export WINDOWSPATH="$(sed s,/,\\\\,g <<<$(echo ${UNIXPATH} | sed s,^./,,g))"
+    export UUID="$(uuid)"
+
+    if [[ "${UNIXPATH}" == *${APP_ID}.${GOOS}-${DEBARCH}.exe ]]; then
+      export STARTID="${UUID}"
+      export FILES="${FILES}<File Id=\"${UUID}\" Source=\"${WINDOWSPATH}\" DiskId=\"1\" />"
+      export FILES="${FILES}<Shortcut Id=\"${UUID}\" Advertise=\"yes\" Icon=\"icon.ico\" Name=\"${APP_NAME}\" Directory=\"ProgramMenuFolder\" WorkingDirectory=\"INSTALLDIR\" Description=\"${APP_NAME}\" />"
+      export FILES="${FILES}<Shortcut Id=\"${UUID}\" Advertise=\"yes\" Icon=\"icon.ico\" Name=\"${APP_NAME}\" Directory=\"DesktopFolder\" WorkingDirectory=\"INSTALLDIR\" Description=\"${APP_NAME}\" />"
+    else
+      export FILES="${FILES}<File Id=\"${UUID}\" Source=\"${WINDOWSPATH}\" DiskId=\"1\" />"
+    fi
+  done
+
+  cat <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 's+<HydrappFiles />+$ENV{FILES}+g' | perl -p -e 's+{{ StartID }}+$ENV{STARTID}+g')
+
+  wixl -v -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 's+<HydrappFiles />+$ENV{FILES}+g' | perl -p -e 's+{{ StartID }}+$ENV{STARTID}+g')
+  gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
+done
