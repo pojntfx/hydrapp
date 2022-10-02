@@ -16,34 +16,39 @@
         <Property Id="DiskPrompt" Value="hydrapp Example Installer [1]" />
 
         <!-- Icon -->
-        <Icon Id="icon.ico" SourceFile="icon.ico" />
-        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+        <Icon Id="3806376c-41e8-11ed-9117-98fc84e23526" SourceFile="$(var.SourceDir)/icon.ico" />
+        <Property Id="ARPPRODUCTICON" Value="3806376c-41e8-11ed-9117-98fc84e23526" />
 
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
                 <Directory Id="eb8ad0cf-2695-49a6-9c14-0ba38e2e926a" Name="Felicitas Pojtinger">
-                    <Directory Id="INSTALLDIR" Name="hydrapp Example">
-                        <Component Id="App" Guid="38f180dd-4604-437a-8b51-e8d8f10ada72">
-                            <HydrappFiles />
-                        </Component>
-                    </Directory>
+                    <Directory Id="INSTALLDIR" Name="hydrapp Example"></Directory>
                 </Directory>
             </Directory>
 
             <Directory Id="ProgramMenuFolder">
-                <Directory Id="ApplicationProgramsFolder" Name="hydrapp Example">
-                    <Component Id="ApplicationShortcut" Guid="26630ba6-41d5-11ed-a2d9-98fc84e23526">
-                        <Shortcut Id="ApplicationStartMenuShortcut" Name="hydrapp Example" Target="[#{{ StartID }}]" WorkingDirectory="ProgramFilesFolder" />
-                        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
-                        <RegistryValue Root="HKCU" Key="Software\Felicitas Pojtinger\hydrapp Example" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-                    </Component>
-                </Directory>
+                <Component Id="StartMenuShortcut" Guid="26630ba6-41d5-11ed-a2d9-98fc84e23526">
+                    <Shortcut Id="ApplicationStartMenuShortcut" Name="hydrapp Example" Icon="3806376c-41e8-11ed-9117-98fc84e23526" Target="[#{{ StartID }}]" WorkingDirectory="INSTALLDIR" />
+                    <RemoveFolder Id="ProgramMenuFolder" On="uninstall" />
+                    <RegistryValue Root="HKCU" Key="Software\FelicitasPojtinger\hydrappExample" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                </Component>
+            </Directory>
+
+            <Directory Id="DesktopFolder">
+                <Component Id="DesktopShortcut" Guid="ca47dfe0-41f2-11ed-9979-98fc84e23526">
+                    <Shortcut Id="ApplicationDesktopShortcut" Name="hydrapp Example" Icon="3806376c-41e8-11ed-9117-98fc84e23526" Target="[#{{ StartID }}]" WorkingDirectory="INSTALLDIR" />
+                    <RemoveFolder Id="DesktopFolder" On="uninstall" />
+                    <RegistryValue Root="HKCU" Key="Software\FelicitasPojtinger\hydrappExample" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                </Component>
             </Directory>
         </Directory>
 
+        <HydrappDirectories />
+
         <Feature Id="Complete" Level="1">
-            <ComponentRef Id="App" />
-            <ComponentRef Id="ApplicationShortcut" />
+            <HydrappComponentRefs />
+            <ComponentRef Id="StartMenuShortcut" />
+            <ComponentRef Id="DesktopShortcut" />
         </Feature>
     </Product>
 </Wix>

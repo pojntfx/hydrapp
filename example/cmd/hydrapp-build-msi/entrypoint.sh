@@ -49,7 +49,7 @@ for ARCH in ${ARCHITECTURES}; do
     cp -r . '/root/.wine/drive_c/users/root/Documents/go-workspace'
     rm -rf '/root/.wine/drive_c/users/root/Documents/go-workspace/out'
 
-    wine64 bash.exe -c "export PATH=$PATH:/mingw64/bin GOPATH=/c/go GOROOT=/mingw64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 && cd /c/users/root/Documents/go-workspace && go build -buildvcs=false -ldflags='-linkmode=external' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ."
+    wine64 bash.exe -c "export PATH=$PATH:/mingw64/bin GOPATH=/c/go GOROOT=/mingw64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 && cd /c/users/root/Documents/go-workspace && go build -buildvcs=false -ldflags='-linkmode=external -H=windowsgui' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ."
 
     # Copy binaries to staging directory
     yes | cp -rf /root/.wine/drive_c/users/root/Documents/go-workspace/out/* '/tmp/out'
@@ -61,18 +61,16 @@ for ARCH in ${ARCHITECTURES}; do
 
   cd '/tmp/out'
 
-  # Prepare WiX installer
-  export STARTID=""
-  for UNIXPATH in $(find . -type f); do
-    export UUID="$(uuid)"
+  # Create and analyze files to include in the installer
+  find . -type f | wixl-heat -p ./ --directory-ref INSTALLDIR --component-group ApplicationContent --var 'var.SourceDir' >/tmp/hydrapp.wxi
 
-    echo "<File Id=\"${UUID}\" Name=\"${UNIXPATH}\" Source=\"${UNIXPATH}\" DiskId=\"1\" />\n" >>'/tmp/files'
+  xmllint --xpath "//*[local-name()='DirectoryRef']" /tmp/hydrapp.wxi >/tmp/hydrapp-directories.xml
+  xmllint --xpath "//*[local-name()='ComponentRef']" /tmp/hydrapp.wxi >/tmp/hydrapp-component-refs.xml
 
-    if [[ "${UNIXPATH}" == *${APP_ID}.${GOOS}-${DEBARCH}.exe ]]; then
-      export STARTID="${UUID}"
-    fi
-  done
+  export STARTID="$(cat /tmp/hydrapp.wxi | grep ${APP_ID}.${GOOS}-${DEBARCH}.exe | xmllint --xpath 'string(//File/@Id)' -)"
 
-  wixl -v -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/files"); s+<HydrappFiles />+$text+g' | perl -p -e 's+{{ StartID }}+$ENV{STARTID}+g')
+  # Build WiX installer
+  wixl -v -D SourceDir="." -v -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-directories.xml"); s+<HydrappDirectories />+$text+g' | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-component-refs.xml"); s+<HydrappComponentRefs />+$text+g' | perl -p -e 's+{{ StartID }}+$ENV{STARTID}+g')
+
   gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
 done
