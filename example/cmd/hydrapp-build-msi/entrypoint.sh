@@ -21,7 +21,7 @@ fi
 
 # Create icons
 mkdir -p '/tmp/out'
-convert -resize 'x16' -gravity 'center' -crop '16x16+0+0' -flatten -colors '256' -background 'transparent' 'icon.png' '/tmp/out/icon.ico'
+convert -resize 'x256' -gravity 'center' -crop '256x256+0+0' -flatten -colors '256' -background 'transparent' 'icon.png' '/tmp/out/icon.ico'
 
 # Build app
 export GOOS="windows"
