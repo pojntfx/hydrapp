@@ -30,7 +30,7 @@ type release struct {
 
 type asset struct {
 	Name string `json:"name"`
-	URL  string `json:"url"`
+	URL  string `json:"browser_download_url"`
 }
 
 func getArchIdentifier(goArch string) string {
@@ -152,7 +152,7 @@ func main() {
 				}
 			}
 
-			currentExecutable, err := os.Executable()
+			oldExecutable, err := os.Executable()
 			if err != nil {
 				panic(err)
 			}
@@ -170,13 +170,17 @@ func main() {
 				// 4. Unmount DMG
 				// 5. forkExec(currentExecutable)
 			default:
-				// TODO: Add UNIX support if `pkexec` is not in path
-				if output, err := exec.Command("pkexec", "cp", "-f", updatedExecutable.Name(), currentExecutable).CombinedOutput(); err != nil {
+				if err := os.Chmod(updatedExecutable.Name(), 0755); err != nil {
+					panic(err)
+				}
+
+				// TODO: Add UNIX support if `pkexec` is not in path by spawning ${TERM} and running the same command using `sudo` or `doas`
+				if output, err := exec.Command("pkexec", "cp", "-f", updatedExecutable.Name(), oldExecutable).CombinedOutput(); err != nil {
 					panic(fmt.Errorf("could not install updated executable with output: %s: %v", output, err))
 				}
 
 				if _, err := syscall.ForkExec(
-					currentExecutable,
+					oldExecutable,
 					os.Args,
 					&syscall.ProcAttr{
 						Env:   os.Environ(),
@@ -191,5 +195,5 @@ func main() {
 		}()
 	}
 
-	fmt.Println("Hello, world!")
+	fmt.Println("Actual application logic goes here")
 }
