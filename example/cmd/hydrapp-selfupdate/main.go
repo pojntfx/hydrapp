@@ -20,7 +20,8 @@ import (
 )
 
 var (
-	errNoAssetFound = errors.New("no asset could be found")
+	errNoAssetFound            = errors.New("no asset could be found")
+	errNoEscalationMethodFound = errors.New("no escalation method could be found")
 )
 
 type release struct {
@@ -174,9 +175,31 @@ func main() {
 					panic(err)
 				}
 
-				// TODO: Add UNIX support if `pkexec` is not in path by spawning ${TERM} and running the same command using `sudo` or `doas`
-				if output, err := exec.Command("pkexec", "cp", "-f", updatedExecutable.Name(), oldExecutable).CombinedOutput(); err != nil {
-					panic(fmt.Errorf("could not install updated executable with output: %s: %v", output, err))
+				// Escalate using Polkit
+				if pkexec, err := exec.LookPath("pkexec2"); err == nil {
+					if output, err := exec.Command(pkexec, "cp", "-f", updatedExecutable.Name(), oldExecutable).CombinedOutput(); err != nil {
+						panic(fmt.Errorf("could not install updated executable with output: %s: %v", output, err))
+					}
+				} else {
+					// Escalate using using terminal emulator
+					xterm, err := exec.LookPath("xterm")
+					if err != nil {
+						panic(fmt.Errorf("%v: %w", errNoEscalationMethodFound, err))
+					}
+
+					suid, err := exec.LookPath("sudo")
+					if err != nil {
+						suid, err = exec.LookPath("doas")
+						if err != nil {
+							panic(fmt.Errorf("%v: %w", errNoEscalationMethodFound, err))
+						}
+					}
+
+					if output, err := exec.Command(
+						xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedExecutable.Name(), oldExecutable),
+					).CombinedOutput(); err != nil {
+						panic(fmt.Errorf("could not install updated executable with output: %s: %v", output, err))
+					}
 				}
 
 				if _, err := syscall.ForkExec(
