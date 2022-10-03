@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"flag"
@@ -13,8 +14,10 @@ import (
 	"os/exec"
 	"path"
 	"runtime"
+	"strconv"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/ncruces/zenity"
 )
@@ -58,6 +61,9 @@ func main() {
 	appID := flag.String("app-id", "htorrent", "App ID to update")
 
 	flag.Parse()
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	if *update {
 		func() {
@@ -148,6 +154,65 @@ func main() {
 					panic(res.Status)
 				}
 
+				totalSize, err := strconv.Atoi(res.Header.Get("Content-Length"))
+				if err != nil {
+					panic(err)
+				}
+
+				dialog, err := zenity.Progress(
+					zenity.Title("Downloading update"),
+				)
+				if err != nil {
+					panic(err)
+				}
+
+				go func() {
+					ticker := time.NewTicker(time.Millisecond * 50)
+					defer func() {
+						ticker.Stop()
+
+						if err := dialog.Complete(); err != nil {
+							panic(err)
+						}
+
+						if err := dialog.Close(); err != nil {
+							panic(err)
+						}
+					}()
+
+					for {
+						select {
+						case <-ctx.Done():
+
+							return
+						case <-ticker.C:
+							stat, err := updatedExecutable.Stat()
+							if err != nil {
+								panic(err)
+							}
+
+							downloadedSize := stat.Size()
+							if totalSize < 1 {
+								downloadedSize = 1
+							}
+
+							percentage := int((float64(downloadedSize) / float64(totalSize)) * 100)
+
+							if err := dialog.Value(percentage); err != nil {
+								panic(err)
+							}
+
+							if err := dialog.Text(fmt.Sprintf("%v%% (%v MB/%v MB)", percentage, downloadedSize/(1024*1024), totalSize/(1024*1024))); err != nil {
+								panic(err)
+							}
+
+							if percentage == 100 {
+								return
+							}
+						}
+					}
+				}()
+
 				if _, err := io.Copy(updatedExecutable, res.Body); err != nil {
 					panic(err)
 				}
@@ -176,7 +241,7 @@ func main() {
 				}
 
 				// Escalate using Polkit
-				if pkexec, err := exec.LookPath("pkexec2"); err == nil {
+				if pkexec, err := exec.LookPath("pkexec"); err == nil {
 					if output, err := exec.Command(pkexec, "cp", "-f", updatedExecutable.Name(), oldExecutable).CombinedOutput(); err != nil {
 						panic(fmt.Errorf("could not install updated executable with output: %s: %v", output, err))
 					}
