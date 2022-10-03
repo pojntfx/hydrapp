@@ -16,10 +16,10 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/ncruces/zenity"
+	"github.com/pojntfx/hydrapp/example/pkg/utils"
 )
 
 var (
@@ -111,14 +111,14 @@ func main() {
 				panic(err)
 			}
 
-			binary := *appID + "." + runtime.GOOS + "-"
+			binary := *appID + "." + runtime.GOOS
 			switch runtime.GOOS {
 			case "windows":
-				binary += getArchIdentifier(runtime.GOARCH) + ".msi"
+				binary += "-" + getArchIdentifier(runtime.GOARCH) + ".msi"
 			case "darwin":
-				binary += getArchIdentifier(runtime.GOARCH) + ".dmg"
+				binary += ".dmg"
 			default:
-				binary += getArchIdentifier(runtime.GOARCH)
+				binary += "-" + getArchIdentifier(runtime.GOARCH)
 			}
 
 			downloadURL := ""
@@ -225,9 +225,9 @@ func main() {
 
 			switch runtime.GOOS {
 			case "windows":
-				// TODO: Add Windows support
-				// 1. Execute MSI
-				// 2. Kill self (MSI launches updated app after installation automatically)
+				if output, err := exec.Command("cmd.exe", "/C", "start", "/b", updatedExecutable.Name()).CombinedOutput(); err != nil {
+					panic(fmt.Errorf("could not start update installer with output: %s: %v", output, err))
+				}
 			case "darwin":
 				// TODO: Add macOS support
 				// 1. Mount DMG
@@ -267,13 +267,9 @@ func main() {
 					}
 				}
 
-				if _, err := syscall.ForkExec(
+				if err := utils.ForkExec(
 					oldExecutable,
 					os.Args,
-					&syscall.ProcAttr{
-						Env:   os.Environ(),
-						Files: []uintptr{os.Stdin.Fd(), os.Stdout.Fd(), os.Stderr.Fd()},
-					},
 				); err != nil {
 					panic(err)
 				}
