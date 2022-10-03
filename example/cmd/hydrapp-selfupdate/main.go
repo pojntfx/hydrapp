@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
@@ -229,12 +230,40 @@ func main() {
 					panic(fmt.Errorf("could not start update installer with output: %s: %v", output, err))
 				}
 			case "darwin":
-				// TODO: Add macOS support
-				// 1. Mount DMG
-				// 2. sudo rm -rf currentExecutable/../..
-				// 3. cp /Volumes/${VOLUMENAME} currentExecutable/../..
-				// 4. Unmount DMG
-				// 5. forkExec(currentExecutable)
+				mountpoint, err := os.MkdirTemp(os.TempDir(), "update-mountpoint")
+				if err != nil {
+					panic(err)
+				}
+				defer os.RemoveAll(mountpoint)
+
+				if output, err := exec.Command("hdiutil", "attach", "-mountpoint", mountpoint, updatedExecutable.Name()).CombinedOutput(); err != nil {
+					panic(fmt.Errorf("could not attach DMG with output: %s: %v", output, err))
+				}
+
+				appPath, err := filepath.Abs(filepath.Join(oldExecutable, "..", ".."))
+				if err != nil {
+					panic(err)
+				}
+
+				appsPath, err := filepath.Abs(filepath.Join(appPath, ".."))
+				if err != nil {
+					panic(err)
+				}
+
+				if output, err := exec.Command("osascript", "-e", fmt.Sprintf(`do shell script "rm -rf \"%v\" && cp -r \"%v\"/* \"%v\"" with administrator privileges`, appPath, mountpoint, appsPath)).CombinedOutput(); err != nil {
+					panic(fmt.Errorf("could not replace old app with new app with output: %s: %v", output, err))
+				}
+
+				if output, err := exec.Command("hdiutil", "unmount", mountpoint).CombinedOutput(); err != nil {
+					panic(fmt.Errorf("could not detach DMG with output: %s: %v", output, err))
+				}
+
+				if err := utils.ForkExec(
+					oldExecutable,
+					os.Args,
+				); err != nil {
+					panic(err)
+				}
 			default:
 				if err := os.Chmod(updatedExecutable.Name(), 0755); err != nil {
 					panic(err)
