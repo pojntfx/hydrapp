@@ -4,6 +4,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -22,10 +23,12 @@ import (
 )
 
 const (
-	name    = "Hydrapp Example"
-	id      = "com.pojtinger.felicitas.hydrapp.example"
-	repo    = "pojntfx/hydrapp"
-	version = "0.0.1"
+	name           = "Hydrapp Example"
+	apiURL         = "https://api.github.com/"                 // GitHub/Gitea API endpoint to use
+	owner          = "pojntfx"                                 // Repository owner
+	repo           = "hydrapp"                                 // Repository name
+	currentVersion = "v0.0.1"                                  // Current version
+	appID          = "com.pojtinger.felicitas.hydrapp.example" // App ID to update
 
 	flatpakSpawnCmd  = "flatpak-spawn"
 	flatpakSpawnHost = "--host"
@@ -37,9 +40,6 @@ const (
 	browserTypeChromium = "chromium"
 	browserTypeFirefox  = "firefox"
 	browserTypeEpiphany = "epiphany"
-
-	osTypeWindows = "windows"
-	osTypeMacOS   = "darwin"
 
 	prefsJSContent = `user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.link.open_newwindow.restriction", 0);
@@ -176,11 +176,25 @@ var epiphanyLikeBrowsers = Browser{
 }
 
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	// Apply the self-update if not disabled
 	browserState := &update.BrowserState{}
 	if os.Getenv("HYDRAPP_SELFUPDATE") != "false" {
 		go func() {
-			if err := update.Update(repo, version, browserState); err != nil {
+			if err := update.Update(
+				ctx,
+				apiURL,
+				owner,
+				repo,
+				currentVersion,
+				appID,
+				browserState,
+				func(err error) {
+					crash("could not check for updates (disable it by setting the HYDRAPP_SELFUPDATE env variable to false)", err)
+				},
+			); err != nil {
 				crash("could not check for updates (disable it by setting the HYDRAPP_SELFUPDATE env variable to false)", err)
 			}
 		}()
@@ -212,7 +226,7 @@ func main() {
 		}
 
 		// Process Windows binaries
-		if runtime.GOOS == osTypeWindows {
+		if runtime.GOOS == "windows" {
 			for _, suffix := range browser.WindowsBinaries {
 				for _, fullPath := range []string{
 					filepath.Join(append([]string{os.Getenv("LocalAppData")}, suffix...)...),
@@ -225,7 +239,7 @@ func main() {
 		}
 
 		// Process macOS binaries
-		if runtime.GOOS == osTypeMacOS {
+		if runtime.GOOS == "darwin" {
 			for _, suffix := range browser.MacOSBinaries {
 				processedBrowser.MacOSBinaries = append(processedBrowser.MacOSBinaries, []string{filepath.Join(append([]string{"/Applications"}, suffix...)...)})
 			}
@@ -298,7 +312,7 @@ func main() {
 			}
 
 			// Find Windows browser
-			if runtime.GOOS == osTypeWindows {
+			if runtime.GOOS == "windows" {
 				for _, binary := range browser.WindowsBinaries {
 					if _, err := os.Stat(binary[0]); err == nil {
 						browserBinary = []string{binary[0]}
@@ -309,7 +323,7 @@ func main() {
 			}
 
 			// Find macOS browser
-			if runtime.GOOS == osTypeMacOS {
+			if runtime.GOOS == "darwin" {
 				for _, binary := range browser.MacOSBinaries {
 					if _, err := os.Stat(binary[0]); err == nil {
 						browserBinary = []string{binary[0]}
@@ -372,7 +386,7 @@ func main() {
 		if err != nil {
 			crash("could not get user's config directory", err)
 		}
-		userDataDir := filepath.Join(userConfigDir, id)
+		userDataDir := filepath.Join(userConfigDir, appID)
 
 		// Create the browser instance
 		execLine := append(
@@ -415,7 +429,7 @@ func main() {
 			browserBinary,
 			[]string{
 				"--createprofile",
-				id,
+				appID,
 			}...,
 		)
 
@@ -434,13 +448,13 @@ func main() {
 
 		// Get the profile's directory
 		firefoxDir := filepath.Join(home, ".mozilla", "firefox")
-		if runtime.GOOS == osTypeWindows || runtime.GOOS == osTypeMacOS {
+		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 			userConfigDir, err := os.UserConfigDir()
 			if err != nil {
 				crash("could not get user's config directory", err)
 			}
 
-			if runtime.GOOS == osTypeWindows {
+			if runtime.GOOS == "windows" {
 				firefoxDir = filepath.Join(userConfigDir, "Mozilla", "Firefox", "Profiles")
 			} else {
 				firefoxDir = filepath.Join(userConfigDir, "Firefox", "Profiles")
@@ -454,7 +468,7 @@ func main() {
 
 		profileSuffix := ""
 		for _, file := range filesInFirefoxDir {
-			if strings.HasSuffix(file.Name(), id) {
+			if strings.HasSuffix(file.Name(), appID) {
 				profileSuffix = file.Name()
 
 				break
@@ -493,7 +507,7 @@ func main() {
 					"--new-window",
 					"--no-first-run",
 					"-P",
-					id,
+					appID,
 					url,
 				},
 				os.Args[1:]...,
@@ -527,7 +541,7 @@ func main() {
 		}
 
 		// Create the profile directory
-		epiphanyID := "org.gnome.Epiphany.WebApp-" + id
+		epiphanyID := "org.gnome.Epiphany.WebApp-" + appID
 		profileDir := filepath.Join(home, ".local", "share", epiphanyID)
 
 		if err := os.MkdirAll(filepath.Join(profileDir, ".app"), 0755); err != nil {
@@ -601,7 +615,7 @@ The following information might help you in fixing the problem:
 	// Show error message visually using a dialog
 	if err := zenity.Error(
 		body,
-		zenity.Title("Fatal Error"),
+		zenity.Title("Fatal error"),
 		zenity.Width(320),
 	); err != nil {
 		log.Println("could not display fatal error dialog:", err)

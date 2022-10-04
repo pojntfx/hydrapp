@@ -3,6 +3,20 @@
 
 package update
 
-func Update(repo string, version string, state *BrowserState) error {
+import "context"
+
+func Update(
+	ctx context.Context,
+
+	apiURL,
+	owner,
+	repo,
+
+	currentVersion,
+	appID string,
+
+	state *BrowserState,
+	handlePanic func(error),
+) error {
 	return nil
 }

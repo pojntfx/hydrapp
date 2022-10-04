@@ -4,34 +4,43 @@
 package update
 
 import (
+	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"os"
 	"os/exec"
+	"path"
 	"path/filepath"
 	"runtime"
 	"strconv"
 	"strings"
 	"syscall"
+	"time"
 
-	"github.com/blang/semver"
 	"github.com/ncruces/zenity"
-	"github.com/rhysd/go-github-selfupdate/selfupdate"
+	"github.com/pojntfx/hydrapp/example/pkg/utils"
 )
 
-// See https://github.com/pojntfx/bagop/blob/main/main.go#L33
-func getBinIdentifier(goOS, goArch string) string {
-	if goOS == "windows" {
-		return ".exe"
-	}
+var (
+	ErrNoAssetFound            = errors.New("no asset could be found")
+	ErrNoEscalationMethodFound = errors.New("no escalation method could be found")
+)
 
-	if goOS == "js" && goArch == "wasm" {
-		return ".wasm"
-	}
-
-	return ""
+type release struct {
+	Name   string  `json:"name"`
+	Assets []asset `json:"assets"`
 }
 
-// See https://github.com/pojntfx/bagop/blob/main/main.go#L45
+type asset struct {
+	Name string `json:"name"`
+	URL  string `json:"browser_download_url"`
+}
+
 func getArchIdentifier(goArch string) string {
 	switch goArch {
 	case "386":
@@ -47,63 +56,254 @@ func getArchIdentifier(goArch string) string {
 	}
 }
 
-func Update(repo string, version string, state *BrowserState) error {
-	// Get the latest version
-	latest, found, err := selfupdate.DetectLatest(repo)
-	if err != nil {
-		return err
+func Update(
+	ctx context.Context,
+
+	apiURL,
+	owner,
+	repo,
+
+	currentVersion,
+	appID string,
+
+	state *BrowserState,
+	handlePanic func(error),
+) error {
+	var rel release
+	{
+		u, err := url.Parse(apiURL)
+		if err != nil {
+			return err
+		}
+
+		u.Path = path.Join("repos", owner, repo, "releases", "latest")
+
+		res, err := http.Get(u.String())
+		if err != nil {
+			return err
+		}
+		if res.StatusCode != http.StatusOK {
+			return fmt.Errorf("%v", res.Status)
+		}
+
+		body, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			return err
+		}
+
+		if err := json.Unmarshal(body, &rel); err != nil {
+			return err
+		}
 	}
 
-	// Stop if we are already up to day
-	if !found || latest.Version.LTE(semver.MustParse(version)) {
+	if rel.Name == currentVersion {
 		return nil
 	}
 
-	// As the user if they want to update
-	if cancelled := zenity.Question(
-		fmt.Sprintf("A new version (%v) is available, you currently have version %v; do you want to update?", latest, version),
+	if err := zenity.Question(
+		fmt.Sprintf("Do you want to upgrade from version %v to %v now?", currentVersion, rel.Name),
 		zenity.Title("Update available"),
 		zenity.OKLabel("Update now"),
-		zenity.CancelLabel("Remind me later"),
-		zenity.Width(320),
-	); cancelled != nil {
-		return nil
+		zenity.CancelLabel("Ask me next time"),
+	); err != nil {
+		if err == zenity.ErrCanceled {
+			return nil
+		}
+
+		return err
 	}
 
-	// Apply the self-update
-	self, err := os.Executable()
+	binary := appID + "." + runtime.GOOS
+	switch runtime.GOOS {
+	case "windows":
+		binary += "-" + getArchIdentifier(runtime.GOARCH) + ".msi"
+	case "darwin":
+		binary += ".dmg"
+	default:
+		binary += "-" + getArchIdentifier(runtime.GOARCH)
+	}
+
+	downloadURL := ""
+	for _, asset := range rel.Assets {
+		if asset.Name == binary {
+			downloadURL = asset.URL
+
+			break
+		}
+	}
+
+	if strings.TrimSpace(downloadURL) == "" {
+		return ErrNoAssetFound
+	}
+
+	updatedExecutable, err := ioutil.TempFile(os.TempDir(), binary)
+	if err != nil {
+		return err
+	}
+	defer os.Remove(updatedExecutable.Name())
+
+	{
+		u, err := url.Parse(downloadURL)
+		if err != nil {
+			return err
+		}
+
+		res, err := http.Get(u.String())
+		if err != nil {
+			return err
+		}
+		if res.StatusCode != http.StatusOK {
+			return fmt.Errorf("%v", res.Status)
+		}
+
+		totalSize, err := strconv.Atoi(res.Header.Get("Content-Length"))
+		if err != nil {
+			return err
+		}
+
+		dialog, err := zenity.Progress(
+			zenity.Title("Downloading update"),
+		)
+		if err != nil {
+			return err
+		}
+
+		go func() {
+			ticker := time.NewTicker(time.Millisecond * 50)
+			defer func() {
+				ticker.Stop()
+
+				if err := dialog.Complete(); err != nil {
+					handlePanic(err)
+				}
+
+				if err := dialog.Close(); err != nil {
+					handlePanic(err)
+				}
+			}()
+
+			for {
+				select {
+				case <-ctx.Done():
+
+					return
+				case <-ticker.C:
+					stat, err := updatedExecutable.Stat()
+					if err != nil {
+						handlePanic(err)
+					}
+
+					downloadedSize := stat.Size()
+					if totalSize < 1 {
+						downloadedSize = 1
+					}
+
+					percentage := int((float64(downloadedSize) / float64(totalSize)) * 100)
+
+					if err := dialog.Value(percentage); err != nil {
+						handlePanic(err)
+					}
+
+					if err := dialog.Text(fmt.Sprintf("%v%% (%v MB/%v MB)", percentage, downloadedSize/(1024*1024), totalSize/(1024*1024))); err != nil {
+						handlePanic(err)
+					}
+
+					if percentage == 100 {
+						return
+					}
+				}
+			}
+		}()
+
+		if _, err := io.Copy(updatedExecutable, res.Body); err != nil {
+			return err
+		}
+	}
+
+	oldExecutable, err := os.Executable()
 	if err != nil {
 		return err
 	}
 
-	// Remove the leading paths
-	self = filepath.Base(self)
+	switch runtime.GOOS {
+	case "windows":
+		if output, err := exec.Command("cmd.exe", "/C", "start", "/b", updatedExecutable.Name()).CombinedOutput(); err != nil {
+			return fmt.Errorf("could not start update installer with output: %s: %v", output, err)
+		}
+	case "darwin":
+		mountpoint, err := os.MkdirTemp(os.TempDir(), "update-mountpoint")
+		if err != nil {
+			return err
+		}
+		defer os.RemoveAll(mountpoint)
 
-	// Reduce it to the app ID
-	self = strings.TrimSuffix(self, ".exe")
+		if output, err := exec.Command("hdiutil", "attach", "-mountpoint", mountpoint, updatedExecutable.Name()).CombinedOutput(); err != nil {
+			return fmt.Errorf("could not attach DMG with output: %s: %v", output, err)
+		}
 
-	// Add the OS identifier
-	// See https://github.com/pojntfx/bagop/blob/main/main.go#L155
-	self += "." + runtime.GOOS + "-"
+		appPath, err := filepath.Abs(filepath.Join(oldExecutable, "..", ".."))
+		if err != nil {
+			return err
+		}
 
-	// Add the arch identifier
-	// See https://github.com/pojntfx/bagop/blob/main/main.go#L157-L165
-	self += getArchIdentifier(runtime.GOARCH)
+		appsPath, err := filepath.Abs(filepath.Join(appPath, ".."))
+		if err != nil {
+			return err
+		}
 
-	// Add the binary identifier
-	self += getBinIdentifier(runtime.GOOS, runtime.GOARCH)
+		if output, err := exec.Command("osascript", "-e", fmt.Sprintf(`do shell script "rm -rf \"%v\" && cp -r \"%v\"/* \"%v\"" with administrator privileges`, appPath, mountpoint, appsPath)).CombinedOutput(); err != nil {
+			return fmt.Errorf("could not replace old app with new app with output: %s: %v", output, err)
+		}
 
-	if err := selfupdate.UpdateTo(latest.AssetURL, strings.TrimSuffix(self, ".exe")); err != nil {
-		return err
+		if output, err := exec.Command("hdiutil", "unmount", mountpoint).CombinedOutput(); err != nil {
+			return fmt.Errorf("could not detach DMG with output: %s: %v", output, err)
+		}
+
+		if err := utils.ForkExec(
+			oldExecutable,
+			os.Args,
+		); err != nil {
+			return err
+		}
+	default:
+		if err := os.Chmod(updatedExecutable.Name(), 0755); err != nil {
+			return err
+		}
+
+		// Escalate using Polkit
+		if pkexec, err := exec.LookPath("pkexec"); err == nil {
+			if output, err := exec.Command(pkexec, "cp", "-f", updatedExecutable.Name(), oldExecutable).CombinedOutput(); err != nil {
+				return fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
+			}
+		} else {
+			// Escalate using using terminal emulator
+			xterm, err := exec.LookPath("xterm")
+			if err != nil {
+				return fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
+			}
+
+			suid, err := exec.LookPath("sudo")
+			if err != nil {
+				suid, err = exec.LookPath("doas")
+				if err != nil {
+					return fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
+				}
+			}
+
+			if output, err := exec.Command(
+				xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedExecutable.Name(), oldExecutable),
+			).CombinedOutput(); err != nil {
+				return fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
+			}
+		}
+
+		if err := utils.ForkExec(
+			oldExecutable,
+			os.Args,
+		); err != nil {
+			return err
+		}
 	}
-
-	// Restart self
-	cmd := exec.Command(self, os.Args[1:]...)
-
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	cmd.Env = os.Environ()
 
 	if state.Cmd != nil && state.Cmd.Process != nil {
 		// Windows does not support the `SIGTERM` signal
@@ -117,11 +317,6 @@ func Update(repo string, version string, state *BrowserState) error {
 		}
 	}
 
-	if err := cmd.Start(); err != nil {
-		return err
-	}
-
-	// Stop old self
 	os.Exit(0)
 
 	return nil
