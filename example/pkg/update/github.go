@@ -67,7 +67,7 @@ func Update(
 	appID string,
 
 	state *BrowserState,
-	handlePanic func(error),
+	handlePanic func(msg string, err error),
 ) error {
 	var rel release
 	{
@@ -174,11 +174,11 @@ func Update(
 				ticker.Stop()
 
 				if err := dialog.Complete(); err != nil {
-					handlePanic(err)
+					handlePanic("could not open progress dialog", err)
 				}
 
 				if err := dialog.Close(); err != nil {
-					handlePanic(err)
+					handlePanic("could not close progress dialog", err)
 				}
 			}()
 
@@ -190,7 +190,7 @@ func Update(
 				case <-ticker.C:
 					stat, err := updatedExecutable.Stat()
 					if err != nil {
-						handlePanic(err)
+						handlePanic("could not get info on updated executable", err)
 					}
 
 					downloadedSize := stat.Size()
@@ -201,11 +201,11 @@ func Update(
 					percentage := int((float64(downloadedSize) / float64(totalSize)) * 100)
 
 					if err := dialog.Value(percentage); err != nil {
-						handlePanic(err)
+						handlePanic("could not set update progress percentage", err)
 					}
 
 					if err := dialog.Text(fmt.Sprintf("%v%% (%v MB/%v MB)", percentage, downloadedSize/(1024*1024), totalSize/(1024*1024))); err != nil {
-						handlePanic(err)
+						handlePanic("could not set update progress description", err)
 					}
 
 					if percentage == 100 {

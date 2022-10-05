@@ -16,7 +16,7 @@ func Update(
 	appID string,
 
 	state *BrowserState,
-	handlePanic func(error),
+	handlePanic func(msg string, err error),
 ) error {
 	return nil
 }
