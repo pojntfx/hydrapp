@@ -5,11 +5,14 @@ package main
 
 import (
 	"context"
+	"log"
 	"os"
+	"time"
 
 	"github.com/pojntfx/hydrapp/example/pkg/backend"
 	"github.com/pojntfx/hydrapp/example/pkg/browser"
 	_ "github.com/pojntfx/hydrapp/example/pkg/fixes"
+	"github.com/pojntfx/hydrapp/example/pkg/frontend"
 	"github.com/pojntfx/hydrapp/example/pkg/update"
 	"github.com/pojntfx/hydrapp/example/pkg/utils"
 )
@@ -52,24 +55,31 @@ func main() {
 		}()
 	}
 
-	// Start the integrated webserver server
-	url, stop, err := backend.StartServer()
+	// Start the backend
+	backendURL, stopBackend, err := backend.StartServer(os.Getenv("HYDRAPP_BACKEND_LADDR"), time.Second*10)
 	if err != nil {
-		utils.HandlePanic(appName, "could not start integrated webserver", err)
+		utils.HandlePanic(appName, "could not start backend", err)
 	}
-	defer stop()
+	defer stopBackend()
 
-	// Use the user-prefered browser binary and type if specified
-	browserBinary := os.Getenv("HYDRAPP_BROWSER")
-	browserType := os.Getenv("HYDRAPP_TYPE")
+	log.Println("Backend URL:", backendURL)
+
+	// Start the frontend
+	frontendURL, stopFrontend, err := frontend.StartServer(os.Getenv("HYDRAPP_FRONTEND_LADDR"), backendURL)
+	if err != nil {
+		utils.HandlePanic(appName, "could not start frontend", err)
+	}
+	defer stopFrontend()
+
+	log.Println("Frontend URL:", frontendURL)
 
 	browser.LaunchBrowser(
-		url,
+		frontendURL,
 		appName,
 		appID,
 
-		browserBinary,
-		browserType,
+		os.Getenv("HYDRAPP_BROWSER"),
+		os.Getenv("HYDRAPP_TYPE"),
 
 		browser.ChromiumLikeBrowsers,
 		browser.FirefoxLikeBrowsers,

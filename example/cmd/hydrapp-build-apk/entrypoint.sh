@@ -46,7 +46,7 @@ mkdir -p "/tmp/out/android-certs" # Append *.jar here to use an external library
 # Sign package with Android certificate
 echo "${ANDROID_CERT_CONTENT}" | base64 -d >"/tmp/out/android-certs/${APP_ID}.keystore"
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign" -f -p 4 "${APP_ID}.unsigned" "${APP_ID}.apk"
-"${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner" sign --ks "${BASEDIR}"/.android-certs/${APP_ID}.keystore --ks-pass pass:"$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)" --key-pass pass:"$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)" "${APP_ID}.apk"
+"${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner" sign --ks "/tmp/out/android-certs/${APP_ID}.keystore" --ks-pass pass:"$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)" --key-pass pass:"$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)" "${APP_ID}.apk"
 
 # Sign package with GPG and stage
 gpg --detach-sign --armor "${APP_ID}.apk"
