@@ -1,6 +1,6 @@
 import bind from "./bind";
 
-await bind(
+bind(
   () =>
     new WebSocket(
       new URLSearchParams(window.location.search).get("socketURL") ||
