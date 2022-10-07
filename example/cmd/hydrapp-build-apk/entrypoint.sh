@@ -17,6 +17,9 @@ gpg --import /tmp/private.gpg
 # Prepare build environment
 export BASEDIR="${PWD}"
 
+# Generate dependencies
+make depend
+
 mkdir -p '/tmp/out'
 bash -O extglob -c 'cd /tmp/out && rm -rf -- !(*.jar)'
 mkdir -p '/tmp/out/drawable'

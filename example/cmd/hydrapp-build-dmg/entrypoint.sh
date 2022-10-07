@@ -19,6 +19,9 @@ if [ "${MACPORTS}" != "" ]; then
   osxcross-macports install --static ${MACPORTS}
 fi
 
+# Generate dependencies
+make depend
+
 # Create icons
 mkdir -p '/tmp/out'
 convert icon.png '/tmp/out/icon.icns'

@@ -2,7 +2,7 @@ Source: com.pojtinger.felicitas.hydrapp.example
 Section: utils
 Priority: optional
 Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
-Build-Depends: debhelper (>= 12.10), golang-go (>= 1.14), imagemagick, ca-certificates, desktop-file-utils (>= 0.24), appstream-util (>= 0.7.16)
+Build-Depends: debhelper (>= 12.10), golang-go (>= 1.14), imagemagick, ca-certificates, desktop-file-utils (>= 0.24), appstream-util (>= 0.7.16), npm (>= 7.5.2)
 Standards-Version: 4.5.1
 Homepage: https://github.com/pojntfx/hydrapp
 Vcs-Browser: https://github.com/pojntfx/hydrapp

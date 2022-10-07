@@ -23,7 +23,7 @@ flatpak remote-add --if-not-exists 'flathub' 'https://flathub.org/repo/flathub.f
 export HOST_ARCH="$(uname -m)"
 for ARCH in ${ARCHITECTURES}; do
   # Install pre-build SDKs
-  flatpak install -y --arch="${ARCH}" "flathub org.freedesktop.Platform//21.08" "org.freedesktop.Sdk//21.08" "org.freedesktop.Sdk.Extension.golang//21.08"
+  flatpak install -y --arch="${ARCH}" "flathub org.freedesktop.Platform//21.08" "org.freedesktop.Sdk//21.08" "org.freedesktop.Sdk.Extension.golang//21.08" "org.freedesktop.Sdk.Extension.node16//21.08"
 
   # Build SDK and export to repo
   flatpak-builder -y --arch="${ARCH}" --gpg-sign="${GPG_KEY_ID}" --repo="/dst" --force-clean --user --install "build-dir" "org.freedesktop.Sdk.Extension.ImageMagick.yaml"

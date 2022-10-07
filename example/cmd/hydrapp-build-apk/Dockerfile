@@ -2,7 +2,7 @@ FROM golang:bullseye
 
 # Install native dependencies
 RUN apt update
-RUN apt install -y curl unzip default-jdk-headless make zip fdroidserver
+RUN apt install -y curl unzip default-jdk-headless make zip fdroidserver npm
 
 # Install the Android SDK and NDK
 ENV ANDROID_BUILD_TOOLS_VERSION='31.0.0'

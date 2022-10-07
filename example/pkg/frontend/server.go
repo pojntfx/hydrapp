@@ -1,5 +1,8 @@
 package frontend
 
+//go:generate npm i
+//go:generate npm run build
+
 import (
 	"embed"
 	"io/fs"

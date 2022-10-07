@@ -19,6 +19,9 @@ if [ "${MSYS2PACKAGES}" != "" ]; then
   wine64 bash.exe -c "pacman --noconfirm --ignore pacman --needed -S ${MSYS2PACKAGES}"
 fi
 
+# Generate dependencies
+make depend
+
 # Create icons
 mkdir -p '/tmp/out'
 convert -resize 'x256' -gravity 'center' -crop '256x256+0+0' -flatten -colors '256' -background 'transparent' 'icon.png' '/tmp/out/icon.ico'

@@ -1,7 +1,7 @@
 FROM fedora:36
 
 # Install native dependencies
-RUN dnf install -y make ImageMagick msitools curl wine uuid go git perl-CPAN
+RUN dnf install -y make ImageMagick msitools curl wine uuid go git perl-CPAN npm
 
 # Install MSYS2
 RUN curl -L -o /tmp/msys2.exe 'https://github.com/msys2/msys2-installer/releases/download/2021-11-30/msys2-base-x86_64-20211130.sfx.exe'

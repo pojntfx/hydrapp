@@ -35,7 +35,7 @@ rpmlint "${DSC}"
 # Build chroot
 for TARGET in ${TARGETS}; do
   export DIST="$(cut -d'|' -f1 <<<"${TARGET}")"
-  export ARCHITECTURES="$(cut -d'|' -f2 <<<"${TARGET}")"
+  export ARCHITECTURES="$(cut -d'|' -f2 <<<"${TARGET}" | tr -d '"')"
 
   for ARCH in ${ARCHITECTURES}; do
     mock -r "${DIST}-${ARCH}" "${DSC}" --enable-network

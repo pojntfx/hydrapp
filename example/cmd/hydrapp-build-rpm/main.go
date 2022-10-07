@@ -27,13 +27,13 @@ func main() {
 
 	image := flag.String("image", "ghcr.io/pojntfx/hydrapp-build-rpm", "OCI image to use")
 	pull := flag.Bool("pull", true, "Whether to pull the image or not")
-	dst := flag.String("dst", filepath.Join(pwd, "out", "apk"), "Output directory")
+	dst := flag.String("dst", filepath.Join(pwd, "out", "rpm"), "Output directory")
 	appID := flag.String("app-id", "com.pojtinger.felicitas.hydrapp.example", "RPM app ID to use")
 	gpgKeyContent := flag.String("gpg-key-content", "", "base64-encoded GPG key contents")
 	gpgKeyPassword := flag.String("gpg-key-password", "", " base64-encoded password for the GPG key")
 	gpgKeyID := flag.String("gpg-key-id", "", "ID of the GPG key to use")
 	baseURL := flag.String("base-url", "https://pojntfx.github.io/hydrapp/rpm", "Base URL where the repo is to be hosted")
-	targetsFlag := flag.String("targets", `[["epel-9", "x86_64"], ["fedora-36", "x86_64"], ["opensuse-tumbleweed", "x86_64"]]`, `List of distros and architectures to build for (in JSON format [["distro1", "architectureN"...]...])`)
+	targetsFlag := flag.String("targets", `[["rocky+epel-9", "x86_64"], ["fedora-36", "x86_64"], ["opensuse-tumbleweed", "x86_64"]]`, `List of distros and architectures to build for (in JSON format [["distro1", "architectureN"...]...])`)
 	packageVersion := flag.String("package-version", "0.0.1", "RPM package version")
 	packageSuffix := flag.String("package-suffix", "1.fc36", "RPM package suffix")
 
