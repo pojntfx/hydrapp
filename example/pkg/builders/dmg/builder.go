@@ -1,7 +1,5 @@
 package dmg
 
-//go:generate docker build -t ghcr.io/pojntfx/hydrapp-build-dmg .
-
 import (
 	"context"
 
@@ -13,7 +11,7 @@ const (
 	Image = "ghcr.io/pojntfx/hydrapp-build-dmg"
 )
 
-func Build(
+func NewBuilder(
 	ctx context.Context,
 	cli *client.Client,
 
@@ -26,27 +24,59 @@ func Build(
 	gpgKeyPassword string, // base64-encoded password for the GPG key
 	universal bool, // Build universal (amd64 and arm64) binary instead of amd64 only
 	packages string, // Space-separated list of MacPorts packages to install
-) error {
-	return executors.DockerRunImage(
+) *Builder {
+	return &Builder{
 		ctx,
 		cli,
+
 		image,
 		pull,
-		true,
 		dst,
+		appID,
+		appName,
+		gpgKeyContent,
+		gpgKeyPassword,
+		universal,
+		packages,
+	}
+}
+
+type Builder struct {
+	ctx context.Context
+	cli *client.Client
+
+	image string
+	pull  bool
+	dst,
+	appID,
+	appName,
+	gpgKeyContent,
+	gpgKeyPassword string
+	universal bool
+	packages  string
+}
+
+func (b *Builder) Build() error {
+	return executors.DockerRunImage(
+		b.ctx,
+		b.cli,
+		b.image,
+		b.pull,
+		true,
+		b.dst,
 		map[string]string{
-			"APP_ID":           appID,
-			"APP_NAME":         appName,
-			"GPG_KEY_CONTENT":  gpgKeyContent,
-			"GPG_KEY_PASSWORD": gpgKeyPassword,
+			"APP_ID":           b.appID,
+			"APP_NAME":         b.appName,
+			"GPG_KEY_CONTENT":  b.gpgKeyContent,
+			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
 			"ARCHITECTURES": func() string {
-				if universal {
+				if b.universal {
 					return "amd64 arm64"
 				}
 
 				return "amd64"
 			}(),
-			"MACPORTS": packages,
+			"MACPORTS": b.packages,
 		},
 	)
 }

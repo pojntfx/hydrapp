@@ -46,3 +46,12 @@ clean:
 # Dependencies
 depend:
 	go generate ./...
+
+# Images
+IMAGEPREFIX ?= ghcr.io/pojntfx/hydrapp-build-
+
+img = apk deb dmg flatpak msi rpm
+images: $(addprefix image/,$(img))
+
+$(addprefix image/,$(img)):
+	docker build -t ghcr.io/pojntfx/hydrapp-build-$(subst image/,,$@) ./pkg/builders/$(subst image/,,$@)/

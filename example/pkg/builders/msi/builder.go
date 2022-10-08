@@ -1,7 +1,5 @@
 package msi
 
-//go:generate docker build -t ghcr.io/pojntfx/hydrapp-build-msi .
-
 import (
 	"context"
 
@@ -13,7 +11,7 @@ const (
 	Image = "ghcr.io/pojntfx/hydrapp-build-msi"
 )
 
-func Build(
+func NewBuilder(
 	ctx context.Context,
 	cli *client.Client,
 
@@ -26,21 +24,53 @@ func Build(
 	gpgKeyPassword, // base64-encoded password for the GPG key
 	architecture, // Architecture to build for
 	packages string, // Space-separated list of MSYS2 packages to install. Only supported for amd64.
-) error {
-	return executors.DockerRunImage(
+) *Builder {
+	return &Builder{
 		ctx,
 		cli,
+
 		image,
 		pull,
-		false,
 		dst,
+		appID,
+		appName,
+		gpgKeyContent,
+		gpgKeyPassword,
+		architecture,
+		packages,
+	}
+}
+
+type Builder struct {
+	ctx context.Context
+	cli *client.Client
+
+	image string
+	pull  bool
+	dst,
+	appID,
+	appName,
+	gpgKeyContent,
+	gpgKeyPassword,
+	architecture,
+	packages string
+}
+
+func (b *Builder) Build() error {
+	return executors.DockerRunImage(
+		b.ctx,
+		b.cli,
+		b.image,
+		b.pull,
+		false,
+		b.dst,
 		map[string]string{
-			"APP_ID":           appID,
-			"APP_NAME":         appName,
-			"GPG_KEY_CONTENT":  gpgKeyContent,
-			"GPG_KEY_PASSWORD": gpgKeyPassword,
-			"ARCHITECTURE":     architecture,
-			"MSYS2PACKAGES":    packages,
+			"APP_ID":           b.appID,
+			"APP_NAME":         b.appName,
+			"GPG_KEY_CONTENT":  b.gpgKeyContent,
+			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
+			"ARCHITECTURE":     b.architecture,
+			"MSYS2PACKAGES":    b.packages,
 		},
 	)
 }

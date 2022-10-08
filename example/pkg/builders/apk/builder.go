@@ -1,7 +1,5 @@
 package apk
 
-//go:generate docker build -t ghcr.io/pojntfx/hydrapp-build-deb .
-
 import (
 	"context"
 
@@ -13,7 +11,7 @@ const (
 	Image = "ghcr.io/pojntfx/hydrapp-build-apk"
 )
 
-func Build(
+func NewBuilder(
 	ctx context.Context,
 	cli *client.Client,
 
@@ -26,22 +24,54 @@ func Build(
 	androidCertContent, // base64-encoded Android cert contents
 	androidCertPassword, // base64-encoded password for the Android cert
 	baseURL string, // Base URL where the repo is to be hosted
-) error {
-	return executors.DockerRunImage(
+) *Builder {
+	return &Builder{
 		ctx,
 		cli,
 
 		image,
 		pull,
-		false,
 		dst,
+		appID,
+		gpgKeyContent,
+		gpgKeyPassword,
+		androidCertContent,
+		androidCertPassword,
+		baseURL,
+	}
+}
+
+type Builder struct {
+	ctx context.Context
+	cli *client.Client
+
+	image string
+	pull  bool
+	dst,
+	appID,
+	gpgKeyContent,
+	gpgKeyPassword,
+	androidCertContent,
+	androidCertPassword,
+	baseURL string
+}
+
+func (b *Builder) Build() error {
+	return executors.DockerRunImage(
+		b.ctx,
+		b.cli,
+
+		b.image,
+		b.pull,
+		false,
+		b.dst,
 		map[string]string{
-			"APP_ID":                appID,
-			"GPG_KEY_CONTENT":       gpgKeyContent,
-			"GPG_KEY_PASSWORD":      gpgKeyPassword,
-			"ANDROID_CERT_CONTENT":  androidCertContent,
-			"ANDROID_CERT_PASSWORD": androidCertPassword,
-			"BASE_URL":              baseURL,
+			"APP_ID":                b.appID,
+			"GPG_KEY_CONTENT":       b.gpgKeyContent,
+			"GPG_KEY_PASSWORD":      b.gpgKeyPassword,
+			"ANDROID_CERT_CONTENT":  b.androidCertContent,
+			"ANDROID_CERT_PASSWORD": b.androidCertPassword,
+			"BASE_URL":              b.baseURL,
 		},
 	)
 }

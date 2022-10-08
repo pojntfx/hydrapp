@@ -1,7 +1,5 @@
 package flatpak
 
-//go:generate docker build -t ghcr.io/pojntfx/hydrapp-build-flatpak .
-
 import (
 	"context"
 
@@ -13,7 +11,7 @@ const (
 	Image = "ghcr.io/pojntfx/hydrapp-build-flatpak"
 )
 
-func Build(
+func NewBuilder(
 	ctx context.Context,
 	cli *client.Client,
 
@@ -25,20 +23,50 @@ func Build(
 	gpgKeyPassword, // base64-encoded password for the GPG key
 	baseURL, // Base URL where the repo is to be hosted
 	architecture string, // Architecture to build for
-) error {
-	return executors.DockerRunImage(
+) *Builder {
+	return &Builder{
 		ctx,
 		cli,
+
 		image,
 		pull,
-		true,
 		dst,
+		appID,
+		gpgKeyContent,
+		gpgKeyPassword,
+		baseURL,
+		architecture,
+	}
+}
+
+type Builder struct {
+	ctx context.Context
+	cli *client.Client
+
+	image string
+	pull  bool
+	dst,
+	appID,
+	gpgKeyContent,
+	gpgKeyPassword,
+	baseURL,
+	architecture string
+}
+
+func (b *Builder) Build() error {
+	return executors.DockerRunImage(
+		b.ctx,
+		b.cli,
+		b.image,
+		b.pull,
+		true,
+		b.dst,
 		map[string]string{
-			"APP_ID":           appID,
-			"GPG_KEY_CONTENT":  gpgKeyContent,
-			"GPG_KEY_PASSWORD": gpgKeyPassword,
-			"BASE_URL":         baseURL,
-			"ARCHITECTURE":     architecture,
+			"APP_ID":           b.appID,
+			"GPG_KEY_CONTENT":  b.gpgKeyContent,
+			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
+			"BASE_URL":         b.baseURL,
+			"ARCHITECTURE":     b.architecture,
 		},
 	)
 }

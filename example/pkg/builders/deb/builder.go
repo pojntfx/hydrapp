@@ -1,7 +1,5 @@
 package deb
 
-//go:generate docker build -t ghcr.io/pojntfx/hydrapp-build-deb .
-
 import (
 	"context"
 
@@ -13,7 +11,7 @@ const (
 	Image = "ghcr.io/pojntfx/hydrapp-build-deb"
 )
 
-func Build(
+func NewBuilder(
 	ctx context.Context,
 	cli *client.Client,
 
@@ -32,27 +30,71 @@ func Build(
 	components, // Space-separated list of components to use
 	debootstrapopts, // Options to pass to debootstrap
 	architecture string, // Architecture to build for
-) error {
-	return executors.DockerRunImage(
+) *Builder {
+	return &Builder{
 		ctx,
 		cli,
+
 		image,
 		pull,
-		true,
 		dst,
+		appID,
+		gpgKeyContent,
+		gpgKeyPassword,
+		gpgKeyID,
+		baseURL,
+		packageVersion,
+		os,
+		distro,
+		mirrorsite,
+		components,
+		debootstrapopts,
+		architecture,
+	}
+}
+
+type Builder struct {
+	ctx context.Context
+	cli *client.Client
+
+	image string
+	pull  bool
+	dst,
+	appID,
+	gpgKeyContent,
+	gpgKeyPassword,
+	gpgKeyID,
+	baseURL,
+	packageVersion,
+	os,
+	distro,
+	mirrorsite,
+	components,
+	debootstrapopts,
+	architecture string
+}
+
+func (b *Builder) Build() error {
+	return executors.DockerRunImage(
+		b.ctx,
+		b.cli,
+		b.image,
+		b.pull,
+		true,
+		b.dst,
 		map[string]string{
-			"APP_ID":           appID,
-			"GPG_KEY_CONTENT":  gpgKeyContent,
-			"GPG_KEY_PASSWORD": gpgKeyPassword,
-			"GPG_KEY_ID":       gpgKeyID,
-			"BASE_URL":         baseURL,
-			"OS":               os,
-			"DISTRO":           distro,
-			"MIRRORSITE":       mirrorsite,
-			"COMPONENTS":       components,
-			"DEBOOTSTRAPOPTS":  debootstrapopts,
-			"ARCHITECTURE":     architecture,
-			"PACKAGE_VERSION":  packageVersion,
+			"APP_ID":           b.appID,
+			"GPG_KEY_CONTENT":  b.gpgKeyContent,
+			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
+			"GPG_KEY_ID":       b.gpgKeyID,
+			"BASE_URL":         b.baseURL,
+			"OS":               b.os,
+			"DISTRO":           b.distro,
+			"MIRRORSITE":       b.mirrorsite,
+			"COMPONENTS":       b.components,
+			"DEBOOTSTRAPOPTS":  b.debootstrapopts,
+			"ARCHITECTURE":     b.architecture,
+			"PACKAGE_VERSION":  b.packageVersion,
 		},
 	)
 }
