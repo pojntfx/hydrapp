@@ -2,6 +2,11 @@
 
 set -e
 
+# Setup workdir
+mkdir -p /work
+cp -r . /work
+cd /work
+
 # Setup GPG
 echo "${GPG_KEY_PASSWORD}" | base64 -d >'/tmp/gpg-pass'
 mkdir -p "${HOME}/.gnupg"

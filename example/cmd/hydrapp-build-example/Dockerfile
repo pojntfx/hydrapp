@@ -2,6 +2,6 @@ FROM debian:bullseye
 
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /work
+WORKDIR /src
 
 CMD /entrypoint.sh

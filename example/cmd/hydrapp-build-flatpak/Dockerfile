@@ -6,6 +6,6 @@ RUN apt install -y flatpak-builder xz-utils
 
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /work
+WORKDIR /src
 
 CMD /entrypoint.sh

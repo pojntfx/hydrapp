@@ -54,7 +54,7 @@ func DockerRunImage(
 	}, &container.HostConfig{
 		Privileged: privileged,
 		Binds: []string{
-			pwd + ":/work:z",
+			pwd + ":/src:ro",
 			dst + ":/dst:z",
 		},
 	}, nil, nil, "")
