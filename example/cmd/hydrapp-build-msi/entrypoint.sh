@@ -33,52 +33,48 @@ convert -resize 'x256' -gravity 'center' -crop '256x256+0+0' -flatten -colors '2
 
 # Build app
 export GOOS="windows"
+export GOARCH="${ARCHITECTURE}"
 export BASEDIR="${PWD}"
-for ARCH in ${ARCHITECTURES}; do
-  cd "${BASEDIR}"
 
-  export GOARCH="${ARCH}"
+# See https://github.com/pojntfx/bagop/blob/main/main.go#L45
+export DEBARCH="${GOARCH}"
+if [ "${ARCHITECTURE}" = "386" ]; then
+  export DEBARCH="i686"
+elif [ "${ARCHITECTURE}" = "amd64" ]; then
+  export DEBARCH="x86_64"
+elif [ "${ARCHITECTURE}" = "arm" ]; then
+  export DEBARCH="armv7l"
+elif [ "${ARCHITECTURE}" = "arm64" ]; then
+  export DEBARCH="aarch64"
+fi
 
-  # See https://github.com/pojntfx/bagop/blob/main/main.go#L45
-  export DEBARCH="${GOARCH}"
-  if [ "${ARCH}" = "386" ]; then
-    export DEBARCH="i686"
-  elif [ "${ARCH}" = "amd64" ]; then
-    export DEBARCH="x86_64"
-  elif [ "${ARCH}" = "arm" ]; then
-    export DEBARCH="armv7l"
-  elif [ "${ARCH}" = "arm64" ]; then
-    export DEBARCH="aarch64"
-  fi
+if [ "${ARCHITECTURE}" = "amd64" ]; then
+  GOPATH='/root/.wine/drive_c/go' go mod download -x
 
-  if [ "${ARCH}" = "amd64" ]; then
-    GOPATH='/root/.wine/drive_c/go' go mod download -x
+  cp -r . '/root/.wine/drive_c/users/root/Documents/go-workspace'
+  rm -rf '/root/.wine/drive_c/users/root/Documents/go-workspace/out'
 
-    cp -r . '/root/.wine/drive_c/users/root/Documents/go-workspace'
-    rm -rf '/root/.wine/drive_c/users/root/Documents/go-workspace/out'
+  wine64 bash.exe -c "export PATH=$PATH:/mingw64/bin GOPATH=/c/go GOROOT=/mingw64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 && cd /c/users/root/Documents/go-workspace && go build -buildvcs=false -ldflags='-linkmode=external -H=windowsgui' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ."
 
-    wine64 bash.exe -c "export PATH=$PATH:/mingw64/bin GOPATH=/c/go GOROOT=/mingw64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 && cd /c/users/root/Documents/go-workspace && go build -buildvcs=false -ldflags='-linkmode=external -H=windowsgui' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ."
+  # Copy binaries to staging directory
+  yes | cp -rf /root/.wine/drive_c/users/root/Documents/go-workspace/out/* '/tmp/out'
 
-    # Copy binaries to staging directory
-    yes | cp -rf /root/.wine/drive_c/users/root/Documents/go-workspace/out/* '/tmp/out'
+  cp -r /root/.wine/drive_c/msys64/mingw64/* '/tmp/out'
+else
+  GOFLAGS='-tags=selfupdate' go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" .
+fi
 
-    cp -r /root/.wine/drive_c/msys64/mingw64/* '/tmp/out'
-  else
-    GOFLAGS='-tags=selfupdate' go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" .
-  fi
+cd '/tmp/out'
 
-  cd '/tmp/out'
+# Create and analyze files to include in the installer
+find . -type f | wixl-heat -p ./ --directory-ref INSTALLDIR --component-group ApplicationContent --var 'var.SourceDir' >/tmp/hydrapp.wxi
 
-  # Create and analyze files to include in the installer
-  find . -type f | wixl-heat -p ./ --directory-ref INSTALLDIR --component-group ApplicationContent --var 'var.SourceDir' >/tmp/hydrapp.wxi
+xmllint --xpath "//*[local-name()='DirectoryRef']" /tmp/hydrapp.wxi >/tmp/hydrapp-directories.xml
+xmllint --xpath "//*[local-name()='ComponentRef']" /tmp/hydrapp.wxi >/tmp/hydrapp-component-refs.xml
 
-  xmllint --xpath "//*[local-name()='DirectoryRef']" /tmp/hydrapp.wxi >/tmp/hydrapp-directories.xml
-  xmllint --xpath "//*[local-name()='ComponentRef']" /tmp/hydrapp.wxi >/tmp/hydrapp-component-refs.xml
+export STARTID="$(cat /tmp/hydrapp.wxi | grep ${APP_ID}.${GOOS}-${DEBARCH}.exe | xmllint --xpath 'string(//File/@Id)' -)"
 
-  export STARTID="$(cat /tmp/hydrapp.wxi | grep ${APP_ID}.${GOOS}-${DEBARCH}.exe | xmllint --xpath 'string(//File/@Id)' -)"
+# Build WiX installer
+wixl -v -D SourceDir="." -v -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-directories.xml"); s+<HydrappDirectories />+$text+g' | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-component-refs.xml"); s+<HydrappComponentRefs />+$text+g' | perl -p -e 's+{{ StartID }}+$ENV{STARTID}+g')
 
-  # Build WiX installer
-  wixl -v -D SourceDir="." -v -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-directories.xml"); s+<HydrappDirectories />+$text+g' | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-component-refs.xml"); s+<HydrappComponentRefs />+$text+g' | perl -p -e 's+{{ StartID }}+$ENV{STARTID}+g')
-
-  gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
-done
+gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"

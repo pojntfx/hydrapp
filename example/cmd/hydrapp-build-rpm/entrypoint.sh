@@ -27,6 +27,18 @@ export PACKAGE="${APP_ID}-${PACKAGE_VERSION}"
 export SUFFIX="${PACKAGE_SUFFIX}"
 export SPEC="${APP_ID}.spec"
 
+# See https://github.com/pojntfx/bagop/blob/main/main.go#L45
+export DEBARCH="${GOARCH}"
+if [ "${ARCH}" = "386" ]; then
+    export DEBARCH="i686"
+elif [ "${ARCH}" = "amd64" ]; then
+    export DEBARCH="x86_64"
+elif [ "${ARCH}" = "arm" ]; then
+    export DEBARCH="armv7l"
+elif [ "${ARCH}" = "arm64" ]; then
+    export DEBARCH="aarch64"
+fi
+
 rpmdev-setuptree
 
 export TARBALL="${HOME}/rpmbuild/SOURCES/${PACKAGE}.tar.gz"
@@ -38,32 +50,25 @@ rpmbuild -bs "${SPEC}"
 rpmlint "${DSC}"
 
 # Build chroot
-for TARGET in ${TARGETS}; do
-  export DIST="$(cut -d'|' -f1 <<<"${TARGET}")"
-  export ARCHITECTURES="$(cut -d'|' -f2 <<<"${TARGET}" | tr -d '"')"
+mock -r "${DISTRO}-${DEBARCH}" "${DSC}" --enable-network
 
-  for ARCH in ${ARCHITECTURES}; do
-    mock -r "${DIST}-${ARCH}" "${DSC}" --enable-network
+rpmlint "/var/lib/mock/${DISTRO}-${DEBARCH}/result/*.rpm"
 
-    rpmlint "/var/lib/mock/${DIST}-${ARCH}/result/*.rpm"
+mkdir -p '/dst'
+cp "/var/lib/mock/${DISTRO}-${DEBARCH}/result/"*.rpm '/dst'
 
-    mkdir -p "/dst/${DIST}"
-    cp "/var/lib/mock/${DIST}-${ARCH}/result/"*.rpm "/dst/${DIST}"
+rpm --addsign '/dst'/*.rpm
 
-    rpm --addsign "/dst/${DIST}"/*.rpm
+createrepo '/dst'
 
-    createrepo "/dst/${DIST}"
+gpg --detach-sign --armor "/dst/repodata/repomd.xml"
 
-    gpg --detach-sign --armor "/dst/${DIST}/repodata/repomd.xml"
+gpg --output "/dst/repodata/repo.asc" --armor --export
 
-    gpg --output "/dst/${DIST}/repodata/repo.asc" --armor --export
-
-    # Add repo file
-    echo "[hydrapp-repo]
+# Add repo file
+echo "[hydrapp-repo]
 name=Hydrapp YUM repo
-baseurl=${BASE_URL}/${DIST}
+baseurl=${BASE_URL}
 enabled=1
 gpgcheck=1
-gpgkey=${BASE_URL}/${DIST}/repodata/repo.asc" >"/dst/${DIST}/repodata/hydrapp.repo"
-  done
-done
+gpgkey=${BASE_URL}/repodata/repo.asc" >"/dst/repodata/hydrapp.repo"

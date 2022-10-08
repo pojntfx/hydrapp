@@ -24,46 +24,26 @@ export PACKAGE="${APP_ID}_${PACKAGE_VERSION}"
 
 dpkg-source -b .
 
-export BASEDIR="${PWD}"
+pbuilder --create --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $([ "${DEBOOTSTRAPOPTS}" != "" ] && echo --debootstrapopts "${DEBOOTSTRAPOPTS}")
+pbuilder build --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $([ "${DEBOOTSTRAPOPTS}" != "" ] && echo --debootstrapopts "${DEBOOTSTRAPOPTS}") "../${PACKAGE}.dsc"
 
-export IFS='@'
-for TARGET in ${TARGETS}; do
-    cd "${BASEDIR}"
+for FILE in "/var/cache/pbuilder/${OS}-${DISTRO}-${ARCHITECTURE}/result/"*; do
+	mv "${FILE}" "${FILE//_${ARCHITECTURE}/_${OS}_${DISTRO}_${ARCHITECTURE}}" || :
+done
 
-    export OS="$(cut -d'|' -f1 <<<"${TARGET}")"
-    export DIST="$(cut -d'|' -f2 <<<"${TARGET}")"
-    export MIRRORSITE="$(cut -d'|' -f3 <<<"${TARGET}")"
-    export COMPONENTS="$(cut -d'|' -f4 <<<"${TARGET}")"
-    export DEBOOTSTRAPOPTS="$(cut -d'|' -f5 <<<"${TARGET}")"
-    export ARCHITECTURES="$(cut -d'|' -f6 <<<"${TARGET}")"
+mkdir -p "/dst/pool/main"
+cp "/var/cache/pbuilder/${OS}-${DISTRO}-${ARCHITECTURE}/result/"* "/dst/pool/main" || :
 
-    export IFS=' '
-    for ARCH in ${ARCHITECTURES}; do
-        export ARCH
+cd '/dst' || exit 1
 
-        pbuilder --create --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $([ "${DEBOOTSTRAPOPTS}" != "" ] && echo --debootstrapopts "${DEBOOTSTRAPOPTS}")
-        pbuilder build --mirror "${MIRRORSITE}" --components "${COMPONENTS}" $([ "${DEBOOTSTRAPOPTS}" != "" ] && echo --debootstrapopts "${DEBOOTSTRAPOPTS}") "../${PACKAGE}.dsc"
+mkdir -p "main/binary-${ARCHITECTURE}"
 
-        for FILE in "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"*; do
-            mv "${FILE}" "${FILE//_${ARCH}/_${OS}_${DIST}_${ARCH}}" || :
-        done
+mkdir -p "main/source" 'cache'
 
-        mkdir -p "/dst/${OS}/pool/main"
-        cp "/var/cache/pbuilder/${OS}-${DIST}-${ARCH}/result/"* "/dst/${OS}/pool/main" || :
-    done
-
-    cd '/dst' || exit 1
-
-    for ARCH in ${ARCHITECTURES}; do
-        mkdir -p "${OS}/dists/${DIST}/main/binary-${ARCH}"
-    done
-
-    mkdir -p "${OS}/dists/${DIST}/main/source" 'cache'
-
-    cat >'apt-ftparchive.conf' <<EOT
+cat >'apt-ftparchive.conf' <<EOT
 Dir {
-	ArchiveDir "./${OS}";
-	CacheDir "./cache";
+	ArchiveDir "${OS}";
+	CacheDir "cache";
 };
 Default {
 	Packages::Compress ". gzip bzip2";
@@ -71,35 +51,32 @@ Default {
 	Contents::Compress ". gzip bzip2";
 };
 TreeDefault {
-	BinCacheDB "packages-\$(SECTION)-\$(ARCH).db";
+	BinCacheDB "packages-\$(SECTION)-\$(ARCHITECTURE).db";
 	Directory "pool/\$(SECTION)";
-	Packages "\$(DIST)/\$(SECTION)/binary-\$(ARCH)/Packages";
+	Packages "\$(DISTRO)/\$(SECTION)/binary-\$(ARCHITECTURE)/Packages";
 	SrcDirectory "pool/\$(SECTION)";
-	Sources "\$(DIST)/\$(SECTION)/source/Sources";
-	Contents "\$(DIST)/Contents-\$(ARCH)";
+	Sources "\$(DISTRO)/\$(SECTION)/source/Sources";
+	Contents "\$(DISTRO)/Contents-\$(ARCHITECTURE)";
 };
-Tree "dists/${DIST}" {
+Tree "." {
 	Sections "main";
-	Architectures "${ARCHITECTURES} source";
+	ARCHITECTURE "${ARCHITECTURE} source";
 }
 EOT
 
-    apt-ftparchive generate 'apt-ftparchive.conf'
+apt-ftparchive generate 'apt-ftparchive.conf'
 
-    cat >"${OS}-${DIST}.conf" <<EOT
-APT::FTPArchive::Release::Codename "${DIST}";
+cat >"${OS}-${DISTRO}.conf" <<EOT
+APT::FTPArchive::Release::Codename "${DISTRO}";
 APT::FTPArchive::Release::Origin "Hydrapp APT repo";
 APT::FTPArchive::Release::Components "main";
 APT::FTPArchive::Release::Label "Packages for Hydrapp";
-APT::FTPArchive::Release::Architectures "${ARCHITECTURES} source";
-APT::FTPArchive::Release::Suite "${DIST}";
+APT::FTPArchive::Release::ARCHITECTURE "${ARCHITECTURE} source";
+APT::FTPArchive::Release::Suite "${DISTRO}";
 EOT
 
-    apt-ftparchive -c "${OS}-${DIST}.conf" release "${OS}/dists/${DIST}" >"${OS}/dists/${DIST}/Release"
+apt-ftparchive -c "${OS}-${DISTRO}.conf" release "." >"Release"
 
-    gpg --output "repo.asc" --armor --export
+gpg --output "repo.asc" --armor --export
 
-    gpg --output "${OS}/dists/${DIST}/Release.gpg" -ba "${OS}/dists/${DIST}/Release"
-
-    export IFS='@'
-done
+gpg --output "Release.gpg" -ba "Release"

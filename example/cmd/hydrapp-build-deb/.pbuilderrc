@@ -2,16 +2,16 @@
 
 set -e
 
-NAME="${OS}-${DIST}-${ARCH}"
+NAME="${OS}-${DIST}-${ARCHITECTURE}"
 mkdir -p "/var/cache/pbuilder/${NAME}/"{aptcache,result}
 
-if [ "${ARCH}" != "$(dpkg --print-architecture)" ]; then
+if [ "${ARCHITECTURE}" != "$(dpkg --print-architecture)" ]; then
     DEBOOTSTRAP="qemu-debootstrap"
 fi
 
 PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
 USENETWORK="yes"
-DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS}" "--arch=${ARCH}")
+DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS}" "--arch=${ARCHITECTURE}")
 BASETGZ="/var/cache/pbuilder/${NAME}-base.tgz"
 DISTRIBUTION="${DIST}"
 BUILDRESULT="/var/cache/pbuilder/${NAME}/result/"
