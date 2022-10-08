@@ -1,6 +1,6 @@
 module github.com/pojntfx/hydrapp/example
 
-go 1.17
+go 1.18
 
 require (
 	github.com/breml/rootcerts v0.1.0
@@ -8,7 +8,6 @@ require (
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/gorilla/websocket v1.5.0
 	github.com/ncruces/zenity v0.7.11
-	github.com/phayes/freeport v0.0.0-20180830031419-95f893ade6f2
 )
 
 require (
