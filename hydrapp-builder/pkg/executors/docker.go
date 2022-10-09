@@ -1,14 +1,20 @@
 package executors
 
 import (
+	"bufio"
 	"context"
 	"fmt"
 	"io"
 	"os"
+	"runtime"
+	"strings"
+	"time"
+	"unicode"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 func DockerRunImage(
@@ -62,7 +68,7 @@ func DockerRunImage(
 	onID(resp.ID)
 
 	waiter, err := cli.ContainerAttach(ctx, resp.ID, types.ContainerAttachOptions{
-		Stdin:  true,
+		Stdin:  false,
 		Stdout: true,
 		Stderr: true,
 		Stream: true,
@@ -71,9 +77,43 @@ func DockerRunImage(
 		return err
 	}
 
-	go io.Copy(waiter.Conn, os.Stdin)
-	go io.Copy(os.Stdout, waiter.Reader)
-	go io.Copy(os.Stderr, waiter.Reader)
+	scanner := bufio.NewScanner(waiter.Reader)
+	go func() {
+		c := utils.GetRandomANSIColor()
+
+		for scanner.Scan() {
+			if runtime.GOOS == "windows" {
+				fmt.Printf(
+					"%v@%v %v\n",
+					resp.ID[:4],
+					time.Now().Unix(),
+					strings.TrimFunc(scanner.Text(), func(r rune) bool {
+						return !unicode.IsGraphic(r)
+					}),
+				)
+			} else {
+				fmt.Printf(
+					"%v%v%v@%v%v %v%v%v\n",
+					utils.ColorBackgroundBlack,
+					c,
+					resp.ID[:4],
+					time.Now().Unix(),
+					utils.ColorReset,
+					c,
+					strings.TrimFunc(scanner.Text(), func(r rune) bool {
+						return !unicode.IsGraphic(r)
+					}),
+					utils.ColorReset,
+				)
+			}
+		}
+
+		if scanner.Err() != nil {
+			panic(err)
+		}
+
+		fmt.Printf("%v", utils.ColorReset)
+	}()
 
 	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
 		return err
