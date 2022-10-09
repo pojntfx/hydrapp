@@ -3,10 +3,14 @@ package main
 import (
 	"context"
 	"flag"
+	"log"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"sync"
+	"syscall"
 
+	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/apk"
@@ -58,6 +62,31 @@ func main() {
 	}
 	defer cli.Close()
 
+	handleID := func(id string) {
+		s := make(chan os.Signal)
+		signal.Notify(s, os.Interrupt, syscall.SIGTERM)
+
+		go func() {
+			<-s
+
+			log.Println("Gracefully shutting down")
+
+			go func() {
+				<-s
+
+				log.Println("Forcing shutdown")
+
+				os.Exit(1)
+			}()
+
+			if err := cli.ContainerRemove(ctx, id, types.ContainerRemoveOptions{
+				Force: true,
+			}); err != nil {
+				panic(err)
+			}
+		}()
+	}
+
 	bdrs := []builders.Builder{
 		apk.NewBuilder(
 			ctx,
@@ -67,6 +96,7 @@ func main() {
 			*pull,
 			*src,
 			filepath.Join(*dst, "apk"),
+			handleID,
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,
@@ -82,6 +112,7 @@ func main() {
 			*pull,
 			*src,
 			filepath.Join(*dst, "deb", "debian", "sid", "x86_64"),
+			handleID,
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,
@@ -103,6 +134,7 @@ func main() {
 			*pull,
 			*src,
 			filepath.Join(*dst, "dmg"),
+			handleID,
 			*appID,
 			*appName,
 			*gpgKeyContent,
@@ -118,6 +150,7 @@ func main() {
 			*pull,
 			*src,
 			filepath.Join(*dst, "flatpak", "x86_64"),
+			handleID,
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,
@@ -133,6 +166,7 @@ func main() {
 			*pull,
 			*src,
 			filepath.Join(*dst, "msi", "x86_64"),
+			handleID,
 			*appID,
 			*appName,
 			*gpgKeyContent,
@@ -148,6 +182,7 @@ func main() {
 			*pull,
 			*src,
 			filepath.Join(*dst, "rpm", "fedora", "36", "x86_64"),
+			handleID,
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,

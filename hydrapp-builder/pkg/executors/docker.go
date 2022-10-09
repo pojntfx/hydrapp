@@ -19,6 +19,7 @@ func DockerRunImage(
 	privileged bool,
 	src string,
 	dst string,
+	onID func(id string),
 	env map[string]string,
 ) error {
 	if pull {
@@ -58,6 +59,8 @@ func DockerRunImage(
 		return err
 	}
 
+	onID(resp.ID)
+
 	waiter, err := cli.ContainerAttach(ctx, resp.ID, types.ContainerAttachOptions{
 		Stdin:  true,
 		Stdout: true,
@@ -81,7 +84,7 @@ func DockerRunImage(
 	case err := <-errChan:
 		return err
 	case status := <-statusChan:
-		if status.StatusCode != 0 || status.Error != nil {
+		if (status.StatusCode != 0 && status.StatusCode != 137) || status.Error != nil {
 			return fmt.Errorf("could not wait for container: %v", status)
 		}
 	}

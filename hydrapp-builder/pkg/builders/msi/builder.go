@@ -19,7 +19,8 @@ func NewBuilder(
 	image string, // OCI image to use
 	pull bool, // Whether to pull the image or not
 	src, // Input directory
-	dst, // Output directory
+	dst string, // Output directory
+	onID func(id string), // Callback to handle container ID
 	appID, // Android app ID to use
 	appName, // Human-readable name for the app,
 	gpgKeyContent, // base64-encoded GPG key contents
@@ -35,6 +36,7 @@ func NewBuilder(
 		pull,
 		src,
 		dst,
+		onID,
 		appID,
 		appName,
 		gpgKeyContent,
@@ -51,7 +53,8 @@ type Builder struct {
 	image string
 	pull  bool
 	src,
-	dst,
+	dst string
+	onID func(id string)
 	appID,
 	appName,
 	gpgKeyContent,
@@ -69,6 +72,7 @@ func (b *Builder) Build() error {
 		false,
 		b.src,
 		b.dst,
+		b.onID,
 		map[string]string{
 			"APP_ID":           b.appID,
 			"APP_NAME":         b.appName,

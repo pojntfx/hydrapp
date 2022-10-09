@@ -19,7 +19,8 @@ func NewBuilder(
 	image string, // OCI image to use
 	pull bool, // Whether to pull the image or not
 	src, // Input directory
-	dst, // Output directory
+	dst string, // Output directory
+	onID func(id string), // Callback to handle container ID
 	appID, // DEB app ID to use
 	gpgKeyContent, // base64-encoded GPG key contents
 	gpgKeyPassword, // base64-encoded password for the GPG key
@@ -41,6 +42,7 @@ func NewBuilder(
 		pull,
 		src,
 		dst,
+		onID,
 		appID,
 		gpgKeyContent,
 		gpgKeyPassword,
@@ -63,7 +65,8 @@ type Builder struct {
 	image string
 	pull  bool
 	src,
-	dst,
+	dst string
+	onID func(id string)
 	appID,
 	gpgKeyContent,
 	gpgKeyPassword,
@@ -87,6 +90,7 @@ func (b *Builder) Build() error {
 		true,
 		b.src,
 		b.dst,
+		b.onID,
 		map[string]string{
 			"APP_ID":           b.appID,
 			"GPG_KEY_CONTENT":  b.gpgKeyContent,
