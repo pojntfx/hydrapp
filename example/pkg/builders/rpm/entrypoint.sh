@@ -28,14 +28,14 @@ export SUFFIX="${PACKAGE_SUFFIX}"
 export SPEC="${APP_ID}.spec"
 
 # See https://github.com/pojntfx/bagop/blob/main/main.go#L45
-export DEBARCH="${GOARCH}"
-if [ "${ARCH}" = "386" ]; then
+export DEBARCH="${ARCHITECTURE}"
+if [ "${ARCHITECTURE}" = "386" ]; then
     export DEBARCH="i686"
-elif [ "${ARCH}" = "amd64" ]; then
+elif [ "${ARCHITECTURE}" = "amd64" ]; then
     export DEBARCH="x86_64"
-elif [ "${ARCH}" = "arm" ]; then
+elif [ "${ARCHITECTURE}" = "arm" ]; then
     export DEBARCH="armv7l"
-elif [ "${ARCH}" = "arm64" ]; then
+elif [ "${ARCHITECTURE}" = "arm64" ]; then
     export DEBARCH="aarch64"
 fi
 

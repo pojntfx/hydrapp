@@ -11,8 +11,8 @@ modules:
       - --prefix=/usr/lib/sdk/ImageMagick
     sources:
       - type: archive
-        url: https://imagemagick.org/archive/ImageMagick-7.1.0-47.tar.xz
-        sha256: 9565918fcc6f8857c7907a8a73cf1c1f23fa37b77cf869886d98fcf03f89adf3
+        url: https://imagemagick.org/archive/ImageMagick-7.1.0-50.tar.xz
+        sha256: cc8cf9e302a5afe5668ab17003769d9d8753104d2cf82883b72b175e152dc67a
   - name: scripts
     sources:
       - type: script

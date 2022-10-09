@@ -21,6 +21,7 @@ func NewBuilder(
 	appID, // Android app ID to use
 	gpgKeyContent, // base64-encoded GPG key contents
 	gpgKeyPassword, // base64-encoded password for the GPG key
+	gpgKeyID, // ID of the GPG key to use
 	baseURL, // Base URL where the repo is to be hosted
 	architecture string, // Architecture to build for
 ) *Builder {
@@ -34,6 +35,7 @@ func NewBuilder(
 		appID,
 		gpgKeyContent,
 		gpgKeyPassword,
+		gpgKeyID,
 		baseURL,
 		architecture,
 	}
@@ -49,6 +51,7 @@ type Builder struct {
 	appID,
 	gpgKeyContent,
 	gpgKeyPassword,
+	gpgKeyID,
 	baseURL,
 	architecture string
 }
@@ -65,6 +68,7 @@ func (b *Builder) Build() error {
 			"APP_ID":           b.appID,
 			"GPG_KEY_CONTENT":  b.gpgKeyContent,
 			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
+			"GPG_KEY_ID":       b.gpgKeyID,
 			"BASE_URL":         b.baseURL,
 			"ARCHITECTURE":     b.architecture,
 		},

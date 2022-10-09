@@ -10,8 +10,10 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/example/pkg/builders"
 	"github.com/pojntfx/hydrapp/example/pkg/builders/apk"
-	"github.com/pojntfx/hydrapp/example/pkg/builders/deb"
 	"github.com/pojntfx/hydrapp/example/pkg/builders/dmg"
+	"github.com/pojntfx/hydrapp/example/pkg/builders/flatpak"
+	"github.com/pojntfx/hydrapp/example/pkg/builders/msi"
+	"github.com/pojntfx/hydrapp/example/pkg/builders/rpm"
 )
 
 func main() {
@@ -34,9 +36,12 @@ func main() {
 	apkCertContent := flag.String("apk-cert-content", "", "base64-encoded Android cert contents")
 	apkCertPassword := flag.String("apk-cert-password", "", " base64-encoded password for the Android cert")
 
-	debPackageVersion := flag.String("deb-package-version", "0.0.1", "DEB package version")
+	// debPackageVersion := flag.String("deb-package-version", "0.0.1", "DEB package version")
 
 	dmgUniversal := flag.Bool("dmg-universal", true, "Whether to build a universal instead of amd64-only binary and DMG image")
+
+	rpmPackageVersion := flag.String("rpm-package-version", "0.0.1", "RPM package version")
+	rpmPackageSuffix := flag.String("rpm-package-suffix", "1.fc36", "RPM package suffix")
 
 	concurrency := flag.Int("concurrency", 1, "Maximum amount of concurrent builders to run at once")
 
@@ -66,26 +71,26 @@ func main() {
 			*apkCertPassword,
 			*baseURL+"apk",
 		),
-		deb.NewBuilder(
-			ctx,
-			cli,
+		// deb.NewBuilder(
+		// 	ctx,
+		// 	cli,
 
-			deb.Image,
-			*pull,
-			filepath.Join(*dst, "deb", "debian", "sid", "x86_64"),
-			*appID,
-			*gpgKeyContent,
-			*gpgKeyPassword,
-			*gpgKeyID,
-			*baseURL+"deb/debian/sid/x86_64",
-			*debPackageVersion,
-			"debian",
-			"sid",
-			"http://http.us.debian.org/debian",
-			[]string{"main", "contrib"},
-			"",
-			"amd64",
-		),
+		// 	deb.Image,
+		// 	*pull,
+		// 	filepath.Join(*dst, "deb", "debian", "sid", "x86_64"),
+		// 	*appID,
+		// 	*gpgKeyContent,
+		// 	*gpgKeyPassword,
+		// 	*gpgKeyID,
+		// 	*baseURL+"deb/debian/sid/x86_64",
+		// 	*debPackageVersion,
+		// 	"debian",
+		// 	"sid",
+		// 	"http://http.us.debian.org/debian",
+		// 	[]string{"main", "contrib"},
+		// 	"",
+		// 	"amd64",
+		// ),
 		dmg.NewBuilder(
 			ctx,
 			cli,
@@ -99,6 +104,51 @@ func main() {
 			*gpgKeyPassword,
 			*dmgUniversal,
 			[]string{},
+		),
+		flatpak.NewBuilder(
+			ctx,
+			cli,
+
+			flatpak.Image,
+			*pull,
+			filepath.Join(*dst, "flatpak", "x86_64"),
+			*appID,
+			*gpgKeyContent,
+			*gpgKeyPassword,
+			*gpgKeyID,
+			*baseURL+"flatpak/x86_64",
+			"amd64",
+		),
+		msi.NewBuilder(
+			ctx,
+			cli,
+
+			msi.Image,
+			*pull,
+			filepath.Join(*dst, "msi", "x86_64"),
+			*appID,
+			*appName,
+			*gpgKeyContent,
+			*gpgKeyPassword,
+			"amd64",
+			[]string{},
+		),
+		rpm.NewBuilder(
+			ctx,
+			cli,
+
+			rpm.Image,
+			*pull,
+			filepath.Join(*dst, "rpm", "x86_64"),
+			*appID,
+			*gpgKeyContent,
+			*gpgKeyPassword,
+			*gpgKeyID,
+			*baseURL,
+			*rpmPackageVersion,
+			"fedora-36",
+			"amd64",
+			*rpmPackageSuffix,
 		),
 	}
 

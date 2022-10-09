@@ -85,7 +85,7 @@ func DockerRunImage(
 	case err := <-errChan:
 		return err
 	case status := <-statusChan:
-		if status.Error != nil {
+		if status.StatusCode != 0 || status.Error != nil {
 			return fmt.Errorf("could not wait for container: %v", status)
 		}
 	}
