@@ -11,6 +11,7 @@ import (
 	"github.com/pojntfx/hydrapp/example/pkg/builders"
 	"github.com/pojntfx/hydrapp/example/pkg/builders/apk"
 	"github.com/pojntfx/hydrapp/example/pkg/builders/deb"
+	"github.com/pojntfx/hydrapp/example/pkg/builders/dmg"
 )
 
 func main() {
@@ -20,6 +21,7 @@ func main() {
 	}
 
 	appID := flag.String("app-id", "com.pojtinger.felicitas.hydrapp.example", "Android app ID to use")
+	appName := flag.String("app-name", "Hydrapp Example", "Human-readable name for the app")
 
 	pull := flag.Bool("pull", false, "Whether to pull the images or not")
 	dst := flag.String("dst", filepath.Join(pwd, "out"), "Output directory")
@@ -33,6 +35,8 @@ func main() {
 	apkCertPassword := flag.String("apk-cert-password", "", " base64-encoded password for the Android cert")
 
 	debPackageVersion := flag.String("deb-package-version", "0.0.1", "DEB package version")
+
+	dmgUniversal := flag.Bool("dmg-universal", true, "Whether to build a universal instead of amd64-only binary and DMG image")
 
 	concurrency := flag.Int("concurrency", 1, "Maximum amount of concurrent builders to run at once")
 
@@ -68,19 +72,33 @@ func main() {
 
 			deb.Image,
 			*pull,
-			filepath.Join(*dst, "deb", "x86_64"),
+			filepath.Join(*dst, "deb", "debian", "sid", "x86_64"),
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,
 			*gpgKeyID,
-			*baseURL+"deb/x86_64",
+			*baseURL+"deb/debian/sid/x86_64",
 			*debPackageVersion,
 			"debian",
-			"bullseye",
+			"sid",
 			"http://http.us.debian.org/debian",
 			[]string{"main", "contrib"},
 			"",
 			"amd64",
+		),
+		dmg.NewBuilder(
+			ctx,
+			cli,
+
+			dmg.Image,
+			*pull,
+			filepath.Join(*dst, "dmg"),
+			*appID,
+			*appName,
+			*gpgKeyContent,
+			*gpgKeyPassword,
+			*dmgUniversal,
+			[]string{},
 		),
 	}
 
