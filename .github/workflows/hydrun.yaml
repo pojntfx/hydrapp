@@ -13,44 +13,44 @@ jobs:
       matrix:
         target:
           - id: example-binaries
-            src: example
+            src: hydrapp-example
             os: golang:bullseye
             flags: ""
             cmd: ./Hydrunfile binaries
             dst: example/out/*
           - id: example-msi
-            src: example
+            src: hydrapp-example
             os: golang:bullseye
             flags: ""
             cmd: ./Hydrunfile msi
             dst: example/out/*.msi*
           - id: example-dmg
-            src: example
+            src: hydrapp-example
             os: golang:bullseye
             flags: ""
             cmd: ./Hydrunfile dmg
             dst: example/out/*.dmg*
           - id: example-apk
-            src: example
+            src: hydrapp-example
             os: golang:bullseye
             flags: ""
             cmd: ./Hydrunfile apk
             dst: example/out/*
           - id: example-flatpak
-            src: example
+            src: hydrapp-example
             os: debian:bullseye
             flags: -e '--privileged'
             cmd: ./Hydrunfile flatpak
             dst: example/out/*
           # This currently freezes the GitHub actions builder
           # - id: example-deb
-          #   src: example
+          #   src: hydrapp-example
           #   os: debian:sid
           #   flags: -e '--privileged'
           #   cmd: ./Hydrunfile deb
           #   dst: example/out/*
           - id: example-rpm
-            src: example
+            src: hydrapp-example
             os: fedora:36
             flags: -e '--privileged'
             cmd: ./Hydrunfile rpm

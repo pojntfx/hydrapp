@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+
+NAME="${OS}-${DISTRO}-${ARCHITECTURE}"
+mkdir -p "/var/cache/pbuilder/${NAME}/"{aptcache,result}
+
+if [ "${ARCHITECTURE}" != "$(dpkg --print-architecture)" ]; then
+    DEBOOTSTRAP="qemu-debootstrap"
+fi
+
+PBUILDERSATISFYDEPENDSCMD="/usr/lib/pbuilder/pbuilder-satisfydepends-apt"
+USENETWORK="yes"
+DEBOOTSTRAPOPTS=("${DEBOOTSTRAPOPTS}" "--arch=${ARCHITECTURE}")
+BASETGZ="/var/cache/pbuilder/${NAME}-base.tgz"
+DISTRIBUTION="${DISTRO}"
+BUILDRESULT="/var/cache/pbuilder/${NAME}/result/"
+APTCACHE="/var/cache/pbuilder/${NAME}/aptcache/"
+BUILDPLACE="/var/cache/pbuilder/build"
+HOOKDIR="/var/cache/pbuilder/hook.d/"

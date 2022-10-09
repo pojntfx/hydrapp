@@ -1,0 +1,34 @@
+app-id: com.pojtinger.felicitas.hydrapp.example
+runtime: org.freedesktop.Platform
+runtime-version: "21.08"
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node16
+  - org.freedesktop.Sdk.Extension.golang
+  - org.freedesktop.Sdk.Extension.ImageMagick
+command: com.pojtinger.felicitas.hydrapp.example
+finish-args:
+  - --socket=session-bus
+  - --share=network
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+  - --filesystem=/tmp:rw
+modules:
+  - name: com.pojtinger.felicitas.hydrapp.example
+    buildsystem: simple
+    build-commands:
+      - . /usr/lib/sdk/golang/enable.sh && . /usr/lib/sdk/node16/enable.sh && export GOFLAGS='-x -buildvcs=false'; make depend
+      - . /usr/lib/sdk/golang/enable.sh && export GOFLAGS='-x -buildvcs=false' && make PREFIX=/app
+      - . /usr/lib/sdk/golang/enable.sh && export GOFLAGS='-x -buildvcs=false' && make install PREFIX=/app
+      - . /usr/lib/sdk/ImageMagick/enable.sh && for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert icon.png -resize ${icon} out/icon-${icon}.png; done
+      - desktop-file-install --dir=/app/share/applications com.pojtinger.felicitas.hydrapp.example.desktop
+      - appstream-util validate-relax com.pojtinger.felicitas.hydrapp.example.metainfo.xml
+      - install -D -m 0644 com.pojtinger.felicitas.hydrapp.example.metainfo.xml /app/share/metainfo/com.pojtinger.felicitas.hydrapp.example.metainfo.xml
+      - for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png /app/share/icons/hicolor/${icon}/apps/com.pojtinger.felicitas.hydrapp.example.png; done
+    build-options:
+      build-args:
+        - "--share=network"
+    sources:
+      - type: dir
+        path: .
