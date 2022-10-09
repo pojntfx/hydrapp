@@ -2,6 +2,7 @@ package msi
 
 import (
 	"context"
+	"strings"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/example/pkg/executors"
@@ -22,8 +23,8 @@ func NewBuilder(
 	appName, // Human-readable name for the app,
 	gpgKeyContent, // base64-encoded GPG key contents
 	gpgKeyPassword, // base64-encoded password for the GPG key
-	architecture, // Architecture to build for
-	packages string, // Space-separated list of MSYS2 packages to install. Only supported for amd64.
+	architecture string, // Architecture to build for
+	packages []string, // MSYS2 packages to install. Only supported for amd64.
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -52,8 +53,8 @@ type Builder struct {
 	appName,
 	gpgKeyContent,
 	gpgKeyPassword,
-	architecture,
-	packages string
+	architecture string
+	packages []string
 }
 
 func (b *Builder) Build() error {
@@ -70,7 +71,7 @@ func (b *Builder) Build() error {
 			"GPG_KEY_CONTENT":  b.gpgKeyContent,
 			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
 			"ARCHITECTURE":     b.architecture,
-			"MSYS2PACKAGES":    b.packages,
+			"MSYS2PACKAGES":    strings.Join(b.packages, " "),
 		},
 	)
 }

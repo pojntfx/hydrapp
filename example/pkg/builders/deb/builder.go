@@ -2,6 +2,7 @@ package deb
 
 import (
 	"context"
+	"strings"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/example/pkg/executors"
@@ -26,8 +27,8 @@ func NewBuilder(
 	packageVersion, // DEB package version
 	os, // OS to build for
 	distro, // Distro to build for
-	mirrorsite, // Mirror to use
-	components, // Space-separated list of components to use
+	mirrorsite string, // Mirror to use
+	components []string, // Components to use
 	debootstrapopts, // Options to pass to debootstrap
 	architecture string, // Architecture to build for
 ) *Builder {
@@ -68,8 +69,8 @@ type Builder struct {
 	packageVersion,
 	os,
 	distro,
-	mirrorsite,
-	components,
+	mirrorsite string
+	components []string
 	debootstrapopts,
 	architecture string
 }
@@ -91,7 +92,7 @@ func (b *Builder) Build() error {
 			"OS":               b.os,
 			"DISTRO":           b.distro,
 			"MIRRORSITE":       b.mirrorsite,
-			"COMPONENTS":       b.components,
+			"COMPONENTS":       strings.Join(b.components, " "),
 			"DEBOOTSTRAPOPTS":  b.debootstrapopts,
 			"ARCHITECTURE":     b.architecture,
 			"PACKAGE_VERSION":  b.packageVersion,

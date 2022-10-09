@@ -2,6 +2,7 @@ package dmg
 
 import (
 	"context"
+	"strings"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/example/pkg/executors"
@@ -23,7 +24,7 @@ func NewBuilder(
 	gpgKeyContent, // base64-encoded GPG key contents
 	gpgKeyPassword string, // base64-encoded password for the GPG key
 	universal bool, // Build universal (amd64 and arm64) binary instead of amd64 only
-	packages string, // Space-separated list of MacPorts packages to install
+	packages []string, // MacPorts packages to install
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -53,7 +54,7 @@ type Builder struct {
 	gpgKeyContent,
 	gpgKeyPassword string
 	universal bool
-	packages  string
+	packages  []string
 }
 
 func (b *Builder) Build() error {
@@ -76,7 +77,7 @@ func (b *Builder) Build() error {
 
 				return "amd64"
 			}(),
-			"MACPORTS": b.packages,
+			"MACPORTS": strings.Join(b.packages, " "),
 		},
 	)
 }
