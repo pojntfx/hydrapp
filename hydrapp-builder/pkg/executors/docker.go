@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"runtime"
 	"strings"
 	"time"
 	"unicode"
@@ -26,6 +25,7 @@ func DockerRunImage(
 	src string,
 	dst string,
 	onID func(id string),
+	onOutput func(shortID string, color string, timestamp int64, message string),
 	env map[string]string,
 ) error {
 	if pull {
@@ -79,33 +79,12 @@ func DockerRunImage(
 
 	scanner := bufio.NewScanner(waiter.Reader)
 	go func() {
-		c := utils.GetRandomANSIColor()
+		color := utils.GetRandomANSIColor()
 
 		for scanner.Scan() {
-			if runtime.GOOS == "windows" {
-				fmt.Printf(
-					"%v@%v %v\n",
-					resp.ID[:4],
-					time.Now().Unix(),
-					strings.TrimFunc(scanner.Text(), func(r rune) bool {
-						return !unicode.IsGraphic(r)
-					}),
-				)
-			} else {
-				fmt.Printf(
-					"%v%v%v@%v%v %v%v%v\n",
-					utils.ColorBackgroundBlack,
-					c,
-					resp.ID[:4],
-					time.Now().Unix(),
-					utils.ColorReset,
-					c,
-					strings.TrimFunc(scanner.Text(), func(r rune) bool {
-						return !unicode.IsGraphic(r)
-					}),
-					utils.ColorReset,
-				)
-			}
+			onOutput(resp.ID[:4], color, time.Now().Unix(), strings.TrimFunc(scanner.Text(), func(r rune) bool {
+				return !unicode.IsGraphic(r)
+			}))
 		}
 
 		if scanner.Err() != nil {

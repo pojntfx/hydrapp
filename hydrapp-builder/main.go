@@ -3,12 +3,17 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"path/filepath"
+	"runtime"
+	"strings"
 	"sync"
 	"syscall"
+	"time"
+	"unicode"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -19,6 +24,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/flatpak"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 func main() {
@@ -87,6 +93,33 @@ func main() {
 		}()
 	}
 
+	handleOutput := func(shortID string, color string, timestamp int64, message string) {
+		if runtime.GOOS == "windows" {
+			fmt.Printf(
+				"%v@%v %v\n",
+				shortID,
+				time.Now().Unix(),
+				strings.TrimFunc(message, func(r rune) bool {
+					return !unicode.IsGraphic(r)
+				}),
+			)
+		} else {
+			fmt.Printf(
+				"%v%v%v@%v%v %v%v%v\n",
+				utils.ColorBackgroundBlack,
+				color,
+				shortID,
+				time.Now().Unix(),
+				utils.ColorReset,
+				color,
+				strings.TrimFunc(message, func(r rune) bool {
+					return !unicode.IsGraphic(r)
+				}),
+				utils.ColorReset,
+			)
+		}
+	}
+
 	bdrs := []builders.Builder{
 		apk.NewBuilder(
 			ctx,
@@ -97,6 +130,7 @@ func main() {
 			*src,
 			filepath.Join(*dst, "apk"),
 			handleID,
+			handleOutput,
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,
@@ -113,6 +147,7 @@ func main() {
 			*src,
 			filepath.Join(*dst, "deb", "debian", "sid", "x86_64"),
 			handleID,
+			handleOutput,
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,
@@ -135,6 +170,7 @@ func main() {
 			*src,
 			filepath.Join(*dst, "dmg"),
 			handleID,
+			handleOutput,
 			*appID,
 			*appName,
 			*gpgKeyContent,
@@ -151,6 +187,7 @@ func main() {
 			*src,
 			filepath.Join(*dst, "flatpak", "x86_64"),
 			handleID,
+			handleOutput,
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,
@@ -167,6 +204,7 @@ func main() {
 			*src,
 			filepath.Join(*dst, "msi", "x86_64"),
 			handleID,
+			handleOutput,
 			*appID,
 			*appName,
 			*gpgKeyContent,
@@ -183,6 +221,7 @@ func main() {
 			*src,
 			filepath.Join(*dst, "rpm", "fedora", "36", "x86_64"),
 			handleID,
+			handleOutput,
 			*appID,
 			*gpgKeyContent,
 			*gpgKeyPassword,

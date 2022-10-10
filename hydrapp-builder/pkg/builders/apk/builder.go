@@ -20,6 +20,7 @@ func NewBuilder(
 	src, // Input directory
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
+	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID, // Android app ID to use
 	gpgKeyContent, // base64-encoded GPG key contents
 	gpgKeyPassword, // base64-encoded password for the GPG key
@@ -36,6 +37,7 @@ func NewBuilder(
 		src,
 		dst,
 		onID,
+		onOutput,
 		appID,
 		gpgKeyContent,
 		gpgKeyPassword,
@@ -53,7 +55,8 @@ type Builder struct {
 	pull  bool
 	src,
 	dst string
-	onID func(id string)
+	onID     func(id string)
+	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
 	gpgKeyContent,
 	gpgKeyPassword,
@@ -73,6 +76,7 @@ func (b *Builder) Build() error {
 		b.src,
 		b.dst,
 		b.onID,
+		b.onOutput,
 		map[string]string{
 			"APP_ID":                b.appID,
 			"GPG_KEY_CONTENT":       b.gpgKeyContent,
