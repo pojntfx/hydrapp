@@ -4,6 +4,7 @@ import (
 	_ "embed"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/spec"
 )
 
 //go:embed metainfo.xml
@@ -16,13 +17,7 @@ type data struct {
 	AppSummary     string
 	AppSPDX        string
 	AppURL         string
-	AppReleases    []Release
-}
-
-type Release struct {
-	Version     string `json:"version"`
-	Date        string `json:"date"`
-	Description string `json:"description"`
+	AppReleases    []spec.Release
 }
 
 func NewRenderer(
@@ -32,7 +27,7 @@ func NewRenderer(
 	appSummary string,
 	appSPDX string,
 	appURL string,
-	appReleases []Release,
+	appReleases []spec.Release,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".metainfo.xml",
