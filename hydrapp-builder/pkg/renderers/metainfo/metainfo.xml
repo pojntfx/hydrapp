@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id>{{ .AppID }}</id>
+    <metadata_license>{{ .AppSPDX }}</metadata_license>
+    <project_license>{{ .AppSPDX }}</project_license>
+    <name>{{ .AppName }}</name>
+    <summary>{{ .AppSummary }}</summary>
+
+    <description>
+        <p>{{ .AppDescription }}</p>
+    </description>
+
+    <launchable type="desktop-id">{{ .AppID }}.desktop</launchable>
+
+    <url type="homepage">{{ .AppURL }}</url>
+
+    <provides>
+        <binary>{{ .AppID }}</binary>
+    </provides>
+
+    <releases>
+        {{ range $release := .AppReleases }}
+        <release version="{{ $release.Version }}" date="{{ $release.Date }}">
+            <description>
+                <p>{{ $release.Description }}</p>
+            </description>
+        </release>
+        {{ end }}
+    </releases>
+</component>

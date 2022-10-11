@@ -5,25 +5,25 @@ import (
 	"text/template"
 )
 
-type Renderer[T interface{}] struct {
+type Renderer struct {
 	filePath string
 	template string
-	data     T
+	data     interface{}
 }
 
-func NewRenderer[T interface{}](
+func NewRenderer(
 	filePath string,
 	template string,
-	data T,
-) *Renderer[T] {
-	return &Renderer[T]{
+	data interface{},
+) *Renderer {
+	return &Renderer{
 		filePath,
 		template,
 		data,
 	}
 }
 
-func (r *Renderer[T]) Render() (filePath string, fileContent string, err error) {
+func (r *Renderer) Render() (filePath string, fileContent string, err error) {
 	t, err := template.New(r.filePath).Parse(r.template)
 	if err != nil {
 		return "", "", err

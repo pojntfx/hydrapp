@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name={{ .AppName }}
+Comment={{ .AppDescription }}
+Exec={{ .AppID }}
+Icon={{ .AppID }}
+Categories=Utility;

@@ -17,6 +17,6 @@ type data struct {
 func NewRenderer(
 	appID string,
 	appName string,
-) *renderers.Renderer[data] {
+) *renderers.Renderer {
 	return renderers.NewRenderer("AndroidManifest.xml", template, data{appID, appName})
 }
