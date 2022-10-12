@@ -8,6 +8,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/androidmanifest"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/desktopentry"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/flatpak"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/metainfo"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/spec"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/wix"
@@ -76,6 +77,9 @@ func main() {
 			*appName,
 			*appDescription,
 			releases,
+		),
+		flatpak.NewRenderer(
+			*appID,
 		),
 	} {
 		if path, content, err := renderer.Render(); err != nil {
