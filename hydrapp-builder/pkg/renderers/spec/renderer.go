@@ -25,7 +25,7 @@ type Release struct {
 	Version     string `json:"version"`
 	Date        string `json:"date"`
 	Description string `json:"description"`
-	Name        string `json:"name"`
+	Author      string `json:"author"`
 	Email       string `json:"email"`
 }
 

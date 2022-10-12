@@ -10,6 +10,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/desktopentry"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/metainfo"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/spec"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/wix"
 )
 
 func main() {
@@ -19,7 +20,7 @@ func main() {
 	appDescription := flag.String("app-description", "A simple Hydrapp example app.", "App description")
 	appURL := flag.String("app-url", "https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example", "App URL")
 	appSPDX := flag.String("app-spdx", "AGPL-3.0", "App SPDX license identifier")
-	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-11", "description": "Initial release", "name": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App SPDX license identifier")
+	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-11", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App SPDX license identifier")
 	extraRHELPackages := flag.String("extra-rhel-packages", `[]`, `Extra RHEL packages (in format { "name": "firefox", "version": "89" })`)
 	extraSUSEPackages := flag.String("extra-suse-packages", `[]`, `Extra SUSE packages (in format { "name": "firefox", "version": "89" })`)
 
@@ -69,6 +70,12 @@ func main() {
 			releases,
 			rhelPackages,
 			susePackages,
+		),
+		wix.NewRenderer(
+			*appID,
+			*appName,
+			*appDescription,
+			releases,
 		),
 	} {
 		if path, content, err := renderer.Render(); err != nil {

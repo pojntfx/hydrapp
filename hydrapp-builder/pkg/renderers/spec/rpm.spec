@@ -47,6 +47,6 @@ install -D -m 0644 docs/{{ .AppID }}.1 $RPM_BUILD_ROOT/%{_mandir}/man1/{{ .AppID
 
 %changelog
 {{ range $release := .AppReleases }}
-* {{ $release.Date}} {{ $release.Name }} {{ $release.Email }} {{ $release.Version }}-1
+* {{ $release.Date}} {{ $release.Author }} {{ $release.Email }} {{ $release.Version }}-1
 - {{ $release.Description }}
 {{ end }}
