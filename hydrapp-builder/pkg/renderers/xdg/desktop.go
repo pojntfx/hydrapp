@@ -1,4 +1,4 @@
-package desktopentry
+package xdg
 
 import (
 	_ "embed"
@@ -6,19 +6,19 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 )
 
-//go:embed entry.desktop
-var template string
+//go:embed desktop.desktop
+var desktopTemplate string
 
-type data struct {
+type desktopData struct {
 	AppID          string
 	AppName        string
 	AppDescription string
 }
 
-func NewRenderer(
+func NewDesktopRenderer(
 	appID string,
 	appName string,
 	appDescription string,
 ) *renderers.Renderer {
-	return renderers.NewRenderer(appID+".desktop", template, data{appID, appName, appDescription})
+	return renderers.NewRenderer(appID+".desktop", desktopTemplate, desktopData{appID, appName, appDescription})
 }

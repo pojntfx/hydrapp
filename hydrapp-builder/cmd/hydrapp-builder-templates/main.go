@@ -6,12 +6,12 @@ import (
 	"fmt"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/androidmanifest"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/desktopentry"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/apk"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/dmg"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/flatpak"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/metainfo"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/spec"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/wix"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/msi"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/xdg"
 )
 
 func main() {
@@ -24,35 +24,47 @@ func main() {
 	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-11", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App SPDX license identifier")
 	extraRHELPackages := flag.String("extra-rhel-packages", `[]`, `Extra RHEL packages (in format { "name": "firefox", "version": "89" })`)
 	extraSUSEPackages := flag.String("extra-suse-packages", `[]`, `Extra SUSE packages (in format { "name": "firefox", "version": "89" })`)
+	appBackendPkg := flag.String("app-backend-pkg", "github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend", "App backend package")
+	appFrontendPkg := flag.String("app-frontend-pkg", "github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend", "App frontend package")
 
 	flag.Parse()
 
-	var releases []spec.Release
+	var releases []rpm.Release
 	if err := json.Unmarshal([]byte(*appReleases), &releases); err != nil {
 		panic(err)
 	}
 
-	var rhelPackages []spec.Package
+	var rhelPackages []rpm.Package
 	if err := json.Unmarshal([]byte(*extraRHELPackages), &rhelPackages); err != nil {
 		panic(err)
 	}
 
-	var susePackages []spec.Package
+	var susePackages []rpm.Package
 	if err := json.Unmarshal([]byte(*extraSUSEPackages), &susePackages); err != nil {
 		panic(err)
 	}
 
 	for _, renderer := range []*renderers.Renderer{
-		androidmanifest.NewRenderer(
+		apk.NewManifestRenderer(
 			*appID,
 			*appName,
 		),
-		desktopentry.NewRenderer(
+		apk.NewActivityRenderer(
+			*appID,
+		),
+		apk.NewHeaderRenderer(),
+		apk.NewBindingsRenderer(
+			*appID,
+			*appBackendPkg,
+			*appFrontendPkg,
+		),
+		apk.NewImplementationRenderer(),
+		xdg.NewDesktopRenderer(
 			*appID,
 			*appName,
 			*appDescription,
 		),
-		metainfo.NewRenderer(
+		xdg.NewMetainfoRenderer(
 			*appID,
 			*appName,
 			*appDescription,
@@ -61,7 +73,7 @@ func main() {
 			*appURL,
 			releases,
 		),
-		spec.NewRenderer(
+		rpm.NewSpecRenderer(
 			*appID,
 			*appName,
 			*appDescription,
@@ -72,14 +84,19 @@ func main() {
 			rhelPackages,
 			susePackages,
 		),
-		wix.NewRenderer(
+		msi.NewWixRenderer(
 			*appID,
 			*appName,
 			*appDescription,
 			releases,
 		),
-		flatpak.NewRenderer(
+		flatpak.NewManifestRenderer(
 			*appID,
+		),
+		dmg.NewInfoRenderer(
+			*appID,
+			*appName,
+			releases,
 		),
 	} {
 		if path, content, err := renderer.Render(); err != nil {

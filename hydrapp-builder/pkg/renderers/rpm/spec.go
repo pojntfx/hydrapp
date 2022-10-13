@@ -1,4 +1,4 @@
-package spec
+package rpm
 
 import (
 	_ "embed"
@@ -6,10 +6,10 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 )
 
-//go:embed rpm.spec
-var template string
+//go:embed spec.spec
+var specTemplate string
 
-type data struct {
+type specData struct {
 	AppID             string
 	AppName           string
 	AppDescription    string
@@ -34,7 +34,7 @@ type Package struct {
 	Version string `json:"version"`
 }
 
-func NewRenderer(
+func NewSpecRenderer(
 	appID string,
 	appName string,
 	appDescription string,
@@ -47,7 +47,7 @@ func NewRenderer(
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".spec",
-		template,
-		data{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraRHELPackages, extraSUSEPackages},
+		specTemplate,
+		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraRHELPackages, extraSUSEPackages},
 	)
 }

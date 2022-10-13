@@ -1,37 +1,37 @@
-package metainfo
+package xdg
 
 import (
 	_ "embed"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/spec"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
 )
 
 //go:embed metainfo.xml
-var template string
+var metainfoTemplate string
 
-type data struct {
+type metainfoData struct {
 	AppID          string
 	AppName        string
 	AppDescription string
 	AppSummary     string
 	AppSPDX        string
 	AppURL         string
-	AppReleases    []spec.Release
+	AppReleases    []rpm.Release
 }
 
-func NewRenderer(
+func NewMetainfoRenderer(
 	appID string,
 	appName string,
 	appDescription string,
 	appSummary string,
 	appSPDX string,
 	appURL string,
-	appReleases []spec.Release,
+	appReleases []rpm.Release,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".metainfo.xml",
-		template,
-		data{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases},
+		metainfoTemplate,
+		metainfoData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases},
 	)
 }

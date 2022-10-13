@@ -7,18 +7,18 @@ import (
 )
 
 //go:embed manifest.yaml
-var template string
+var manifestTemplate string
 
-type data struct {
+type manifestData struct {
 	AppID string
 }
 
-func NewRenderer(
+func NewManifestRenderer(
 	appID string,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".yaml",
-		template,
-		data{appID},
+		manifestTemplate,
+		manifestData{appID},
 	)
 }
