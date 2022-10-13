@@ -93,6 +93,7 @@ func main() {
 		flatpak.NewManifestRenderer(
 			*appID,
 		),
+		flatpak.NewSdkRenderer(),
 		dmg.NewInfoRenderer(
 			*appID,
 			*appName,
