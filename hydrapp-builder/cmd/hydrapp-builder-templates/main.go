@@ -21,10 +21,12 @@ func main() {
 	appSummary := flag.String("app-summary", "Hydrapp example app", "App summary")
 	appDescription := flag.String("app-description", "A simple Hydrapp example app.", "App description")
 	appURL := flag.String("app-url", "https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example", "App URL")
+	appGit := flag.String("app-git", "https://github.com/pojntfx/hydrapp.git", "App Git repo URL")
 	appSPDX := flag.String("app-spdx", "AGPL-3.0", "App SPDX license identifier")
 	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-11", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App SPDX license identifier")
 	extraRHELPackages := flag.String("extra-rhel-packages", `[]`, `Extra RHEL packages (in format { "name": "firefox", "version": "89" })`)
 	extraSUSEPackages := flag.String("extra-suse-packages", `[]`, `Extra SUSE packages (in format { "name": "firefox", "version": "89" })`)
+	extraDebianPackages := flag.String("extra-debian-packages", `[]`, `Extra Debian packages (in format { "name": "firefox", "version": "89" })`)
 	appBackendPkg := flag.String("app-backend-pkg", "github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend", "App backend package")
 	appFrontendPkg := flag.String("app-frontend-pkg", "github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend", "App frontend package")
 
@@ -42,6 +44,11 @@ func main() {
 
 	var susePackages []rpm.Package
 	if err := json.Unmarshal([]byte(*extraSUSEPackages), &susePackages); err != nil {
+		panic(err)
+	}
+
+	var debianPackages []rpm.Package
+	if err := json.Unmarshal([]byte(*extraDebianPackages), &debianPackages); err != nil {
 		panic(err)
 	}
 
@@ -110,6 +117,15 @@ func main() {
 			*appID,
 		),
 		deb.NewOptionsRenderer(),
+		deb.NewControlRenderer(
+			*appID,
+			*appDescription,
+			*appSummary,
+			*appURL,
+			*appGit,
+			releases,
+			debianPackages,
+		),
 	} {
 		if path, content, err := renderer.Render(); err != nil {
 			panic(err)

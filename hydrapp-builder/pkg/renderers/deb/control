@@ -1,0 +1,17 @@
+Source: {{ .AppID }}
+Section: utils
+Priority: optional
+Maintainer: {{ (index .AppReleases 0).Author }} <{{ (index .AppReleases 0).Email }}>
+Build-Depends: debhelper (>= 12.10), gccgo-go (>= 1.14), imagemagick, ca-certificates, desktop-file-utils (>= 0.24), appstream-util (>= 0.7.16), npm (>= 7.5.2){{ range $pkg := .ExtraPackages }}, {{ $pkg.Name }} (>= {{ $pkg.Version }}){{ end }}
+Standards-Version: 4.5.1
+Homepage: {{ .AppURL }}
+Vcs-Browser: {{ .AppGit }}
+Vcs-Git: {{ .AppGit }}
+Rules-Requires-Root: no
+
+Package: {{ .AppID }}
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: chromium (>= 90)
+Description: {{ .AppSummary }}
+ {{ .AppDescription }}
