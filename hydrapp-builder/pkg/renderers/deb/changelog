@@ -1,0 +1,7 @@
+{{ .AppID }} ({{ (index .AppReleases 0).Version }}) unstable; urgency=medium
+{{ range $release := .AppReleases }}
+
+  * {{ $release.Description }}
+
+  -- {{ $release.Author }} <{{ $release.Email }}>  {{ $release.Date}}
+{{ end }}

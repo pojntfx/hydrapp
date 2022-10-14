@@ -7,6 +7,7 @@ import (
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/apk"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/deb"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/dmg"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/flatpak"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/msi"
@@ -99,6 +100,16 @@ func main() {
 			*appName,
 			releases,
 		),
+		deb.NewChangelogRenderer(
+			*appID,
+			releases,
+		),
+		deb.NewCompatRenderer(),
+		deb.NewFormatRenderer(),
+		deb.NewManpagesRenderer(
+			*appID,
+		),
+		deb.NewOptionsRenderer(),
 	} {
 		if path, content, err := renderer.Render(); err != nil {
 			panic(err)
