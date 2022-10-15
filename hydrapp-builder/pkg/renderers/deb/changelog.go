@@ -2,6 +2,7 @@ package deb
 
 import (
 	_ "embed"
+	"path/filepath"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
@@ -20,7 +21,7 @@ func NewChangelogRenderer(
 	appReleases []rpm.Release,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
-		"changelog",
+		filepath.Join("debian", "changelog"),
 		changelogTemplate,
 		changelogData{appID, appReleases},
 	)

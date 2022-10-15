@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/apk"
@@ -34,14 +37,19 @@ const (
 )
 
 func main() {
+	pwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+
 	appID := flag.String("app-id", "com.pojtinger.felicitas.hydrapp.example", "App ID")
 	appName := flag.String("app-name", "Hydrapp Example", "App name")
 	appSummary := flag.String("app-summary", "Hydrapp example app", "App summary")
 	appDescription := flag.String("app-description", "A simple Hydrapp example app.", "App description")
 	appURL := flag.String("app-url", "https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example", "App URL")
 	appGit := flag.String("app-git", "https://github.com/pojntfx/hydrapp.git", "App Git repo URL")
-	appSPDX := flag.String("app-spdx", "AGPL-3.0", "App SPDX license identifier")
-	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-11", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App SPDX license identifier")
+	appSPDX := flag.String("app-spdx", "AGPL-3.0+", "App SPDX license identifier")
+	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-15T14:00:00.00Z", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App SPDX license identifier")
 	extraRHELPackages := flag.String("extra-rhel-packages", `[]`, `Extra RHEL packages (in format { "name": "firefox", "version": "89" })`)
 	extraSUSEPackages := flag.String("extra-suse-packages", `[]`, `Extra SUSE packages (in format { "name": "firefox", "version": "89" })`)
 	extraDebianPackages := flag.String("extra-debian-packages", `[]`, `Extra Debian packages (in format { "name": "firefox", "version": "89" })`)
@@ -49,6 +57,7 @@ func main() {
 	appFrontendPkg := flag.String("app-frontend-pkg", "github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend", "App frontend package")
 	appLicenseDate := flag.String("app-license-date", "2022", "App license date")
 	appLicenseText := flag.String("app-license-text", agpl3ShortText, "App license text")
+	dst := flag.String("dst", pwd, "Output directory")
 
 	flag.Parse()
 
@@ -115,7 +124,6 @@ func main() {
 		msi.NewWixRenderer(
 			*appID,
 			*appName,
-			*appDescription,
 			releases,
 		),
 		flatpak.NewManifestRenderer(
@@ -161,7 +169,15 @@ func main() {
 		if path, content, err := renderer.Render(); err != nil {
 			panic(err)
 		} else {
-			fmt.Printf("%v\n%v\n", path, content)
+			fmt.Println(filepath.Join(*dst, path))
+
+			if err := os.MkdirAll(filepath.Dir(filepath.Join(*dst, path)), os.ModePerm); err != nil {
+				panic(err)
+			}
+
+			if err := ioutil.WriteFile(filepath.Join(*dst, path), []byte(content), os.ModePerm); err != nil {
+				panic(err)
+			}
 		}
 	}
 }

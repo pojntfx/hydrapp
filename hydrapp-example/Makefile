@@ -41,7 +41,7 @@ benchmark:
 
 # Clean
 clean:
-	rm -rf out .flatpak-builder build-dir repo
+	rm -rf out pkg/frontend/node_modules pkg/frontend/.parcel-cache
 
 # Dependencies
 depend:

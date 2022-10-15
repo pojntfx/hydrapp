@@ -2,6 +2,7 @@ package deb
 
 import (
 	_ "embed"
+	"path/filepath"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 )
@@ -17,7 +18,7 @@ func NewRulesRenderer(
 	appID string,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
-		"rules",
+		filepath.Join("debian", "rules"),
 		rulesTemplate,
 		rulesData{appID},
 	)

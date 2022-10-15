@@ -45,8 +45,7 @@ install -D -m 0644 docs/{{ .AppID }}.1 $RPM_BUILD_ROOT/%{_mandir}/man1/{{ .AppID
 %{_datadir}/metainfo/{{ .AppID }}.metainfo.xml
 %{_datadir}/icons/hicolor/*/apps/{{ .AppID }}.png
 
-%changelog
-{{ range $release := .AppReleases }}
-* {{ $release.Date}} {{ $release.Author }} {{ $release.Email }} {{ $release.Version }}-1
+%changelog{{ range $release := .AppReleases }}
+* {{ $release.Date.Format "Mon Jan 02 2006" }} {{ $release.Author }} <{{ $release.Email }}> {{ $release.Version }}-1
 - {{ $release.Description }}
 {{ end }}

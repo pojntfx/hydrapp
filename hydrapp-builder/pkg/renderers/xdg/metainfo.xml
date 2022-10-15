@@ -20,7 +20,7 @@
 
     <releases>
         {{ range $release := .AppReleases }}
-        <release version="{{ $release.Version }}" date="{{ $release.Date }}">
+        <release version="{{ $release.Version }}" date='{{ $release.Date.Format "2006-01-02T15:04:05Z07:00" }}'>
             <description>
                 <p>{{ $release.Description }}</p>
             </description>

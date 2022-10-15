@@ -2,6 +2,7 @@ package deb
 
 import (
 	_ "embed"
+	"path/filepath"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
@@ -28,7 +29,7 @@ func NewCopyrightRenderer(
 	appReleases []rpm.Release,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
-		"copyright",
+		filepath.Join("debian", "copyright"),
 		copyrightTemplate,
 		copyrightData{appID, appGit, appSPDX, appLicenseDate, appLicenseText, appReleases},
 	)

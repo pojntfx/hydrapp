@@ -2,6 +2,7 @@ package rpm
 
 import (
 	_ "embed"
+	"time"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 )
@@ -22,11 +23,11 @@ type specData struct {
 }
 
 type Release struct {
-	Version     string `json:"version"`
-	Date        string `json:"date"`
-	Description string `json:"description"`
-	Author      string `json:"author"`
-	Email       string `json:"email"`
+	Version     string    `json:"version"`
+	Date        time.Time `json:"date"`
+	Description string    `json:"description"`
+	Author      string    `json:"author"`
+	Email       string    `json:"email"`
 }
 
 type Package struct {

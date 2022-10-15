@@ -2,6 +2,7 @@ package deb
 
 import (
 	_ "embed"
+	"path/filepath"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
@@ -30,7 +31,7 @@ func NewControlRenderer(
 	extraPackages []rpm.Package,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
-		"control",
+		filepath.Join("debian", "control"),
 		controlTemplate,
 		controlData{appID, appDescription, appSummary, appURL, appGit, appReleases, extraPackages},
 	)

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" UpgradeCode="ef51c36d-d276-45a9-ba66-e4e943e532f5" Name="Hydrapp Example" Manufacturer="Felicitas Pojtinger" Version="1.0.0" Language="1033" Codepage="1252">
+    <Product Id="*" UpgradeCode="com.pojtinger.felicitas.hydrapp.example" Name="Hydrapp Example" Manufacturer="Felicitas Pojtinger" Version="0.0.1" Language="1033" Codepage="1252">
         <!-- Metadata -->
-        <Package Id="ff7bfaec-c8a1-4327-a797-4c6885180699" Keywords="Installer" Description="Hydrapp Example Installer" Comments="Windows Installer Package" Manufacturer="Felicitas Pojtinger" InstallScope="perMachine" InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
+        <Package Id="*" Keywords="Installer" Description="Hydrapp Example Installer" Comments="Windows Installer Package" Manufacturer="Felicitas Pojtinger" InstallScope="perMachine" InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
         <!-- Launch after installation -->
         <CustomAction Id="LaunchAfterInstallation" Execute="immediate" Impersonate="no" Return="asyncNoWait" FileKey="[[ StartID ]]" ExeCommand="" />
@@ -16,29 +16,29 @@
         <Property Id="DiskPrompt" Value="Hydrapp Example Installer [1]" />
 
         <!-- Icon -->
-        <Icon Id="3806376c-41e8-11ed-9117-98fc84e23526" SourceFile="$(var.SourceDir)/icon.ico" />
-        <Property Id="ARPPRODUCTICON" Value="3806376c-41e8-11ed-9117-98fc84e23526" />
+        <Icon Id="AppIcon" SourceFile="$(var.SourceDir)/icon.ico" />
+        <Property Id="ARPPRODUCTICON" Value="AppIcon" />
 
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
-                <Directory Id="eb8ad0cf-2695-49a6-9c14-0ba38e2e926a" Name="Felicitas Pojtinger">
+                <Directory Id="*" Name="Felicitas Pojtinger">
                     <Directory Id="INSTALLDIR" Name="Hydrapp Example"></Directory>
                 </Directory>
             </Directory>
 
             <Directory Id="ProgramMenuFolder">
-                <Component Id="StartMenuShortcut" Guid="26630ba6-41d5-11ed-a2d9-98fc84e23526">
-                    <Shortcut Id="ApplicationStartMenuShortcut" Name="Hydrapp Example" Icon="3806376c-41e8-11ed-9117-98fc84e23526" Target="[#[[ StartID ]]]" WorkingDirectory="INSTALLDIR" />
+                <Component Id="StartMenuShortcut" Guid="*">
+                    <Shortcut Id="ApplicationStartMenuShortcut" Name="Hydrapp Example" Icon="AppIcon" Target="[#[[ StartID ]]]" WorkingDirectory="INSTALLDIR" />
                     <RemoveFolder Id="ProgramMenuFolder" On="uninstall" />
-                    <RegistryValue Root="HKCU" Key="Software\FelicitasPojtinger\hydrappExample" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                    <RegistryValue Root="HKCU" Key="Software\Felicitas Pojtinger\Hydrapp Example" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                 </Component>
             </Directory>
 
             <Directory Id="DesktopFolder">
-                <Component Id="DesktopShortcut" Guid="ca47dfe0-41f2-11ed-9979-98fc84e23526">
-                    <Shortcut Id="ApplicationDesktopShortcut" Name="Hydrapp Example" Icon="3806376c-41e8-11ed-9117-98fc84e23526" Target="[#[[ StartID ]]]" WorkingDirectory="INSTALLDIR" />
+                <Component Id="DesktopShortcut" Guid="*">
+                    <Shortcut Id="ApplicationDesktopShortcut" Name="Hydrapp Example" Icon="AppIcon" Target="[#[[ StartID ]]]" WorkingDirectory="INSTALLDIR" />
                     <RemoveFolder Id="DesktopFolder" On="uninstall" />
-                    <RegistryValue Root="HKCU" Key="Software\FelicitasPojtinger\hydrappExample" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                    <RegistryValue Root="HKCU" Key="Software\Felicitas Pojtinger\Hydrapp Example" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                 </Component>
             </Directory>
         </Directory>

@@ -2,6 +2,7 @@ package deb
 
 import (
 	_ "embed"
+	"path/filepath"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 )
@@ -12,5 +13,5 @@ var formatTemplate string
 type formatData struct{}
 
 func NewFormatRenderer() *renderers.Renderer {
-	return renderers.NewRenderer("source/format", formatTemplate, formatData{})
+	return renderers.NewRenderer(filepath.Join("debian", "source", "format"), formatTemplate, formatData{})
 }

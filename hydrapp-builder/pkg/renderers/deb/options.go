@@ -2,6 +2,7 @@ package deb
 
 import (
 	_ "embed"
+	"path/filepath"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 )
@@ -12,5 +13,5 @@ var optionsTemplate string
 type optionsData struct{}
 
 func NewOptionsRenderer() *renderers.Renderer {
-	return renderers.NewRenderer("source/options", optionsTemplate, optionsData{})
+	return renderers.NewRenderer(filepath.Join("debian", "source", "options"), optionsTemplate, optionsData{})
 }

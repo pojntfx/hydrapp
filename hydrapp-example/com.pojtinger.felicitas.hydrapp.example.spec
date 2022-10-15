@@ -3,8 +3,8 @@ Version:        0.0.1
 Release:        1%{?dist}
 Summary:        Hydrapp example app
 
-License:        AGPLv3
-URL:            https://github.com/pojntfx/hydrapp
+License:        AGPL-3.0+
+URL:            https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example
 Source0:        %{name}-%{version}.tar.gz
 
 %if 0%{?suse_version}
@@ -45,7 +45,6 @@ install -D -m 0644 docs/com.pojtinger.felicitas.hydrapp.example.1 $RPM_BUILD_ROO
 %{_datadir}/metainfo/com.pojtinger.felicitas.hydrapp.example.metainfo.xml
 %{_datadir}/icons/hicolor/*/apps/com.pojtinger.felicitas.hydrapp.example.png
 
-
 %changelog
-* Tue Sep 20 2022 Felicitas Pojtinger <felicitas@pojtinger.com> 0.0.1-1
-- Initial release.
+* Sat Oct 15 2022 Felicitas Pojtinger <felicitas@pojtinger.com> 0.0.1-1
+- Initial release

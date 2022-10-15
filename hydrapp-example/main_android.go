@@ -11,9 +11,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend"
 	_ "github.com/pojntfx/hydrapp/hydrapp-example/pkg/fixes"
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend"
+
+	backend "github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend"
+	frontend "github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend"
 )
 
 //export Java_com_pojtinger_felicitas_hydrapp_example_MainActivity_LaunchBackend
