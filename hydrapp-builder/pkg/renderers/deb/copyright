@@ -1,0 +1,11 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: {{ .AppID }}
+Upstream-Contact: {{ (index .AppReleases 0).Author }} <{{ (index .AppReleases 0).Email }}>
+Source: {{ .AppGit }}
+
+Files: *
+Copyright: {{ .AppLicenseDate }} {{ (index .AppReleases 0).Author }} <{{ (index .AppReleases 0).Email }}>
+License: {{ .AppSPDX }}
+
+License: {{ .AppSPDX }}
+ {{ .AppLicenseText }}
