@@ -25,7 +25,7 @@ if [ "${MACPORTS}" != "" ]; then
 fi
 
 # Generate dependencies
-make depend
+go generate ./...
 
 # Create icons
 mkdir -p '/tmp/out'

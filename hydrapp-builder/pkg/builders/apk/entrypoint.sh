@@ -23,7 +23,7 @@ gpg --import /tmp/private.gpg
 export BASEDIR="${PWD}"
 
 # Generate dependencies
-make depend
+go generate ./...
 
 mkdir -p '/tmp/out'
 bash -O extglob -c 'cd /tmp/out && rm -rf -- !(*.jar)'

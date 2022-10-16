@@ -5,7 +5,7 @@
         <Package Id="*" Keywords="Installer" Description="{{ .AppName }} Installer" Comments="Windows Installer Package" Manufacturer="{{ (index .AppReleases 0).Author }}" InstallScope="perMachine" InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
         <!-- Launch after installation -->
-        <CustomAction Id="LaunchAfterInstallation" Execute="immediate" Impersonate="no" Return="asyncNoWait" FileKey="[[ StartID ]]" ExeCommand="" />
+        <CustomAction Id="LaunchAfterInstallation" Execute="immediate" Impersonate="no" Return="asyncNoWait" FileKey="{ StartID }" ExeCommand="" />
         <InstallExecuteSequence>
             <RemoveExistingProducts Before="InstallInitialize" />
             <Custom Action="LaunchAfterInstallation" After="InstallFinalize" />
@@ -28,7 +28,7 @@
 
             <Directory Id="ProgramMenuFolder">
                 <Component Id="StartMenuShortcut" Guid="*">
-                    <Shortcut Id="ApplicationStartMenuShortcut" Name="{{ .AppName }}" Icon="AppIcon" Target="[#[[ StartID ]]]" WorkingDirectory="INSTALLDIR" />
+                    <Shortcut Id="ApplicationStartMenuShortcut" Name="{{ .AppName }}" Icon="AppIcon" Target="[#{ StartID }]" WorkingDirectory="INSTALLDIR" />
                     <RemoveFolder Id="ProgramMenuFolder" On="uninstall" />
                     <RegistryValue Root="HKCU" Key="Software\{{ (index .AppReleases 0).Author }}\{{ .AppName }}" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                 </Component>
@@ -36,7 +36,7 @@
 
             <Directory Id="DesktopFolder">
                 <Component Id="DesktopShortcut" Guid="*">
-                    <Shortcut Id="ApplicationDesktopShortcut" Name="{{ .AppName }}" Icon="AppIcon" Target="[#[[ StartID ]]]" WorkingDirectory="INSTALLDIR" />
+                    <Shortcut Id="ApplicationDesktopShortcut" Name="{{ .AppName }}" Icon="AppIcon" Target="[#{ StartID }]" WorkingDirectory="INSTALLDIR" />
                     <RemoveFolder Id="DesktopFolder" On="uninstall" />
                     <RegistryValue Root="HKCU" Key="Software\{{ (index .AppReleases 0).Author }}\{{ .AppName }}" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                 </Component>
