@@ -30,7 +30,7 @@ CGO_ENABLED=1 go build -o out/com.pojtinger.felicitas.hydrapp.example .
 for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert icon.png -resize ${icon} out/icon-${icon}.png; done
 
 %install
-install out/com.pojtinger.felicitas.hydrapp.example %{?buildroot}/usr/local/bin/com.pojtinger.felicitas.hydrapp.example
+install -D out/com.pojtinger.felicitas.hydrapp.example %{?buildroot}/usr/local/bin/com.pojtinger.felicitas.hydrapp.example
 desktop-file-install --dir=%{?buildroot}/usr/share/applications com.pojtinger.felicitas.hydrapp.example.desktop
 appstream-util validate-relax com.pojtinger.felicitas.hydrapp.example.metainfo.xml
 for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png %{?buildroot}/usr/share/icons/hicolor/${icon}/apps/com.pojtinger.felicitas.hydrapp.example.png; done

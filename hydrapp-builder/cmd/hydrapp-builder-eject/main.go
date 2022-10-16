@@ -53,8 +53,6 @@ func main() {
 	extraRHELPackages := flag.String("extra-rhel-packages", `[]`, `Extra RHEL packages (in format { "name": "firefox", "version": "89" })`)
 	extraSUSEPackages := flag.String("extra-suse-packages", `[]`, `Extra SUSE packages (in format { "name": "firefox", "version": "89" })`)
 	extraDebianPackages := flag.String("extra-debian-packages", `[]`, `Extra Debian packages (in format { "name": "firefox", "version": "89" })`)
-	appBackendPkg := flag.String("app-backend-pkg", "github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend", "App backend package")
-	appFrontendPkg := flag.String("app-frontend-pkg", "github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend", "App frontend package")
 	appLicenseDate := flag.String("app-license-date", "2022", "App license date")
 	appLicenseText := flag.String("app-license-text", agpl3ShortText, "App license text")
 	dst := flag.String("dst", pwd, "Output directory")
@@ -90,11 +88,6 @@ func main() {
 			*appID,
 		),
 		apk.NewHeaderRenderer(),
-		apk.NewBindingsRenderer(
-			*appID,
-			*appBackendPkg,
-			*appFrontendPkg,
-		),
 		apk.NewImplementationRenderer(),
 		xdg.NewDesktopRenderer(
 			*appID,

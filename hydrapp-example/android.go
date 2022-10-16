@@ -4,7 +4,7 @@
 package main
 
 /*
-#include "main_android.h"
+#include "android.h"
 */
 import "C"
 import (
@@ -13,21 +13,25 @@ import (
 
 	_ "github.com/pojntfx/hydrapp/hydrapp-example/pkg/fixes"
 
-	backend "{{ .AppBackendPackage }}"
-	frontend "{{ .AppFrontendPackage }}"
+	backend "github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend"
+	frontend "github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend"
 )
 
-//export Java_{{ .AppID }}_MainActivity_LaunchBackend
-func Java_{{ .AppID }}_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
+//export Java_com_pojtinger_felicitas_hydrapp_example_MainActivity_LaunchBackend
+func Java_com_pojtinger_felicitas_hydrapp_example_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
 	backendURL, _, err := backend.StartServer("", time.Second*10)
 	if err != nil {
 		log.Fatalln("could not start backend:", err)
 	}
 
+	log.Println("Backend URL:", backendURL)
+
 	frontendURL, _, err := frontend.StartServer("", backendURL)
 	if err != nil {
 		log.Fatalln("could not start frontend:", err)
 	}
+
+	log.Println("Frontend URL:", frontendURL)
 
 	return C.get_java_string(env, C.CString(frontendURL))
 }
