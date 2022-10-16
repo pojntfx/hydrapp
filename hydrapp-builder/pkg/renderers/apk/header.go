@@ -12,5 +12,5 @@ var headerTemplate string
 type headerData struct{}
 
 func NewHeaderRenderer() *renderers.Renderer {
-	return renderers.NewRenderer("android.h", headerTemplate, headerData{})
+	return renderers.NewRenderer("hydrapp_android.h", headerTemplate, headerData{})
 }

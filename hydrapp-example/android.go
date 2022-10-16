@@ -4,7 +4,7 @@
 package main
 
 /*
-#include "android.h"
+#include "hydrapp_android.h"
 */
 import "C"
 import (

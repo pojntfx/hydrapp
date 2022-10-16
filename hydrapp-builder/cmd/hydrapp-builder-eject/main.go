@@ -56,6 +56,7 @@ func main() {
 	appLicenseDate := flag.String("app-license-date", "2022", "App license date")
 	appLicenseText := flag.String("app-license-text", agpl3ShortText, "App license text")
 	dst := flag.String("dst", pwd, "Output directory")
+	overwrite := flag.Bool("overwrite", false, "Overwrite files even if they exist")
 
 	flag.Parse()
 
@@ -162,14 +163,22 @@ func main() {
 		if path, content, err := renderer.Render(); err != nil {
 			panic(err)
 		} else {
-			fmt.Println(filepath.Join(*dst, path))
-
 			if err := os.MkdirAll(filepath.Dir(filepath.Join(*dst, path)), os.ModePerm); err != nil {
 				panic(err)
 			}
 
-			if err := ioutil.WriteFile(filepath.Join(*dst, path), []byte(content), os.ModePerm); err != nil {
-				panic(err)
+			file := filepath.Join(*dst, path)
+			exists := true
+			if _, err := os.Stat(file); err != nil {
+				exists = false
+			}
+
+			if !exists || *overwrite {
+				if err := ioutil.WriteFile(file, []byte(content), os.ModePerm); err != nil {
+					panic(err)
+				}
+
+				fmt.Println(filepath.Join(*dst, path))
 			}
 		}
 	}
