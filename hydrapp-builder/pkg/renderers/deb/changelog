@@ -1,7 +1,7 @@
-{{ .AppID }} ({{ (index .AppReleases 0).Version }}) unstable; urgency=medium
-{{ range $release := .AppReleases }}
+{{ range $release := .AppReleases }}{{ $.AppID }} ({{ $release.Version }}) unstable; urgency=medium
+
   * {{ $release.Description }}
 
- -- {{ $release.Author }} <{{ $release.Email }}>  {{ $release.Date.Format "Mon, 02 Jan 15:04:05 -0700" }}
+ -- {{ $release.Author }} <{{ $release.Email }}>  {{ $release.Date.Format "Mon Jan 02 15:04:05 -0700 2006" }}
 
 {{ end }}
