@@ -135,9 +135,6 @@ func main() {
 		),
 		deb.NewCompatRenderer(),
 		deb.NewFormatRenderer(),
-		deb.NewManpagesRenderer(
-			*appID,
-		),
 		deb.NewOptionsRenderer(),
 		deb.NewControlRenderer(
 			*appID,

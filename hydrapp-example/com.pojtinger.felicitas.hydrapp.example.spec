@@ -30,17 +30,15 @@ CGO_ENABLED=1 go build -o out/com.pojtinger.felicitas.hydrapp.example .
 for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert icon.png -resize ${icon} out/icon-${icon}.png; done
 
 %install
-install -D out/com.pojtinger.felicitas.hydrapp.example %{?buildroot}/usr/local/bin/com.pojtinger.felicitas.hydrapp.example
+install -D out/com.pojtinger.felicitas.hydrapp.example %{?buildroot}/%{_bindir}/com.pojtinger.felicitas.hydrapp.example
 desktop-file-install --dir=%{?buildroot}/usr/share/applications com.pojtinger.felicitas.hydrapp.example.desktop
 appstream-util validate-relax com.pojtinger.felicitas.hydrapp.example.metainfo.xml
 for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png %{?buildroot}/usr/share/icons/hicolor/${icon}/apps/com.pojtinger.felicitas.hydrapp.example.png; done
 install -D -m 0644 com.pojtinger.felicitas.hydrapp.example.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/com.pojtinger.felicitas.hydrapp.example.metainfo.xml
-install -D -m 0644 docs/com.pojtinger.felicitas.hydrapp.example.1 $RPM_BUILD_ROOT/%{_mandir}/man1/com.pojtinger.felicitas.hydrapp.example.1
 
 %files
 %license LICENSE
 %{_bindir}/com.pojtinger.felicitas.hydrapp.example
-%{_mandir}/man1/com.pojtinger.felicitas.hydrapp.example.1*
 %{_datadir}/applications/com.pojtinger.felicitas.hydrapp.example.desktop
 %{_datadir}/metainfo/com.pojtinger.felicitas.hydrapp.example.metainfo.xml
 %{_datadir}/icons/hicolor/*/apps/com.pojtinger.felicitas.hydrapp.example.png
