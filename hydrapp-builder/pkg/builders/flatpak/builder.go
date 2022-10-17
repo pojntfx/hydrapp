@@ -84,5 +84,8 @@ func (b *Builder) Build() error {
 			"BASE_URL":         b.baseURL,
 			"ARCHITECTURE":     b.architecture,
 		},
+		func(workdir string) error {
+			return nil
+		},
 	)
 }

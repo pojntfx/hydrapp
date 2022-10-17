@@ -91,5 +91,8 @@ func (b *Builder) Build() error {
 			}(),
 			"MACPORTS": strings.Join(b.packages, " "),
 		},
+		func(workdir string) error {
+			return nil
+		},
 	)
 }

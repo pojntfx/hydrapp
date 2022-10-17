@@ -137,6 +137,8 @@ func main() {
 			*apkCertContent,
 			*apkCertPassword,
 			*baseURL+"apk",
+			*appID,
+			false,
 		),
 		deb.NewBuilder(
 			ctx,
@@ -252,6 +254,8 @@ func main() {
 				panic(err)
 			}
 		}(b)
+
+		break
 	}
 
 	wg.Wait()

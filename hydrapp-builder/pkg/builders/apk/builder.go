@@ -5,6 +5,9 @@ import (
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/apk"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 const (
@@ -26,7 +29,9 @@ func NewBuilder(
 	gpgKeyPassword, // base64-encoded password for the GPG key
 	androidCertContent, // base64-encoded Android cert contents
 	androidCertPassword, // base64-encoded password for the Android cert
-	baseURL string, // Base URL where the repo is to be hosted
+	baseURL, // Base URL where the repo is to be hosted
+	appName string, // App name
+	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -44,6 +49,8 @@ func NewBuilder(
 		androidCertContent,
 		androidCertPassword,
 		baseURL,
+		appName,
+		overwrite,
 	}
 }
 
@@ -62,7 +69,9 @@ type Builder struct {
 	gpgKeyPassword,
 	androidCertContent,
 	androidCertPassword,
-	baseURL string
+	baseURL,
+	appName string
+	overwrite bool
 }
 
 func (b *Builder) Build() error {
@@ -84,6 +93,23 @@ func (b *Builder) Build() error {
 			"ANDROID_CERT_CONTENT":  b.androidCertContent,
 			"ANDROID_CERT_PASSWORD": b.androidCertPassword,
 			"BASE_URL":              b.baseURL,
+		},
+		func(workdir string) error {
+			return utils.WriteRenders(
+				workdir,
+				[]*renderers.Renderer{
+					apk.NewManifestRenderer(
+						b.appID,
+						b.appName,
+					),
+					apk.NewActivityRenderer(
+						b.appID,
+					),
+					apk.NewHeaderRenderer(),
+					apk.NewImplementationRenderer(),
+				},
+				b.overwrite,
+			)
 		},
 	)
 }

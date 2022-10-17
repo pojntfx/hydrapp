@@ -27,6 +27,6 @@ RUN yes | cpan install File::Slurp
 
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /src
+WORKDIR /work
 
 CMD /entrypoint.sh

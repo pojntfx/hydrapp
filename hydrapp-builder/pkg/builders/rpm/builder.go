@@ -96,5 +96,8 @@ func (b *Builder) Build() error {
 			"PACKAGE_VERSION":  b.packageVersion,
 			"PACKAGE_SUFFIX":   b.packageSuffix,
 		},
+		func(workdir string) error {
+			return nil
+		},
 	)
 }

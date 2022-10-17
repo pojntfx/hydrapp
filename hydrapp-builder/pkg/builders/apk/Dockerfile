@@ -36,6 +36,6 @@ ENV ANDROID_NDK_VERSION='30'
 
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /src
+WORKDIR /work
 
 CMD /entrypoint.sh

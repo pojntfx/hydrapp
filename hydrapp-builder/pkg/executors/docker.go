@@ -13,6 +13,7 @@ import (
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
+	cp "github.com/otiai10/copy"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
@@ -27,6 +28,7 @@ func DockerRunImage(
 	onID func(id string),
 	onOutput func(shortID string, color string, timestamp int64, message string),
 	env map[string]string,
+	renderTemplates func(workdir string) error,
 ) error {
 	if pull {
 		reader, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
@@ -37,6 +39,20 @@ func DockerRunImage(
 		if _, err := io.Copy(os.Stderr, reader); err != nil {
 			return err
 		}
+	}
+
+	workdir, err := os.MkdirTemp("", "hydrapp-build-dir-")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(workdir)
+
+	if err := cp.Copy(src, workdir); err != nil {
+		return err
+	}
+
+	if err := renderTemplates(workdir); err != nil {
+		return err
 	}
 
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
@@ -57,7 +73,7 @@ func DockerRunImage(
 	}, &container.HostConfig{
 		Privileged: privileged,
 		Binds: []string{
-			src + ":/src:ro",
+			workdir + ":/work:z",
 			dst + ":/dst:z",
 		},
 	}, nil, nil, "")

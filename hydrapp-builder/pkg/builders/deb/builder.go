@@ -109,5 +109,8 @@ func (b *Builder) Build() error {
 			"ARCHITECTURE":     b.architecture,
 			"PACKAGE_VERSION":  b.packageVersion,
 		},
+		func(workdir string) error {
+			return nil
+		},
 	)
 }

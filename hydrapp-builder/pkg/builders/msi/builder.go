@@ -85,5 +85,8 @@ func (b *Builder) Build() error {
 			"ARCHITECTURE":     b.architecture,
 			"MSYS2PACKAGES":    strings.Join(b.packages, " "),
 		},
+		func(workdir string) error {
+			return nil
+		},
 	)
 }

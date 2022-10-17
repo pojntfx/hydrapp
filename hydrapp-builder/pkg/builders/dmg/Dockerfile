@@ -28,6 +28,6 @@ RUN cargo install apple-codesign
 
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /src
+WORKDIR /work
 
 CMD /entrypoint.sh

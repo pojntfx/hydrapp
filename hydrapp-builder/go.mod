@@ -2,7 +2,10 @@ module github.com/pojntfx/hydrapp/hydrapp-builder
 
 go 1.18
 
-require github.com/docker/docker v20.10.18+incompatible
+require (
+	github.com/docker/docker v20.10.18+incompatible
+	github.com/otiai10/copy v1.7.0
+)
 
 require (
 	github.com/Microsoft/go-winio v0.6.0 // indirect
