@@ -6,6 +6,10 @@ import (
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/deb"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 const (
@@ -34,6 +38,16 @@ func NewBuilder(
 	components []string, // Components to use
 	debootstrapopts, // Options to pass to debootstrap
 	architecture string, // Architecture to build for
+	releases []rpm.Release, // App releases
+	appDescription string, // App description
+	appSummary, // App summary
+	appURL, // App URL
+	appGit string, // App Git repo URL
+	extraDebianPackages []rpm.Package, // Extra Debian packages
+	appSPDX, // App SPDX license identifier
+	appLicenseDate, // App license date
+	appLicenseText string, // App license text
+	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -57,6 +71,16 @@ func NewBuilder(
 		components,
 		debootstrapopts,
 		architecture,
+		releases,
+		appDescription,
+		appSummary,
+		appURL,
+		appGit,
+		extraDebianPackages,
+		appSPDX,
+		appLicenseDate,
+		appLicenseText,
+		overwrite,
 	}
 }
 
@@ -82,6 +106,16 @@ type Builder struct {
 	components []string
 	debootstrapopts,
 	architecture string
+	releases       []rpm.Release
+	appDescription string
+	appSummary,
+	appURL,
+	appGit string
+	extraDebianPackages []rpm.Package
+	appSPDX,
+	appLicenseDate,
+	appLicenseText string
+	overwrite bool
 }
 
 func (b *Builder) Build() error {
@@ -110,7 +144,39 @@ func (b *Builder) Build() error {
 			"PACKAGE_VERSION":  b.packageVersion,
 		},
 		func(workdir string) error {
-			return nil
+			return utils.WriteRenders(
+				workdir,
+				[]*renderers.Renderer{
+					deb.NewChangelogRenderer(
+						b.appID,
+						b.releases,
+					),
+					deb.NewCompatRenderer(),
+					deb.NewFormatRenderer(),
+					deb.NewOptionsRenderer(),
+					deb.NewControlRenderer(
+						b.appID,
+						b.appDescription,
+						b.appSummary,
+						b.appURL,
+						b.appGit,
+						b.releases,
+						b.extraDebianPackages,
+					),
+					deb.NewCopyrightRenderer(
+						b.appID,
+						b.appGit,
+						b.appSPDX,
+						b.appLicenseDate,
+						b.appLicenseText,
+						b.releases,
+					),
+					deb.NewRulesRenderer(
+						b.appID,
+					),
+				},
+				b.overwrite,
+			)
 		},
 	)
 }

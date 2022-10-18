@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -24,7 +25,26 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/flatpak"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/rpm"
+	rrpm "github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
+)
+
+const (
+	agpl3ShortText = `This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU Affero General Public License for more details.
+ .
+ You should have received a copy of the GNU Affero General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".`
 )
 
 func main() {
@@ -35,6 +55,14 @@ func main() {
 
 	appID := flag.String("app-id", "com.pojtinger.felicitas.hydrapp.example", "Android app ID to use")
 	appName := flag.String("app-name", "Hydrapp Example", "Human-readable name for the app")
+	appSummary := flag.String("app-summary", "Hydrapp example app", "App summary")
+	appDescription := flag.String("app-description", "A simple Hydrapp example app.", "App description")
+	appURL := flag.String("app-url", "https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example", "App URL")
+	appGit := flag.String("app-git", "https://github.com/pojntfx/hydrapp.git", "App Git repo URL")
+	appSPDX := flag.String("app-spdx", "AGPL-3.0+", "App SPDX license identifier")
+	appLicenseDate := flag.String("app-license-date", "2022", "App license date")
+	appLicenseText := flag.String("app-license-text", agpl3ShortText, "App license text")
+	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-15T14:00:00.00Z", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App releases")
 
 	pull := flag.Bool("pull", false, "Whether to pull the images or not")
 	src := flag.String("src", pwd, "Source directory")
@@ -49,6 +77,7 @@ func main() {
 	apkCertPassword := flag.String("apk-cert-password", "", " base64-encoded password for the Android cert")
 
 	debPackageVersion := flag.String("deb-package-version", "0.0.1", "DEB package version")
+	debExtraPackages := flag.String("deb-extra-packages", `[]`, `Extra Debian packages (in format { "name": "firefox", "version": "89" })`)
 
 	dmgUniversal := flag.Bool("dmg-universal", true, "Whether to build a universal instead of amd64-only binary and DMG image")
 
@@ -61,6 +90,16 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+
+	var releases []rrpm.Release
+	if err := json.Unmarshal([]byte(*appReleases), &releases); err != nil {
+		panic(err)
+	}
+
+	var debianPackages []rrpm.Package
+	if err := json.Unmarshal([]byte(*debExtraPackages), &debianPackages); err != nil {
+		panic(err)
+	}
 
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
@@ -162,6 +201,16 @@ func main() {
 			[]string{"main", "contrib"},
 			"",
 			"amd64",
+			releases,
+			*appDescription,
+			*appSummary,
+			*appURL,
+			*appGit,
+			debianPackages,
+			*appSPDX,
+			*appLicenseDate,
+			*appLicenseText,
+			false,
 		),
 		dmg.NewBuilder(
 			ctx,
