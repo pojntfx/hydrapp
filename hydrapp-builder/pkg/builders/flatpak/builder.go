@@ -5,6 +5,11 @@ import (
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/flatpak"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/xdg"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 const (
@@ -26,7 +31,14 @@ func NewBuilder(
 	gpgKeyPassword, // base64-encoded password for the GPG key
 	gpgKeyID, // ID of the GPG key to use
 	baseURL, // Base URL where the repo is to be hosted
-	architecture string, // Architecture to build for
+	architecture, // Architecture to build for
+	appName, // App name
+	appDescription, // App description
+	appSummary, // App summary
+	appSPDX, // App SPDX license identifier
+	appURL string, // App URL
+	releases []rpm.Release, // App releases
+	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -44,6 +56,13 @@ func NewBuilder(
 		gpgKeyID,
 		baseURL,
 		architecture,
+		appName,
+		appDescription,
+		appSummary,
+		appSPDX,
+		appURL,
+		releases,
+		overwrite,
 	}
 }
 
@@ -62,7 +81,14 @@ type Builder struct {
 	gpgKeyPassword,
 	gpgKeyID,
 	baseURL,
-	architecture string
+	architecture,
+	appName,
+	appDescription,
+	appSummary,
+	appSPDX,
+	appURL string
+	releases  []rpm.Release
+	overwrite bool
 }
 
 func (b *Builder) Build() error {
@@ -85,7 +111,30 @@ func (b *Builder) Build() error {
 			"ARCHITECTURE":     b.architecture,
 		},
 		func(workdir string) error {
-			return nil
+			return utils.WriteRenders(
+				workdir,
+				[]*renderers.Renderer{
+					xdg.NewDesktopRenderer(
+						b.appID,
+						b.appName,
+						b.appDescription,
+					),
+					xdg.NewMetainfoRenderer(
+						b.appID,
+						b.appName,
+						b.appDescription,
+						b.appSummary,
+						b.appSPDX,
+						b.appURL,
+						b.releases,
+					),
+					flatpak.NewManifestRenderer(
+						b.appID,
+					),
+					flatpak.NewSdkRenderer(),
+				},
+				b.overwrite,
+			)
 		},
 	)
 }

@@ -210,6 +210,7 @@ func main() {
 			*appSPDX,
 			*appLicenseDate,
 			*appLicenseText,
+			*appName,
 			false,
 		),
 		dmg.NewBuilder(
@@ -228,6 +229,8 @@ func main() {
 			*gpgKeyPassword,
 			*dmgUniversal,
 			[]string{},
+			releases,
+			false,
 		),
 		flatpak.NewBuilder(
 			ctx,
@@ -245,6 +248,13 @@ func main() {
 			*gpgKeyID,
 			*baseURL+"flatpak/x86_64",
 			"amd64",
+			*appName,
+			*appDescription,
+			*appSummary,
+			*appSPDX,
+			*appURL,
+			releases,
+			false,
 		),
 		msi.NewBuilder(
 			ctx,

@@ -9,6 +9,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/deb"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/xdg"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
@@ -46,7 +47,8 @@ func NewBuilder(
 	extraDebianPackages []rpm.Package, // Extra Debian packages
 	appSPDX, // App SPDX license identifier
 	appLicenseDate, // App license date
-	appLicenseText string, // App license text
+	appLicenseText, // App license text
+	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
@@ -80,6 +82,7 @@ func NewBuilder(
 		appSPDX,
 		appLicenseDate,
 		appLicenseText,
+		appName,
 		overwrite,
 	}
 }
@@ -114,7 +117,8 @@ type Builder struct {
 	extraDebianPackages []rpm.Package
 	appSPDX,
 	appLicenseDate,
-	appLicenseText string
+	appLicenseText,
+	appName string
 	overwrite bool
 }
 
@@ -147,6 +151,20 @@ func (b *Builder) Build() error {
 			return utils.WriteRenders(
 				workdir,
 				[]*renderers.Renderer{
+					xdg.NewDesktopRenderer(
+						b.appID,
+						b.appName,
+						b.appDescription,
+					),
+					xdg.NewMetainfoRenderer(
+						b.appID,
+						b.appName,
+						b.appDescription,
+						b.appSummary,
+						b.appSPDX,
+						b.appURL,
+						b.releases,
+					),
 					deb.NewChangelogRenderer(
 						b.appID,
 						b.releases,

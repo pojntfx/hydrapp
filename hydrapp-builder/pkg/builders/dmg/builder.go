@@ -6,6 +6,10 @@ import (
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/dmg"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 const (
@@ -28,6 +32,8 @@ func NewBuilder(
 	gpgKeyPassword string, // base64-encoded password for the GPG key
 	universal bool, // Build universal (amd64 and arm64) binary instead of amd64 only
 	packages []string, // MacPorts packages to install
+	releases []rpm.Release, // App releases
+	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -45,6 +51,8 @@ func NewBuilder(
 		gpgKeyPassword,
 		universal,
 		packages,
+		releases,
+		overwrite,
 	}
 }
 
@@ -64,6 +72,8 @@ type Builder struct {
 	gpgKeyPassword string
 	universal bool
 	packages  []string
+	releases  []rpm.Release
+	overwrite bool
 }
 
 func (b *Builder) Build() error {
@@ -92,7 +102,17 @@ func (b *Builder) Build() error {
 			"MACPORTS": strings.Join(b.packages, " "),
 		},
 		func(workdir string) error {
-			return nil
+			return utils.WriteRenders(
+				workdir,
+				[]*renderers.Renderer{
+					dmg.NewInfoRenderer(
+						b.appID,
+						b.appName,
+						b.releases,
+					),
+				},
+				b.overwrite,
+			)
 		},
 	)
 }
