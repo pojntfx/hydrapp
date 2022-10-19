@@ -11,17 +11,13 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/utils"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 
 var (
 	//go:embed out
 	UI embed.FS
 )
-
-type exampleStruct struct {
-	Name string `json:"name"`
-}
 
 func StartServer(addr string, backendURL string) (string, func() error, error) {
 	var listener net.Listener

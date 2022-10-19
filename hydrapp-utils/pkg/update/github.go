@@ -23,7 +23,7 @@ import (
 	"time"
 
 	"github.com/ncruces/zenity"
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/utils"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 
 var (

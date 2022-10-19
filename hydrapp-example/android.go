@@ -11,7 +11,7 @@ import (
 	"log"
 	"time"
 
-	_ "github.com/pojntfx/hydrapp/hydrapp-example/pkg/fixes"
+	_ "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/fixes"
 
 	backend "github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend"
 	frontend "github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend"

@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/rpc"
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/utils"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/rpc"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 
 type exampleStruct struct {

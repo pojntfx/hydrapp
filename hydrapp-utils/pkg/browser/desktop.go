@@ -9,8 +9,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/update"
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/utils"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 
 const (

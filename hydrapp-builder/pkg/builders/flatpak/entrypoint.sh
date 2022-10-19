@@ -41,7 +41,7 @@ flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" --repo='/dst' 
 flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" --repo='/dst' --force-clean "build-dir" "${APP_ID}.yaml"
 
 # Export `.flatpak` to out dir
-flatpak --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" build-bundle '/dst' "out/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"
+flatpak --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" build-bundle '/dst' "/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"
 
 echo "[Flatpak Repo]
 Title=Hydrapp Flatpak repo

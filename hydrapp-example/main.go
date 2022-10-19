@@ -10,11 +10,11 @@ import (
 	"time"
 
 	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend"
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/browser"
-	_ "github.com/pojntfx/hydrapp/hydrapp-example/pkg/fixes"
 	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend"
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/update"
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/utils"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/browser"
+	_ "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/fixes"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 
 const (
