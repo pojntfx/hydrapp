@@ -6,6 +6,10 @@ import (
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/msi"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 const (
@@ -28,6 +32,8 @@ func NewBuilder(
 	gpgKeyPassword, // base64-encoded password for the GPG key
 	architecture string, // Architecture to build for
 	packages []string, // MSYS2 packages to install. Only supported for amd64.
+	releases []rpm.Release, // App releases
+	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -45,6 +51,8 @@ func NewBuilder(
 		gpgKeyPassword,
 		architecture,
 		packages,
+		releases,
+		overwrite,
 	}
 }
 
@@ -63,7 +71,9 @@ type Builder struct {
 	gpgKeyContent,
 	gpgKeyPassword,
 	architecture string
-	packages []string
+	packages  []string
+	releases  []rpm.Release
+	overwrite bool
 }
 
 func (b *Builder) Build() error {
@@ -86,7 +96,17 @@ func (b *Builder) Build() error {
 			"MSYS2PACKAGES":    strings.Join(b.packages, " "),
 		},
 		func(workdir string) error {
-			return nil
+			return utils.WriteRenders(
+				workdir,
+				[]*renderers.Renderer{
+					msi.NewWixRenderer(
+						b.appID,
+						b.appName,
+						b.releases,
+					),
+				},
+				b.overwrite,
+			)
 		},
 	)
 }

@@ -83,6 +83,8 @@ func main() {
 
 	rpmPackageVersion := flag.String("rpm-package-version", "0.0.1", "RPM package version")
 	rpmPackageSuffix := flag.String("rpm-package-suffix", "1.fc36", "RPM package suffix")
+	rpmExtraRHELPackages := flag.String("rpm-extra-rhel-packages", `[]`, `Extra RHEL packages (in format { "name": "firefox", "version": "89" })`)
+	rpmExtraSUSEPackages := flag.String("rpm-extra-suse-packages", `[]`, `Extra SUSE packages (in format { "name": "firefox", "version": "89" })`)
 
 	concurrency := flag.Int("concurrency", 1, "Maximum amount of concurrent builders to run at once")
 
@@ -98,6 +100,16 @@ func main() {
 
 	var debianPackages []rrpm.Package
 	if err := json.Unmarshal([]byte(*debExtraPackages), &debianPackages); err != nil {
+		panic(err)
+	}
+
+	var rhelPackages []rrpm.Package
+	if err := json.Unmarshal([]byte(*rpmExtraRHELPackages), &rhelPackages); err != nil {
+		panic(err)
+	}
+
+	var susePackages []rrpm.Package
+	if err := json.Unmarshal([]byte(*rpmExtraSUSEPackages), &susePackages); err != nil {
 		panic(err)
 	}
 
@@ -272,6 +284,8 @@ func main() {
 			*gpgKeyPassword,
 			"amd64",
 			[]string{},
+			releases,
+			false,
 		),
 		rpm.NewBuilder(
 			ctx,
@@ -292,6 +306,15 @@ func main() {
 			"fedora-36",
 			"amd64",
 			*rpmPackageSuffix,
+			*appName,
+			*appDescription,
+			*appSummary,
+			*appURL,
+			*appSPDX,
+			releases,
+			rhelPackages,
+			susePackages,
+			false,
 		),
 	}
 
@@ -313,8 +336,6 @@ func main() {
 				panic(err)
 			}
 		}(b)
-
-		break
 	}
 
 	wg.Wait()

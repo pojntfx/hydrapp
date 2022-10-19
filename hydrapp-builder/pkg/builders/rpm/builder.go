@@ -5,6 +5,10 @@ import (
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/xdg"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 const (
@@ -29,7 +33,16 @@ func NewBuilder(
 	packageVersion, // RPM package version
 	distro, // Distro to build for
 	architecture, // Architecture to build for
-	packageSuffix string, // RPM package suffix
+	packageSuffix, // RPM package suffix
+	appName, // App name
+	appDescription, // App description
+	appSummary, // App summary
+	appURL, // App URL
+	appSPDX string, // App SPDX license identifier
+	releases []rpm.Release, // App releases
+	extraRHELPackages []rpm.Package, // Extra RHEL packages
+	extraSUSEPackages []rpm.Package, // Extra SUSE packages
+	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -50,6 +63,15 @@ func NewBuilder(
 		distro,
 		architecture,
 		packageSuffix,
+		appName,
+		appDescription,
+		appSummary,
+		appURL,
+		appSPDX,
+		releases,
+		extraRHELPackages,
+		extraSUSEPackages,
+		overwrite,
 	}
 }
 
@@ -71,7 +93,16 @@ type Builder struct {
 	packageVersion,
 	distro,
 	architecture,
-	packageSuffix string
+	packageSuffix,
+	appName,
+	appDescription,
+	appSummary,
+	appURL,
+	appSPDX string
+	releases []rpm.Release
+	extraRHELPackages,
+	extraSUSEPackages []rpm.Package
+	overwrite bool
 }
 
 func (b *Builder) Build() error {
@@ -97,7 +128,37 @@ func (b *Builder) Build() error {
 			"PACKAGE_SUFFIX":   b.packageSuffix,
 		},
 		func(workdir string) error {
-			return nil
+			return utils.WriteRenders(
+				workdir,
+				[]*renderers.Renderer{
+					xdg.NewDesktopRenderer(
+						b.appID,
+						b.appName,
+						b.appDescription,
+					),
+					xdg.NewMetainfoRenderer(
+						b.appID,
+						b.appName,
+						b.appDescription,
+						b.appSummary,
+						b.appSPDX,
+						b.appURL,
+						b.releases,
+					),
+					rpm.NewSpecRenderer(
+						b.appID,
+						b.appName,
+						b.appDescription,
+						b.appSummary,
+						b.appSPDX,
+						b.appURL,
+						b.releases,
+						b.extraRHELPackages,
+						b.extraSUSEPackages,
+					),
+				},
+				b.overwrite,
+			)
 		},
 	)
 }
