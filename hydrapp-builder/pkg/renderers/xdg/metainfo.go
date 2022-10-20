@@ -4,7 +4,6 @@ import (
 	_ "embed"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
 )
 
 //go:embed metainfo.xml
@@ -17,7 +16,7 @@ type metainfoData struct {
 	AppSummary     string
 	AppSPDX        string
 	AppURL         string
-	AppReleases    []rpm.Release
+	AppReleases    []renderers.Release
 }
 
 func NewMetainfoRenderer(
@@ -27,7 +26,7 @@ func NewMetainfoRenderer(
 	appSummary string,
 	appSPDX string,
 	appURL string,
-	appReleases []rpm.Release,
+	appReleases []renderers.Release,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".metainfo.xml",

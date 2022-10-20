@@ -50,28 +50,21 @@ func main() {
 	appGit := flag.String("app-git", "https://github.com/pojntfx/hydrapp.git", "App Git repo URL")
 	appSPDX := flag.String("app-spdx", "AGPL-3.0+", "App SPDX license identifier")
 	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-15T14:00:00.00Z", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App releases")
-	extraRHELPackages := flag.String("extra-rhel-packages", `[]`, `Extra RHEL packages (in format { "name": "firefox", "version": "89" })`)
-	extraSUSEPackages := flag.String("extra-suse-packages", `[]`, `Extra SUSE packages (in format { "name": "firefox", "version": "89" })`)
+	extraRPMPackages := flag.String("extra-rpm-packages", `[]`, `Extra RPM packages (in format { "name": "firefox", "version": "89" })`)
 	extraDebianPackages := flag.String("extra-debian-packages", `[]`, `Extra Debian packages (in format { "name": "firefox", "version": "89" })`)
-	appLicenseDate := flag.String("app-license-date", "2022", "App license date")
 	appLicenseText := flag.String("app-license-text", agpl3ShortText, "App license text")
 	dst := flag.String("dst", pwd, "Output directory")
 	overwrite := flag.Bool("overwrite", false, "Overwrite files even if they exist")
 
 	flag.Parse()
 
-	var releases []rpm.Release
+	var releases []renderers.Release
 	if err := json.Unmarshal([]byte(*appReleases), &releases); err != nil {
 		panic(err)
 	}
 
-	var rhelPackages []rpm.Package
-	if err := json.Unmarshal([]byte(*extraRHELPackages), &rhelPackages); err != nil {
-		panic(err)
-	}
-
-	var susePackages []rpm.Package
-	if err := json.Unmarshal([]byte(*extraSUSEPackages), &susePackages); err != nil {
+	var rpmPackages []rpm.Package
+	if err := json.Unmarshal([]byte(*extraRPMPackages), &rpmPackages); err != nil {
 		panic(err)
 	}
 
@@ -112,8 +105,7 @@ func main() {
 			*appSPDX,
 			*appURL,
 			releases,
-			rhelPackages,
-			susePackages,
+			rpmPackages,
 		),
 		msi.NewWixRenderer(
 			*appID,
@@ -149,7 +141,6 @@ func main() {
 			*appID,
 			*appGit,
 			*appSPDX,
-			*appLicenseDate,
 			*appLicenseText,
 			releases,
 		),

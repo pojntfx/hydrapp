@@ -32,21 +32,19 @@ func NewBuilder(
 	gpgKeyPassword, // base64-encoded password for the GPG key
 	gpgKeyID, // ID of the GPG key to use
 	baseURL, // Base URL where the repo is to be hosted
-	packageVersion, // DEB package version
 	os, // OS to build for
 	distro, // Distro to build for
 	mirrorsite string, // Mirror to use
 	components []string, // Components to use
 	debootstrapopts, // Options to pass to debootstrap
 	architecture string, // Architecture to build for
-	releases []rpm.Release, // App releases
+	releases []renderers.Release, // App releases
 	appDescription string, // App description
 	appSummary, // App summary
 	appURL, // App URL
 	appGit string, // App Git repo URL
 	extraDebianPackages []rpm.Package, // Extra Debian packages
 	appSPDX, // App SPDX license identifier
-	appLicenseDate, // App license date
 	appLicenseText, // App license text
 	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
@@ -66,7 +64,6 @@ func NewBuilder(
 		gpgKeyPassword,
 		gpgKeyID,
 		baseURL,
-		packageVersion,
 		os,
 		distro,
 		mirrorsite,
@@ -80,7 +77,6 @@ func NewBuilder(
 		appGit,
 		extraDebianPackages,
 		appSPDX,
-		appLicenseDate,
 		appLicenseText,
 		appName,
 		overwrite,
@@ -102,21 +98,19 @@ type Builder struct {
 	gpgKeyPassword,
 	gpgKeyID,
 	baseURL,
-	packageVersion,
 	os,
 	distro,
 	mirrorsite string
 	components []string
 	debootstrapopts,
 	architecture string
-	releases       []rpm.Release
+	releases       []renderers.Release
 	appDescription string
 	appSummary,
 	appURL,
 	appGit string
 	extraDebianPackages []rpm.Package
 	appSPDX,
-	appLicenseDate,
 	appLicenseText,
 	appName string
 	overwrite bool
@@ -145,7 +139,7 @@ func (b *Builder) Build() error {
 			"COMPONENTS":       strings.Join(b.components, " "),
 			"DEBOOTSTRAPOPTS":  b.debootstrapopts,
 			"ARCHITECTURE":     b.architecture,
-			"PACKAGE_VERSION":  b.packageVersion,
+			"PACKAGE_VERSION":  b.releases[len(b.releases)-1].Version,
 		},
 		func(workdir string) error {
 			return utils.WriteRenders(
@@ -185,7 +179,6 @@ func (b *Builder) Build() error {
 						b.appID,
 						b.appGit,
 						b.appSPDX,
-						b.appLicenseDate,
 						b.appLicenseText,
 						b.releases,
 					),

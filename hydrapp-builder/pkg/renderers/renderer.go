@@ -3,7 +3,16 @@ package renderers
 import (
 	"bytes"
 	"text/template"
+	"time"
 )
+
+type Release struct {
+	Version     string    `json:"version"`
+	Date        time.Time `json:"date"`
+	Description string    `json:"description"`
+	Author      string    `json:"author"`
+	Email       string    `json:"email"`
+}
 
 type Renderer struct {
 	filePath string
@@ -24,7 +33,14 @@ func NewRenderer(
 }
 
 func (r *Renderer) Render() (filePath string, fileContent string, err error) {
-	t, err := template.New(r.filePath).Parse(r.template)
+	t, err := template.
+		New(r.filePath).
+		Funcs(template.FuncMap{
+			"LastRelease": func(releases []Release) Release {
+				return releases[len(releases)-1]
+			},
+		}).
+		Parse(r.template)
 	if err != nil {
 		return "", "", err
 	}

@@ -17,7 +17,7 @@ type controlData struct {
 	AppSummary     string
 	AppURL         string
 	AppGit         string
-	AppReleases    []rpm.Release
+	AppReleases    []renderers.Release
 	ExtraPackages  []rpm.Package
 }
 
@@ -27,7 +27,7 @@ func NewControlRenderer(
 	appSummary string,
 	appURL string,
 	appGit string,
-	appReleases []rpm.Release,
+	appReleases []renderers.Release,
 	extraPackages []rpm.Package,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(

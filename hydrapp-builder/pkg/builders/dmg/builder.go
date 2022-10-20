@@ -8,7 +8,6 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/dmg"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
@@ -32,7 +31,7 @@ func NewBuilder(
 	gpgKeyPassword string, // base64-encoded password for the GPG key
 	universal bool, // Build universal (amd64 and arm64) binary instead of amd64 only
 	packages []string, // MacPorts packages to install
-	releases []rpm.Release, // App releases
+	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
@@ -72,7 +71,7 @@ type Builder struct {
 	gpgKeyPassword string
 	universal bool
 	packages  []string
-	releases  []rpm.Release
+	releases  []renderers.Release
 	overwrite bool
 }
 

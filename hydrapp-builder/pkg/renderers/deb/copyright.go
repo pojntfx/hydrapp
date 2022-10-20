@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
 )
 
 //go:embed copyright
@@ -15,22 +14,20 @@ type copyrightData struct {
 	AppID          string
 	AppGit         string
 	AppSPDX        string
-	AppLicenseDate string
 	AppLicenseText string
-	AppReleases    []rpm.Release
+	AppReleases    []renderers.Release
 }
 
 func NewCopyrightRenderer(
 	appID string,
 	appGit string,
 	appSPDX string,
-	appLicenseDate string,
 	appLicenseText string,
-	appReleases []rpm.Release,
+	appReleases []renderers.Release,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		filepath.Join("debian", "copyright"),
 		copyrightTemplate,
-		copyrightData{appID, appGit, appSPDX, appLicenseDate, appLicenseText, appReleases},
+		copyrightData{appID, appGit, appSPDX, appLicenseText, appReleases},
 	)
 }

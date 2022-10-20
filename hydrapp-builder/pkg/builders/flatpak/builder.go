@@ -7,7 +7,6 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/flatpak"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/xdg"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
@@ -37,7 +36,7 @@ func NewBuilder(
 	appSummary, // App summary
 	appSPDX, // App SPDX license identifier
 	appURL string, // App URL
-	releases []rpm.Release, // App releases
+	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
@@ -87,7 +86,7 @@ type Builder struct {
 	appSummary,
 	appSPDX,
 	appURL string
-	releases  []rpm.Release
+	releases  []renderers.Release
 	overwrite bool
 }
 

@@ -1,5 +1,5 @@
 Name:           {{ .AppID }}
-Version:        {{ (index .AppReleases 0).Version }}
+Version:        {{ (LastRelease .AppReleases).Version }}
 Release:        1%{?dist}
 Summary:        {{ .AppSummary }}
 
@@ -8,9 +8,9 @@ URL:            {{ .AppURL }}
 Source0:        %{name}-%{version}.tar.gz
 
 %if 0%{?suse_version}
-BuildRequires: go >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, appstream-glib >= 0.7.16, npm >= 8.11.0{{ range $pkg := .ExtraSUSEPackages }}, {{ $pkg.Name }} >= {{ $pkg.Version }}{{ end }}
+BuildRequires: go >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, appstream-glib >= 0.7.16, npm >= 8.11.0{{ range $pkg := .ExtraPackages }}, {{ $pkg.Name }} >= {{ $pkg.Version }}{{ end }}
 %else
-BuildRequires: golang >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, libappstream-glib >= 0.7.14, npm >= 8.11.0{{ range $pkg := .ExtraRHELPackages }}, {{ $pkg.Name }} >= {{ $pkg.Version }}{{ end }}
+BuildRequires: golang >= 1.15 ImageMagick >= 6, desktop-file-utils >= 0.23, git >= 2.27.0, libappstream-glib >= 0.7.14, npm >= 8.11.0{{ range $pkg := .ExtraPackages }}, {{ $pkg.Name }} >= {{ $pkg.Version }}{{ end }}
 %endif
 
 Suggests: chromium >= 90

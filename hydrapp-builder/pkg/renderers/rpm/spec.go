@@ -2,7 +2,6 @@ package rpm
 
 import (
 	_ "embed"
-	"time"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 )
@@ -11,23 +10,14 @@ import (
 var specTemplate string
 
 type specData struct {
-	AppID             string
-	AppName           string
-	AppDescription    string
-	AppSummary        string
-	AppSPDX           string
-	AppURL            string
-	AppReleases       []Release
-	ExtraRHELPackages []Package
-	ExtraSUSEPackages []Package
-}
-
-type Release struct {
-	Version     string    `json:"version"`
-	Date        time.Time `json:"date"`
-	Description string    `json:"description"`
-	Author      string    `json:"author"`
-	Email       string    `json:"email"`
+	AppID          string
+	AppName        string
+	AppDescription string
+	AppSummary     string
+	AppSPDX        string
+	AppURL         string
+	AppReleases    []renderers.Release
+	ExtraPackages  []Package
 }
 
 type Package struct {
@@ -42,13 +32,12 @@ func NewSpecRenderer(
 	appSummary string,
 	appSPDX string,
 	appURL string,
-	appReleases []Release,
-	extraRHELPackages []Package,
-	extraSUSEPackages []Package,
+	appReleases []renderers.Release,
+	extraPackages []Package,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".spec",
 		specTemplate,
-		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraRHELPackages, extraSUSEPackages},
+		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraPackages},
 	)
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" UpgradeCode="{{ .AppID }}" Name="{{ .AppName }}" Manufacturer="{{ (index .AppReleases 0).Author }}" Version="{{ (index .AppReleases 0).Version }}" Language="1033" Codepage="1252">
+    <Product Id="*" UpgradeCode="{{ .AppID }}" Name="{{ .AppName }}" Manufacturer="{{ (LastRelease .AppReleases).Author }}" Version="{{ (LastRelease .AppReleases).Version }}" Language="1033" Codepage="1252">
         <!-- Metadata -->
-        <Package Id="*" Keywords="Installer" Description="{{ .AppName }} Installer" Comments="Windows Installer Package" Manufacturer="{{ (index .AppReleases 0).Author }}" InstallScope="perMachine" InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
+        <Package Id="*" Keywords="Installer" Description="{{ .AppName }} Installer" Comments="Windows Installer Package" Manufacturer="{{ (LastRelease .AppReleases).Author }}" InstallScope="perMachine" InstallerVersion="200" Languages="1033" Compressed="yes" SummaryCodepage="1252" />
 
         <!-- Launch after installation -->
         <CustomAction Id="LaunchAfterInstallation" Execute="immediate" Impersonate="no" Return="asyncNoWait" FileKey="{ StartID }" ExeCommand="" />
@@ -21,7 +21,7 @@
 
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
-                <Directory Id="*" Name="{{ (index .AppReleases 0).Author }}">
+                <Directory Id="*" Name="{{ (LastRelease .AppReleases).Author }}">
                     <Directory Id="INSTALLDIR" Name="{{ .AppName }}"></Directory>
                 </Directory>
             </Directory>
@@ -30,7 +30,7 @@
                 <Component Id="StartMenuShortcut" Guid="*">
                     <Shortcut Id="ApplicationStartMenuShortcut" Name="{{ .AppName }}" Icon="AppIcon" Target="[#{ StartID }]" WorkingDirectory="INSTALLDIR" />
                     <RemoveFolder Id="ProgramMenuFolder" On="uninstall" />
-                    <RegistryValue Root="HKCU" Key="Software\{{ (index .AppReleases 0).Author }}\{{ .AppName }}" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                    <RegistryValue Root="HKCU" Key="Software\{{ (LastRelease .AppReleases).Author }}\{{ .AppName }}" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                 </Component>
             </Directory>
 
@@ -38,7 +38,7 @@
                 <Component Id="DesktopShortcut" Guid="*">
                     <Shortcut Id="ApplicationDesktopShortcut" Name="{{ .AppName }}" Icon="AppIcon" Target="[#{ StartID }]" WorkingDirectory="INSTALLDIR" />
                     <RemoveFolder Id="DesktopFolder" On="uninstall" />
-                    <RegistryValue Root="HKCU" Key="Software\{{ (index .AppReleases 0).Author }}\{{ .AppName }}" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                    <RegistryValue Root="HKCU" Key="Software\{{ (LastRelease .AppReleases).Author }}\{{ .AppName }}" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                 </Component>
             </Directory>
         </Directory>

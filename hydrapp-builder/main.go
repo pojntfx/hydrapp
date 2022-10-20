@@ -25,6 +25,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/flatpak"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	rrpm "github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
@@ -60,7 +61,6 @@ func main() {
 	appURL := flag.String("app-url", "https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example", "App URL")
 	appGit := flag.String("app-git", "https://github.com/pojntfx/hydrapp.git", "App Git repo URL")
 	appSPDX := flag.String("app-spdx", "AGPL-3.0+", "App SPDX license identifier")
-	appLicenseDate := flag.String("app-license-date", "2022", "App license date")
 	appLicenseText := flag.String("app-license-text", agpl3ShortText, "App license text")
 	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-15T14:00:00.00Z", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App releases")
 
@@ -76,15 +76,11 @@ func main() {
 	apkCertContent := flag.String("apk-cert-content", "", "base64-encoded Android cert contents")
 	apkCertPassword := flag.String("apk-cert-password", "", " base64-encoded password for the Android cert")
 
-	debPackageVersion := flag.String("deb-package-version", "0.0.1", "DEB package version")
 	debExtraPackages := flag.String("deb-extra-packages", `[]`, `Extra Debian packages (in format { "name": "firefox", "version": "89" })`)
 
 	dmgUniversal := flag.Bool("dmg-universal", true, "Whether to build a universal instead of amd64-only binary and DMG image")
 
-	rpmPackageVersion := flag.String("rpm-package-version", "0.0.1", "RPM package version")
-	rpmPackageSuffix := flag.String("rpm-package-suffix", "1.fc36", "RPM package suffix")
-	rpmExtraRHELPackages := flag.String("rpm-extra-rhel-packages", `[]`, `Extra RHEL packages (in format { "name": "firefox", "version": "89" })`)
-	rpmExtraSUSEPackages := flag.String("rpm-extra-suse-packages", `[]`, `Extra SUSE packages (in format { "name": "firefox", "version": "89" })`)
+	rpmExtraPackages := flag.String("rpm-extra-packages", `[]`, `Extra RPM packages (in format { "name": "firefox", "version": "89" })`)
 
 	concurrency := flag.Int("concurrency", 1, "Maximum amount of concurrent builders to run at once")
 
@@ -93,7 +89,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	var releases []rrpm.Release
+	var releases []renderers.Release
 	if err := json.Unmarshal([]byte(*appReleases), &releases); err != nil {
 		panic(err)
 	}
@@ -103,13 +99,8 @@ func main() {
 		panic(err)
 	}
 
-	var rhelPackages []rrpm.Package
-	if err := json.Unmarshal([]byte(*rpmExtraRHELPackages), &rhelPackages); err != nil {
-		panic(err)
-	}
-
-	var susePackages []rrpm.Package
-	if err := json.Unmarshal([]byte(*rpmExtraSUSEPackages), &susePackages); err != nil {
+	var rpmPackages []rrpm.Package
+	if err := json.Unmarshal([]byte(*rpmExtraPackages), &rpmPackages); err != nil {
 		panic(err)
 	}
 
@@ -206,7 +197,6 @@ func main() {
 			*gpgKeyPassword,
 			*gpgKeyID,
 			*baseURL+"deb/debian/sid/x86_64",
-			*debPackageVersion,
 			"debian",
 			"sid",
 			"http://http.us.debian.org/debian",
@@ -220,7 +210,6 @@ func main() {
 			*appGit,
 			debianPackages,
 			*appSPDX,
-			*appLicenseDate,
 			*appLicenseText,
 			*appName,
 			false,
@@ -302,18 +291,16 @@ func main() {
 			*gpgKeyPassword,
 			*gpgKeyID,
 			*baseURL,
-			*rpmPackageVersion,
 			"fedora-36",
 			"amd64",
-			*rpmPackageSuffix,
+			"1.fc36",
 			*appName,
 			*appDescription,
 			*appSummary,
 			*appURL,
 			*appSPDX,
 			releases,
-			rhelPackages,
-			susePackages,
+			rpmPackages,
 			false,
 		),
 	}

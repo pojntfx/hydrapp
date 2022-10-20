@@ -30,7 +30,6 @@ func NewBuilder(
 	gpgKeyPassword, // base64-encoded password for the GPG key
 	gpgKeyID, // ID of the GPG key to use
 	baseURL, // Base URL where the repo is to be hosted
-	packageVersion, // RPM package version
 	distro, // Distro to build for
 	architecture, // Architecture to build for
 	packageSuffix, // RPM package suffix
@@ -39,9 +38,8 @@ func NewBuilder(
 	appSummary, // App summary
 	appURL, // App URL
 	appSPDX string, // App SPDX license identifier
-	releases []rpm.Release, // App releases
-	extraRHELPackages []rpm.Package, // Extra RHEL packages
-	extraSUSEPackages []rpm.Package, // Extra SUSE packages
+	releases []renderers.Release, // App releases
+	extraPackages []rpm.Package, // Extra RPM packages
 	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
@@ -59,7 +57,6 @@ func NewBuilder(
 		gpgKeyPassword,
 		gpgKeyID,
 		baseURL,
-		packageVersion,
 		distro,
 		architecture,
 		packageSuffix,
@@ -69,8 +66,7 @@ func NewBuilder(
 		appURL,
 		appSPDX,
 		releases,
-		extraRHELPackages,
-		extraSUSEPackages,
+		extraPackages,
 		overwrite,
 	}
 }
@@ -90,7 +86,6 @@ type Builder struct {
 	gpgKeyPassword,
 	gpgKeyID,
 	baseURL,
-	packageVersion,
 	distro,
 	architecture,
 	packageSuffix,
@@ -99,10 +94,9 @@ type Builder struct {
 	appSummary,
 	appURL,
 	appSPDX string
-	releases []rpm.Release
-	extraRHELPackages,
-	extraSUSEPackages []rpm.Package
-	overwrite bool
+	releases      []renderers.Release
+	extraPackages []rpm.Package
+	overwrite     bool
 }
 
 func (b *Builder) Build() error {
@@ -124,7 +118,7 @@ func (b *Builder) Build() error {
 			"BASE_URL":         b.baseURL,
 			"DISTRO":           b.distro,
 			"ARCHITECTURE":     b.architecture,
-			"PACKAGE_VERSION":  b.packageVersion,
+			"PACKAGE_VERSION":  b.releases[len(b.releases)-1].Version,
 			"PACKAGE_SUFFIX":   b.packageSuffix,
 		},
 		func(workdir string) error {
@@ -153,8 +147,7 @@ func (b *Builder) Build() error {
 						b.appSPDX,
 						b.appURL,
 						b.releases,
-						b.extraRHELPackages,
-						b.extraSUSEPackages,
+						b.extraPackages,
 					),
 				},
 				b.overwrite,

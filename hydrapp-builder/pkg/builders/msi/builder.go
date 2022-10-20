@@ -8,7 +8,6 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/msi"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
@@ -32,7 +31,7 @@ func NewBuilder(
 	gpgKeyPassword, // base64-encoded password for the GPG key
 	architecture string, // Architecture to build for
 	packages []string, // MSYS2 packages to install. Only supported for amd64.
-	releases []rpm.Release, // App releases
+	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{
@@ -72,7 +71,7 @@ type Builder struct {
 	gpgKeyPassword,
 	architecture string
 	packages  []string
-	releases  []rpm.Release
+	releases  []renderers.Release
 	overwrite bool
 }
 
