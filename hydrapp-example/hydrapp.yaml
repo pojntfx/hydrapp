@@ -3,7 +3,7 @@ app:
   name: Hydrapp Example
   summary: Hydrapp example app
   description: A simple Hydrapp example app.
-  url: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example
+  homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example
   git: https://github.com/pojntfx/hydrapp.git
   baseurl: https://pojntfx.github.io/hydrapp/
 license:
