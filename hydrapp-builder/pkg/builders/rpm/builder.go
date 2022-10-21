@@ -99,6 +99,39 @@ type Builder struct {
 	overwrite     bool
 }
 
+func (b *Builder) Render(workdir string) error {
+	return utils.WriteRenders(
+		workdir,
+		[]*renderers.Renderer{
+			xdg.NewDesktopRenderer(
+				b.appID,
+				b.appName,
+				b.appDescription,
+			),
+			xdg.NewMetainfoRenderer(
+				b.appID,
+				b.appName,
+				b.appDescription,
+				b.appSummary,
+				b.appSPDX,
+				b.appURL,
+				b.releases,
+			),
+			rpm.NewSpecRenderer(
+				b.appID,
+				b.appName,
+				b.appDescription,
+				b.appSummary,
+				b.appSPDX,
+				b.appURL,
+				b.releases,
+				b.extraPackages,
+			),
+		},
+		b.overwrite,
+	)
+}
+
 func (b *Builder) Build() error {
 	return executors.DockerRunImage(
 		b.ctx,
@@ -121,37 +154,6 @@ func (b *Builder) Build() error {
 			"PACKAGE_VERSION":  b.releases[len(b.releases)-1].Version,
 			"PACKAGE_SUFFIX":   b.packageSuffix,
 		},
-		func(workdir string) error {
-			return utils.WriteRenders(
-				workdir,
-				[]*renderers.Renderer{
-					xdg.NewDesktopRenderer(
-						b.appID,
-						b.appName,
-						b.appDescription,
-					),
-					xdg.NewMetainfoRenderer(
-						b.appID,
-						b.appName,
-						b.appDescription,
-						b.appSummary,
-						b.appSPDX,
-						b.appURL,
-						b.releases,
-					),
-					rpm.NewSpecRenderer(
-						b.appID,
-						b.appName,
-						b.appDescription,
-						b.appSummary,
-						b.appSPDX,
-						b.appURL,
-						b.releases,
-						b.extraPackages,
-					),
-				},
-				b.overwrite,
-			)
-		},
+		b.Render,
 	)
 }

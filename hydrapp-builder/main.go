@@ -58,6 +58,8 @@ func main() {
 
 	pull := flag.Bool("pull", false, "Whether to pull the images or not")
 	concurrency := flag.Int("concurrency", 1, "Maximum amount of concurrent builders to run at once")
+	eject := flag.Bool("eject", false, "Write platform-specific config files (AndroidManifest.xml, .spec etc.) to directory specified by --src, then exit (--exclude still applies")
+	overwrite := flag.Bool("overwrite", false, "Overwrite platform-specific config files even if they exist")
 
 	src := flag.String("src", pwd, "Source directory")
 	dst := flag.String("dst", filepath.Join(pwd, "out"), "Output directory")
@@ -188,7 +190,7 @@ func main() {
 				cfg.License.SPDX,
 				cfg.License.Text,
 				cfg.App.Name,
-				false,
+				*overwrite,
 			),
 		)
 	}
@@ -219,7 +221,7 @@ func main() {
 					cfg.DMG.Universal,
 					cfg.DMG.Packages,
 					cfg.Releases,
-					false,
+					*overwrite,
 				),
 			)
 		}
@@ -259,7 +261,7 @@ func main() {
 				cfg.License.SPDX,
 				cfg.App.Homepage,
 				cfg.Releases,
-				false,
+				*overwrite,
 			),
 		)
 	}
@@ -293,7 +295,7 @@ func main() {
 				c.Architecture,
 				c.Packages,
 				cfg.Releases,
-				false,
+				*overwrite,
 			),
 		)
 	}
@@ -335,7 +337,7 @@ func main() {
 				cfg.License.SPDX,
 				cfg.Releases,
 				c.Packages,
-				false,
+				*overwrite,
 			),
 		)
 	}
@@ -366,7 +368,7 @@ func main() {
 					*apkCertPassword,
 					cfg.App.BaseURL+cfg.APK.Path,
 					cfg.App.ID,
-					false,
+					*overwrite,
 				),
 			)
 		}
@@ -386,8 +388,14 @@ func main() {
 				wg.Done()
 			}()
 
-			if err := builder.Build(); err != nil {
-				panic(err)
+			if *eject {
+				if err := builder.Render(*src); err != nil {
+					panic(err)
+				}
+			} else {
+				if err := builder.Build(); err != nil {
+					panic(err)
+				}
 			}
 		}(b)
 	}

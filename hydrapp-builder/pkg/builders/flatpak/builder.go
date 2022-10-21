@@ -90,6 +90,33 @@ type Builder struct {
 	overwrite bool
 }
 
+func (b *Builder) Render(workdir string) error {
+	return utils.WriteRenders(
+		workdir,
+		[]*renderers.Renderer{
+			xdg.NewDesktopRenderer(
+				b.appID,
+				b.appName,
+				b.appDescription,
+			),
+			xdg.NewMetainfoRenderer(
+				b.appID,
+				b.appName,
+				b.appDescription,
+				b.appSummary,
+				b.appSPDX,
+				b.appURL,
+				b.releases,
+			),
+			flatpak.NewManifestRenderer(
+				b.appID,
+			),
+			flatpak.NewSdkRenderer(),
+		},
+		b.overwrite,
+	)
+}
+
 func (b *Builder) Build() error {
 	return executors.DockerRunImage(
 		b.ctx,
@@ -109,31 +136,6 @@ func (b *Builder) Build() error {
 			"BASE_URL":         b.baseURL,
 			"ARCHITECTURE":     b.architecture,
 		},
-		func(workdir string) error {
-			return utils.WriteRenders(
-				workdir,
-				[]*renderers.Renderer{
-					xdg.NewDesktopRenderer(
-						b.appID,
-						b.appName,
-						b.appDescription,
-					),
-					xdg.NewMetainfoRenderer(
-						b.appID,
-						b.appName,
-						b.appDescription,
-						b.appSummary,
-						b.appSPDX,
-						b.appURL,
-						b.releases,
-					),
-					flatpak.NewManifestRenderer(
-						b.appID,
-					),
-					flatpak.NewSdkRenderer(),
-				},
-				b.overwrite,
-			)
-		},
+		b.Render,
 	)
 }

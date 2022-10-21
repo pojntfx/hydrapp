@@ -116,6 +116,55 @@ type Builder struct {
 	overwrite bool
 }
 
+func (b *Builder) Render(workdir string) error {
+	return utils.WriteRenders(
+		workdir,
+		[]*renderers.Renderer{
+			xdg.NewDesktopRenderer(
+				b.appID,
+				b.appName,
+				b.appDescription,
+			),
+			xdg.NewMetainfoRenderer(
+				b.appID,
+				b.appName,
+				b.appDescription,
+				b.appSummary,
+				b.appSPDX,
+				b.appURL,
+				b.releases,
+			),
+			deb.NewChangelogRenderer(
+				b.appID,
+				b.releases,
+			),
+			deb.NewCompatRenderer(),
+			deb.NewFormatRenderer(),
+			deb.NewOptionsRenderer(),
+			deb.NewControlRenderer(
+				b.appID,
+				b.appDescription,
+				b.appSummary,
+				b.appURL,
+				b.appGit,
+				b.releases,
+				b.extraDebianPackages,
+			),
+			deb.NewCopyrightRenderer(
+				b.appID,
+				b.appGit,
+				b.appSPDX,
+				b.appLicenseText,
+				b.releases,
+			),
+			deb.NewRulesRenderer(
+				b.appID,
+			),
+		},
+		b.overwrite,
+	)
+}
+
 func (b *Builder) Build() error {
 	return executors.DockerRunImage(
 		b.ctx,
@@ -141,53 +190,6 @@ func (b *Builder) Build() error {
 			"ARCHITECTURE":     b.architecture,
 			"PACKAGE_VERSION":  b.releases[len(b.releases)-1].Version,
 		},
-		func(workdir string) error {
-			return utils.WriteRenders(
-				workdir,
-				[]*renderers.Renderer{
-					xdg.NewDesktopRenderer(
-						b.appID,
-						b.appName,
-						b.appDescription,
-					),
-					xdg.NewMetainfoRenderer(
-						b.appID,
-						b.appName,
-						b.appDescription,
-						b.appSummary,
-						b.appSPDX,
-						b.appURL,
-						b.releases,
-					),
-					deb.NewChangelogRenderer(
-						b.appID,
-						b.releases,
-					),
-					deb.NewCompatRenderer(),
-					deb.NewFormatRenderer(),
-					deb.NewOptionsRenderer(),
-					deb.NewControlRenderer(
-						b.appID,
-						b.appDescription,
-						b.appSummary,
-						b.appURL,
-						b.appGit,
-						b.releases,
-						b.extraDebianPackages,
-					),
-					deb.NewCopyrightRenderer(
-						b.appID,
-						b.appGit,
-						b.appSPDX,
-						b.appLicenseText,
-						b.releases,
-					),
-					deb.NewRulesRenderer(
-						b.appID,
-					),
-				},
-				b.overwrite,
-			)
-		},
+		b.Render,
 	)
 }

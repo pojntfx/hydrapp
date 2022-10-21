@@ -74,6 +74,24 @@ type Builder struct {
 	overwrite bool
 }
 
+func (b *Builder) Render(workdir string) error {
+	return utils.WriteRenders(
+		workdir,
+		[]*renderers.Renderer{
+			apk.NewManifestRenderer(
+				b.appID,
+				b.appName,
+			),
+			apk.NewActivityRenderer(
+				b.appID,
+			),
+			apk.NewHeaderRenderer(),
+			apk.NewImplementationRenderer(),
+		},
+		b.overwrite,
+	)
+}
+
 func (b *Builder) Build() error {
 	return executors.DockerRunImage(
 		b.ctx,
@@ -94,22 +112,6 @@ func (b *Builder) Build() error {
 			"ANDROID_CERT_PASSWORD": b.androidCertPassword,
 			"BASE_URL":              b.baseURL,
 		},
-		func(workdir string) error {
-			return utils.WriteRenders(
-				workdir,
-				[]*renderers.Renderer{
-					apk.NewManifestRenderer(
-						b.appID,
-						b.appName,
-					),
-					apk.NewActivityRenderer(
-						b.appID,
-					),
-					apk.NewHeaderRenderer(),
-					apk.NewImplementationRenderer(),
-				},
-				b.overwrite,
-			)
-		},
+		b.Render,
 	)
 }

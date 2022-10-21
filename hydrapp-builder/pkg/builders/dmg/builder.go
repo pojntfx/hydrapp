@@ -75,6 +75,20 @@ type Builder struct {
 	overwrite bool
 }
 
+func (b *Builder) Render(workdir string) error {
+	return utils.WriteRenders(
+		workdir,
+		[]*renderers.Renderer{
+			dmg.NewInfoRenderer(
+				b.appID,
+				b.appName,
+				b.releases,
+			),
+		},
+		b.overwrite,
+	)
+}
+
 func (b *Builder) Build() error {
 	return executors.DockerRunImage(
 		b.ctx,
@@ -100,18 +114,6 @@ func (b *Builder) Build() error {
 			}(),
 			"MACPORTS": strings.Join(b.packages, " "),
 		},
-		func(workdir string) error {
-			return utils.WriteRenders(
-				workdir,
-				[]*renderers.Renderer{
-					dmg.NewInfoRenderer(
-						b.appID,
-						b.appName,
-						b.releases,
-					),
-				},
-				b.overwrite,
-			)
-		},
+		b.Render,
 	)
 }
