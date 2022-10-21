@@ -158,22 +158,37 @@ func (h *Registry) HandlerFunc(w http.ResponseWriter, r *http.Request) error {
 				args = append(args, arg.Elem())
 			}
 
-			res := function.Call(args)
-			switch len(res) {
-			case 0:
-				if err := conn.WriteJSON([]interface{}{requestID, nil, ""}); err != nil {
-					errs <- err
-
-					return
-				}
-			case 1:
-				if res[0].Type().Implements(errorType) {
-					if err := conn.WriteJSON([]interface{}{requestID, nil, res[0].Interface().(error).Error()}); err != nil {
+			go func() {
+				res := function.Call(args)
+				switch len(res) {
+				case 0:
+					if err := conn.WriteJSON([]interface{}{requestID, nil, ""}); err != nil {
 						errs <- err
 
 						return
 					}
-				} else {
+				case 1:
+					if res[0].Type().Implements(errorType) {
+						if err := conn.WriteJSON([]interface{}{requestID, nil, res[0].Interface().(error).Error()}); err != nil {
+							errs <- err
+
+							return
+						}
+					} else {
+						v, err := json.Marshal(res[0].Interface())
+						if err != nil {
+							errs <- err
+
+							return
+						}
+
+						if err := conn.WriteJSON([]interface{}{requestID, json.RawMessage(string(v)), ""}); err != nil {
+							errs <- err
+
+							return
+						}
+					}
+				case 2:
 					v, err := json.Marshal(res[0].Interface())
 					if err != nil {
 						errs <- err
@@ -181,34 +196,21 @@ func (h *Registry) HandlerFunc(w http.ResponseWriter, r *http.Request) error {
 						return
 					}
 
-					if err := conn.WriteJSON([]interface{}{requestID, json.RawMessage(string(v)), ""}); err != nil {
-						errs <- err
+					if res[1].Interface() == nil {
+						if err := conn.WriteJSON([]interface{}{requestID, json.RawMessage(string(v)), ""}); err != nil {
+							errs <- err
 
-						return
+							return
+						}
+					} else {
+						if err := conn.WriteJSON([]interface{}{requestID, json.RawMessage(string(v)), res[1].Interface().(error).Error()}); err != nil {
+							errs <- err
+
+							return
+						}
 					}
 				}
-			case 2:
-				v, err := json.Marshal(res[0].Interface())
-				if err != nil {
-					errs <- err
-
-					return
-				}
-
-				if res[1].Interface() == nil {
-					if err := conn.WriteJSON([]interface{}{requestID, json.RawMessage(string(v)), ""}); err != nil {
-						errs <- err
-
-						return
-					}
-				} else {
-					if err := conn.WriteJSON([]interface{}{requestID, json.RawMessage(string(v)), res[1].Interface().(error).Error()}); err != nil {
-						errs <- err
-
-						return
-					}
-				}
-			}
+			}()
 		}
 	}()
 

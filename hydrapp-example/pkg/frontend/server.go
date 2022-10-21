@@ -43,6 +43,10 @@ func StartServer(addr string, backendURL string) (string, func() error, error) {
 
 	go func() {
 		if err := http.Serve(listener, http.FileServer(http.FS(dist))); err != nil {
+			if strings.HasSuffix(err.Error(), "use of closed network connection") {
+				return
+			}
+
 			panic(err)
 		}
 	}()

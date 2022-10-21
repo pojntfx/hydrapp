@@ -154,6 +154,10 @@ func StartServer(addr string, heartbeat time.Duration) (string, func() error, er
 				w.WriteHeader(http.StatusMethodNotAllowed)
 			}
 		})); err != nil {
+			if strings.HasSuffix(err.Error(), "use of closed network connection") {
+				return
+			}
+
 			panic(err)
 		}
 	}()
