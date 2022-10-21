@@ -2,6 +2,7 @@ package apk
 
 import (
 	"context"
+	"encoding/base64"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
@@ -24,11 +25,11 @@ func NewBuilder(
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
-	appID, // Android app ID to use
-	gpgKeyContent, // base64-encoded GPG key contents
-	gpgKeyPassword, // base64-encoded password for the GPG key
-	androidCertContent, // base64-encoded Android cert contents
-	androidCertPassword, // base64-encoded password for the Android cert
+	appID string, // Android app ID to use
+	gpgKeyContent []byte, // GPG key contents
+	gpgKeyPassword string, // Password for the GPG key
+	androidCertContent []byte, // Android cert contents
+	androidCertPassword string, // Password for the Android cert
 	baseURL, // Base URL where the repo is to be hosted
 	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
@@ -44,10 +45,10 @@ func NewBuilder(
 		onID,
 		onOutput,
 		appID,
-		gpgKeyContent,
-		gpgKeyPassword,
-		androidCertContent,
-		androidCertPassword,
+		base64.StdEncoding.EncodeToString(gpgKeyContent),
+		base64.StdEncoding.EncodeToString([]byte(gpgKeyPassword)),
+		base64.StdEncoding.EncodeToString(androidCertContent),
+		base64.StdEncoding.EncodeToString([]byte(androidCertPassword)),
 		baseURL,
 		appName,
 		overwrite,

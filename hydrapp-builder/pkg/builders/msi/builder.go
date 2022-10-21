@@ -2,6 +2,7 @@ package msi
 
 import (
 	"context"
+	"encoding/base64"
 	"strings"
 
 	"github.com/docker/docker/client"
@@ -26,9 +27,9 @@ func NewBuilder(
 	onID func(id string), // Callback to handle container ID
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID, // Android app ID to use
-	appName, // Human-readable name for the app,
-	gpgKeyContent, // base64-encoded GPG key contents
-	gpgKeyPassword, // base64-encoded password for the GPG key
+	appName string, // Human-readable name for the app,
+	gpgKeyContent []byte, // GPG key contents
+	gpgKeyPassword, // Password for the GPG key
 	architecture string, // Architecture to build for
 	packages []string, // MSYS2 packages to install. Only supported for amd64.
 	releases []renderers.Release, // App releases
@@ -46,8 +47,8 @@ func NewBuilder(
 		onOutput,
 		appID,
 		appName,
-		gpgKeyContent,
-		gpgKeyPassword,
+		base64.StdEncoding.EncodeToString(gpgKeyContent),
+		base64.StdEncoding.EncodeToString([]byte(gpgKeyPassword)),
 		architecture,
 		packages,
 		releases,

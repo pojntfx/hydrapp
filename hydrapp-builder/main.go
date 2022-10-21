@@ -61,17 +61,17 @@ func main() {
 	eject := flag.Bool("eject", false, "Write platform-specific config files (AndroidManifest.xml, .spec etc.) to directory specified by --src, then exit (--exclude still applies")
 	overwrite := flag.Bool("overwrite", false, "Overwrite platform-specific config files even if they exist")
 
-	src := flag.String("src", pwd, "Source directory")
-	dst := flag.String("dst", filepath.Join(pwd, "out"), "Output directory")
+	src := flag.String("src", pwd, "Source directory (must be absolute path)")
+	dst := flag.String("dst", filepath.Join(pwd, "out"), "Output directory (must be absolute path)")
 
 	exclude := flag.String("exclude", "", "Regex of platforms and architectures not to build for, i.e. (apk|dmg|msi/386|flatpak/amd64)")
 
-	gpgKeyContent := flag.String("gpg-key-content", "", "base64-encoded GPG key contents")
-	gpgKeyPassword := flag.String("gpg-key-password", "", " base64-encoded password for the GPG key")
-	gpgKeyID := flag.String("gpg-key-id", "", "ID of the GPG key to use")
+	gpgKey := flag.String("gpg-key", "", "Path to armored GPG private key")
+	gpgPassword := flag.String("gpg-password", "", "Password for GPG key")
+	gpgID := flag.String("gpg-id", "", "ID of the GPG key to use")
 
-	apkCertContent := flag.String("apk-cert-content", "", "base64-encoded Android cert contents")
-	apkCertPassword := flag.String("apk-cert-password", "", " base64-encoded password for the Android cert")
+	apkCert := flag.String("apk-cert", "", "Path to Android certificate/keystore")
+	apkPassword := flag.String("apk-password", "", " Password for Android certificate")
 
 	flag.Parse()
 
@@ -93,6 +93,16 @@ func main() {
 		panic(err)
 	}
 	defer cli.Close()
+
+	gpgKeyContent, err := ioutil.ReadFile(*gpgKey)
+	if err != nil {
+		panic(err)
+	}
+
+	apkCertContent, err := ioutil.ReadFile(*apkCert)
+	if err != nil {
+		panic(err)
+	}
 
 	handleID := func(id string) {
 		s := make(chan os.Signal)
@@ -171,9 +181,9 @@ func main() {
 				handleID,
 				handleOutput,
 				cfg.App.ID,
-				*gpgKeyContent,
-				*gpgKeyPassword,
-				*gpgKeyID,
+				gpgKeyContent,
+				*gpgPassword,
+				*gpgID,
 				cfg.App.BaseURL+c.Path,
 				c.OS,
 				c.Distro,
@@ -216,8 +226,8 @@ func main() {
 					handleOutput,
 					cfg.App.ID,
 					cfg.App.Name,
-					*gpgKeyContent,
-					*gpgKeyPassword,
+					gpgKeyContent,
+					*gpgPassword,
 					cfg.DMG.Universal,
 					cfg.DMG.Packages,
 					cfg.Releases,
@@ -250,9 +260,9 @@ func main() {
 				handleID,
 				handleOutput,
 				cfg.App.ID,
-				*gpgKeyContent,
-				*gpgKeyPassword,
-				*gpgKeyID,
+				gpgKeyContent,
+				*gpgPassword,
+				*gpgID,
 				cfg.App.BaseURL+c.Path,
 				c.Architecture,
 				cfg.App.Name,
@@ -290,8 +300,8 @@ func main() {
 				handleOutput,
 				cfg.App.ID,
 				cfg.App.Name,
-				*gpgKeyContent,
-				*gpgKeyPassword,
+				gpgKeyContent,
+				*gpgPassword,
 				c.Architecture,
 				c.Packages,
 				cfg.Releases,
@@ -323,9 +333,9 @@ func main() {
 				handleID,
 				handleOutput,
 				cfg.App.ID,
-				*gpgKeyContent,
-				*gpgKeyPassword,
-				*gpgKeyID,
+				gpgKeyContent,
+				*gpgPassword,
+				*gpgID,
 				cfg.App.BaseURL,
 				c.Distro,
 				c.Architecture,
@@ -362,10 +372,10 @@ func main() {
 					handleID,
 					handleOutput,
 					cfg.App.ID,
-					*gpgKeyContent,
-					*gpgKeyPassword,
-					*apkCertContent,
-					*apkCertPassword,
+					gpgKeyContent,
+					*gpgPassword,
+					apkCertContent,
+					*apkPassword,
 					cfg.App.BaseURL+cfg.APK.Path,
 					cfg.App.ID,
 					*overwrite,

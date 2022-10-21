@@ -2,6 +2,7 @@ package deb
 
 import (
 	"context"
+	"encoding/base64"
 	"strings"
 
 	"github.com/docker/docker/client"
@@ -27,9 +28,9 @@ func NewBuilder(
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
-	appID, // DEB app ID to use
-	gpgKeyContent, // base64-encoded GPG key contents
-	gpgKeyPassword, // base64-encoded password for the GPG key
+	appID string, // DEB app ID to use
+	gpgKeyContent []byte, // GPG key contents
+	gpgKeyPassword, // password for the GPG key
 	gpgKeyID, // ID of the GPG key to use
 	baseURL, // Base URL where the repo is to be hosted
 	os, // OS to build for
@@ -60,8 +61,8 @@ func NewBuilder(
 		onID,
 		onOutput,
 		appID,
-		gpgKeyContent,
-		gpgKeyPassword,
+		base64.StdEncoding.EncodeToString(gpgKeyContent),
+		base64.StdEncoding.EncodeToString([]byte(gpgKeyPassword)),
 		gpgKeyID,
 		baseURL,
 		os,
