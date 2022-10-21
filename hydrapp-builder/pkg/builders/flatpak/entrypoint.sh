@@ -48,5 +48,5 @@ Title=Hydrapp Flatpak repo
 Url=${BASE_URL}
 Homepage=${BASE_URL}
 Description=Flatpaks for Hydrapp
-GPGKey=$(base64 -w 0 /tmp/repo.gpg)
+GPGKey=$(base64 -w 0 /tmp/repo.asc)
 " >/dst/hydrapp.flatpakrepo

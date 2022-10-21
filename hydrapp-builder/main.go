@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 	"sync"
@@ -29,6 +30,25 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
+func checkIfSkip(exclude string, platform, architecture string) (bool, error) {
+	if strings.TrimSpace(exclude) == "" {
+		return false, nil
+	}
+
+	skip, err := regexp.MatchString(exclude, platform+"/"+architecture)
+	if err != nil {
+		return false, err
+	}
+
+	if skip {
+		log.Printf("Skipping %v/%v (platform or architecture matched the provided regex)", platform, architecture)
+
+		return true, nil
+	}
+
+	return false, nil
+}
+
 func main() {
 	pwd, err := os.Getwd()
 	if err != nil {
@@ -41,6 +61,8 @@ func main() {
 
 	src := flag.String("src", pwd, "Source directory")
 	dst := flag.String("dst", filepath.Join(pwd, "out"), "Output directory")
+
+	exclude := flag.String("exclude", "", "Regex of platforms and architectures not to build for, i.e. (apk|dmg|msi/386|flatpak/amd64)")
 
 	gpgKeyContent := flag.String("gpg-key-content", "", "base64-encoded GPG key contents")
 	gpgKeyPassword := flag.String("gpg-key-password", "", " base64-encoded password for the GPG key")
@@ -125,6 +147,15 @@ func main() {
 	bdrs := []builders.Builder{}
 
 	for _, c := range cfg.DEB {
+		skip, err := checkIfSkip(*exclude, "deb", c.Architecture)
+		if err != nil {
+			panic(err)
+		}
+
+		if skip {
+			continue
+		}
+
 		bdrs = append(
 			bdrs,
 			deb.NewBuilder(
@@ -163,31 +194,47 @@ func main() {
 	}
 
 	if strings.TrimSpace(cfg.DMG.Path) != "" {
-		bdrs = append(
-			bdrs,
-			dmg.NewBuilder(
-				ctx,
-				cli,
+		skip, err := checkIfSkip(*exclude, "dmg", "")
+		if err != nil {
+			panic(err)
+		}
 
-				dmg.Image,
-				*pull,
-				*src,
-				filepath.Join(*dst, cfg.DMG.Path),
-				handleID,
-				handleOutput,
-				cfg.App.ID,
-				cfg.App.Name,
-				*gpgKeyContent,
-				*gpgKeyPassword,
-				cfg.DMG.Universal,
-				cfg.DMG.Packages,
-				cfg.Releases,
-				false,
-			),
-		)
+		if !skip {
+			bdrs = append(
+				bdrs,
+				dmg.NewBuilder(
+					ctx,
+					cli,
+
+					dmg.Image,
+					*pull,
+					*src,
+					filepath.Join(*dst, cfg.DMG.Path),
+					handleID,
+					handleOutput,
+					cfg.App.ID,
+					cfg.App.Name,
+					*gpgKeyContent,
+					*gpgKeyPassword,
+					cfg.DMG.Universal,
+					cfg.DMG.Packages,
+					cfg.Releases,
+					false,
+				),
+			)
+		}
 	}
 
 	for _, c := range cfg.Flatpak {
+		skip, err := checkIfSkip(*exclude, "flatpak", c.Architecture)
+		if err != nil {
+			panic(err)
+		}
+
+		if skip {
+			continue
+		}
+
 		bdrs = append(
 			bdrs,
 			flatpak.NewBuilder(
@@ -218,6 +265,15 @@ func main() {
 	}
 
 	for _, c := range cfg.MSI {
+		skip, err := checkIfSkip(*exclude, "msi", c.Architecture)
+		if err != nil {
+			panic(err)
+		}
+
+		if skip {
+			continue
+		}
+
 		bdrs = append(
 			bdrs,
 			msi.NewBuilder(
@@ -243,6 +299,15 @@ func main() {
 	}
 
 	for _, c := range cfg.RPM {
+		skip, err := checkIfSkip(*exclude, "rpm", c.Architecture)
+		if err != nil {
+			panic(err)
+		}
+
+		if skip {
+			continue
+		}
+
 		bdrs = append(
 			bdrs,
 			rpm.NewBuilder(
@@ -276,28 +341,35 @@ func main() {
 	}
 
 	if strings.TrimSpace(cfg.APK.Path) != "" {
-		bdrs = append(
-			bdrs,
-			apk.NewBuilder(
-				ctx,
-				cli,
+		skip, err := checkIfSkip(*exclude, "apk", "")
+		if err != nil {
+			panic(err)
+		}
 
-				apk.Image,
-				*pull,
-				*src,
-				filepath.Join(*dst, cfg.APK.Path),
-				handleID,
-				handleOutput,
-				cfg.App.ID,
-				*gpgKeyContent,
-				*gpgKeyPassword,
-				*apkCertContent,
-				*apkCertPassword,
-				cfg.App.BaseURL+cfg.APK.Path,
-				cfg.App.ID,
-				false,
-			),
-		)
+		if !skip {
+			bdrs = append(
+				bdrs,
+				apk.NewBuilder(
+					ctx,
+					cli,
+
+					apk.Image,
+					*pull,
+					*src,
+					filepath.Join(*dst, cfg.APK.Path),
+					handleID,
+					handleOutput,
+					cfg.App.ID,
+					*gpgKeyContent,
+					*gpgKeyPassword,
+					*apkCertContent,
+					*apkCertPassword,
+					cfg.App.BaseURL+cfg.APK.Path,
+					cfg.App.ID,
+					false,
+				),
+			)
+		}
 	}
 
 	semaphore := make(chan struct{}, *concurrency)
