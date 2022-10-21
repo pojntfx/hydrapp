@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"log"
+	"runtime/debug"
 
 	"github.com/ncruces/zenity"
 )
@@ -15,10 +16,15 @@ func HandlePanic(appName, msg string, err error) {
 
 The following information might help you in fixing the problem:
 
+%v
+
+Strack trace:
+
 %v`,
 		appName,
 		Capitalize(msg),
 		Capitalize(err.Error()),
+		string(debug.Stack()),
 	)
 
 	// Show error message visually using a dialog
