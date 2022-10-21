@@ -7,11 +7,11 @@ import (
 )
 
 type Release struct {
-	Version     string    `json:"version"`
-	Date        time.Time `json:"date"`
-	Description string    `json:"description"`
-	Author      string    `json:"author"`
-	Email       string    `json:"email"`
+	Version     string    `json:"version" yaml:"version"`
+	Date        time.Time `json:"date" yaml:"date"`
+	Description string    `json:"description" yaml:"description"`
+	Author      string    `json:"author" yaml:"author"`
+	Email       string    `json:"email" yaml:"email"`
 }
 
 type Renderer struct {

@@ -21,8 +21,8 @@ type specData struct {
 }
 
 type Package struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
+	Name    string `json:"name" yaml:"name"`
+	Version string `json:"version" yaml:"version"`
 }
 
 func NewSpecRenderer(

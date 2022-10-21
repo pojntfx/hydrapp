@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
@@ -25,27 +25,8 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/flatpak"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/rpm"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
-	rrpm "github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	cconfig "github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
-)
-
-const (
-	agpl3ShortText = `This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Affero General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- .
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Affero General Public License for more details.
- .
- You should have received a copy of the GNU Affero General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- .
- On Debian systems, the complete text of the GNU General
- Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".`
 )
 
 func main() {
@@ -53,21 +34,13 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	appID := flag.String("app-id", "com.pojtinger.felicitas.hydrapp.example", "Android app ID to use")
-	appName := flag.String("app-name", "Hydrapp Example", "Human-readable name for the app")
-	appSummary := flag.String("app-summary", "Hydrapp example app", "App summary")
-	appDescription := flag.String("app-description", "A simple Hydrapp example app.", "App description")
-	appURL := flag.String("app-url", "https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example", "App URL")
-	appGit := flag.String("app-git", "https://github.com/pojntfx/hydrapp.git", "App Git repo URL")
-	appSPDX := flag.String("app-spdx", "AGPL-3.0+", "App SPDX license identifier")
-	appLicenseText := flag.String("app-license-text", agpl3ShortText, "App license text")
-	appReleases := flag.String("app-releases", `[{ "version": "0.0.1", "date": "2022-10-15T14:00:00.00Z", "description": "Initial release", "author": "Felicitas Pojtinger", "email": "felicitas@pojtinger.com" }]`, "App releases")
+	config := flag.String("config", "hydrapp.yaml", "Config file to use")
 
 	pull := flag.Bool("pull", false, "Whether to pull the images or not")
+	concurrency := flag.Int("concurrency", 1, "Maximum amount of concurrent builders to run at once")
+
 	src := flag.String("src", pwd, "Source directory")
 	dst := flag.String("dst", filepath.Join(pwd, "out"), "Output directory")
-	baseURL := flag.String("base-url", "https://pojntfx.github.io/hydrapp/", "Base URL where the repos are to be hosted")
 
 	gpgKeyContent := flag.String("gpg-key-content", "", "base64-encoded GPG key contents")
 	gpgKeyPassword := flag.String("gpg-key-password", "", " base64-encoded password for the GPG key")
@@ -76,31 +49,18 @@ func main() {
 	apkCertContent := flag.String("apk-cert-content", "", "base64-encoded Android cert contents")
 	apkCertPassword := flag.String("apk-cert-password", "", " base64-encoded password for the Android cert")
 
-	debExtraPackages := flag.String("deb-extra-packages", `[]`, `Extra Debian packages (in format { "name": "firefox", "version": "89" })`)
-
-	dmgUniversal := flag.Bool("dmg-universal", true, "Whether to build a universal instead of amd64-only binary and DMG image")
-
-	rpmExtraPackages := flag.String("rpm-extra-packages", `[]`, `Extra RPM packages (in format { "name": "firefox", "version": "89" })`)
-
-	concurrency := flag.Int("concurrency", 1, "Maximum amount of concurrent builders to run at once")
-
 	flag.Parse()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	var releases []renderers.Release
-	if err := json.Unmarshal([]byte(*appReleases), &releases); err != nil {
+	content, err := ioutil.ReadFile(*config)
+	if err != nil {
 		panic(err)
 	}
 
-	var debianPackages []rrpm.Package
-	if err := json.Unmarshal([]byte(*debExtraPackages), &debianPackages); err != nil {
-		panic(err)
-	}
-
-	var rpmPackages []rrpm.Package
-	if err := json.Unmarshal([]byte(*rpmExtraPackages), &rpmPackages); err != nil {
+	cfg, err := cconfig.Parse(content)
+	if err != nil {
 		panic(err)
 	}
 
@@ -162,147 +122,182 @@ func main() {
 		}
 	}
 
-	bdrs := []builders.Builder{
-		apk.NewBuilder(
-			ctx,
-			cli,
+	bdrs := []builders.Builder{}
 
-			apk.Image,
-			*pull,
-			*src,
-			filepath.Join(*dst, "apk"),
-			handleID,
-			handleOutput,
-			*appID,
-			*gpgKeyContent,
-			*gpgKeyPassword,
-			*apkCertContent,
-			*apkCertPassword,
-			*baseURL+"apk",
-			*appID,
-			false,
-		),
-		deb.NewBuilder(
-			ctx,
-			cli,
+	for _, c := range cfg.DEB {
+		bdrs = append(
+			bdrs,
+			deb.NewBuilder(
+				ctx,
+				cli,
 
-			deb.Image,
-			*pull,
-			*src,
-			filepath.Join(*dst, "deb", "debian", "sid", "x86_64"),
-			handleID,
-			handleOutput,
-			*appID,
-			*gpgKeyContent,
-			*gpgKeyPassword,
-			*gpgKeyID,
-			*baseURL+"deb/debian/sid/x86_64",
-			"debian",
-			"sid",
-			"http://http.us.debian.org/debian",
-			[]string{"main", "contrib"},
-			"",
-			"amd64",
-			releases,
-			*appDescription,
-			*appSummary,
-			*appURL,
-			*appGit,
-			debianPackages,
-			*appSPDX,
-			*appLicenseText,
-			*appName,
-			false,
-		),
-		dmg.NewBuilder(
-			ctx,
-			cli,
+				deb.Image,
+				*pull,
+				*src,
+				filepath.Join(*dst, c.Path),
+				handleID,
+				handleOutput,
+				cfg.App.ID,
+				*gpgKeyContent,
+				*gpgKeyPassword,
+				*gpgKeyID,
+				cfg.App.BaseURL+c.Path,
+				c.OS,
+				c.Distro,
+				c.Mirrorsite,
+				c.Components,
+				c.Debootstrapopts,
+				c.Architecture,
+				cfg.Releases,
+				cfg.App.Description,
+				cfg.App.Summary,
+				cfg.App.Homepage,
+				cfg.App.Git,
+				c.Packages,
+				cfg.License.SPDX,
+				cfg.License.Text,
+				cfg.App.Name,
+				false,
+			),
+		)
+	}
 
-			dmg.Image,
-			*pull,
-			*src,
-			filepath.Join(*dst, "dmg"),
-			handleID,
-			handleOutput,
-			*appID,
-			*appName,
-			*gpgKeyContent,
-			*gpgKeyPassword,
-			*dmgUniversal,
-			[]string{},
-			releases,
-			false,
-		),
-		flatpak.NewBuilder(
-			ctx,
-			cli,
+	if strings.TrimSpace(cfg.DMG.Path) != "" {
+		bdrs = append(
+			bdrs,
+			dmg.NewBuilder(
+				ctx,
+				cli,
 
-			flatpak.Image,
-			*pull,
-			*src,
-			filepath.Join(*dst, "flatpak", "x86_64"),
-			handleID,
-			handleOutput,
-			*appID,
-			*gpgKeyContent,
-			*gpgKeyPassword,
-			*gpgKeyID,
-			*baseURL+"flatpak/x86_64",
-			"amd64",
-			*appName,
-			*appDescription,
-			*appSummary,
-			*appSPDX,
-			*appURL,
-			releases,
-			false,
-		),
-		msi.NewBuilder(
-			ctx,
-			cli,
+				dmg.Image,
+				*pull,
+				*src,
+				filepath.Join(*dst, cfg.DMG.Path),
+				handleID,
+				handleOutput,
+				cfg.App.ID,
+				cfg.App.Name,
+				*gpgKeyContent,
+				*gpgKeyPassword,
+				cfg.DMG.Universal,
+				cfg.DMG.Packages,
+				cfg.Releases,
+				false,
+			),
+		)
+	}
 
-			msi.Image,
-			*pull,
-			*src,
-			filepath.Join(*dst, "msi", "x86_64"),
-			handleID,
-			handleOutput,
-			*appID,
-			*appName,
-			*gpgKeyContent,
-			*gpgKeyPassword,
-			"amd64",
-			[]string{},
-			releases,
-			false,
-		),
-		rpm.NewBuilder(
-			ctx,
-			cli,
+	for _, c := range cfg.Flatpak {
+		bdrs = append(
+			bdrs,
+			flatpak.NewBuilder(
+				ctx,
+				cli,
 
-			rpm.Image,
-			*pull,
-			*src,
-			filepath.Join(*dst, "rpm", "fedora", "36", "x86_64"),
-			handleID,
-			handleOutput,
-			*appID,
-			*gpgKeyContent,
-			*gpgKeyPassword,
-			*gpgKeyID,
-			*baseURL,
-			"fedora-36",
-			"amd64",
-			"1.fc36",
-			*appName,
-			*appDescription,
-			*appSummary,
-			*appURL,
-			*appSPDX,
-			releases,
-			rpmPackages,
-			false,
-		),
+				flatpak.Image,
+				*pull,
+				*src,
+				filepath.Join(*dst, c.Path),
+				handleID,
+				handleOutput,
+				cfg.App.ID,
+				*gpgKeyContent,
+				*gpgKeyPassword,
+				*gpgKeyID,
+				cfg.App.BaseURL+c.Path,
+				c.Architecture,
+				cfg.App.Name,
+				cfg.App.Description,
+				cfg.App.Summary,
+				cfg.License.SPDX,
+				cfg.App.Homepage,
+				cfg.Releases,
+				false,
+			),
+		)
+	}
+
+	for _, c := range cfg.MSI {
+		bdrs = append(
+			bdrs,
+			msi.NewBuilder(
+				ctx,
+				cli,
+
+				msi.Image,
+				*pull,
+				*src,
+				filepath.Join(*dst, c.Path),
+				handleID,
+				handleOutput,
+				cfg.App.ID,
+				cfg.App.Name,
+				*gpgKeyContent,
+				*gpgKeyPassword,
+				c.Architecture,
+				c.Packages,
+				cfg.Releases,
+				false,
+			),
+		)
+	}
+
+	for _, c := range cfg.RPM {
+		bdrs = append(
+			bdrs,
+			rpm.NewBuilder(
+				ctx,
+				cli,
+
+				rpm.Image,
+				*pull,
+				*src,
+				filepath.Join(*dst, c.Path),
+				handleID,
+				handleOutput,
+				cfg.App.ID,
+				*gpgKeyContent,
+				*gpgKeyPassword,
+				*gpgKeyID,
+				cfg.App.BaseURL,
+				c.Distro,
+				c.Architecture,
+				c.Trailer,
+				cfg.App.Name,
+				cfg.App.Description,
+				cfg.App.Summary,
+				cfg.App.Homepage,
+				cfg.License.SPDX,
+				cfg.Releases,
+				c.Packages,
+				false,
+			),
+		)
+	}
+
+	if strings.TrimSpace(cfg.APK.Path) != "" {
+		bdrs = append(
+			bdrs,
+			apk.NewBuilder(
+				ctx,
+				cli,
+
+				apk.Image,
+				*pull,
+				*src,
+				filepath.Join(*dst, cfg.APK.Path),
+				handleID,
+				handleOutput,
+				cfg.App.ID,
+				*gpgKeyContent,
+				*gpgKeyPassword,
+				*apkCertContent,
+				*apkCertPassword,
+				cfg.App.BaseURL+cfg.APK.Path,
+				cfg.App.ID,
+				false,
+			),
+		)
 	}
 
 	semaphore := make(chan struct{}, *concurrency)
