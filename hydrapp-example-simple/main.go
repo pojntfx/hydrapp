@@ -7,10 +7,9 @@ import (
 	"context"
 	"log"
 	"os"
-	"time"
 
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/backend"
-	"github.com/pojntfx/hydrapp/hydrapp-example/pkg/frontend"
+	"github.com/pojntfx/hydrapp/hydrapp-example-simple/pkg/backend"
+	"github.com/pojntfx/hydrapp/hydrapp-example-simple/pkg/frontend"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/browser"
 	_ "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/fixes"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update"
@@ -18,9 +17,9 @@ import (
 )
 
 const (
-	appName    = "Hydrapp Example"                         // App name
-	appID      = "com.pojtinger.felicitas.hydrapp.example" // App ID
-	appVersion = "v0.0.1"                                  // App version
+	appName    = "Hydrapp Simple Example"                         // App name
+	appID      = "com.pojtinger.felicitas.hydrapp.example.simple" // App ID
+	appVersion = "v0.0.1"                                         // App version
 
 	updateAPIURL = "https://api.github.com/" // GitHub/Gitea API endpoint to use
 	updateOwner  = "pojntfx"                 // Repository owner
@@ -56,7 +55,7 @@ func main() {
 	}
 
 	// Start the backend
-	backendURL, stopBackend, err := backend.StartServer(os.Getenv("HYDRAPP_BACKEND_LADDR"), time.Second*10, true)
+	backendURL, stopBackend, err := backend.StartServer(os.Getenv("HYDRAPP_BACKEND_LADDR"), true)
 	if err != nil {
 		utils.HandlePanic(appName, "could not start backend", err)
 	}

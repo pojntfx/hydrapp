@@ -8,16 +8,12 @@ github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f h1:OGqDDftRTwrvUoL6pO
 github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f/go.mod h1:Dv9D0NUlAsaQcGQZa5kc5mqR9ua72SmA8VXi4cd+cBw=
 github.com/fsnotify/fsnotify v1.6.0 h1:n+5WquG0fcWoWp6xPWfHdbskMCQaFnG6PfBrh1Ky4HY=
 github.com/fsnotify/fsnotify v1.6.0/go.mod h1:sl3t1tCWJFWoRz9R8WJCbQihKKwmorjAbSClcnxKAGw=
-github.com/gorilla/websocket v1.5.0 h1:PPwGk2jz7EePpoHN/+ClbZu8SPxiqlu12wZP/3sWmnc=
-github.com/gorilla/websocket v1.5.0/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/josephspurrier/goversioninfo v1.4.0 h1:Puhl12NSHUSALHSuzYwPYQkqa2E1+7SrtAPJorKK0C8=
 github.com/josephspurrier/goversioninfo v1.4.0/go.mod h1:JWzv5rKQr+MmW+LvM412ToT/IkYDZjaclF2pKDss8IY=
 github.com/ncruces/zenity v0.9.0 h1:h2LbKKH4W4CbtBB1t3LxH8PurSpOYXuPBGbLZbBYq14=
 github.com/ncruces/zenity v0.9.0/go.mod h1:KqkrqV3gBDEa6Rrlir2rRWzCvw2dUKe/pMcpE6QCbOA=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221019213504-1594193e903e h1:/gX8xJjnpuIBp61htAbI1YECTbSgfEjYR7N3goV1ChY=
-github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221019213504-1594193e903e/go.mod h1:34oI7CA4L00NJrH1/B68dpoZZTp08z5kokdsKJhq6hc=
 github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221022015902-f72f0411ea81 h1:cA4DJjQZnWV8B7I03KgCcjpBlfZXryltzpZGJ4/scHw=
 github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221022015902-f72f0411ea81/go.mod h1:34oI7CA4L00NJrH1/B68dpoZZTp08z5kokdsKJhq6hc=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 h1:GranzK4hv1/pqTIhMTXt2X8MmMOuH3hMeUR0o9SP5yc=

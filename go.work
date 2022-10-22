@@ -3,6 +3,7 @@ go 1.18
 use (
 	.
 	./hydrapp-builder
-	./hydrapp-example
+	./hydrapp-example-full
+	./hydrapp-example-simple
 	./hydrapp-utils
 )
