@@ -4,7 +4,7 @@
   "description": "Hydrapp Example.",
   "type": "module",
   "scripts": {
-    "dev": "parcel index.html",
+    "dev": "parcel index.html --dist-dir out",
     "build": "tsc && parcel build index.html --dist-dir out"
   },
   "keywords": [

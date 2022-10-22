@@ -19,7 +19,9 @@ const bind = (getSocket: () => WebSocket, broker: EventTarget) =>
     });
 
     socket.addEventListener("close", async () => {
-      console.log("Disconnected from RPC server, reconnecting");
+      console.log("Disconnected from RPC server, reconnecting in 1s");
+
+      await new Promise((res) => setTimeout(res, 1000));
 
       await bind(getSocket, broker);
     });

@@ -89,7 +89,10 @@ export default () => {
 
         <button
           onClick={async () => {
-            if (Notification.permission !== "granted") {
+            if (
+              "Notification" in window &&
+              Notification.permission !== "granted"
+            ) {
               await Notification.requestPermission();
             }
 
@@ -100,7 +103,11 @@ export default () => {
                 break;
               }
 
-              new Notification(res);
+              if ("Notification" in window) {
+                new Notification(res);
+              } else {
+                alert(res);
+              }
             }
           }}
         >
