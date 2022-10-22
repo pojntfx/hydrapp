@@ -4,6 +4,8 @@ const (
 	browserTypeChromium = "chromium"
 	browserTypeFirefox  = "firefox"
 	browserTypeEpiphany = "epiphany"
+
+	browserTypeDummy = "dummy"
 )
 
 var ChromiumLikeBrowsers = Browser{

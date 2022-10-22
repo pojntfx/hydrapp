@@ -431,5 +431,7 @@ func LaunchBrowser(
 
 		// Wait till lock for browser has been removed
 		utils.WaitForLock(filepath.Join(profileDir, "ephy-history.db-wal"), handlePanic)
+	case browserTypeDummy:
+		select {}
 	}
 }
