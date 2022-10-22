@@ -9,12 +9,26 @@
   <body>
     <h1>Hydrapp Simple Example</h1>
 
-    <a id="server-time-link">Get server time</a>
+    <ul>
+      <li>
+        <a id="server-time-link">Get server time</a>
+      </li>
+
+      <li>
+        <a id="ifconfig-io-link"
+          >Get results of ifconfig.io/all.json proxied through backend</a
+        >
+      </li>
+    </ul>
 
     <script>
-      document.getElementById("server-time-link").href = new URL(
-        document.location
-      ).searchParams.get("socketURL");
+      document.getElementById("server-time-link").href =
+        new URL(document.location).searchParams.get("socketURL") +
+        "/servertime";
+
+      document.getElementById("ifconfig-io-link").href =
+        new URL(document.location).searchParams.get("socketURL") +
+        "/ifconfigio";
     </script>
   </body>
 </html>

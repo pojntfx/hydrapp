@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"log"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
@@ -21,32 +21,39 @@ func StartServer(addr string, localhostize bool) (string, func() error, error) {
 		return "", nil, err
 	}
 
-	clients := 0
-	go func() {
-		if err := http.Serve(listener, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			clients++
+	mux := http.NewServeMux()
 
-			log.Printf("%v clients connected", clients)
+	mux.HandleFunc("/servertime", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Go server time: " + time.Now().Format(time.RFC3339)))
+	})
 
-			defer func() {
-				clients--
-
-				if err := recover(); err != nil {
-					w.WriteHeader(http.StatusInternalServerError)
-
-					log.Printf("Client disconnected with error: %v", err)
-				}
-
-				log.Printf("%v clients connected", clients)
-			}()
-
-			switch r.Method {
-			case http.MethodGet:
-				w.Write([]byte("Go server time: " + time.Now().Format(time.RFC3339)))
-			default:
-				w.WriteHeader(http.StatusMethodNotAllowed)
+	mux.HandleFunc("/ifconfigio", func(w http.ResponseWriter, r *http.Request) {
+		res, err := http.Get("https://ifconfig.io/all.json")
+		if err != nil {
+			if _, err := w.Write([]byte(err.Error())); err != nil {
+				panic(err)
 			}
-		})); err != nil {
+
+			return
+		}
+		defer res.Body.Close()
+
+		data, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			if _, err := w.Write([]byte(err.Error())); err != nil {
+				panic(err)
+			}
+
+			return
+		}
+
+		if _, err := w.Write(data); err != nil {
+			panic(err)
+		}
+	})
+
+	go func() {
+		if err := http.Serve(listener, mux); err != nil {
 			if strings.HasSuffix(err.Error(), "use of closed network connection") {
 				return
 			}
