@@ -377,7 +377,7 @@ func main() {
 					apkCertContent,
 					*apkPassword,
 					cfg.App.BaseURL+cfg.APK.Path,
-					cfg.App.ID,
+					cfg.App.Name,
 					*overwrite,
 				),
 			)

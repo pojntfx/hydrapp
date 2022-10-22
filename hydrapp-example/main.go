@@ -56,7 +56,7 @@ func main() {
 	}
 
 	// Start the backend
-	backendURL, stopBackend, err := backend.StartServer(os.Getenv("HYDRAPP_BACKEND_LADDR"), time.Second*10)
+	backendURL, stopBackend, err := backend.StartServer("", os.Getenv("HYDRAPP_BACKEND_LADDR"), time.Second*10)
 	if err != nil {
 		utils.HandlePanic(appName, "could not start backend", err)
 	}
@@ -65,7 +65,7 @@ func main() {
 	log.Println("Backend URL:", backendURL)
 
 	// Start the frontend
-	frontendURL, stopFrontend, err := frontend.StartServer(os.Getenv("HYDRAPP_FRONTEND_LADDR"), backendURL)
+	frontendURL, stopFrontend, err := frontend.StartServer("", os.Getenv("HYDRAPP_FRONTEND_LADDR"), backendURL)
 	if err != nil {
 		utils.HandlePanic(appName, "could not start frontend", err)
 	}

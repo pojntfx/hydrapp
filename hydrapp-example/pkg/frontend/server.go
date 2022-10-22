@@ -19,20 +19,18 @@ var (
 	UI embed.FS
 )
 
-func StartServer(addr string, backendURL string) (string, func() error, error) {
-	var listener net.Listener
-	if strings.TrimSpace(addr) != "" {
-		var err error
-		listener, err = net.Listen("tcp", addr)
-		if err != nil {
-			return "", nil, err
-		}
-	} else {
-		var err error
-		listener, err = net.Listen("tcp", ":0")
-		if err != nil {
-			return "", nil, err
-		}
+func StartServer(network, addr string, backendURL string) (string, func() error, error) {
+	if strings.TrimSpace(network) == "" {
+		network = "tcp"
+	}
+
+	if strings.TrimSpace(addr) == "" {
+		addr = ":0"
+	}
+
+	listener, err := net.Listen(network, addr)
+	if err != nil {
+		return "", nil, err
 	}
 
 	root := fs.FS(UI)
@@ -51,12 +49,7 @@ func StartServer(addr string, backendURL string) (string, func() error, error) {
 		}
 	}()
 
-	laddr := listener.Addr().String()
-
-	laddr = strings.Replace(laddr, "127.0.0.1", "localhost", 1)
-	laddr = strings.Replace(laddr, "[::]", "localhost", 1)
-
-	url, err := url.Parse("http://" + laddr)
+	url, err := url.Parse("http://" + listener.Addr().String())
 	if err != nil {
 		return "", nil, err
 	}

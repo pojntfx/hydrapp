@@ -15,6 +15,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.view.Window;
 
 public class MainActivity extends Activity {
   private ValueCallback<Uri[]> fileChooserCallback;
@@ -33,6 +34,8 @@ public class MainActivity extends Activity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    requestWindowFeature(Window.FEATURE_NO_TITLE);
+  
     super.onCreate(savedInstanceState);
 
     Uri home = Uri.parse(LaunchBackend());

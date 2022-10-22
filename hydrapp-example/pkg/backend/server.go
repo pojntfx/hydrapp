@@ -19,7 +19,15 @@ type exampleStruct struct {
 	Name string `json:"name"`
 }
 
-func StartServer(addr string, heartbeat time.Duration) (string, func() error, error) {
+func StartServer(network, addr string, heartbeat time.Duration) (string, func() error, error) {
+	if strings.TrimSpace(network) == "" {
+		network = "tcp"
+	}
+
+	if strings.TrimSpace(addr) == "" {
+		addr = ":0"
+	}
+
 	registry := rpc.NewRegistry(heartbeat, &rpc.Callbacks{
 		OnReceivePong: func() {
 			log.Println("Received pong from client")
@@ -111,19 +119,9 @@ func StartServer(addr string, heartbeat time.Duration) (string, func() error, er
 		panic(err)
 	}
 
-	var listener net.Listener
-	if strings.TrimSpace(addr) != "" {
-		var err error
-		listener, err = net.Listen("tcp", addr)
-		if err != nil {
-			return "", nil, err
-		}
-	} else {
-		var err error
-		listener, err = net.Listen("tcp", ":0")
-		if err != nil {
-			return "", nil, err
-		}
+	listener, err := net.Listen(network, addr)
+	if err != nil {
+		return "", nil, err
 	}
 
 	clients := 0
