@@ -19,11 +19,7 @@ type exampleStruct struct {
 	Name string `json:"name"`
 }
 
-func StartServer(network, addr string, heartbeat time.Duration) (string, func() error, error) {
-	if strings.TrimSpace(network) == "" {
-		network = "tcp"
-	}
-
+func StartServer(addr string, heartbeat time.Duration, localhostize bool) (string, func() error, error) {
 	if strings.TrimSpace(addr) == "" {
 		addr = ":0"
 	}
@@ -119,7 +115,7 @@ func StartServer(network, addr string, heartbeat time.Duration) (string, func() 
 		panic(err)
 	}
 
-	listener, err := net.Listen(network, addr)
+	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		return "", nil, err
 	}
@@ -165,5 +161,9 @@ func StartServer(network, addr string, heartbeat time.Duration) (string, func() 
 		return "", nil, err
 	}
 
-	return utils.Localhostize(url.String()), listener.Close, nil
+	if localhostize {
+		return utils.Localhostize(url.String()), listener.Close, nil
+	}
+
+	return url.String(), listener.Close, nil
 }

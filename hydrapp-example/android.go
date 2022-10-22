@@ -19,14 +19,14 @@ import (
 
 //export Java_com_pojtinger_felicitas_hydrapp_example_MainActivity_LaunchBackend
 func Java_com_pojtinger_felicitas_hydrapp_example_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
-	backendURL, _, err := backend.StartServer("tcp4", "", time.Second*10)
+	backendURL, _, err := backend.StartServer("", time.Second*10, false)
 	if err != nil {
 		log.Fatalln("could not start backend:", err)
 	}
 
 	log.Println("Backend URL:", backendURL)
 
-	frontendURL, _, err := frontend.StartServer("tcp4", "", backendURL)
+	frontendURL, _, err := frontend.StartServer("", backendURL, false)
 	if err != nil {
 		log.Fatalln("could not start frontend:", err)
 	}

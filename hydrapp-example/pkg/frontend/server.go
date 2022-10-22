@@ -19,16 +19,12 @@ var (
 	UI embed.FS
 )
 
-func StartServer(network, addr string, backendURL string) (string, func() error, error) {
-	if strings.TrimSpace(network) == "" {
-		network = "tcp"
-	}
-
+func StartServer(addr string, backendURL string, localhostize bool) (string, func() error, error) {
 	if strings.TrimSpace(addr) == "" {
 		addr = ":0"
 	}
 
-	listener, err := net.Listen(network, addr)
+	listener, err := net.Listen("tcp", addr)
 	if err != nil {
 		return "", nil, err
 	}
@@ -60,5 +56,9 @@ func StartServer(network, addr string, backendURL string) (string, func() error,
 
 	url.RawQuery = values.Encode()
 
-	return utils.Localhostize(url.String()), listener.Close, nil
+	if localhostize {
+		return utils.Localhostize(url.String()), listener.Close, nil
+	}
+
+	return url.String(), listener.Close, nil
 }
