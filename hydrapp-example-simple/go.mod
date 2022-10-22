@@ -2,7 +2,7 @@ module github.com/pojntfx/hydrapp/hydrapp-example-simple
 
 go 1.18
 
-require github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221022015902-f72f0411ea81
+require github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221022072527-fe26929d2acd
 
 require (
 	github.com/akavel/rsrc v0.10.2 // indirect

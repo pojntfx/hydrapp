@@ -19,16 +19,30 @@
           >Get results of ifconfig.io/all.json proxied through backend</a
         >
       </li>
+
+      <li>
+        <a id="envs-link">List all system environment variables</a>
+      </li>
     </ul>
 
     <script>
+      function getUrlParameter(location, name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+        var results = regex.exec(location);
+        return results === null
+          ? ""
+          : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+
       document.getElementById("server-time-link").href =
-        new URL(document.location).searchParams.get("socketURL") +
-        "/servertime";
+        getUrlParameter(window.location.href, "socketURL") + "/servertime";
 
       document.getElementById("ifconfig-io-link").href =
-        new URL(document.location).searchParams.get("socketURL") +
-        "/ifconfigio";
+        getUrlParameter(window.location.href, "socketURL") + "/ifconfigio";
+
+      document.getElementById("envs-link").href =
+        getUrlParameter(window.location.href, "socketURL") + "/envs";
     </script>
   </body>
 </html>

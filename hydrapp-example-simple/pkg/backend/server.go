@@ -1,10 +1,12 @@
 package backend
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 
@@ -24,7 +26,9 @@ func StartServer(addr string, localhostize bool) (string, func() error, error) {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/servertime", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Go server time: " + time.Now().Format(time.RFC3339)))
+		if _, err := w.Write([]byte("Go server time: " + time.Now().Format(time.RFC3339))); err != nil {
+			panic(err)
+		}
 	})
 
 	mux.HandleFunc("/ifconfigio", func(w http.ResponseWriter, r *http.Request) {
@@ -48,6 +52,17 @@ func StartServer(addr string, localhostize bool) (string, func() error, error) {
 		}
 
 		if _, err := w.Write(data); err != nil {
+			panic(err)
+		}
+	})
+
+	mux.HandleFunc("/envs", func(w http.ResponseWriter, r *http.Request) {
+		b, err := json.Marshal(os.Environ())
+		if err != nil {
+			panic(err)
+		}
+
+		if _, err := w.Write(b); err != nil {
 			panic(err)
 		}
 	})
