@@ -104,7 +104,7 @@ func DockerRunImage(
 		}
 
 		if scanner.Err() != nil {
-			panic(err)
+			return
 		}
 
 		fmt.Printf("%v", utils.ColorReset)

@@ -124,6 +124,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			apk.NewImplementationRenderer(),
 		},
 		b.overwrite,
+		ejecting,
 	)
 }
 

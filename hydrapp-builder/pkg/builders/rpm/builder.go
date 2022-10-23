@@ -143,6 +143,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			),
 		},
 		b.overwrite,
+		ejecting,
 	)
 }
 

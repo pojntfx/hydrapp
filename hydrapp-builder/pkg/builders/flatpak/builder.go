@@ -128,6 +128,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			flatpak.NewSdkRenderer(),
 		},
 		b.overwrite,
+		ejecting,
 	)
 }
 

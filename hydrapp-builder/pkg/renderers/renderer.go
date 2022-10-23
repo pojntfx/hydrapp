@@ -2,6 +2,7 @@ package renderers
 
 import (
 	"bytes"
+	"strings"
 	"text/template"
 	"time"
 )
@@ -32,7 +33,7 @@ func NewRenderer(
 	}
 }
 
-func (r *Renderer) Render() (filePath string, fileContent string, err error) {
+func (r *Renderer) Render(templateOverride string) (filePath string, fileContent string, err error) {
 	t, err := template.
 		New(r.filePath).
 		Funcs(template.FuncMap{
@@ -40,7 +41,13 @@ func (r *Renderer) Render() (filePath string, fileContent string, err error) {
 				return releases[len(releases)-1]
 			},
 		}).
-		Parse(r.template)
+		Parse(func() string {
+			if strings.TrimSpace(templateOverride) != "" {
+				return templateOverride
+			}
+
+			return r.template
+		}())
 	if err != nil {
 		return "", "", err
 	}
