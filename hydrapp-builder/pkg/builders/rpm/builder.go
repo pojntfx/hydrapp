@@ -3,7 +3,6 @@ package rpm
 import (
 	"context"
 	"encoding/base64"
-	"path/filepath"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
@@ -44,7 +43,8 @@ func NewBuilder(
 	releases []renderers.Release, // App releases
 	extraPackages []rpm.Package, // Extra RPM packages
 	overwrite bool, // Overwrite files even if they exist
-	unstable bool, // Create unstable build
+	branchID, // Branch ID
+	branchName string, // Branch Name
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -72,7 +72,8 @@ func NewBuilder(
 		releases,
 		extraPackages,
 		overwrite,
-		unstable,
+		branchID,
+		branchName,
 	}
 }
 
@@ -101,18 +102,14 @@ type Builder struct {
 	appSPDX string
 	releases      []renderers.Release
 	extraPackages []rpm.Package
-	overwrite,
-	unstable bool
+	overwrite     bool
+	branchID,
+	branchName string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
-	appID := b.appID
-	appName := b.appName
-
-	if b.unstable {
-		appID += builders.UnstableIDSuffix
-		appName += builders.UnstableNameSuffix
-	}
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return utils.WriteRenders(
 		workdir,
@@ -148,20 +145,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 }
 
 func (b *Builder) Build() error {
-	dst := b.dst
-	appID := b.appID
-	appName := b.appName
-	baseURL := b.baseURL
-
-	if b.unstable {
-		dst = filepath.Join(dst, builders.UnstablePathSuffix)
-		appID += builders.UnstableIDSuffix
-		appName += builders.UnstableNameSuffix
-		baseURL += "/" + builders.UnstablePathSuffix
-	} else {
-		dst = filepath.Join(dst, builders.StablePathSuffix)
-		baseURL += "/" + builders.StablePathSuffix
-	}
+	dst := builders.GetFilepathForBranch(b.dst, b.branchID)
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID)
 
 	return executors.DockerRunImage(
 		b.ctx,

@@ -73,7 +73,8 @@ func main() {
 	apkCert := flag.String("apk-cert", "", "Path to Android certificate/keystore")
 	apkPassword := flag.String("apk-password", "", " Password for Android certificate")
 
-	unstable := flag.Bool("unstable", false, "Create unstable build")
+	branchID := flag.String("branch-id", "", `Branch ID to build the app as, i.e. unstable (for an app ID like "myappid.unstable" and baseURL like "mybaseurl/unstable"`)
+	branchName := flag.String("branch-name", "", `Branch name to build the app as, i.e. Unstable (for an app name like "myappname (Unstable)"`)
 
 	flag.Parse()
 
@@ -203,7 +204,8 @@ func main() {
 				cfg.License.Text,
 				cfg.App.Name,
 				*overwrite,
-				*unstable,
+				*branchID,
+				*branchName,
 			),
 		)
 	}
@@ -235,7 +237,8 @@ func main() {
 					cfg.DMG.Packages,
 					cfg.Releases,
 					*overwrite,
-					*unstable,
+					*branchID,
+					*branchName,
 				),
 			)
 		}
@@ -276,7 +279,8 @@ func main() {
 				cfg.App.Homepage,
 				cfg.Releases,
 				*overwrite,
-				*unstable,
+				*branchID,
+				*branchName,
 			),
 		)
 	}
@@ -311,7 +315,8 @@ func main() {
 				c.Packages,
 				cfg.Releases,
 				*overwrite,
-				*unstable,
+				*branchID,
+				*branchName,
 			),
 		)
 	}
@@ -354,7 +359,8 @@ func main() {
 				cfg.Releases,
 				c.Packages,
 				*overwrite,
-				*unstable,
+				*branchID,
+				*branchName,
 			),
 		)
 	}
@@ -386,7 +392,8 @@ func main() {
 					cfg.App.BaseURL+cfg.APK.Path,
 					cfg.App.Name,
 					*overwrite,
-					*unstable,
+					*branchID,
+					*branchName,
 				),
 			)
 		}

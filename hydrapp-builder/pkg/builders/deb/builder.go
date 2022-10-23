@@ -3,7 +3,6 @@ package deb
 import (
 	"context"
 	"encoding/base64"
-	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/client"
@@ -50,8 +49,9 @@ func NewBuilder(
 	appSPDX, // App SPDX license identifier
 	appLicenseText, // App license text
 	appName string, // App name
-	overwrite, // Overwrite files even if they exist
-	unstable bool, // Create unstable build
+	overwrite bool, // Overwrite files even if they exist
+	branchID, // Branch ID
+	branchName string, // Branch Name
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -84,7 +84,8 @@ func NewBuilder(
 		appLicenseText,
 		appName,
 		overwrite,
-		unstable,
+		branchID,
+		branchName,
 	}
 }
 
@@ -118,18 +119,14 @@ type Builder struct {
 	appSPDX,
 	appLicenseText,
 	appName string
-	overwrite,
-	unstable bool
+	overwrite bool
+	branchID,
+	branchName string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
-	appID := b.appID
-	appName := b.appName
-
-	if b.unstable {
-		appID += builders.UnstableIDSuffix
-		appName += builders.UnstableNameSuffix
-	}
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return utils.WriteRenders(
 		workdir,
@@ -181,18 +178,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 }
 
 func (b *Builder) Build() error {
-	dst := b.dst
-	appID := b.appID
-	baseURL := b.baseURL
-
-	if b.unstable {
-		dst = filepath.Join(dst, builders.UnstablePathSuffix)
-		appID += builders.UnstableIDSuffix
-		baseURL += "/" + builders.UnstablePathSuffix
-	} else {
-		dst = filepath.Join(dst, builders.StablePathSuffix)
-		baseURL += "/" + builders.StablePathSuffix
-	}
+	dst := builders.GetFilepathForBranch(b.dst, b.branchID)
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID)
 
 	return executors.DockerRunImage(
 		b.ctx,

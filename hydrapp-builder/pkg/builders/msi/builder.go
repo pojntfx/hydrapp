@@ -3,7 +3,6 @@ package msi
 import (
 	"context"
 	"encoding/base64"
-	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/client"
@@ -35,8 +34,9 @@ func NewBuilder(
 	architecture string, // Architecture to build for
 	packages []string, // MSYS2 packages to install. Only supported for amd64.
 	releases []renderers.Release, // App releases
-	overwrite, // Overwrite files even if they exist
-	unstable bool, // Create unstable build
+	overwrite bool, // Overwrite files even if they exist
+	branchID, // Branch ID
+	branchName string, // Branch Name
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -56,7 +56,8 @@ func NewBuilder(
 		packages,
 		releases,
 		overwrite,
-		unstable,
+		branchID,
+		branchName,
 	}
 }
 
@@ -75,20 +76,16 @@ type Builder struct {
 	gpgKeyContent,
 	gpgKeyPassword,
 	architecture string
-	packages []string
-	releases []renderers.Release
-	overwrite,
-	unstable bool
+	packages  []string
+	releases  []renderers.Release
+	overwrite bool
+	branchID,
+	branchName string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
-	appID := b.appID
-	appName := b.appName
-
-	if b.unstable {
-		appID += builders.UnstableIDSuffix
-		appName += builders.UnstableNameSuffix
-	}
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return utils.WriteRenders(
 		workdir,
@@ -105,17 +102,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 }
 
 func (b *Builder) Build() error {
-	dst := b.dst
-	appID := b.appID
-	appName := b.appName
-
-	if b.unstable {
-		dst = filepath.Join(dst, builders.UnstablePathSuffix)
-		appID += builders.UnstableIDSuffix
-		appName += builders.UnstableNameSuffix
-	} else {
-		dst = filepath.Join(dst, builders.StablePathSuffix)
-	}
+	dst := builders.GetFilepathForBranch(b.dst, b.branchID)
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return executors.DockerRunImage(
 		b.ctx,

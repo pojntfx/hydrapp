@@ -3,7 +3,6 @@ package dmg
 import (
 	"context"
 	"encoding/base64"
-	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/client"
@@ -36,7 +35,8 @@ func NewBuilder(
 	packages []string, // MacPorts packages to install
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
-	unstable bool, // Create unstable build
+	branchID, // Branch ID
+	branchName string, // Branch Name
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -56,7 +56,8 @@ func NewBuilder(
 		packages,
 		releases,
 		overwrite,
-		unstable,
+		branchID,
+		branchName,
 	}
 }
 
@@ -77,18 +78,14 @@ type Builder struct {
 	universal bool
 	packages  []string
 	releases  []renderers.Release
-	overwrite,
-	unstable bool
+	overwrite bool
+	branchID,
+	branchName string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
-	appID := b.appID
-	appName := b.appName
-
-	if b.unstable {
-		appID += builders.UnstableIDSuffix
-		appName += builders.UnstableNameSuffix
-	}
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return utils.WriteRenders(
 		workdir,
@@ -105,15 +102,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 }
 
 func (b *Builder) Build() error {
-	dst := b.dst
-	appID := b.appID
-	appName := b.appName
-
-	if b.unstable {
-		dst = filepath.Join(dst, builders.UnstablePathSuffix)
-		appID += builders.UnstableIDSuffix
-		appName += builders.UnstableNameSuffix
-	}
+	dst := builders.GetFilepathForBranch(b.dst, b.branchID)
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return executors.DockerRunImage(
 		b.ctx,

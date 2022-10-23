@@ -37,8 +37,9 @@ func NewBuilder(
 	androidCertPassword string, // Password for the Android cert
 	baseURL, // Base URL where the repo is to be hosted
 	appName string, // App name
-	overwrite, // Overwrite files even if they exist
-	unstable bool, // Create unstable build
+	overwrite bool, // Overwrite files even if they exist
+	branchID, // Branch ID
+	branchName string, // Branch Name
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -58,7 +59,8 @@ func NewBuilder(
 		baseURL,
 		appName,
 		overwrite,
-		unstable,
+		branchID,
+		branchName,
 	}
 }
 
@@ -79,15 +81,16 @@ type Builder struct {
 	androidCertPassword,
 	baseURL,
 	appName string
-	overwrite,
-	unstable bool
+	overwrite bool
+	branchID,
+	branchName string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
-	appID := b.appID
-	appName := b.appName
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
-	if b.unstable {
+	if strings.TrimSpace(b.branchID) != "" {
 		jniBindingsPath := filepath.Join(workdir, "android.go")
 
 		stableJNIBindingsContent, err := ioutil.ReadFile(jniBindingsPath)
@@ -95,8 +98,8 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			return err
 		}
 
-		stableJavaID := strings.Replace(appID, ".", "_", -1)
-		unstableJavaID := stableJavaID + strings.Replace(builders.UnstableIDSuffix, ".", "_", -1)
+		stableJavaID := strings.Replace(b.appID, ".", "_", -1)
+		unstableJavaID := strings.Replace(appID, ".", "_", -1)
 
 		if !ejecting || b.overwrite {
 			if !strings.Contains(string(stableJNIBindingsContent), unstableJavaID) {
@@ -105,9 +108,6 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				}
 			}
 		}
-
-		appID += builders.UnstableIDSuffix
-		appName += builders.UnstableNameSuffix
 	}
 
 	return utils.WriteRenders(
@@ -129,18 +129,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 }
 
 func (b *Builder) Build() error {
-	dst := b.dst
-	appID := b.appID
-	baseURL := b.baseURL
-
-	if b.unstable {
-		dst = filepath.Join(dst, builders.UnstablePathSuffix)
-		appID += builders.UnstableIDSuffix
-		baseURL += "/" + builders.UnstablePathSuffix
-	} else {
-		dst = filepath.Join(dst, builders.StablePathSuffix)
-		baseURL += "/" + builders.StablePathSuffix
-	}
+	dst := builders.GetFilepathForBranch(b.dst, b.branchID)
+	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
+	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID)
 
 	return executors.DockerRunImage(
 		b.ctx,

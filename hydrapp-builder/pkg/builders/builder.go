@@ -1,10 +1,45 @@
 package builders
 
-const UnstableIDSuffix = ".unstable"
-const UnstableNameSuffix = " (Unstable)"
-const UnstablePathSuffix = "unstable"
+import (
+	"path/filepath"
+	"strings"
+)
 
-const StablePathSuffix = "stable"
+func GetAppIDForBranch(appID, branchID string) string {
+	// Stable
+	if strings.TrimSpace(branchID) == "" {
+		return appID
+	}
+
+	return appID + "." + branchID
+}
+
+func GetAppNameForBranch(appName, branchName string) string {
+	// Stable
+	if strings.TrimSpace(branchName) == "" {
+		return appName
+	}
+
+	return appName + " (" + branchName + ")"
+}
+
+func GetPathForBranch(path, branchID string) string {
+	// Stable
+	if strings.TrimSpace(branchID) == "" {
+		return path + "/stable"
+	}
+
+	return path + "/" + branchID
+}
+
+func GetFilepathForBranch(path, branchID string) string {
+	// Stable
+	if strings.TrimSpace(branchID) == "" {
+		return filepath.Join(path, "stable")
+	}
+
+	return filepath.Join(path, branchID)
+}
 
 type Builder interface {
 	Build() error
