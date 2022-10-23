@@ -37,7 +37,7 @@ func NewBuilder(
 	androidCertPassword string, // Password for the Android cert
 	baseURL, // Base URL where the repo is to be hosted
 	appName string, // App name
-	overwrite bool, // Overwrite files even if they exist
+	overwrite, // Overwrite files even if they exist
 	unstable bool, // Create unstable build
 ) *Builder {
 	return &Builder{

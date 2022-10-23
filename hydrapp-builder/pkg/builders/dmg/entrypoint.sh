@@ -67,7 +67,7 @@ cp "/tmp/out/${APP_ID}.${GOOS}.asc" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NA
 cp '/tmp/out/Info.plist' "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents"
 cp '/tmp/out/icon.icns' "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/Resources"
 
-genisoimage -V "Install ${APP_NAME}" -D -R -apple -no-pad -o "/tmp/out/${APP_ID}.${GOOS}.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt"
+genisoimage -V "Install $(echo ${APP_NAME} | cut -c -24)" -D -R -apple -no-pad -o "/tmp/out/${APP_ID}.${GOOS}.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt"
 gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}.dmg"
 
 cp "/tmp/out/${APP_ID}.${GOOS}.dmg" "/dst"

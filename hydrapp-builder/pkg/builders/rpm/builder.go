@@ -3,8 +3,10 @@ package rpm
 import (
 	"context"
 	"encoding/base64"
+	"path/filepath"
 
 	"github.com/docker/docker/client"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
@@ -42,6 +44,7 @@ func NewBuilder(
 	releases []renderers.Release, // App releases
 	extraPackages []rpm.Package, // Extra RPM packages
 	overwrite bool, // Overwrite files even if they exist
+	unstable bool, // Create unstable build
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -69,6 +72,7 @@ func NewBuilder(
 		releases,
 		extraPackages,
 		overwrite,
+		unstable,
 	}
 }
 
@@ -97,21 +101,30 @@ type Builder struct {
 	appSPDX string
 	releases      []renderers.Release
 	extraPackages []rpm.Package
-	overwrite     bool
+	overwrite,
+	unstable bool
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
+	appID := b.appID
+	appName := b.appName
+
+	if b.unstable {
+		appID += builders.UnstableIDSuffix
+		appName += builders.UnstableNameSuffix
+	}
+
 	return utils.WriteRenders(
 		workdir,
 		[]*renderers.Renderer{
 			xdg.NewDesktopRenderer(
-				b.appID,
-				b.appName,
+				appID,
+				appName,
 				b.appDescription,
 			),
 			xdg.NewMetainfoRenderer(
-				b.appID,
-				b.appName,
+				appID,
+				appName,
 				b.appDescription,
 				b.appSummary,
 				b.appSPDX,
@@ -119,8 +132,8 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.releases,
 			),
 			rpm.NewSpecRenderer(
-				b.appID,
-				b.appName,
+				appID,
+				appName,
 				b.appDescription,
 				b.appSummary,
 				b.appSPDX,
@@ -134,6 +147,21 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 }
 
 func (b *Builder) Build() error {
+	dst := b.dst
+	appID := b.appID
+	appName := b.appName
+	baseURL := b.baseURL
+
+	if b.unstable {
+		dst = filepath.Join(dst, builders.UnstablePathSuffix)
+		appID += builders.UnstableIDSuffix
+		appName += builders.UnstableNameSuffix
+		baseURL += "/" + builders.UnstablePathSuffix
+	} else {
+		dst = filepath.Join(dst, builders.StablePathSuffix)
+		baseURL += "/" + builders.StablePathSuffix
+	}
+
 	return executors.DockerRunImage(
 		b.ctx,
 		b.cli,
@@ -141,15 +169,15 @@ func (b *Builder) Build() error {
 		b.pull,
 		true,
 		b.src,
-		b.dst,
+		dst,
 		b.onID,
 		b.onOutput,
 		map[string]string{
-			"APP_ID":           b.appID,
+			"APP_ID":           appID,
 			"GPG_KEY_CONTENT":  b.gpgKeyContent,
 			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
 			"GPG_KEY_ID":       b.gpgKeyID,
-			"BASE_URL":         b.baseURL,
+			"BASE_URL":         baseURL,
 			"DISTRO":           b.distro,
 			"ARCHITECTURE":     b.architecture,
 			"PACKAGE_VERSION":  b.releases[len(b.releases)-1].Version,

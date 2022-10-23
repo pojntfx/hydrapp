@@ -203,6 +203,7 @@ func main() {
 				cfg.License.Text,
 				cfg.App.Name,
 				*overwrite,
+				*unstable,
 			),
 		)
 	}
@@ -234,6 +235,7 @@ func main() {
 					cfg.DMG.Packages,
 					cfg.Releases,
 					*overwrite,
+					*unstable,
 				),
 			)
 		}
@@ -274,6 +276,7 @@ func main() {
 				cfg.App.Homepage,
 				cfg.Releases,
 				*overwrite,
+				*unstable,
 			),
 		)
 	}
@@ -308,6 +311,7 @@ func main() {
 				c.Packages,
 				cfg.Releases,
 				*overwrite,
+				*unstable,
 			),
 		)
 	}
@@ -350,6 +354,7 @@ func main() {
 				cfg.Releases,
 				c.Packages,
 				*overwrite,
+				*unstable,
 			),
 		)
 	}

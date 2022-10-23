@@ -3,9 +3,11 @@ package msi
 import (
 	"context"
 	"encoding/base64"
+	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/client"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/msi"
@@ -33,7 +35,8 @@ func NewBuilder(
 	architecture string, // Architecture to build for
 	packages []string, // MSYS2 packages to install. Only supported for amd64.
 	releases []renderers.Release, // App releases
-	overwrite bool, // Overwrite files even if they exist
+	overwrite, // Overwrite files even if they exist
+	unstable bool, // Create unstable build
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -53,6 +56,7 @@ func NewBuilder(
 		packages,
 		releases,
 		overwrite,
+		unstable,
 	}
 }
 
@@ -71,18 +75,27 @@ type Builder struct {
 	gpgKeyContent,
 	gpgKeyPassword,
 	architecture string
-	packages  []string
-	releases  []renderers.Release
-	overwrite bool
+	packages []string
+	releases []renderers.Release
+	overwrite,
+	unstable bool
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
+	appID := b.appID
+	appName := b.appName
+
+	if b.unstable {
+		appID += builders.UnstableIDSuffix
+		appName += builders.UnstableNameSuffix
+	}
+
 	return utils.WriteRenders(
 		workdir,
 		[]*renderers.Renderer{
 			msi.NewWixRenderer(
-				b.appID,
-				b.appName,
+				appID,
+				appName,
 				b.releases,
 			),
 		},
@@ -91,6 +104,18 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 }
 
 func (b *Builder) Build() error {
+	dst := b.dst
+	appID := b.appID
+	appName := b.appName
+
+	if b.unstable {
+		dst = filepath.Join(dst, builders.UnstablePathSuffix)
+		appID += builders.UnstableIDSuffix
+		appName += builders.UnstableNameSuffix
+	} else {
+		dst = filepath.Join(dst, builders.StablePathSuffix)
+	}
+
 	return executors.DockerRunImage(
 		b.ctx,
 		b.cli,
@@ -98,12 +123,12 @@ func (b *Builder) Build() error {
 		b.pull,
 		false,
 		b.src,
-		b.dst,
+		dst,
 		b.onID,
 		b.onOutput,
 		map[string]string{
-			"APP_ID":           b.appID,
-			"APP_NAME":         b.appName,
+			"APP_ID":           appID,
+			"APP_NAME":         appName,
 			"GPG_KEY_CONTENT":  b.gpgKeyContent,
 			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
 			"ARCHITECTURE":     b.architecture,
