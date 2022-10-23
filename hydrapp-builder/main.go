@@ -73,6 +73,8 @@ func main() {
 	apkCert := flag.String("apk-cert", "", "Path to Android certificate/keystore")
 	apkPassword := flag.String("apk-password", "", " Password for Android certificate")
 
+	unstable := flag.Bool("unstable", false, "Create unstable build")
+
 	flag.Parse()
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -379,6 +381,7 @@ func main() {
 					cfg.App.BaseURL+cfg.APK.Path,
 					cfg.App.Name,
 					*overwrite,
+					*unstable,
 				),
 			)
 		}
@@ -399,7 +402,7 @@ func main() {
 			}()
 
 			if *eject {
-				if err := builder.Render(*src); err != nil {
+				if err := builder.Render(*src, true); err != nil {
 					panic(err)
 				}
 			} else {

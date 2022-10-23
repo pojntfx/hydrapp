@@ -91,7 +91,7 @@ type Builder struct {
 	overwrite bool
 }
 
-func (b *Builder) Render(workdir string) error {
+func (b *Builder) Render(workdir string, ejecting bool) error {
 	return utils.WriteRenders(
 		workdir,
 		[]*renderers.Renderer{

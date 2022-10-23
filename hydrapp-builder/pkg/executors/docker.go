@@ -28,7 +28,7 @@ func DockerRunImage(
 	onID func(id string),
 	onOutput func(shortID string, color string, timestamp int64, message string),
 	env map[string]string,
-	renderTemplates func(workdir string) error,
+	renderTemplates func(workdir string, ejecting bool) error,
 ) error {
 	if pull {
 		reader, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
@@ -51,7 +51,7 @@ func DockerRunImage(
 		return err
 	}
 
-	if err := renderTemplates(workdir); err != nil {
+	if err := renderTemplates(workdir, false); err != nil {
 		return err
 	}
 

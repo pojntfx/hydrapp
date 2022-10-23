@@ -3,8 +3,13 @@ package apk
 import (
 	"context"
 	"encoding/base64"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/docker/docker/client"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/apk"
@@ -33,6 +38,7 @@ func NewBuilder(
 	baseURL, // Base URL where the repo is to be hosted
 	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
+	unstable bool, // Create unstable build
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -52,6 +58,7 @@ func NewBuilder(
 		baseURL,
 		appName,
 		overwrite,
+		unstable,
 	}
 }
 
@@ -72,19 +79,46 @@ type Builder struct {
 	androidCertPassword,
 	baseURL,
 	appName string
-	overwrite bool
+	overwrite,
+	unstable bool
 }
 
-func (b *Builder) Render(workdir string) error {
+func (b *Builder) Render(workdir string, ejecting bool) error {
+	appID := b.appID
+	appName := b.appName
+
+	if b.unstable {
+		jniBindingsPath := filepath.Join(workdir, "android.go")
+
+		stableJNIBindingsContent, err := ioutil.ReadFile(jniBindingsPath)
+		if err != nil {
+			return err
+		}
+
+		stableJavaID := strings.Replace(appID, ".", "_", -1)
+		unstableJavaID := stableJavaID + strings.Replace(builders.UnstableIDSuffix, ".", "_", -1)
+
+		if !ejecting || b.overwrite {
+			if !strings.Contains(string(stableJNIBindingsContent), unstableJavaID) {
+				if err := ioutil.WriteFile(jniBindingsPath, []byte(strings.Replace(string(stableJNIBindingsContent), stableJavaID, unstableJavaID, -1)), os.ModePerm); err != nil {
+					return err
+				}
+			}
+		}
+
+		appID += builders.UnstableIDSuffix
+		appName += builders.UnstableNameSuffix
+	}
+
 	return utils.WriteRenders(
 		workdir,
 		[]*renderers.Renderer{
 			apk.NewManifestRenderer(
-				b.appID,
-				b.appName,
+				appID,
+				appName,
 			),
 			apk.NewActivityRenderer(
-				b.appID,
+				appID,
 			),
 			apk.NewHeaderRenderer(),
 			apk.NewImplementationRenderer(),
@@ -94,6 +128,19 @@ func (b *Builder) Render(workdir string) error {
 }
 
 func (b *Builder) Build() error {
+	dst := b.dst
+	appID := b.appID
+	baseURL := b.baseURL
+
+	if b.unstable {
+		dst = filepath.Join(dst, builders.UnstablePathSuffix)
+		appID += builders.UnstableIDSuffix
+		baseURL += "/" + builders.UnstablePathSuffix
+	} else {
+		dst = filepath.Join(dst, builders.StablePathSuffix)
+		baseURL += "/" + builders.StablePathSuffix
+	}
+
 	return executors.DockerRunImage(
 		b.ctx,
 		b.cli,
@@ -102,16 +149,16 @@ func (b *Builder) Build() error {
 		b.pull,
 		false,
 		b.src,
-		b.dst,
+		dst,
 		b.onID,
 		b.onOutput,
 		map[string]string{
-			"APP_ID":                b.appID,
+			"APP_ID":                appID,
 			"GPG_KEY_CONTENT":       b.gpgKeyContent,
 			"GPG_KEY_PASSWORD":      b.gpgKeyPassword,
 			"ANDROID_CERT_CONTENT":  b.androidCertContent,
 			"ANDROID_CERT_PASSWORD": b.androidCertPassword,
-			"BASE_URL":              b.baseURL,
+			"BASE_URL":              baseURL,
 		},
 		b.Render,
 	)
