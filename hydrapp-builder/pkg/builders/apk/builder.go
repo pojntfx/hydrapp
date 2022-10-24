@@ -34,7 +34,8 @@ func NewBuilder(
 	gpgKeyContent []byte, // GPG key contents
 	gpgKeyPassword string, // Password for the GPG key
 	androidCertContent []byte, // Android cert contents
-	androidCertPassword string, // Password for the Android cert
+	androidStorepass string, // Password for the Android keystore
+	androidKeypass string, // Password for the Android certificate
 	baseURL, // Base URL where the repo is to be hosted
 	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
@@ -55,7 +56,8 @@ func NewBuilder(
 		base64.StdEncoding.EncodeToString(gpgKeyContent),
 		base64.StdEncoding.EncodeToString([]byte(gpgKeyPassword)),
 		base64.StdEncoding.EncodeToString(androidCertContent),
-		base64.StdEncoding.EncodeToString([]byte(androidCertPassword)),
+		base64.StdEncoding.EncodeToString([]byte(androidStorepass)),
+		base64.StdEncoding.EncodeToString([]byte(androidKeypass)),
 		baseURL,
 		appName,
 		overwrite,
@@ -78,7 +80,8 @@ type Builder struct {
 	gpgKeyContent,
 	gpgKeyPassword,
 	androidCertContent,
-	androidCertPassword,
+	androidStorepass,
+	androidKeypass,
 	baseURL,
 	appName string
 	overwrite bool
@@ -145,12 +148,13 @@ func (b *Builder) Build() error {
 		b.onID,
 		b.onOutput,
 		map[string]string{
-			"APP_ID":                appID,
-			"GPG_KEY_CONTENT":       b.gpgKeyContent,
-			"GPG_KEY_PASSWORD":      b.gpgKeyPassword,
-			"ANDROID_CERT_CONTENT":  b.androidCertContent,
-			"ANDROID_CERT_PASSWORD": b.androidCertPassword,
-			"BASE_URL":              baseURL,
+			"APP_ID":               appID,
+			"GPG_KEY_CONTENT":      b.gpgKeyContent,
+			"GPG_KEY_PASSWORD":     b.gpgKeyPassword,
+			"ANDROID_CERT_CONTENT": b.androidCertContent,
+			"ANDROID_STOREPASS":    b.androidStorepass,
+			"ANDROID_KEYPASS":      b.androidKeypass,
+			"BASE_URL":             baseURL,
 		},
 		b.Render,
 	)

@@ -70,8 +70,9 @@ func main() {
 	gpgPassword := flag.String("gpg-password", "", "Password for GPG key")
 	gpgID := flag.String("gpg-id", "", "ID of the GPG key to use")
 
-	apkCert := flag.String("apk-cert", "", "Path to Android certificate/keystore")
-	apkPassword := flag.String("apk-password", "", " Password for Android certificate")
+	apkCert := flag.String("apk-cert", "", "Path to Android keystore")
+	apkStorepass := flag.String("apk-storepass", "", "Password for Android keystore")
+	apkKeypass := flag.String("apk-keypass", "", " Password for Android certificate (if keystore uses PKCS12, this will be the same as --apk-storepass)")
 
 	branchID := flag.String("branch-id", "", `Branch ID to build the app as, i.e. unstable (for an app ID like "myappid.unstable" and baseURL like "mybaseurl/unstable"`)
 	branchName := flag.String("branch-name", "", `Branch name to build the app as, i.e. Unstable (for an app name like "myappname (Unstable)"`)
@@ -388,7 +389,8 @@ func main() {
 					gpgKeyContent,
 					*gpgPassword,
 					apkCertContent,
-					*apkPassword,
+					*apkStorepass,
+					*apkKeypass,
 					cfg.App.BaseURL+cfg.APK.Path,
 					cfg.App.Name,
 					*overwrite,
