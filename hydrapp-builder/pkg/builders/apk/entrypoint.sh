@@ -48,6 +48,10 @@ mkdir -p "/tmp/out/android-certs" # Append *.jar here to use an external library
 
 # Sign package with Android certificate
 echo "${ANDROID_CERT_CONTENT}" | base64 -d >"/tmp/out/android-certs/${APP_ID}.keystore"
+
+export ANDROID_CERT_CN="$(keytool -noprompt -storepass $(echo ${ANDROID_CERT_PASSWORD} | base64 -d) -keypass $(echo ${ANDROID_CERT_PASSWORD} | base64 -d) -v -list -keystore /tmp/out/android-certs/${APP_ID}.keystore | grep -oP 'Owner: CN=\K\w(.*)')"
+export ANDROID_CERT_ALIAS="$(keytool -noprompt -storepass $(echo ${ANDROID_CERT_PASSWORD} | base64 -d) -keypass $(echo ${ANDROID_CERT_PASSWORD} | base64 -d) -v -list -keystore /tmp/out/android-certs/${APP_ID}.keystore | grep -oP 'Alias name: \K\w(.*)')"
+
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign" -f -p 4 "${APP_ID}.unsigned" "${APP_ID}.apk"
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner" sign --ks "/tmp/out/android-certs/${APP_ID}.keystore" --ks-pass pass:"$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)" --key-pass pass:"$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)" "${APP_ID}.apk"
 
@@ -67,11 +71,11 @@ repo_name: Hydrapp F-Droid Repo
 repo_description: >-
   Android apps for Hydrapp.
 repo_icon: icon.png
-repo_keyalias: ${APP_ID}
+repo_keyalias: ${ANDROID_CERT_ALIAS}
 keystore: keystore.p12
 keystorepass: "$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)"
 keypass: "$(echo ${ANDROID_CERT_PASSWORD} | base64 -d)"
-keydname: CN=${APP_ID}
+keydname: CN=${ANDROID_CERT_CN}
 apksigner: /usr/bin/apksigner
 EOT
 
