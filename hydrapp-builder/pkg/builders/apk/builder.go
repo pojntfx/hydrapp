@@ -40,7 +40,8 @@ func NewBuilder(
 	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName string, // Branch Name
+	branchName, // Branch Name
+	goOptions string, // Extra options to pass to the `go` command
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -63,6 +64,7 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
+		goOptions,
 	}
 }
 
@@ -86,7 +88,8 @@ type Builder struct {
 	appName string
 	overwrite bool
 	branchID,
-	branchName string
+	branchName,
+	goOptions string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
@@ -95,6 +98,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 
 	if strings.TrimSpace(b.branchID) != "" {
 		jniBindingsPath := filepath.Join(workdir, "android.go")
+		if _, err := os.Stat(jniBindingsPath); err != nil {
+			jniBindingsPath = filepath.Join(workdir, b.goOptions, "android.go")
+		}
 
 		stableJNIBindingsContent, err := ioutil.ReadFile(jniBindingsPath)
 		if err != nil {
@@ -155,6 +161,7 @@ func (b *Builder) Build() error {
 			"ANDROID_STOREPASS":    b.androidStorepass,
 			"ANDROID_KEYPASS":      b.androidKeypass,
 			"BASE_URL":             baseURL,
+			"GO_OPTIONS":           b.goOptions,
 		},
 		b.Render,
 	)

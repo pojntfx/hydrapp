@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/docker/docker v20.10.20+incompatible
 	github.com/otiai10/copy v1.7.0
+	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
 )
 
 require (

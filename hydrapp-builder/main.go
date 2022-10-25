@@ -50,6 +50,12 @@ func checkIfSkip(exclude string, platform, architecture string) (bool, error) {
 }
 
 func main() {
+	flag.Usage = func() {
+		fmt.Printf("Usage: %s [OPTIONS] [GOOPTIONS] ...\n", os.Args[0])
+
+		flag.PrintDefaults()
+	}
+
 	pwd, err := os.Getwd()
 	if err != nil {
 		panic(err)
@@ -107,6 +113,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	goOptions := strings.Join(flag.Args(), " ")
 
 	handleID := func(id string) {
 		s := make(chan os.Signal)
@@ -396,6 +404,7 @@ func main() {
 					*overwrite,
 					*branchID,
 					*branchName,
+					goOptions,
 				),
 			)
 		}
