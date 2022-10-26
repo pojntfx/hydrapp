@@ -14,22 +14,24 @@ EOT
 echo "${GPG_KEY_CONTENT}" | base64 -d >'/tmp/private.gpg'
 gpg --import /tmp/private.gpg
 
+# Prepare build environment
+export BASEDIR="${PWD}/${GOMAIN}"
+
 # Install MSYS2 packages
 if [ "${MSYS2PACKAGES}" != "" ]; then
   wine64 bash.exe -c "pacman --noconfirm --ignore pacman --needed -S ${MSYS2PACKAGES}"
 fi
 
 # Generate dependencies
-go generate ./...
+go generate "${GOMAIN}/..."
 
 # Create icons
 mkdir -p '/tmp/out'
-convert -resize 'x256' -gravity 'center' -crop '256x256+0+0' -flatten -colors '256' -background 'transparent' 'icon.png' '/tmp/out/icon.ico'
+convert -resize 'x256' -gravity 'center' -crop '256x256+0+0' -flatten -colors '256' -background 'transparent' "${BASEDIR}/icon.png" '/tmp/out/icon.ico'
 
 # Build app
 export GOOS="windows"
 export GOARCH="${ARCHITECTURE}"
-export BASEDIR="${PWD}"
 
 # See https://github.com/pojntfx/bagop/blob/main/main.go#L45
 export DEBARCH="${GOARCH}"
@@ -49,14 +51,14 @@ if [ "${ARCHITECTURE}" = "amd64" ]; then
   cp -r . '/root/.wine/drive_c/users/root/Documents/go-workspace'
   rm -rf '/root/.wine/drive_c/users/root/Documents/go-workspace/out'
 
-  wine64 bash.exe -c "export PATH=$PATH:/mingw64/bin GOPATH=/c/go GOROOT=/mingw64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 && cd /c/users/root/Documents/go-workspace && go build -buildvcs=false -ldflags='-linkmode=external -H=windowsgui' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ."
+  wine64 bash.exe -c "export PATH=$PATH:/mingw64/bin GOPATH=/c/go GOROOT=/mingw64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 GOFLAGS=${GOFLAGS} && cd /c/users/root/Documents/go-workspace && go build -buildvcs=false -ldflags='-linkmode=external -H=windowsgui' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ${GOMAIN}"
 
   # Copy binaries to staging directory
   yes | cp -rf /root/.wine/drive_c/users/root/Documents/go-workspace/out/* '/tmp/out'
 
   cp -r /root/.wine/drive_c/msys64/mingw64/* '/tmp/out'
 else
-  GOFLAGS='-tags=selfupdate' go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" .
+  GOFLAGS='-tags=selfupdate' go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" "${GOMAIN}"
 fi
 
 cd '/tmp/out'
