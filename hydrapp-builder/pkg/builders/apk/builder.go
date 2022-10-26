@@ -41,7 +41,8 @@ func NewBuilder(
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
 	branchName, // Branch Name
-	goOptions string, // Extra options to pass to the `go` command
+	goMain, // Directory with the main package to build
+	goFlags string, // Flags to pass to the Go command
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -64,7 +65,8 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
-		goOptions,
+		goMain,
+		goFlags,
 	}
 }
 
@@ -89,7 +91,8 @@ type Builder struct {
 	overwrite bool
 	branchID,
 	branchName,
-	goOptions string
+	goMain,
+	goFlags string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
@@ -97,10 +100,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	if strings.TrimSpace(b.branchID) != "" {
-		jniBindingsPath := filepath.Join(workdir, "android.go")
-		if _, err := os.Stat(jniBindingsPath); err != nil {
-			jniBindingsPath = filepath.Join(workdir, b.goOptions, "android.go")
-		}
+		jniBindingsPath := filepath.Join(workdir, b.goMain, "android.go")
 
 		stableJNIBindingsContent, err := ioutil.ReadFile(jniBindingsPath)
 		if err != nil {
@@ -120,7 +120,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	}
 
 	return utils.WriteRenders(
-		workdir,
+		filepath.Join(workdir, b.goMain),
 		[]*renderers.Renderer{
 			apk.NewManifestRenderer(
 				appID,
@@ -161,7 +161,8 @@ func (b *Builder) Build() error {
 			"ANDROID_STOREPASS":    b.androidStorepass,
 			"ANDROID_KEYPASS":      b.androidKeypass,
 			"BASE_URL":             baseURL,
-			"GO_OPTIONS":           b.goOptions,
+			"GOMAIN":               b.goMain,
+			"GOFLAGS":              b.goFlags,
 		},
 		b.Render,
 	)
