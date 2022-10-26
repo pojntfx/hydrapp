@@ -14,17 +14,20 @@ EOT
 echo "${GPG_KEY_CONTENT}" | base64 -d >'/tmp/private.gpg'
 gpg --import /tmp/private.gpg
 
+# Prepare build environment
+export BASEDIR="${PWD}/${GOMAIN}"
+
 # Install MacPorts packages
 if [ "${MACPORTS}" != "" ]; then
   osxcross-macports install --static ${MACPORTS}
 fi
 
 # Generate dependencies
-go generate ./...
+go generate "${GOMAIN}/..."
 
 # Create icons
 mkdir -p '/tmp/out'
-convert icon.png '/tmp/out/icon.icns'
+convert "${BASEDIR}/icon.png" '/tmp/out/icon.icns'
 
 # Build app
 export GOOS="darwin"
@@ -49,7 +52,7 @@ for ARCH in ${ARCHITECTURES}; do
   export PKGCONFIG="${DEBARCH}-apple-darwin20.4-pkg-config"
   export PKG_CONFIG="${DEBARCH}-apple-darwin20.4-pkg-config"
 
-  GOFLAGS='-tags=selfupdate' go build -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" .
+  GOFLAGS='-tags=selfupdate' go build -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
   rcodesign sign "/tmp/${APP_ID}.${GOOS}-${DEBARCH}"
 
   export BINARIES="${BINARIES} /tmp/${APP_ID}.${GOOS}-${DEBARCH}"
@@ -59,7 +62,7 @@ lipo -create -output "/tmp/out/${APP_ID}.${GOOS}" ${BINARIES}
 gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}"
 rcodesign sign "/tmp/out/${APP_ID}.${GOOS}"
 
-cp 'Info.plist' '/tmp/out/'
+cp "${BASEDIR}/Info.plist" '/tmp/out/'
 
 mkdir -p "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/"{MacOS,Resources}
 cp "/tmp/out/${APP_ID}.${GOOS}" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/MacOS/${APP_ID}"

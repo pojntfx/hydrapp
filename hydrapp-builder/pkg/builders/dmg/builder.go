@@ -3,6 +3,7 @@ package dmg
 import (
 	"context"
 	"encoding/base64"
+	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/client"
@@ -36,7 +37,9 @@ func NewBuilder(
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName string, // Branch Name
+	branchName, // Branch Name
+	goMain, // Directory with the main package to build
+	goFlags string, // Flags to pass to the Go command
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -58,6 +61,8 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
+		goMain,
+		goFlags,
 	}
 }
 
@@ -80,7 +85,9 @@ type Builder struct {
 	releases  []renderers.Release
 	overwrite bool
 	branchID,
-	branchName string
+	branchName,
+	goMain,
+	goFlags string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
@@ -88,7 +95,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return utils.WriteRenders(
-		workdir,
+		filepath.Join(workdir, b.goMain),
 		[]*renderers.Renderer{
 			dmg.NewInfoRenderer(
 				appID,
@@ -129,6 +136,8 @@ func (b *Builder) Build() error {
 				return "amd64"
 			}(),
 			"MACPORTS": strings.Join(b.packages, " "),
+			"GOMAIN":   b.goMain,
+			"GOFLAGS":  b.goFlags,
 		},
 		b.Render,
 	)
