@@ -3,6 +3,7 @@ package rpm
 import (
 	"context"
 	"encoding/base64"
+	"path/filepath"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
@@ -44,7 +45,9 @@ func NewBuilder(
 	extraPackages []rpm.Package, // Extra RPM packages
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName string, // Branch Name
+	branchName, // Branch Name
+	goMain, // Directory with the main package to build
+	goFlags string, // Flags to pass to the Go command
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -74,6 +77,8 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
+		goMain,
+		goFlags,
 	}
 }
 
@@ -104,7 +109,9 @@ type Builder struct {
 	extraPackages []rpm.Package
 	overwrite     bool
 	branchID,
-	branchName string
+	branchName,
+	goMain,
+	goFlags string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
@@ -112,7 +119,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return utils.WriteRenders(
-		workdir,
+		filepath.Join(workdir, b.goMain),
 		[]*renderers.Renderer{
 			xdg.NewDesktopRenderer(
 				appID,
@@ -137,6 +144,8 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.appURL,
 				b.releases,
 				b.extraPackages,
+				b.goMain,
+				b.goFlags,
 			),
 		},
 		b.overwrite,

@@ -14,13 +14,16 @@ EOT
 echo "${GPG_KEY_CONTENT}" | base64 -d >'/tmp/private.gpg'
 gpg --import /tmp/private.gpg
 
+# Prepare build environment
+export BASEDIR="${PWD}/${GOMAIN}"
+
 echo "%_signature gpg
 %_gpg_name ${GPG_KEY_ID}" >"${HOME}/.rpmmacros"
 
 # Build tarball and source package
 export PACKAGE="${APP_ID}-${PACKAGE_VERSION}"
 export SUFFIX="${PACKAGE_SUFFIX}"
-export SPEC="${APP_ID}.spec"
+export SPEC="${BASEDIR}/${APP_ID}.spec"
 
 # See https://github.com/pojntfx/bagop/blob/main/main.go#L45
 export DEBARCH="${ARCHITECTURE}"

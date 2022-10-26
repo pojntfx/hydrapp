@@ -369,6 +369,8 @@ func main() {
 				*overwrite,
 				*branchID,
 				*branchName,
+				*goMain,
+				*goFlags,
 			),
 		)
 	}

@@ -25,16 +25,16 @@ Suggests: chromium >= 90
 
 
 %build
-go generate ./...
-CGO_ENABLED=1 go build -o out/{{ .AppID }} .
-for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert icon.png -resize ${icon} out/icon-${icon}.png; done
+GOFLAGS="{{ .GoFlags }}" go generate {{ .GoMain }}/...
+GOFLAGS="{{ .GoFlags }}" CGO_ENABLED=1 go build -o out/{{ .AppID }} {{ .GoMain }}
+for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert "{{ .GoMain }}/icon.png" -resize ${icon} out/icon-${icon}.png; done
 
 %install
 install -D out/{{ .AppID }} %{?buildroot}/%{_bindir}/{{ .AppID }}
-desktop-file-install --dir=%{?buildroot}/usr/share/applications {{ .AppID }}.desktop
-appstream-util validate-relax {{ .AppID }}.metainfo.xml
+desktop-file-install --dir=%{?buildroot}/usr/share/applications {{ .GoMain }}/{{ .AppID }}.desktop
+appstream-util validate-relax {{ .GoMain }}/{{ .AppID }}.metainfo.xml
 for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png %{?buildroot}/usr/share/icons/hicolor/${icon}/apps/{{ .AppID }}.png; done
-install -D -m 0644 {{ .AppID }}.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/{{ .AppID }}.metainfo.xml
+install -D -m 0644 {{ .GoMain }}/{{ .AppID }}.metainfo.xml ${RPM_BUILD_ROOT}%{_datadir}/metainfo/{{ .AppID }}.metainfo.xml
 
 %files
 %license LICENSE
