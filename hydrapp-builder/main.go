@@ -79,6 +79,7 @@ func main() {
 
 	goMain := flag.String("go-main", ".", "Directory with the main package to build")
 	goFlags := flag.String("go-flags", "", "Flags to pass to the Go command")
+	goGenerate := flag.String("go-generate", "go generate ./...", "Command to execute go generate with")
 
 	flag.Parse()
 
@@ -245,6 +246,7 @@ func main() {
 					*branchName,
 					*goMain,
 					*goFlags,
+					*goGenerate,
 				),
 			)
 		}
@@ -325,6 +327,7 @@ func main() {
 				*branchName,
 				*goMain,
 				*goFlags,
+				*goGenerate,
 			),
 		)
 	}
@@ -371,6 +374,7 @@ func main() {
 				*branchName,
 				*goMain,
 				*goFlags,
+				*goGenerate,
 			),
 		)
 	}
@@ -407,6 +411,7 @@ func main() {
 					*branchName,
 					*goMain,
 					*goFlags,
+					*goGenerate,
 				),
 			)
 		}

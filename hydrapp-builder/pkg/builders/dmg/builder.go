@@ -39,7 +39,8 @@ func NewBuilder(
 	branchID, // Branch ID
 	branchName, // Branch Name
 	goMain, // Directory with the main package to build
-	goFlags string, // Flags to pass to the Go command
+	goFlags, // Flags to pass to the Go command
+	goGenerate string, // Command to execute go generate with
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -63,6 +64,7 @@ func NewBuilder(
 		branchName,
 		goMain,
 		goFlags,
+		goGenerate,
 	}
 }
 
@@ -87,7 +89,8 @@ type Builder struct {
 	branchID,
 	branchName,
 	goMain,
-	goFlags string
+	goFlags,
+	goGenerate string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
@@ -135,9 +138,10 @@ func (b *Builder) Build() error {
 
 				return "amd64"
 			}(),
-			"MACPORTS": strings.Join(b.packages, " "),
-			"GOMAIN":   b.goMain,
-			"GOFLAGS":  b.goFlags,
+			"MACPORTS":   strings.Join(b.packages, " "),
+			"GOMAIN":     b.goMain,
+			"GOFLAGS":    b.goFlags,
+			"GOGENERATE": b.goGenerate,
 		},
 		b.Render,
 	)

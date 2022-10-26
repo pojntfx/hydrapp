@@ -20,6 +20,7 @@ type specData struct {
 	ExtraPackages  []Package
 	GoMain         string
 	GoFlags        string
+	GoGenerate     string
 }
 
 type Package struct {
@@ -38,10 +39,11 @@ func NewSpecRenderer(
 	extraPackages []Package,
 	goMain string,
 	goFlags string,
+	goGenerate string,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".spec",
 		specTemplate,
-		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraPackages, goMain, goFlags},
+		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraPackages, goMain, goFlags, goGenerate},
 	)
 }

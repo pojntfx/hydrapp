@@ -23,7 +23,7 @@ if [ "${MSYS2PACKAGES}" != "" ]; then
 fi
 
 # Generate dependencies
-go generate "${GOMAIN}/..."
+GOFLAGS="${GOFLAGS}" sh -c "${GOGENERATE}"
 
 # Create icons
 mkdir -p '/tmp/out'
