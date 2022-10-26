@@ -58,7 +58,7 @@ if [ "${ARCHITECTURE}" = "amd64" ]; then
 
   cp -r /root/.wine/drive_c/msys64/mingw64/* '/tmp/out'
 else
-  GOFLAGS='-tags=selfupdate' go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" "${GOMAIN}"
+  GOFLAGS="-tags=selfupdate ${GOFLAGS}" go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" "${GOMAIN}"
 fi
 
 cd '/tmp/out'

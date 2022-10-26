@@ -18,17 +18,17 @@ modules:
   - name: {{ .AppID }}
     buildsystem: simple
     build-commands:
-      - . /usr/lib/sdk/golang/enable.sh && . /usr/lib/sdk/node16/enable.sh && export GOFLAGS='-x -buildvcs=false'; go generate ./...
-      - . /usr/lib/sdk/golang/enable.sh && export GOFLAGS='-x -buildvcs=false' && go build -o out/{{ .AppID }} .
-      - . /usr/lib/sdk/golang/enable.sh && export GOFLAGS='-x -buildvcs=false' && install -D out/{{ .AppID }} /app/bin/{{ .AppID }}
-      - . /usr/lib/sdk/ImageMagick/enable.sh && for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert icon.png -resize ${icon} out/icon-${icon}.png; done
-      - desktop-file-install --dir=/app/share/applications {{ .AppID }}.desktop
-      - appstream-util validate-relax {{ .AppID }}.metainfo.xml
-      - install -D -m 0644 {{ .AppID }}.metainfo.xml /app/share/metainfo/{{ .AppID }}.metainfo.xml
+      - GOFLAGS="-x -buildvcs=false {{ .GoFlags }}" sh -c '. /usr/lib/sdk/golang/enable.sh && . /usr/lib/sdk/node16/enable.sh && {{ .GoGenerate }}'
+      - . /usr/lib/sdk/golang/enable.sh && export GOFLAGS='-x -buildvcs=false {{ .GoFlags }}' && go build -o out/{{ .AppID }} {{ .GoMain }}
+      - install -D out/{{ .AppID }} /app/bin/{{ .AppID }}
+      - . /usr/lib/sdk/ImageMagick/enable.sh && for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert {{ .GoMain }}/icon.png -resize ${icon} out/icon-${icon}.png; done
+      - desktop-file-install --dir=/app/share/applications {{ .GoMain }}/{{ .AppID }}.desktop
+      - appstream-util validate-relax {{ .GoMain }}/{{ .AppID }}.metainfo.xml
+      - install -D -m 0644 {{ .GoMain }}/{{ .AppID }}.metainfo.xml /app/share/metainfo/{{ .AppID }}.metainfo.xml
       - for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png /app/share/icons/hicolor/${icon}/apps/{{ .AppID }}.png; done
     build-options:
       build-args:
         - "--share=network"
     sources:
       - type: dir
-        path: .
+        path: ..

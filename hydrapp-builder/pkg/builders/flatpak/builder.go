@@ -3,6 +3,7 @@ package flatpak
 import (
 	"context"
 	"encoding/base64"
+	"path/filepath"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
@@ -41,7 +42,10 @@ func NewBuilder(
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName string, // Branch Name
+	branchName, // Branch Name
+	goMain, // Directory with the main package to build
+	goFlags, // Flags to pass to the Go command
+	goGenerate string, // Command to execute go generate with
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -68,6 +72,9 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
+		goMain,
+		goFlags,
+		goGenerate,
 	}
 }
 
@@ -95,7 +102,10 @@ type Builder struct {
 	releases  []renderers.Release
 	overwrite bool
 	branchID,
-	branchName string
+	branchName,
+	goMain,
+	goFlags,
+	goGenerate string
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
@@ -103,7 +113,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
 	return utils.WriteRenders(
-		workdir,
+		filepath.Join(workdir, b.goMain),
 		[]*renderers.Renderer{
 			xdg.NewDesktopRenderer(
 				appID,
@@ -121,6 +131,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			),
 			flatpak.NewManifestRenderer(
 				appID,
+				b.goMain,
+				b.goFlags,
+				b.goGenerate,
 			),
 			flatpak.NewSdkRenderer(),
 		},
@@ -151,6 +164,7 @@ func (b *Builder) Build() error {
 			"GPG_KEY_ID":       b.gpgKeyID,
 			"BASE_URL":         baseURL,
 			"ARCHITECTURE":     b.architecture,
+			"GOMAIN":           b.goMain,
 		},
 		b.Render,
 	)

@@ -14,6 +14,9 @@ EOT
 echo "${GPG_KEY_CONTENT}" | base64 -d >'/tmp/private.gpg'
 gpg --import /tmp/private.gpg
 
+# Prepare build environment
+export BASEDIR="${PWD}/${GOMAIN}"
+
 gpg --output /tmp/repo.asc --armor --export
 
 # Install Flatpak dependencies
@@ -35,10 +38,10 @@ fi
 flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//21.08" "org.freedesktop.Sdk//21.08" "org.freedesktop.Sdk.Extension.golang//21.08" "org.freedesktop.Sdk.Extension.node16//21.08"
 
 # Build SDK and export to repo
-flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" --repo='/dst' --force-clean --user --install "build-dir" "org.freedesktop.Sdk.Extension.ImageMagick.yaml"
+flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" --repo='/dst' --force-clean --user --install "build-dir" "${GOMAIN}/org.freedesktop.Sdk.Extension.ImageMagick.yaml"
 
 # Build app and export to repo
-flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" --repo='/dst' --force-clean "build-dir" "${APP_ID}.yaml"
+flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" --repo='/dst' --force-clean "build-dir" "${GOMAIN}/${APP_ID}.yaml"
 
 # Export `.flatpak` to out dir
 flatpak --arch="${DEBARCH}" --gpg-sign="${GPG_KEY_ID}" build-bundle '/dst' "/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"

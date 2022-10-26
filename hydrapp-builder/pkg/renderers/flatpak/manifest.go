@@ -10,15 +10,21 @@ import (
 var manifestTemplate string
 
 type manifestData struct {
-	AppID string
+	AppID      string
+	GoMain     string
+	GoFlags    string
+	GoGenerate string
 }
 
 func NewManifestRenderer(
 	appID string,
+	goMain string,
+	goFlags string,
+	goGenerate string,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".yaml",
 		manifestTemplate,
-		manifestData{appID},
+		manifestData{appID, goMain, goFlags, goGenerate},
 	)
 }
