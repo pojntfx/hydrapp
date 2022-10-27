@@ -10,8 +10,12 @@ import (
 //go:embed options
 var optionsTemplate string
 
-type optionsData struct{}
+type optionsData struct {
+	GoMain string
+}
 
-func NewOptionsRenderer() *renderers.Renderer {
-	return renderers.NewRenderer(filepath.Join("debian", "source", "options"), optionsTemplate, optionsData{})
+func NewOptionsRenderer(
+	goMain string,
+) *renderers.Renderer {
+	return renderers.NewRenderer(filepath.Join("debian", "source", "options"), optionsTemplate, optionsData{goMain})
 }

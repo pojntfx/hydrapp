@@ -1,1 +1,1 @@
-tar-ignore = "out"
+tar-ignore = "{{ .GoMain }}/out"
