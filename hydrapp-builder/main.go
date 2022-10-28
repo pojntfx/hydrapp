@@ -77,10 +77,6 @@ func main() {
 	branchID := flag.String("branch-id", "", `Branch ID to build the app as, i.e. unstable (for an app ID like "myappid.unstable" and baseURL like "mybaseurl/unstable"`)
 	branchName := flag.String("branch-name", "", `Branch name to build the app as, i.e. Unstable (for an app name like "myappname (Unstable)"`)
 
-	goMain := flag.String("go-main", ".", "Directory with the main package to build")
-	goFlags := flag.String("go-flags", "", "Flags to pass to the Go command")
-	goGenerate := flag.String("go-generate", "go generate ./...", "Command to execute go generate with")
-
 	flag.Parse()
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -211,9 +207,9 @@ func main() {
 				*overwrite,
 				*branchID,
 				*branchName,
-				*goMain,
-				*goFlags,
-				*goGenerate,
+				cfg.Go.Main,
+				cfg.Go.Flags,
+				cfg.Go.Generate,
 			),
 		)
 	}
@@ -247,9 +243,9 @@ func main() {
 					*overwrite,
 					*branchID,
 					*branchName,
-					*goMain,
-					*goFlags,
-					*goGenerate,
+					cfg.Go.Main,
+					cfg.Go.Flags,
+					cfg.Go.Generate,
 				),
 			)
 		}
@@ -292,9 +288,9 @@ func main() {
 				*overwrite,
 				*branchID,
 				*branchName,
-				*goMain,
-				*goFlags,
-				*goGenerate,
+				cfg.Go.Main,
+				cfg.Go.Flags,
+				cfg.Go.Generate,
 			),
 		)
 	}
@@ -331,9 +327,9 @@ func main() {
 				*overwrite,
 				*branchID,
 				*branchName,
-				*goMain,
-				*goFlags,
-				*goGenerate,
+				cfg.Go.Main,
+				cfg.Go.Flags,
+				cfg.Go.Generate,
 			),
 		)
 	}
@@ -378,9 +374,9 @@ func main() {
 				*overwrite,
 				*branchID,
 				*branchName,
-				*goMain,
-				*goFlags,
-				*goGenerate,
+				cfg.Go.Main,
+				cfg.Go.Flags,
+				cfg.Go.Generate,
 			),
 		)
 	}
@@ -415,9 +411,9 @@ func main() {
 					*overwrite,
 					*branchID,
 					*branchName,
-					*goMain,
-					*goFlags,
-					*goGenerate,
+					cfg.Go.Main,
+					cfg.Go.Flags,
+					cfg.Go.Generate,
 				),
 			)
 		}

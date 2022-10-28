@@ -8,6 +8,7 @@ import (
 
 type Root struct {
 	App      App                 `yaml:"app"`
+	Go       Go                  `yaml:"go"`
 	License  License             `yaml:"license"`
 	Releases []renderers.Release `yaml:"releases"`
 	DEB      []DEB               `yaml:"deb"`
@@ -26,6 +27,12 @@ type App struct {
 	Homepage    string `yaml:"homepage"`
 	Git         string `yaml:"git"`
 	BaseURL     string `yaml:"baseurl"`
+}
+
+type Go struct {
+	Main     string `yaml:"main"`
+	Flags    string `yaml:"flags"`
+	Generate string `yaml:"generate"`
 }
 
 type License struct {
