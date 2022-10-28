@@ -7,9 +7,9 @@ app:
   git: https://github.com/pojntfx/hydrapp.git
   baseurl: https://pojntfx.github.io/hydrapp/
 go:
-  main: ./hydrapp-example-simple
+  main: ./hydrapp-example-full
   flags: ""
-  generate: cd hydrapp-example-simple && go generate ./...
+  generate: cd hydrapp-example-full && go generate ./...
 license:
   spdx: AGPL-3.0
   text: |
