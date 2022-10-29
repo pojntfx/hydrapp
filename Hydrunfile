@@ -58,12 +58,12 @@ if [ "$1" = "hydrapp" ]; then
     echo "${APK_CERT}" | base64 -d >'/tmp/keystore.jks'
 
     # Build
-    go run ./hydrapp-builder --config "./$(basename ${2})/hydrapp.yaml" --exclude "${3}" \
-        --pull true --tag 'unstable' \
-        --dst "${PWD}/out/$(basename ${2})" --src "${PWD}" \
+    go run ./hydrapp-builder --config="./$(basename ${2})/hydrapp.yaml" --exclude="${3}" \
+        --pull=true --tag='unstable' \
+        --dst="${PWD}/out/$(basename ${2})" --src="${PWD}" \
         --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \
         --apk-cert='/tmp/keystore.jks' --apk-storepass="${APK_STOREPASS}" --apk-keypass="${APK_KEYPASS}" \
-        --concurrency "$(nproc)"
+        --concurrency="$(nproc)"
 
     exit 0
 fi
