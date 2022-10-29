@@ -162,7 +162,14 @@ jobs:
           sudo install /tmp/hydrun /usr/local/bin
       - name: Build with hydrun
         working-directory: ${{ matrix.target.src }}
-        run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} "${{ matrix.target.cmd }}"
+        env:
+          PGP_KEY: ${{ secrets.PGP_KEY }}
+          PGP_PASSWORD: ${{ secrets.PGP_PASSWORD }}
+          PGP_ID: ${{ secrets.PGP_ID }}
+          APK_CERT: ${{ secrets.APK_CERT }}
+          APK_STOREPASS: ${{ secrets.APK_STOREPASS }}
+          APK_KEYPASS: ${{ secrets.APK_KEYPASS }}
+        run: hydrun -o ${{ matrix.target.os }} ${{ matrix.target.flags }} "PGP_KEY=\"${PGP_KEY}\" PGP_PASSWORD=\"${PGP_PASSWORD}\" PGP_ID=\"${PGP_ID}\" APK_CERT=\"${APK_CERT}\" APK_STOREPASS=\"${APK_STOREPASS}\" APK_KEYPASS=\"${APK_KEYPASS}\" ${{ matrix.target.cmd }}"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Upload output
