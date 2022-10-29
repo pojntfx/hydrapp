@@ -12,60 +12,137 @@ jobs:
     strategy:
       matrix:
         target:
-          - id: test
+          # hydrapp-builder
+          - id: test.hydrun-builder
             src: .
             os: golang:bullseye
             flags: ""
-            cmd: GOFLAGS="-short" ./Hydrunfile test
-            dst: out/hydrapp-builder/cmd/*
-          - id: go
+            cmd: GOFLAGS="-short" ./Hydrunfile test hydrapp-builder
+            dst: out/*
+          - id: go.hydrun-builder
             src: .
             os: golang:bullseye
             flags: ""
-            cmd: ./Hydrunfile go ./hydrapp-builder/cmd/hydrapp
-            dst: out/hydrapp-builder/cmd/*
-          - id: gccgo
+            cmd: ./Hydrunfile go hydrapp-builder
+            dst: out/*
+          - id: gccgo.hydrun-builder
             src: .
             os: ghcr.io/pojntfx/bagccgop-base-sid
             flags: -e '--privileged'
-            cmd: ./Hydrunfile gccgo ./hydrapp-builder/cmd/hydrapp
-            dst: out/hydrapp-builder/cmd/*
-          - id: hydrapp-apk
+            cmd: ./Hydrunfile gccgo hydrapp-builder
+            dst: out/*
+
+          # com.pojtinger.felicitas.hydrapp.example.full
+          - id: test.hydrapp-example-full
+            src: .
+            os: golang:bullseye
+            flags: ""
+            cmd: GOFLAGS="-short" ./Hydrunfile test hydrapp-example-full
+            dst: out/*
+          - id: go.hydrapp-example-full
+            src: .
+            os: golang:bullseye
+            flags: ""
+            cmd: ./Hydrunfile go hydrapp-example-full
+            dst: out/*
+          - id: gccgo.hydrapp-example-full
+            src: .
+            os: ghcr.io/pojntfx/bagccgop-base-sid
+            flags: -e '--privileged'
+            cmd: ./Hydrunfile gccgo hydrapp-example-full
+            dst: out/*
+          - id: hydrapp-apk.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile go ./hydrapp-builder/cmd/hydrapp deb|dmg|flatpak|msi|rpm
-            dst: out/hydrapp-builder/cmd/*
-          - id: hydrapp-deb
+            cmd: ./Hydrunfile go hydrapp-builder deb|dmg|flatpak|msi|rpm
+            dst: out/*
+          - id: hydrapp-deb.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile go ./hydrapp-builder/cmd/hydrapp apk|dmg|flatpak|msi|rpm
-            dst: out/hydrapp-builder/cmd/*
-          - id: hydrapp-dmg
+            cmd: ./Hydrunfile go hydrapp-builder apk|dmg|flatpak|msi|rpm
+            dst: out/*
+          - id: hydrapp-dmg.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile go ./hydrapp-builder/cmd/hydrapp apk|deb|flatpak|msi|rpm
-            dst: out/hydrapp-builder/cmd/*
-          - id: hydrapp-flatpak
+            cmd: ./Hydrunfile go hydrapp-builder apk|deb|flatpak|msi|rpm
+            dst: out/*
+          - id: hydrapp-flatpak.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile go ./hydrapp-builder/cmd/hydrapp apk|deb|dmg|msi|rpm
-            dst: out/hydrapp-builder/cmd/*
-          - id: hydrapp-msi
+            cmd: ./Hydrunfile go hydrapp-builder apk|deb|dmg|msi|rpm
+            dst: out/*
+          - id: hydrapp-msi.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile go ./hydrapp-builder/cmd/hydrapp apk|deb|flatpak|dmg|rpm
-            dst: out/hydrapp-builder/cmd/*
-          - id: hydrapp-rpm
+            cmd: ./Hydrunfile go hydrapp-builder apk|deb|flatpak|dmg|rpm
+            dst: out/*
+          - id: hydrapp-rpm.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile go ./hydrapp-builder/cmd/hydrapp apk|deb|flatpak|dmg|msi
-            dst: out/hydrapp-builder/cmd/*
+            cmd: ./Hydrunfile go hydrapp-builder apk|deb|flatpak|dmg|msi
+            dst: out/*
+
+          # com.pojtinger.felicitas.hydrapp.example.simple
+          - id: test.hydrapp-example-simple
+            src: .
+            os: golang:bullseye
+            flags: ""
+            cmd: GOFLAGS="-short" ./Hydrunfile test hydrapp-example-simple
+            dst: out/*
+          - id: go.hydrapp-example-simple
+            src: .
+            os: golang:bullseye
+            flags: ""
+            cmd: ./Hydrunfile go hydrapp-example-simple
+            dst: out/*
+          - id: gccgo.hydrapp-example-simple
+            src: .
+            os: ghcr.io/pojntfx/bagccgop-base-sid
+            flags: -e '--privileged'
+            cmd: ./Hydrunfile gccgo hydrapp-example-simple
+            dst: out/*
+          - id: hydrapp-apk.hydrapp-example-simple
+            src: .
+            os: golang:bullseye
+            flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
+            cmd: ./Hydrunfile go hydrapp-builder deb|dmg|flatpak|msi|rpm
+            dst: out/*
+          - id: hydrapp-deb.hydrapp-example-simple
+            src: .
+            os: golang:bullseye
+            flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
+            cmd: ./Hydrunfile go hydrapp-builder apk|dmg|flatpak|msi|rpm
+            dst: out/*
+          - id: hydrapp-dmg.hydrapp-example-simple
+            src: .
+            os: golang:bullseye
+            flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
+            cmd: ./Hydrunfile go hydrapp-builder apk|deb|flatpak|msi|rpm
+            dst: out/*
+          - id: hydrapp-flatpak.hydrapp-example-simple
+            src: .
+            os: golang:bullseye
+            flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
+            cmd: ./Hydrunfile go hydrapp-builder apk|deb|dmg|msi|rpm
+            dst: out/*
+          - id: hydrapp-msi.hydrapp-example-simple
+            src: .
+            os: golang:bullseye
+            flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
+            cmd: ./Hydrunfile go hydrapp-builder apk|deb|flatpak|dmg|rpm
+            dst: out/*
+          - id: hydrapp-rpm.hydrapp-example-simple
+            src: .
+            os: golang:bullseye
+            flags: -e '--privileged' -v '/var/run/docker.sock:/var/run/docker.sock'
+            cmd: ./Hydrunfile go hydrapp-builder apk|deb|flatpak|dmg|msi
+            dst: out/*
 
     steps:
       - name: Maximize build space
@@ -107,7 +184,7 @@ jobs:
       - name: Isolate the repositories
         run: |
           mkdir -p /tmp/github-pages
-          cp -r /tmp/hydrapp-*/* /tmp/github-pages
+          cp -RT /tmp/hydrapp-*/*/ /tmp/github-pages
       - name: Publish pre-release to GitHub releases
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: marvinpinto/action-automatic-releases@latest

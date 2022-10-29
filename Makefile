@@ -5,27 +5,27 @@ OUTPUT_DIR ?= out
 DST ?=
 
 # Private variables
-obj = ./hydrapp-builder/cmd/hydrapp
+obj = hydrapp-builder hydrapp-example-full hydrapp-example-simple
 all: $(addprefix build/,$(obj))
 
 # Build
 build: $(addprefix build/,$(obj))
 $(addprefix build/,$(obj)):
 ifdef DST
-	go build -o $(DST) $(subst build/,,$@)
+	go build -o $(DST) ./$(subst build/,,$@)
 else
-	go build -o $(OUTPUT_DIR)/$(subst build/,,$@) $(subst build/,,$@)
+	go build -o $(OUTPUT_DIR)/$(subst build/,,$@) ./$(subst build/,,$@)
 endif
 
 # Install
 install: $(addprefix install/,$(obj))
 $(addprefix install/,$(obj)):
-	install -D -m 0755 $(OUTPUT_DIR)/$(subst install/,,$@) $(DESTDIR)$(PREFIX)/bin/$(shell basename $(subst install/,,$@))
+	install -D -m 0755 $(OUTPUT_DIR)/$(subst install/,,$@) $(DESTDIR)$(PREFIX)/bin/$(basename $(subst install/,,$@))
 
 # Uninstall
 uninstall: $(addprefix uninstall/,$(obj))
 $(addprefix uninstall/,$(obj)):
-	rm $(DESTDIR)$(PREFIX)/bin/$(shell basename $(subst uninstall/,,$@))
+	rm -f $(DESTDIR)$(PREFIX)/bin/$(basename $(subst uninstall/,,$@))
 
 # Run
 $(addprefix run/,$(obj)):
@@ -34,17 +34,18 @@ $(addprefix run/,$(obj)):
 # Test
 test: $(addprefix test/,$(obj))
 $(addprefix test/,$(obj)):
-	go test -timeout 3600s -parallel $(shell nproc) $(shell dirname $(dir $(subst test/,,$@)))/...
+	go test -timeout 3600s -parallel $(shell nproc) ./$(shell echo $(subst test/,,$@) | cut -d / -f1)/...
 
 # Benchmark
 benchmark: $(addprefix benchmark/,$(obj))
 $(addprefix benchmark/,$(obj)):
-	go test -timeout 3600s -bench=$(shell dirname $(dir $(subst benchmark/,,$@)))/... $(shell dirname $(dir $(subst benchmark/,,$@)))/...
+	go test -timeout 3600s -bench=./$(shell echo $(subst benchmark/,,$@) | cut -d / -f1)/... ./$(shell echo $(subst benchmark/,,$@) | cut -d / -f1)/...
 
 # Clean
 clean:
 	rm -rf out
 
 # Dependencies
-depend:
-	true
+depend: $(addprefix depend/,$(obj))
+$(addprefix depend/,$(obj)):
+	cd ./$(shell echo $(subst depend/,,$@) | cut -d / -f1) && go generate ./...
