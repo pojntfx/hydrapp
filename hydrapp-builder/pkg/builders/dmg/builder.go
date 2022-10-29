@@ -30,8 +30,8 @@ func NewBuilder(
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID, // macOS app ID to use
 	appName string, // Human-readable name for the app
-	gpgKeyContent []byte, // GPG key contents
-	gpgKeyPassword string, // Password for the GPG key
+	pgpKeyContent []byte, // PGP key contents
+	pgpKeyPassword string, // Password for the PGP key
 	universal bool, // Build universal (amd64 and arm64) binary instead of amd64 only
 	packages []string, // MacPorts packages to install
 	releases []renderers.Release, // App releases
@@ -54,8 +54,8 @@ func NewBuilder(
 		onOutput,
 		appID,
 		appName,
-		base64.StdEncoding.EncodeToString(gpgKeyContent),
-		base64.StdEncoding.EncodeToString([]byte(gpgKeyPassword)),
+		base64.StdEncoding.EncodeToString(pgpKeyContent),
+		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
 		universal,
 		packages,
 		releases,
@@ -80,8 +80,8 @@ type Builder struct {
 	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
 	appName,
-	gpgKeyContent,
-	gpgKeyPassword string
+	pgpKeyContent,
+	pgpKeyPassword string
 	universal bool
 	packages  []string
 	releases  []renderers.Release
@@ -129,8 +129,8 @@ func (b *Builder) Build() error {
 		map[string]string{
 			"APP_ID":           appID,
 			"APP_NAME":         appName,
-			"GPG_KEY_CONTENT":  b.gpgKeyContent,
-			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
+			"PGP_KEY_CONTENT":  b.pgpKeyContent,
+			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
 			"ARCHITECTURES": func() string {
 				if b.universal {
 					return "amd64 arm64"

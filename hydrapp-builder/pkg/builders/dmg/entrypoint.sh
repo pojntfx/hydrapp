@@ -2,17 +2,17 @@
 
 set -e
 
-# Setup GPG
-echo "${GPG_KEY_PASSWORD}" | base64 -d >'/tmp/gpg-pass'
+# Setup PGP
+echo "${PGP_KEY_PASSWORD}" | base64 -d >'/tmp/pgp-pass'
 mkdir -p "${HOME}/.gnupg"
 cat >"${HOME}/.gnupg/gpg.conf" <<EOT
 yes
-passphrase-file /tmp/gpg-pass
+passphrase-file /tmp/pgp-pass
 pinentry-mode loopback
 EOT
 
-echo "${GPG_KEY_CONTENT}" | base64 -d >'/tmp/private.gpg'
-gpg --import /tmp/private.gpg
+echo "${PGP_KEY_CONTENT}" | base64 -d >'/tmp/private.pgp'
+gpg --import /tmp/private.pgp
 
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"

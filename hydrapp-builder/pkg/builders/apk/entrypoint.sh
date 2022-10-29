@@ -2,17 +2,17 @@
 
 set -e
 
-# Setup GPG
-echo "${GPG_KEY_PASSWORD}" | base64 -d >'/tmp/gpg-pass'
+# Setup PGP
+echo "${PGP_KEY_PASSWORD}" | base64 -d >'/tmp/pgp-pass'
 mkdir -p "${HOME}/.gnupg"
 cat >"${HOME}/.gnupg/gpg.conf" <<EOT
 yes
-passphrase-file /tmp/gpg-pass
+passphrase-file /tmp/pgp-pass
 pinentry-mode loopback
 EOT
 
-echo "${GPG_KEY_CONTENT}" | base64 -d >'/tmp/private.gpg'
-gpg --import /tmp/private.gpg
+echo "${PGP_KEY_CONTENT}" | base64 -d >'/tmp/private.pgp'
+gpg --import /tmp/private.pgp
 
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"
@@ -32,7 +32,7 @@ CGO_ENABLED=1 GOOS=android GOARCH=arm GOARM=5 CC="${ANDROID_HOME}/ndk-bundle/too
 CGO_ENABLED=1 GOOS=android GOARCH=arm CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi${ANDROID_API_VERSION}-clang++" go build -buildmode='c-shared' -o='/tmp/out/lib/armeabi-v7a/libbackend.so' "${GOMAIN}"
 CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${ANDROID_NDK_VERSION}-clang" CXX="${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android${ANDROID_NDK_VERSION}-clang++" go build -buildmode='c-shared' -o='/tmp/out/lib/arm64-v8a/libbackend.so' "${GOMAIN}"
 
-# Sign native libraries with GPG
+# Sign native libraries with PGP
 gpg --detach-sign --armor "/tmp/out/lib/"*/*
 
 # Create package
@@ -55,7 +55,7 @@ export ANDROID_CERT_ALIAS="$(keytool -noprompt -storepass $(echo ${ANDROID_STORE
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign" -f -p 4 "${APP_ID}.unsigned" "${APP_ID}.apk"
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner" sign --ks "/tmp/out/android-certs/${APP_ID}.keystore" --ks-pass pass:"$(echo ${ANDROID_STOREPASS} | base64 -d)" --key-pass pass:"$(echo ${ANDROID_KEYPASS} | base64 -d)" "${APP_ID}.apk"
 
-# Sign package with GPG and stage
+# Sign package with PGP and stage
 gpg --detach-sign --armor "${APP_ID}.apk"
 
 # Setup repository

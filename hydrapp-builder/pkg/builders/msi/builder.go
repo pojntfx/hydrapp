@@ -30,8 +30,8 @@ func NewBuilder(
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID, // Android app ID to use
 	appName string, // Human-readable name for the app,
-	gpgKeyContent []byte, // GPG key contents
-	gpgKeyPassword, // Password for the GPG key
+	pgpKeyContent []byte, // PGP key contents
+	pgpKeyPassword, // Password for the PGP key
 	architecture string, // Architecture to build for
 	packages []string, // MSYS2 packages to install. Only supported for amd64.
 	releases []renderers.Release, // App releases
@@ -54,8 +54,8 @@ func NewBuilder(
 		onOutput,
 		appID,
 		appName,
-		base64.StdEncoding.EncodeToString(gpgKeyContent),
-		base64.StdEncoding.EncodeToString([]byte(gpgKeyPassword)),
+		base64.StdEncoding.EncodeToString(pgpKeyContent),
+		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
 		architecture,
 		packages,
 		releases,
@@ -80,8 +80,8 @@ type Builder struct {
 	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
 	appName,
-	gpgKeyContent,
-	gpgKeyPassword,
+	pgpKeyContent,
+	pgpKeyPassword,
 	architecture string
 	packages  []string
 	releases  []renderers.Release
@@ -129,8 +129,8 @@ func (b *Builder) Build() error {
 		map[string]string{
 			"APP_ID":           appID,
 			"APP_NAME":         appName,
-			"GPG_KEY_CONTENT":  b.gpgKeyContent,
-			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
+			"PGP_KEY_CONTENT":  b.pgpKeyContent,
+			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
 			"ARCHITECTURE":     b.architecture,
 			"MSYS2PACKAGES":    strings.Join(b.packages, " "),
 			"GOMAIN":           b.goMain,

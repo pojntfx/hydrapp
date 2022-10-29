@@ -31,8 +31,8 @@ func NewBuilder(
 	onID func(id string), // Callback to handle container ID
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID string, // Android app ID to use
-	gpgKeyContent []byte, // GPG key contents
-	gpgKeyPassword string, // Password for the GPG key
+	pgpKeyContent []byte, // PGP key contents
+	pgpKeyPassword string, // Password for the PGP key
 	androidCertContent []byte, // Android cert contents
 	androidStorepass string, // Password for the Android keystore
 	androidKeypass string, // Password for the Android certificate
@@ -56,8 +56,8 @@ func NewBuilder(
 		onID,
 		onOutput,
 		appID,
-		base64.StdEncoding.EncodeToString(gpgKeyContent),
-		base64.StdEncoding.EncodeToString([]byte(gpgKeyPassword)),
+		base64.StdEncoding.EncodeToString(pgpKeyContent),
+		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
 		base64.StdEncoding.EncodeToString(androidCertContent),
 		base64.StdEncoding.EncodeToString([]byte(androidStorepass)),
 		base64.StdEncoding.EncodeToString([]byte(androidKeypass)),
@@ -83,8 +83,8 @@ type Builder struct {
 	onID     func(id string)
 	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
-	gpgKeyContent,
-	gpgKeyPassword,
+	pgpKeyContent,
+	pgpKeyPassword,
 	androidCertContent,
 	androidStorepass,
 	androidKeypass,
@@ -158,8 +158,8 @@ func (b *Builder) Build() error {
 		b.onOutput,
 		map[string]string{
 			"APP_ID":               appID,
-			"GPG_KEY_CONTENT":      b.gpgKeyContent,
-			"GPG_KEY_PASSWORD":     b.gpgKeyPassword,
+			"PGP_KEY_CONTENT":      b.pgpKeyContent,
+			"PGP_KEY_PASSWORD":     b.pgpKeyPassword,
 			"ANDROID_CERT_CONTENT": b.androidCertContent,
 			"ANDROID_STOREPASS":    b.androidStorepass,
 			"ANDROID_KEYPASS":      b.androidKeypass,

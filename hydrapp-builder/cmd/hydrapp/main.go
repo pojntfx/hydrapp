@@ -66,9 +66,9 @@ func main() {
 
 	exclude := flag.String("exclude", "", "Regex of platforms and architectures not to build for, i.e. (apk|dmg|msi/386|flatpak/amd64)")
 
-	gpgKey := flag.String("gpg-key", "", "Path to armored GPG private key")
-	gpgPassword := flag.String("gpg-password", "", "Password for GPG key")
-	gpgID := flag.String("gpg-id", "", "ID of the GPG key to use")
+	pgpKey := flag.String("pgp-key", "", "Path to armored PGP private key")
+	pgpPassword := flag.String("pgp-password", "", "Password for PGP key")
+	pgpID := flag.String("pgp-id", "", "ID of the PGP key to use")
 
 	apkCert := flag.String("apk-cert", "", "Path to Android keystore")
 	apkStorepass := flag.String("apk-storepass", "", "Password for Android keystore")
@@ -98,7 +98,7 @@ func main() {
 	}
 	defer cli.Close()
 
-	gpgKeyContent, err := ioutil.ReadFile(*gpgKey)
+	pgpKeyContent, err := ioutil.ReadFile(*pgpKey)
 	if err != nil {
 		panic(err)
 	}
@@ -185,9 +185,9 @@ func main() {
 				handleID,
 				handleOutput,
 				cfg.App.ID,
-				gpgKeyContent,
-				*gpgPassword,
-				*gpgID,
+				pgpKeyContent,
+				*pgpPassword,
+				*pgpID,
 				cfg.App.BaseURL+c.Path,
 				c.OS,
 				c.Distro,
@@ -235,8 +235,8 @@ func main() {
 					handleOutput,
 					cfg.App.ID,
 					cfg.App.Name,
-					gpgKeyContent,
-					*gpgPassword,
+					pgpKeyContent,
+					*pgpPassword,
 					cfg.DMG.Universal,
 					cfg.DMG.Packages,
 					cfg.Releases,
@@ -274,9 +274,9 @@ func main() {
 				handleID,
 				handleOutput,
 				cfg.App.ID,
-				gpgKeyContent,
-				*gpgPassword,
-				*gpgID,
+				pgpKeyContent,
+				*pgpPassword,
+				*pgpID,
 				cfg.App.BaseURL+c.Path,
 				c.Architecture,
 				cfg.App.Name,
@@ -319,8 +319,8 @@ func main() {
 				handleOutput,
 				cfg.App.ID,
 				cfg.App.Name,
-				gpgKeyContent,
-				*gpgPassword,
+				pgpKeyContent,
+				*pgpPassword,
 				c.Architecture,
 				c.Packages,
 				cfg.Releases,
@@ -357,9 +357,9 @@ func main() {
 				handleID,
 				handleOutput,
 				cfg.App.ID,
-				gpgKeyContent,
-				*gpgPassword,
-				*gpgID,
+				pgpKeyContent,
+				*pgpPassword,
+				*pgpID,
 				cfg.App.BaseURL,
 				c.Distro,
 				c.Architecture,
@@ -401,8 +401,8 @@ func main() {
 					handleID,
 					handleOutput,
 					cfg.App.ID,
-					gpgKeyContent,
-					*gpgPassword,
+					pgpKeyContent,
+					*pgpPassword,
 					apkCertContent,
 					*apkStorepass,
 					*apkKeypass,

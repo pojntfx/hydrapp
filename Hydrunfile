@@ -47,3 +47,19 @@ if [ "$1" = "gccgo" ]; then
 
     exit 0
 fi
+
+# Hydrapp
+if [ "$1" = "hydrapp" ]; then
+    # Setup crypto
+    echo "${PGP_KEY}" | base64 -d >'/tmp/pgp.asc'
+    echo "${APK_CERT}" | base64 -d >'/tmp/keystore.jks'
+
+    # Build
+    go run ./hydrapp-builder/cmd/hydrapp --config "./${2}/hydrapp.yaml" --exclude "${3}" \
+        --dst "${PWD}/${2}/out/" --src "${PWD}" \
+        --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \
+        --apk-cert='/tmp/keystore.jks' --apk-storepass="${APK_STOREPASS}" --apk-keypass="${APK_KEYPASS}" \
+        --concurrency "$(nproc)"
+
+    exit 0
+fi

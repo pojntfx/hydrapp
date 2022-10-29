@@ -29,9 +29,9 @@ func NewBuilder(
 	onID func(id string), // Callback to handle container ID
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID string, // Android app ID to use
-	gpgKeyContent []byte, // GPG key contents
-	gpgKeyPassword, // Password for the GPG key
-	gpgKeyID, // ID of the GPG key to use
+	pgpKeyContent []byte, // PGP key contents
+	pgpKeyPassword, // Password for the PGP key
+	pgpKeyID, // ID of the PGP key to use
 	baseURL, // Base URL where the repo is to be hosted
 	architecture, // Architecture to build for
 	appName, // App name
@@ -58,9 +58,9 @@ func NewBuilder(
 		onID,
 		onOutput,
 		appID,
-		base64.StdEncoding.EncodeToString(gpgKeyContent),
-		base64.StdEncoding.EncodeToString([]byte(gpgKeyPassword)),
-		gpgKeyID,
+		base64.StdEncoding.EncodeToString(pgpKeyContent),
+		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
+		pgpKeyID,
 		baseURL,
 		architecture,
 		appName,
@@ -89,9 +89,9 @@ type Builder struct {
 	onID     func(id string)
 	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
-	gpgKeyContent,
-	gpgKeyPassword,
-	gpgKeyID,
+	pgpKeyContent,
+	pgpKeyPassword,
+	pgpKeyID,
 	baseURL,
 	architecture,
 	appName,
@@ -159,9 +159,9 @@ func (b *Builder) Build() error {
 		b.onOutput,
 		map[string]string{
 			"APP_ID":           appID,
-			"GPG_KEY_CONTENT":  b.gpgKeyContent,
-			"GPG_KEY_PASSWORD": b.gpgKeyPassword,
-			"GPG_KEY_ID":       b.gpgKeyID,
+			"PGP_KEY_CONTENT":  b.pgpKeyContent,
+			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
+			"PGP_KEY_ID":       b.pgpKeyID,
 			"BASE_URL":         baseURL,
 			"ARCHITECTURE":     b.architecture,
 			"GOMAIN":           b.goMain,
