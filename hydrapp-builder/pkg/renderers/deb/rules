@@ -6,6 +6,9 @@ export HOME = $(CURDIR)
 %:
 	dh $@
 
+override_dh_auto_test:
+	DEB_BUILD_OPTIONS=nocheck dh_auto_test
+
 override_dh_auto_build:
 	GOFLAGS="{{ .GoFlags }}" sh -c '{{ .GoGenerate }}'
 	GOFLAGS="{{ .GoFlags }}" CGO_ENABLED=1 go build -o out/{{ .AppID }} {{ .GoMain }}
