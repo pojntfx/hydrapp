@@ -55,37 +55,37 @@ jobs:
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full deb|dmg|flatpak|msi|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'deb|dmg|flatpak|msi|rpm'
             dst: out/*
           - id: hydrapp-deb.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|dmg|flatpak|msi|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|dmg|flatpak|msi|rpm'
             dst: out/*
           - id: hydrapp-dmg.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|deb|flatpak|msi|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|deb|flatpak|msi|rpm'
             dst: out/*
           - id: hydrapp-flatpak.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|deb|dmg|msi|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|deb|dmg|msi|rpm'
             dst: out/*
           - id: hydrapp-msi.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|deb|flatpak|dmg|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|deb|flatpak|dmg|rpm'
             dst: out/*
           - id: hydrapp-rpm.hydrapp-example-full
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|deb|flatpak|dmg|msi
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|deb|flatpak|dmg|msi'
             dst: out/*
 
           # com.pojtinger.felicitas.hydrapp.example.simple
@@ -111,37 +111,37 @@ jobs:
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full deb|dmg|flatpak|msi|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'deb|dmg|flatpak|msi|rpm'
             dst: out/*
           - id: hydrapp-deb.hydrapp-example-simple
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|dmg|flatpak|msi|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|dmg|flatpak|msi|rpm'
             dst: out/*
           - id: hydrapp-dmg.hydrapp-example-simple
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|deb|flatpak|msi|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|deb|flatpak|msi|rpm'
             dst: out/*
           - id: hydrapp-flatpak.hydrapp-example-simple
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|deb|dmg|msi|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|deb|dmg|msi|rpm'
             dst: out/*
           - id: hydrapp-msi.hydrapp-example-simple
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|deb|flatpak|dmg|rpm
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|deb|flatpak|dmg|rpm'
             dst: out/*
           - id: hydrapp-rpm.hydrapp-example-simple
             src: .
             os: golang:bullseye
             flags: -e '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
-            cmd: ./Hydrunfile hydrapp hydrapp-example-full apk|deb|flatpak|dmg|msi
+            cmd: ./Hydrunfile hydrapp hydrapp-example-full 'apk|deb|flatpak|dmg|msi'
             dst: out/*
 
     steps:

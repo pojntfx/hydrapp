@@ -57,6 +57,7 @@ func main() {
 	config := flag.String("config", "hydrapp.yaml", "Config file to use")
 
 	pull := flag.Bool("pull", false, "Whether to pull the images or not")
+	tag := flag.String("tag", "latest", "Image tag to use")
 	concurrency := flag.Int("concurrency", 1, "Maximum amount of concurrent builders to run at once")
 	eject := flag.Bool("eject", false, "Write platform-specific config files (AndroidManifest.xml, .spec etc.) to directory specified by --src, then exit (--exclude still applies")
 	overwrite := flag.Bool("overwrite", false, "Overwrite platform-specific config files even if they exist")
@@ -178,7 +179,7 @@ func main() {
 				ctx,
 				cli,
 
-				deb.Image,
+				deb.Image+":"+*tag,
 				*pull,
 				*src,
 				filepath.Join(*dst, c.Path),
@@ -227,7 +228,7 @@ func main() {
 					ctx,
 					cli,
 
-					dmg.Image,
+					dmg.Image+":"+*tag,
 					*pull,
 					*src,
 					filepath.Join(*dst, cfg.DMG.Path),
@@ -267,7 +268,7 @@ func main() {
 				ctx,
 				cli,
 
-				flatpak.Image,
+				flatpak.Image+":"+*tag,
 				*pull,
 				*src,
 				filepath.Join(*dst, c.Path),
@@ -311,7 +312,7 @@ func main() {
 				ctx,
 				cli,
 
-				msi.Image,
+				msi.Image+":"+*tag,
 				*pull,
 				*src,
 				filepath.Join(*dst, c.Path),
@@ -350,7 +351,7 @@ func main() {
 				ctx,
 				cli,
 
-				rpm.Image,
+				rpm.Image+":"+*tag,
 				*pull,
 				*src,
 				filepath.Join(*dst, c.Path),
@@ -394,7 +395,7 @@ func main() {
 					ctx,
 					cli,
 
-					apk.Image,
+					apk.Image+":"+*tag,
 					*pull,
 					*src,
 					filepath.Join(*dst, cfg.APK.Path),
