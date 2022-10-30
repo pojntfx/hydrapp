@@ -1,5 +1,5 @@
-//go:build androiddnsfix
-// +build androiddnsfix
+//go:build androiddnsfix && android
+// +build androiddnsfix,android
 
 package fixes
 

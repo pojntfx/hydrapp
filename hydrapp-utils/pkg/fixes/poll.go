@@ -1,5 +1,5 @@
-//go:build androidacceptfix && arm
-// +build androidacceptfix,arm
+//go:build androidacceptfix && arm && android
+// +build androidacceptfix,arm,android
 
 package fixes
 
