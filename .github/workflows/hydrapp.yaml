@@ -97,7 +97,7 @@ jobs:
         run: |
           hydrapp-builder --config='./${{ matrix.target.pkg }}/hydrapp.yaml' --exclude='${{ matrix.target.exclude }}' \
             --pull=true --tag='${{ matrix.target.tag }}' \
-            --dst='out/${{ matrix.target.pkg }}' --src="${PWD}" \
+            --dst="${PWD}/out/${{ matrix.target.pkg }}" --src="${PWD}" \
             --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \
             --apk-cert='/tmp/keystore.jks' --apk-storepass="${APK_STOREPASS}" --apk-keypass="${APK_KEYPASS}" \
             --concurrency="$(nproc)"

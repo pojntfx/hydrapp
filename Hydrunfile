@@ -54,26 +54,3 @@ if [ "$1" = "gccgo" ]; then
 
     exit 0
 fi
-
-# Hydrapp
-if [ "$1" = "hydrapp" ]; then
-    # Setup crypto
-    echo "${PGP_KEY}" | base64 -d >'/tmp/pgp.asc'
-    echo "${APK_CERT}" | base64 -d >'/tmp/keystore.jks'
-
-    # Setup dst directory for DinD configurations
-    export DST="${4}"
-    if [ "${DST}" == "" ]; then
-        export DST="${PWD}"
-    fi
-
-    # Build
-    go run ./hydrapp-builder --config="./$(basename ${2})/hydrapp.yaml" --exclude="${3}" \
-        --pull=true --tag='unstable' \
-        --dst="${DST}/out/$(basename ${2})" --src="${PWD}" \
-        --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \
-        --apk-cert='/tmp/keystore.jks' --apk-storepass="${APK_STOREPASS}" --apk-keypass="${APK_KEYPASS}" \
-        --concurrency="$(nproc)"
-
-    exit 0
-fi
