@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# See https://bbs.archlinux.org/viewtopic.php?id=66156
+
+set -e
+
+echo -e "pkgname = ${1}\npkgver = 999-1\npkgdesc = fakepkg ${1} install\nurl = http://example.com\nbuilddate = 1234798527\npackager = ${USER}\nsize = 0\narch = $(uname -m)\nlicense = unknown" >.PKGINFO
+for i in "${@:2}"; do
+    echo "provides = $i" >>.PKGINFO
+done
+if [ -n "${*:2}" ]; then
+    sed -i "s/\(pkgdesc.*install\)/& with ${*:2} provides/" .PKGINFO
+fi
+tar -czf "${1}-999-1-$(uname -m).pkg.tar.gz" .PKGINFO
