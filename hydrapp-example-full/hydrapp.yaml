@@ -53,6 +53,7 @@ flatpak:
 msi:
   - path: msi/x86_64
     architecture: amd64
+    include: "^\\b$"
     packages: []
 rpm:
   - path: rpm/fedora/36/x86_64

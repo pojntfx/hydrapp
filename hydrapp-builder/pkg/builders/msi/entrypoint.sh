@@ -56,7 +56,7 @@ if [ "${ARCHITECTURE}" = "amd64" ]; then
   # Copy binaries to staging directory
   yes | cp -rf /root/.wine/drive_c/users/root/Documents/go-workspace/out/* '/tmp/out'
 
-  cp -r /root/.wine/drive_c/msys64/ucrt64/* '/tmp/out'
+  find /root/.wine/drive_c/msys64/ucrt64/ -regex "${MSYS2INCLUDE}" -print0 | tar -c --null --files-from - | tar -C '/tmp/out' -x --strip-components=5
 else
   GOFLAGS="-tags=selfupdate ${GOFLAGS}" go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" "${GOMAIN}"
 fi

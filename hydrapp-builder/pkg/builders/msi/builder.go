@@ -40,6 +40,7 @@ func NewBuilder(
 	branchName, // Branch Name
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
+	include, // Regex of files and directories from MSYS2 to include
 	goGenerate string, // Command to execute go generate with
 ) *Builder {
 	return &Builder{
@@ -64,6 +65,7 @@ func NewBuilder(
 		branchName,
 		goMain,
 		goFlags,
+		include,
 		goGenerate,
 	}
 }
@@ -90,6 +92,7 @@ type Builder struct {
 	branchName,
 	goMain,
 	goFlags,
+	include,
 	goGenerate string
 }
 
@@ -136,6 +139,7 @@ func (b *Builder) Build() error {
 			"GOMAIN":           b.goMain,
 			"GOFLAGS":          b.goFlags,
 			"GOGENERATE":       b.goGenerate,
+			"MSYS2INCLUDE":     b.include,
 		},
 		b.Render,
 	)

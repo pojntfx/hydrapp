@@ -330,6 +330,7 @@ func main() {
 				*branchName,
 				cfg.Go.Main,
 				cfg.Go.Flags,
+				c.Include,
 				cfg.Go.Generate,
 			),
 		)

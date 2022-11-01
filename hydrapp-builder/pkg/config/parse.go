@@ -65,6 +65,7 @@ type Flatpak struct {
 type MSI struct {
 	Path         string   `yaml:"path"`
 	Architecture string   `yaml:"architecture"`
+	Include      string   `yaml:"include"`
 	Packages     []string `yaml:"packages"`
 }
 
