@@ -123,7 +123,7 @@ jobs:
         run: |
           mkdir -p /tmp/github-pages
           for dir in /tmp/out/hydrapp-*/*/; do
-            rsync "${dir}"/ /tmp/github-pages/
+            rsync -a "${dir}"/ /tmp/github-pages/
           done
       - name: Publish release to GitHub pages
         # if: startsWith(github.ref, 'refs/tags/v') # Uncomment on first release
