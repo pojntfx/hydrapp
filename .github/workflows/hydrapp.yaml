@@ -125,6 +125,13 @@ jobs:
           for dir in /tmp/out/hydrapp-*/*/; do
             rsync -a "${dir}"/ /tmp/github-pages/
           done
+      - name: Add index for repositories
+        run: |
+          sudo apt update
+          sudo apt install -y tree
+
+          cd /tmp/github-pages/
+          tree -T 'hydrapp Repositories' --du -h -D -H . -I 'index.html' -o 'index.html'
       - name: Setup GitHub pages
         uses: actions/configure-pages@v2
       - name: Upload GitHub pages artifact
