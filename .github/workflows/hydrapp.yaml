@@ -125,12 +125,13 @@ jobs:
           for dir in /tmp/out/hydrapp-*/*/; do
             rsync -a "${dir}"/ /tmp/github-pages/
           done
-      - name: Publish release to GitHub pages
+      - name: Setup GitHub pages
+        uses: actions/configure-pages@v2
+      - name: Upload GitHub pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: /tmp/github-pages/
+      - name: Deploy to GitHub pages
         # if: startsWith(github.ref, 'refs/tags/v') # Uncomment on first release
         if: ${{ github.ref == 'refs/heads/main' }} # Comment on first release
-        uses: JamesIves/github-pages-deploy-action@4.1.0
-        with:
-          branch: gh-pages
-          folder: /tmp/github-pages
-          git-config-name: GitHub Pages Bot
-          git-config-email: bot@example.com
+        uses: actions/deploy-pages@v1
