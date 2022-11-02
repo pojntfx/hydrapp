@@ -111,11 +111,11 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 		}
 
 		stableJavaID := strings.Replace(b.appID, ".", "_", -1)
-		unstableJavaID := strings.Replace(appID, ".", "_", -1)
+		mainJavaID := strings.Replace(appID, ".", "_", -1)
 
 		if !ejecting || b.overwrite {
-			if !strings.Contains(string(stableJNIBindingsContent), unstableJavaID) {
-				if err := ioutil.WriteFile(jniBindingsPath, []byte(strings.Replace(string(stableJNIBindingsContent), stableJavaID, unstableJavaID, -1)), os.ModePerm); err != nil {
+			if !strings.Contains(string(stableJNIBindingsContent), mainJavaID) {
+				if err := ioutil.WriteFile(jniBindingsPath, []byte(strings.Replace(string(stableJNIBindingsContent), stableJavaID, mainJavaID, -1)), os.ModePerm); err != nil {
 					return err
 				}
 			}

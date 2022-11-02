@@ -109,12 +109,15 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: /tmp/out
+      - name: Extract branch name
+        id: extract_branch
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       - name: Publish pre-release to GitHub releases
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: unstable
+          automatic_release_tag: ${{ steps.extract_branch.outputs.branch }}
           prerelease: true
           files: |
             /tmp/out/*/*

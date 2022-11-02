@@ -75,8 +75,8 @@ func main() {
 	apkStorepass := flag.String("apk-storepass", "", "Password for Android keystore")
 	apkKeypass := flag.String("apk-keypass", "", " Password for Android certificate (if keystore uses PKCS12, this will be the same as --apk-storepass)")
 
-	branchID := flag.String("branch-id", "", `Branch ID to build the app as, i.e. unstable (for an app ID like "myappid.unstable" and baseURL like "mybaseurl/unstable"`)
-	branchName := flag.String("branch-name", "", `Branch name to build the app as, i.e. Unstable (for an app name like "myappname (Unstable)"`)
+	branchID := flag.String("branch-id", "", `Branch ID to build the app as, i.e. main (for an app ID like "myappid.main" and baseURL like "mybaseurl/main"`)
+	branchName := flag.String("branch-name", "", `Branch name to build the app as, i.e. Main (for an app name like "myappname (Main)"`)
 
 	flag.Parse()
 

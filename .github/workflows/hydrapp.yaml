@@ -17,37 +17,37 @@ jobs:
             src: .
             pkg: hydrapp-example-full
             exclude: deb|dmg|flatpak|msi|rpm
-            tag: unstable
+            tag: main
             dst: out/*
           - id: hydrapp-deb.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
             exclude: apk|dmg|flatpak|msi|rpm
-            tag: unstable
+            tag: main
             dst: out/*
           - id: hydrapp-dmg.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
             exclude: apk|deb|flatpak|msi|rpm
-            tag: unstable
+            tag: main
             dst: out/*
           - id: hydrapp-flatpak.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
             exclude: apk|deb|dmg|msi|rpm
-            tag: unstable
+            tag: main
             dst: out/*
           - id: hydrapp-msi.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
             exclude: apk|deb|flatpak|dmg|rpm
-            tag: unstable
+            tag: main
             dst: out/*
           - id: hydrapp-rpm.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
             exclude: apk|deb|flatpak|dmg|msi
-            tag: unstable
+            tag: main
             dst: out/*
 
     steps:
@@ -108,7 +108,7 @@ jobs:
             --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \
             --apk-cert='/tmp/keystore.jks' --apk-storepass="${APK_STOREPASS}" --apk-keypass="${APK_KEYPASS}" \
             --concurrency="$(nproc)" \
-            --branch-id="{BRANCH_ID}" --branch-name="{BRANCH_NAME}"
+            --branch-id="${BRANCH_ID}" --branch-name="${BRANCH_NAME}"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Upload output
