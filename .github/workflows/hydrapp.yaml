@@ -100,12 +100,20 @@ jobs:
           APK_STOREPASS: ${{ secrets.APK_STOREPASS }}
           APK_KEYPASS: ${{ secrets.APK_KEYPASS }}
         run: |
+          export BRANCH_ID=""
+          export BRANCH_NAME=""
+          if [ "$(git tag --points-at HEAD)" = "" ]; then
+            export BRANCH_ID="$(git symbolic-ref --short HEAD)"
+            export BRANCH_NAME="$(echo ${BRANCH_ID^})"
+          fi
+
           hydrapp-builder --config='./${{ matrix.target.pkg }}/hydrapp.yaml' --exclude='${{ matrix.target.exclude }}' \
             --pull=true --tag='${{ matrix.target.tag }}' \
             --dst="${PWD}/out/${{ matrix.target.pkg }}" --src="${PWD}" \
             --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \
             --apk-cert='/tmp/keystore.jks' --apk-storepass="${APK_STOREPASS}" --apk-keypass="${APK_KEYPASS}" \
-            --concurrency="$(nproc)"
+            --concurrency="$(nproc)" \
+            --branch-id="{BRANCH_ID}" --branch-name="{BRANCH_NAME}"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Upload output
