@@ -50,6 +50,44 @@ jobs:
             tag: main
             dst: out/*
 
+          # com.pojtinger.felicitas.hydrapp.example.simple
+          - id: hydrapp-apk.hydrapp-example-simple
+            src: .
+            pkg: hydrapp-example-simple
+            exclude: deb|dmg|flatpak|msi|rpm
+            tag: main
+            dst: out/*
+          - id: hydrapp-deb.hydrapp-example-simple
+            src: .
+            pkg: hydrapp-example-simple
+            exclude: apk|dmg|flatpak|msi|rpm
+            tag: main
+            dst: out/*
+          - id: hydrapp-dmg.hydrapp-example-simple
+            src: .
+            pkg: hydrapp-example-simple
+            exclude: apk|deb|flatpak|msi|rpm
+            tag: main
+            dst: out/*
+          - id: hydrapp-flatpak.hydrapp-example-simple
+            src: .
+            pkg: hydrapp-example-simple
+            exclude: apk|deb|dmg|msi|rpm
+            tag: main
+            dst: out/*
+          - id: hydrapp-msi.hydrapp-example-simple
+            src: .
+            pkg: hydrapp-example-simple
+            exclude: apk|deb|flatpak|dmg|rpm
+            tag: main
+            dst: out/*
+          - id: hydrapp-rpm.hydrapp-example-simple
+            src: .
+            pkg: hydrapp-example-simple
+            exclude: apk|deb|flatpak|dmg|msi
+            tag: main
+            dst: out/*
+
     steps:
       - name: Maximize build space
         run: |
