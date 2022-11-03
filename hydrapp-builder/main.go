@@ -362,7 +362,7 @@ func main() {
 				pgpKeyContent,
 				*pgpPassword,
 				*pgpID,
-				cfg.App.BaseURL,
+				cfg.App.BaseURL+c.Path,
 				c.Distro,
 				c.Architecture,
 				c.Trailer,

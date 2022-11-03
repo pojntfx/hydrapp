@@ -34,6 +34,8 @@ releases:
     description: Initial release
     author: Felicitas Pojtinger
     email: felicitas@pojtinger.com
+apk:
+  path: apk
 deb:
   - path: deb/debian/sid/x86_64
     os: debian
@@ -61,5 +63,3 @@ rpm:
     distro: fedora-36
     architecture: amd64
     packages: []
-apk:
-  path: apk
