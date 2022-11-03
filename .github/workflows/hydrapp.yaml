@@ -168,7 +168,7 @@ jobs:
       - name: Isolate the repositories
         run: |
           mkdir -p /tmp/github-pages
-          for dir in /tmp/out/hydrapp-*/*/; do
+          for dir in /tmp/out/hydrapp-*/; do
             rsync -a "${dir}"/ /tmp/github-pages/
           done
       - name: Add index for repositories
