@@ -34,6 +34,8 @@ type Go struct {
 	Main     string `yaml:"main"`
 	Flags    string `yaml:"flags"`
 	Generate string `yaml:"generate"`
+	Tests    string `yaml:"tests"`
+	Image    string `yaml:"img"`
 }
 
 type License struct {

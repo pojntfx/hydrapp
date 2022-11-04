@@ -29,6 +29,7 @@ func DockerRunImage(
 	onOutput func(shortID string, color string, timestamp int64, message string),
 	env map[string]string,
 	renderTemplates func(workdir string, ejecting bool) error,
+	cmds []string,
 ) error {
 	if pull {
 		reader, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
@@ -55,6 +56,17 @@ func DockerRunImage(
 		return err
 	}
 
+	var cmd []string
+	binds := []string{
+		workdir + ":/work:z",
+	}
+
+	if len(cmds) > 0 {
+		cmd = cmds
+	} else {
+		binds = append(binds, dst+":/dst:z")
+	}
+
 	resp, err := cli.ContainerCreate(ctx, &container.Config{
 		Image:        image,
 		AttachStdin:  true,
@@ -70,12 +82,10 @@ func DockerRunImage(
 
 			return out
 		}(),
+		Cmd: cmd,
 	}, &container.HostConfig{
 		Privileged: privileged,
-		Binds: []string{
-			workdir + ":/work:z",
-			dst + ":/dst:z",
-		},
+		Binds:      binds,
 	}, nil, nil, "")
 	if err != nil {
 		return err

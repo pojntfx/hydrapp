@@ -169,5 +169,6 @@ func (b *Builder) Build() error {
 			"GOGENERATE":           b.goGenerate,
 		},
 		b.Render,
+		[]string{},
 	)
 }

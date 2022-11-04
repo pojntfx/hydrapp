@@ -10,6 +10,8 @@ go:
   main: ./hydrapp-example-simple
   flags: ""
   generate: cd hydrapp-example-simple && go generate ./...
+  tests: go test ./hydrapp-example-simple/...
+  img: golang:bullseye
 license:
   spdx: AGPL-3.0
   text: |

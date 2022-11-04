@@ -3,14 +3,11 @@ package binaries
 import (
 	"context"
 	"encoding/base64"
-	"path/filepath"
 	"strings"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
 
 const (
@@ -87,12 +84,7 @@ type Builder struct {
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
-	return utils.WriteRenders(
-		filepath.Join(workdir, b.goMain),
-		[]*renderers.Renderer{},
-		false,
-		ejecting,
-	)
+	return nil
 }
 
 func (b *Builder) Build() error {
@@ -122,5 +114,6 @@ func (b *Builder) Build() error {
 			"HOST_PACKAGES":    strings.Join(b.hostPackages, " "),
 		},
 		b.Render,
+		[]string{},
 	)
 }

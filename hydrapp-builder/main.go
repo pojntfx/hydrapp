@@ -27,6 +27,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/flatpak"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/tests"
 	cconfig "github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
 )
@@ -452,6 +453,33 @@ func main() {
 					cfg.Go.Generate,
 					cfg.Binaries.Exclude,
 					cfg.Binaries.Packages,
+				),
+			)
+		}
+	}
+
+	if strings.TrimSpace(cfg.Go.Tests) != "" {
+		skip, err := checkIfSkip(*exclude, "tests", "")
+		if err != nil {
+			panic(err)
+		}
+
+		if !skip {
+			bdrs = append(
+				bdrs,
+				tests.NewBuilder(
+					ctx,
+					cli,
+
+					cfg.Go.Image,
+					*pull,
+					*src,
+					"",
+					handleID,
+					handleOutput,
+					cfg.Go.Flags,
+					cfg.Go.Generate,
+					cfg.Go.Tests,
 				),
 			)
 		}
