@@ -63,3 +63,7 @@ rpm:
     distro: fedora-36
     architecture: amd64
     packages: []
+binaries:
+  path: bagop
+  exclude: "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)"
+  packages: []

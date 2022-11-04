@@ -83,12 +83,9 @@ type APK struct {
 }
 
 type Binaries struct {
-	Path      string `yaml:"path"`
-	GoExclude string `yaml:"goExclude"`
-	// GccGoExclude        string   `yaml:"gccgoExclude"`
-	HostPackages []string `yaml:"hostPackages"`
-	// GccGoPackages       []string `yaml:"gccgoPackages"`
-	// GccGoPackagesForced []string `yaml:"gccgoPackagesForced"`
+	Path     string   `yaml:"path"`
+	Exclude  string   `yaml:"exclude"`
+	Packages []string `yaml:"packages"`
 }
 
 func Parse(content []byte) (*Root, error) {

@@ -450,8 +450,8 @@ func main() {
 					cfg.Go.Main,
 					cfg.Go.Flags,
 					cfg.Go.Generate,
-					cfg.Binaries.GoExclude,
-					cfg.Binaries.HostPackages,
+					cfg.Binaries.Exclude,
+					cfg.Binaries.Packages,
 				),
 			)
 		}
