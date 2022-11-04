@@ -21,6 +21,7 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/apk"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/binaries"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/deb"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/dmg"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/flatpak"
@@ -416,6 +417,41 @@ func main() {
 					cfg.Go.Main,
 					cfg.Go.Flags,
 					cfg.Go.Generate,
+				),
+			)
+		}
+	}
+
+	if strings.TrimSpace(cfg.Binaries.Path) != "" {
+		skip, err := checkIfSkip(*exclude, "binaries", "")
+		if err != nil {
+			panic(err)
+		}
+
+		if !skip {
+			bdrs = append(
+				bdrs,
+				binaries.NewBuilder(
+					ctx,
+					cli,
+
+					binaries.Image+":"+*tag,
+					*pull,
+					*src,
+					filepath.Join(*dst, cfg.Binaries.Path),
+					handleID,
+					handleOutput,
+					cfg.App.ID,
+					pgpKeyContent,
+					*pgpPassword,
+					cfg.App.Name,
+					*branchID,
+					*branchName,
+					cfg.Go.Main,
+					cfg.Go.Flags,
+					cfg.Go.Generate,
+					cfg.Binaries.GoExclude,
+					cfg.Binaries.HostPackages,
 				),
 			)
 		}

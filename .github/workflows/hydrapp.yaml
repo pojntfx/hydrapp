@@ -16,37 +16,43 @@ jobs:
           - id: hydrapp-apk.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
-            exclude: deb|dmg|flatpak|msi|rpm
+            exclude: deb|dmg|flatpak|msi|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-deb.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
-            exclude: apk|dmg|flatpak|msi|rpm
+            exclude: apk|dmg|flatpak|msi|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-dmg.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
-            exclude: apk|deb|flatpak|msi|rpm
+            exclude: apk|deb|flatpak|msi|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-flatpak.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
-            exclude: apk|deb|dmg|msi|rpm
+            exclude: apk|deb|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-msi.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
-            exclude: apk|deb|flatpak|dmg|rpm
+            exclude: apk|deb|flatpak|dmg|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-rpm.hydrapp-example-full
             src: .
             pkg: hydrapp-example-full
-            exclude: apk|deb|flatpak|dmg|msi
+            exclude: apk|deb|flatpak|dmg|msi|binaries
+            tag: main
+            dst: out/*
+          - id: hydrapp-binaries.hydrapp-example-full
+            src: .
+            pkg: hydrapp-example-full
+            exclude: apk|deb|flatpak|dmg|msi|rpm
             tag: main
             dst: out/*
 
@@ -54,37 +60,43 @@ jobs:
           - id: hydrapp-apk.hydrapp-example-simple
             src: .
             pkg: hydrapp-example-simple
-            exclude: deb|dmg|flatpak|msi|rpm
+            exclude: deb|dmg|flatpak|msi|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-deb.hydrapp-example-simple
             src: .
             pkg: hydrapp-example-simple
-            exclude: apk|dmg|flatpak|msi|rpm
+            exclude: apk|dmg|flatpak|msi|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-dmg.hydrapp-example-simple
             src: .
             pkg: hydrapp-example-simple
-            exclude: apk|deb|flatpak|msi|rpm
+            exclude: apk|deb|flatpak|msi|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-flatpak.hydrapp-example-simple
             src: .
             pkg: hydrapp-example-simple
-            exclude: apk|deb|dmg|msi|rpm
+            exclude: apk|deb|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-msi.hydrapp-example-simple
             src: .
             pkg: hydrapp-example-simple
-            exclude: apk|deb|flatpak|dmg|rpm
+            exclude: apk|deb|flatpak|dmg|rpm|binaries
             tag: main
             dst: out/*
           - id: hydrapp-rpm.hydrapp-example-simple
             src: .
             pkg: hydrapp-example-simple
-            exclude: apk|deb|flatpak|dmg|msi
+            exclude: apk|deb|flatpak|dmg|msi|binaries
+            tag: main
+            dst: out/*
+          - id: hydrapp-binaries.hydrapp-example-simple
+            src: .
+            pkg: hydrapp-example-simple
+            exclude: apk|deb|flatpak|dmg|msi|rpm
             tag: main
             dst: out/*
 
@@ -154,6 +166,7 @@ jobs:
         with:
           name: ${{ matrix.target.id }}
           path: ${{ matrix.target.dst }}
+
   publish-linux:
     runs-on: ubuntu-latest
     needs: build-linux
@@ -168,7 +181,7 @@ jobs:
       - name: Isolate the repositories
         run: |
           mkdir -p /tmp/github-pages
-          for dir in /tmp/out/hydrapp-*/; do
+          for dir in /tmp/out/*/; do
             rsync -a "${dir}"/ /tmp/github-pages/
           done
       - name: Add index for repositories
@@ -177,7 +190,7 @@ jobs:
           sudo apt install -y tree
 
           cd /tmp/github-pages/
-          tree -T 'hydrapp Repositories' --du -h -D -H . -I 'index.html' -o 'index.html'
+          tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -T 'hydrapp Repositories' --du -h -D -H . -I 'index.html' -o 'index.html'
       - name: Publish to GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:

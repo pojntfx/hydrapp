@@ -17,6 +17,7 @@ type Root struct {
 	MSI      []MSI               `yaml:"msi"`
 	RPM      []RPM               `yaml:"rpm"`
 	APK      APK                 `yaml:"apk"`
+	Binaries Binaries            `yaml:"binaries"`
 }
 
 type App struct {
@@ -79,6 +80,15 @@ type RPM struct {
 
 type APK struct {
 	Path string `yaml:"path"`
+}
+
+type Binaries struct {
+	Path      string `yaml:"path"`
+	GoExclude string `yaml:"goExclude"`
+	// GccGoExclude        string   `yaml:"gccgoExclude"`
+	HostPackages []string `yaml:"hostPackages"`
+	// GccGoPackages       []string `yaml:"gccgoPackages"`
+	// GccGoPackagesForced []string `yaml:"gccgoPackagesForced"`
 }
 
 func Parse(content []byte) (*Root, error) {
