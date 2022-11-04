@@ -2,9 +2,14 @@ package tests
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/executors"
+)
+
+const (
+	Image = "ghcr.io/pojntfx/hydrapp-build-tests"
 )
 
 func NewBuilder(
@@ -68,15 +73,13 @@ func (b *Builder) Build() error {
 		b.onID,
 		b.onOutput,
 		map[string]string{
-			"GOFLAGS":    b.goFlags,
-			"GOGENERATE": b.goGenerate,
-			"GOTESTS":    b.goTests,
+			"GOFLAGS": b.goFlags,
 		},
 		b.Render,
 		[]string{
 			"sh",
 			"-c",
-			`export GOFLAGS="${GOFLAGS}" && cd /work && ${GOGENERATE} && cd /work && ${GOTESTS}`,
+			fmt.Sprintf(`export GOFLAGS="${GOFLAGS}" && cd /work && %v && cd /work && %v`, b.goGenerate, b.goTests),
 		},
 	)
 }

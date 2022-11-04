@@ -3,7 +3,7 @@ PREFIX ?= ghcr.io/pojntfx/hydrapp-build-
 TAG ?= latest
 
 # Private variables
-obj = apk deb dmg flatpak msi rpm binaries
+obj = apk deb dmg flatpak msi rpm binaries tests
 all: $(addprefix build/,$(obj))
 
 # Build

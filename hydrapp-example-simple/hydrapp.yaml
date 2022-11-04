@@ -11,7 +11,7 @@ go:
   flags: ""
   generate: cd hydrapp-example-simple && go generate ./...
   tests: go test ./hydrapp-example-simple/...
-  img: golang:bullseye
+  img: ghcr.io/pojntfx/hydrapp-build-tests:main
 license:
   spdx: AGPL-3.0
   text: |
