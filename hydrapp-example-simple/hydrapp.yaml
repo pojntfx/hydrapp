@@ -66,6 +66,6 @@ rpm:
     architecture: amd64
     packages: []
 binaries:
-  path: bagop
+  path: binaries
   exclude: "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)"
   packages: []
