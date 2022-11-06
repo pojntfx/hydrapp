@@ -31,7 +31,7 @@ if [ "$1" = "go" ]; then
     make "depend/${2}"
 
     # Build
-    GOFLAGS='-tags=selfupdate' CGO_ENABLED=0 bagop -j "$(nproc)" -b "$(basename ${2})" -x '(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)' -p "make build/${2} DST=\$DST" -d out
+    CGO_ENABLED=0 bagop -j "$(nproc)" -b "$(basename ${2})" -x '(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)' -p "make build/${2} DST=\$DST" -d out
 
     exit 0
 fi
@@ -50,7 +50,7 @@ if [ "$1" = "gccgo" ]; then
     make "depend/${2}"
 
     # Build
-    GOFLAGS='-gccgoflags=-static -tags=selfupdate' bagccgop -x '(linux/alpha|linux/mipsle|linux/arm$|linux/arm64|linux/386|linux/amd64|linux/s390x|linux/ppc64|linux/riscv64|linux/mips64|linux/ppc64le)' -j1 -b "$(basename ${2})" -n -s 'make' -p "make build/${2} DST=\$DST" -d out
+    GOFLAGS='-gccgoflags=-static' bagccgop -x '(linux/alpha|linux/mipsle|linux/arm$|linux/arm64|linux/386|linux/amd64|linux/s390x|linux/ppc64|linux/riscv64|linux/mips64|linux/ppc64le)' -j1 -b "$(basename ${2})" -n -s 'make' -p "make build/${2} DST=\$DST" -d out
 
     exit 0
 fi
