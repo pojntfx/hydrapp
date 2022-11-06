@@ -9,7 +9,7 @@ RUN ln -s /osxcross/macports/pkgs/opt/ /opt
 
 # Install native dependencies
 RUN apt update
-RUN apt install -y genisoimage make imagemagick clang lld libc6-dev bzip2 curl npm tree
+RUN apt install -y genisoimage make imagemagick clang lld libc6-dev bzip2 curl npm tree jq
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 

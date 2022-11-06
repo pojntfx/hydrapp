@@ -3,7 +3,7 @@ FROM fedora:36
 # Install native dependencies
 RUN dnf install -y 'dnf-command(config-manager)' 'dnf-command(builddep)'
 RUN dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/36/winehq.repo
-RUN dnf install -y make ImageMagick msitools curl uuid go git perl-CPAN npm tree
+RUN dnf install -y make ImageMagick msitools curl uuid go git perl-CPAN npm tree jq
 RUN dnf builddep -y winehq-staging
 
 # Build WINE
