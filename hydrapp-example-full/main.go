@@ -5,10 +5,12 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"log"
 	"os"
 	"time"
 
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-example-full/pkg/backend"
 	"github.com/pojntfx/hydrapp/hydrapp-example-full/pkg/frontend"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/browser"
@@ -17,57 +19,43 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 
-const (
-	appName    = "Hydrapp Full Example"                         // App name
-	appID      = "com.pojtinger.felicitas.hydrapp.example.full" // App ID
-	appVersion = "v0.0.1"                                       // App version
-
-	updateAPIURL = "https://api.github.com/" // GitHub/Gitea API endpoint to use
-	updateOwner  = "pojntfx"                 // Repository owner
-	updateRepo   = "hydrapp"                 // Repository name
-)
+//go:embed hydrapp.yaml
+var configFile []byte
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// Apply the self-update if not disabled
-	browserState := &update.BrowserState{}
-	if os.Getenv("HYDRAPP_SELFUPDATE") != "false" {
-		go func() {
-			if err := update.Update(
-				ctx,
+	cfg, err := config.Parse(configFile)
+	if err != nil {
+		utils.HandlePanic("App", "could not parse config file", err)
 
-				updateAPIURL,
-				updateOwner,
-				updateRepo,
-
-				appVersion,
-				appID,
-
-				browserState,
-				func(msg string, err error) {
-					utils.HandlePanic(appName, "could not check for updates (disable it by setting the HYDRAPP_SELFUPDATE env variable to false): "+msg, err)
-				},
-			); err != nil {
-				utils.HandlePanic(appName, "could not check for updates (disable it by setting the HYDRAPP_SELFUPDATE env variable to false)", err)
-			}
-		}()
+		return
 	}
 
+	// Apply the self-update
+	browserState := &update.BrowserState{}
+	go update.Update(
+		ctx,
+
+		cfg,
+		browserState,
+		utils.HandlePanic,
+	)
+
 	// Start the backend
-	backendURL, stopBackend, err := backend.StartServer(os.Getenv("HYDRAPP_BACKEND_LADDR"), time.Second*10, true)
+	backendURL, stopBackend, err := backend.StartServer(os.Getenv(utils.EnvBackendLaddr), time.Second*10, true)
 	if err != nil {
-		utils.HandlePanic(appName, "could not start backend", err)
+		utils.HandlePanic(cfg.App.Name, "could not start backend", err)
 	}
 	defer stopBackend()
 
 	log.Println("Backend URL:", backendURL)
 
 	// Start the frontend
-	frontendURL, stopFrontend, err := frontend.StartServer(os.Getenv("HYDRAPP_FRONTEND_LADDR"), backendURL, true)
+	frontendURL, stopFrontend, err := frontend.StartServer(os.Getenv(utils.EnvFrontendLaddr), backendURL, true)
 	if err != nil {
-		utils.HandlePanic(appName, "could not start frontend", err)
+		utils.HandlePanic(cfg.App.Name, "could not start frontend", err)
 	}
 	defer stopFrontend()
 
@@ -75,11 +63,11 @@ func main() {
 
 	browser.LaunchBrowser(
 		frontendURL,
-		appName,
-		appID,
+		cfg.App.Name,
+		cfg.App.ID,
 
-		os.Getenv("HYDRAPP_BROWSER"),
-		os.Getenv("HYDRAPP_TYPE"),
+		os.Getenv(utils.EnvBrowser),
+		os.Getenv(utils.EnvType),
 
 		browser.ChromiumLikeBrowsers,
 		browser.FirefoxLikeBrowsers,
@@ -87,7 +75,7 @@ func main() {
 
 		browserState,
 		func(msg string, err error) {
-			utils.HandlePanic(appName, msg, err)
+			utils.HandlePanic(cfg.App.Name, msg, err)
 		},
 	)
 }
