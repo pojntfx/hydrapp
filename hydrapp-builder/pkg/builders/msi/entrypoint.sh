@@ -75,3 +75,8 @@ export STARTID="$(cat /tmp/hydrapp.wxi | grep ${APP_ID}.${GOOS}-${DEBARCH}.exe |
 wixl -v -D SourceDir="." -v -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-directories.xml"); s+<HydrappDirectories />+$text+g' | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-component-refs.xml"); s+<HydrappComponentRefs />+$text+g' | perl -p -e 's+{ StartID }+$ENV{STARTID}+g')
 
 gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
+
+cd /dst
+
+tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
+tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -J . -I 'index.html|index.json' | jq '.[0].contents' | tee 'index.json'
