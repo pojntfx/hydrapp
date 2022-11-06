@@ -32,7 +32,6 @@ func NewBuilder(
 	appName string, // Human-readable name for the app
 	pgpKeyContent []byte, // PGP key contents
 	pgpKeyPassword string, // Password for the PGP key
-	universal bool, // Build universal (amd64 and arm64) binary instead of amd64 only
 	packages []string, // MacPorts packages to install
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
@@ -56,7 +55,6 @@ func NewBuilder(
 		appName,
 		base64.StdEncoding.EncodeToString(pgpKeyContent),
 		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
-		universal,
 		packages,
 		releases,
 		overwrite,
@@ -82,7 +80,6 @@ type Builder struct {
 	appName,
 	pgpKeyContent,
 	pgpKeyPassword string
-	universal bool
 	packages  []string
 	releases  []renderers.Release
 	overwrite bool
@@ -131,17 +128,11 @@ func (b *Builder) Build() error {
 			"APP_NAME":         appName,
 			"PGP_KEY_CONTENT":  b.pgpKeyContent,
 			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
-			"ARCHITECTURES": func() string {
-				if b.universal {
-					return "amd64 arm64"
-				}
-
-				return "amd64"
-			}(),
-			"MACPORTS":   strings.Join(b.packages, " "),
-			"GOMAIN":     b.goMain,
-			"GOFLAGS":    b.goFlags,
-			"GOGENERATE": b.goGenerate,
+			"ARCHITECTURES":    "amd64 arm64",
+			"MACPORTS":         strings.Join(b.packages, " "),
+			"GOMAIN":           b.goMain,
+			"GOFLAGS":          b.goFlags,
+			"GOGENERATE":       b.goGenerate,
 		},
 		b.Render,
 		[]string{},

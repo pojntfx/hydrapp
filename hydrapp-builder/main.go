@@ -240,7 +240,6 @@ func main() {
 					cfg.App.Name,
 					pgpKeyContent,
 					*pgpPassword,
-					cfg.DMG.Universal,
 					cfg.DMG.Packages,
 					cfg.Releases,
 					*overwrite,

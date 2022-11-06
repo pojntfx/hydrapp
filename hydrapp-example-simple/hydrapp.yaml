@@ -49,7 +49,6 @@ deb:
     packages: []
 dmg:
   path: dmg
-  universal: true
   packages: []
 flatpak:
   - path: flatpak/x86_64

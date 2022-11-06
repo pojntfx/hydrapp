@@ -55,9 +55,8 @@ type DEB struct {
 }
 
 type DMG struct {
-	Path      string   `yaml:"path"`
-	Universal bool     `yaml:"universal"`
-	Packages  []string `yaml:"packages"`
+	Path     string   `yaml:"path"`
+	Packages []string `yaml:"packages"`
 }
 
 type Flatpak struct {
