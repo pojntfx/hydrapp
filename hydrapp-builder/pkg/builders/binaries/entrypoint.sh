@@ -27,7 +27,13 @@ fi
 GOFLAGS="${GOFLAGS}" sh -c "${GOGENERATE}"
 
 # Build
-GOFLAGS="-tags=selfupdate ${GOFLAGS}" CGO_ENABLED=0 bagop -j "$(nproc)" -b "${APP_ID}" -x "${GOEXCLUDE}" -d /dst "${GOMAIN}"
+export COMMIT_TIME_RFC3339="$(git log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format=%cd)"
+export BRANCH_ID="stable"
+if [ "$(git tag --points-at HEAD)" = "" ]; then
+    export BRANCH_ID="$(git symbolic-ref --short HEAD)"
+fi
+
+CGO_ENABLED=0 bagop -j "$(nproc)" -b "${APP_ID}" -x "${GOEXCLUDE}" -d /dst -p "go build -o \$DST -ldflags='-X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.BranchID=${BRANCH_ID}' ${GOMAIN}"
 
 for FILE in /dst/*; do
     gpg --detach-sign --armor "${FILE}"
@@ -35,5 +41,5 @@ done
 
 cd /dst
 
-tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
-tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -J . -I 'index.html|index.json' | jq '.[0].contents' | tee 'index.json'
+tree -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
+tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ".[] | . + {time: \"${COMMIT_TIME_RFC3339}\"}" | tee 'index.json'

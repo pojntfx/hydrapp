@@ -45,6 +45,12 @@ elif [ "${ARCHITECTURE}" = "arm64" ]; then
   export DEBARCH="aarch64"
 fi
 
+export COMMIT_TIME_RFC3339="$(git log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format=%cd)"
+export BRANCH_ID="stable"
+if [ "$(git tag --points-at HEAD)" = "" ]; then
+  export BRANCH_ID="$(git symbolic-ref --short HEAD)"
+fi
+
 if [ "${ARCHITECTURE}" = "amd64" ]; then
   GOPATH='/root/.wine/drive_c/go' go mod download -x
 
@@ -58,7 +64,7 @@ if [ "${ARCHITECTURE}" = "amd64" ]; then
 
   find /root/.wine/drive_c/msys64/ucrt64/ -regex "${MSYS2INCLUDE}" -print0 | tar -c --null --files-from - | tar -C '/tmp/out' -x --strip-components=5
 else
-  GOFLAGS="-tags=selfupdate ${GOFLAGS}" go build -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" "${GOMAIN}"
+  go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.BranchID=${BRANCH_ID}" -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" "${GOMAIN}"
 fi
 
 cd '/tmp/out'
@@ -78,5 +84,5 @@ gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
 
 cd /dst
 
-tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
-tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -J . -I 'index.html|index.json' | jq '.[0].contents' | tee 'index.json'
+tree -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
+tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ".[] | . + {time: \"${COMMIT_TIME_RFC3339}\"}" | tee 'index.json'

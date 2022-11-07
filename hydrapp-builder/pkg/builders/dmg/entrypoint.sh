@@ -30,6 +30,12 @@ mkdir -p '/tmp/out'
 convert "${BASEDIR}/icon.png" '/tmp/out/icon.icns'
 
 # Build app
+export COMMIT_TIME_RFC3339="$(git log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format=%cd)"
+export BRANCH_ID="stable"
+if [ "$(git tag --points-at HEAD)" = "" ]; then
+  export BRANCH_ID="$(git symbolic-ref --short HEAD)"
+fi
+
 export GOOS="darwin"
 export BINARIES=""
 for ARCH in ${ARCHITECTURES}; do
@@ -52,7 +58,7 @@ for ARCH in ${ARCHITECTURES}; do
   export PKGCONFIG="${DEBARCH}-apple-darwin20.4-pkg-config"
   export PKG_CONFIG="${DEBARCH}-apple-darwin20.4-pkg-config"
 
-  GOFLAGS='-tags=selfupdate' go build -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
+  go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.BranchID=${BRANCH_ID}" -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
   rcodesign sign "/tmp/${APP_ID}.${GOOS}-${DEBARCH}"
 
   export BINARIES="${BINARIES} /tmp/${APP_ID}.${GOOS}-${DEBARCH}"
@@ -77,5 +83,5 @@ cp "/tmp/out/${APP_ID}.${GOOS}.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.asc" "/dst"
 
 cd /dst
 
-tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
-tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -J . -I 'index.html|index.json' | jq '.[0].contents' | tee 'index.json'
+tree -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
+tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ".[] | . + {time: \"${COMMIT_TIME_RFC3339}\"}" | tee 'index.json'

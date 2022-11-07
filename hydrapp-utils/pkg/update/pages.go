@@ -30,15 +30,15 @@ type BrowserState struct {
 }
 
 const (
-	BuildtimeRFC3339 = ""
-	BranchID         = ""
-
 	goosMacOS   = "darwin"
 	goosWindows = "windows"
 )
 
 var (
 	ErrNoEscalationMethodFound = errors.New("no escalation method could be found")
+
+	CommitTimeRFC3339 = ""
+	BranchID          = ""
 )
 
 type File struct {
@@ -83,11 +83,11 @@ func Update(
 	state *BrowserState,
 	handlePanic func(appName, msg string, err error),
 ) {
-	if strings.TrimSpace(BuildtimeRFC3339) == "" || strings.TrimSpace(BranchID) == "" || os.Getenv(utils.EnvSelfupdate) == "false" {
+	if strings.TrimSpace(CommitTimeRFC3339) == "" || strings.TrimSpace(BranchID) == "" || os.Getenv(utils.EnvSelfupdate) == "false" {
 		return
 	}
 
-	buildtime, err := time.Parse(time.RFC3339, BuildtimeRFC3339)
+	buildtime, err := time.Parse(time.RFC3339, CommitTimeRFC3339)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 
