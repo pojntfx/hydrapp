@@ -149,7 +149,7 @@ jobs:
         env:
           APK_CERT: ${{ secrets.APK_CERT }}
         run: echo "${APK_CERT}" | base64 -d >'/tmp/keystore.jks'
-      - name: Build with hydrun
+      - name: Build with hydrapp
         working-directory: ${{ matrix.target.src }}
         env:
           PGP_PASSWORD: ${{ secrets.PGP_PASSWORD }}

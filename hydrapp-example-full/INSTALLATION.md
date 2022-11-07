@@ -104,3 +104,7 @@ EOT
 ```
 
 Hydrapp Example Full (Main) should now be installed and receive updates automatically.
+
+## Other Platforms
+
+Hydrapp Example Full (Main) is also available as a single static binary. To install it, download the binary for your operating system and processor architecture from [https://pojntfx.github.io/hydrapp/hydrapp-example-full/binaries/main/](https://pojntfx.github.io/hydrapp/hydrapp-example-full/binaries/main/). They include a self-update mechanism, so you should be receiving updates automatically.

@@ -125,8 +125,15 @@ func Update(
 		return
 	}
 
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		handlePanic(cfg.App.Name, err.Error(), err)
+
+		return
+	}
+
 	var index []File
-	if err := json.NewDecoder(res.Body).Decode(&index); err != nil {
+	if err := json.Unmarshal(body, &index); err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 
 		return
@@ -425,6 +432,4 @@ func Update(
 	}
 
 	os.Exit(0)
-
-	return
 }
