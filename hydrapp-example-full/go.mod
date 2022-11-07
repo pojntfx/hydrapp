@@ -3,8 +3,8 @@ module github.com/pojntfx/hydrapp/hydrapp-example-full
 go 1.18
 
 require (
-	github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221106211041-faed52a5d50b
-	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221106211041-faed52a5d50b
+	github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221107183502-9265d8c95df4
+	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221107183502-9265d8c95df4
 )
 
 require (
