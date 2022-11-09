@@ -11,6 +11,7 @@ import (
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
 	cconfig "github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update"
 )
 
 //go:embed INSTALLATION.md.tpl
@@ -22,12 +23,13 @@ type installationData struct {
 	MacOSBinaryURL  string
 	MacOSBinaryName string
 	AppID           string
-	Flatpaks        []flatpak
+	Flatpaks        []artifact
+	MSIs            []artifact
 }
 
-type flatpak struct {
+type artifact struct {
 	Architecture string
-	RepoURL      string
+	URL          string
 }
 
 func main() {
@@ -57,11 +59,19 @@ func main() {
 	appName := builders.GetAppNameForBranch(cfg.App.Name, *branchName)
 	macOSBinaryName := builders.GetAppIDForBranch(cfg.App.ID, *branchID) + ".darwin.dmg"
 
-	flatpaks := []flatpak{}
+	flatpaks := []artifact{}
 	for _, f := range cfg.Flatpak {
-		flatpaks = append(flatpaks, flatpak{
+		flatpaks = append(flatpaks, artifact{
 			Architecture: f.Architecture,
-			RepoURL:      cfg.App.BaseURL + builders.GetPathForBranch(f.Path, *branchID) + "/hydrapp.flatpakrepo",
+			URL:          cfg.App.BaseURL + builders.GetPathForBranch(f.Path, *branchID) + "/hydrapp.flatpakrepo",
+		})
+	}
+
+	msis := []artifact{}
+	for _, m := range cfg.MSI {
+		msis = append(msis, artifact{
+			Architecture: m.Architecture,
+			URL:          cfg.App.BaseURL + builders.GetPathForBranch(m.Path, *branchID) + "/" + builders.GetAppIDForBranch(cfg.App.ID, *branchID) + ".windows-" + update.GetArchIdentifier(m.Architecture) + ".msi",
 		})
 	}
 
@@ -73,6 +83,7 @@ func main() {
 		MacOSBinaryURL:  cfg.App.BaseURL + builders.GetPathForBranch(cfg.DMG.Path, *branchID) + "/" + macOSBinaryName,
 		MacOSBinaryName: macOSBinaryName,
 		Flatpaks:        flatpaks,
+		MSIs:            msis,
 	}); err != nil {
 		panic(err)
 	}

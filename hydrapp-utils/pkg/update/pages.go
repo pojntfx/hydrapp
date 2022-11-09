@@ -61,7 +61,7 @@ func getBinIdentifier(goOS, goArch string) string {
 }
 
 // See https://github.com/pojntfx/bagop/blob/main/main.go#L45
-func getArchIdentifier(goArch string) string {
+func GetArchIdentifier(goArch string) string {
 	switch goArch {
 	case "386":
 		return "i686"
@@ -139,10 +139,10 @@ func Update(
 		return
 	}
 
-	binary := builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + getArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
+	binary := builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
 	switch runtime.GOOS {
 	case goosWindows:
-		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + getArchIdentifier(runtime.GOARCH) + ".msi"
+		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + GetArchIdentifier(runtime.GOARCH) + ".msi"
 	case goosMacOS:
 		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + ".dmg"
 	}

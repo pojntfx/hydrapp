@@ -70,19 +70,23 @@ EOT
 To install the package, run the following:
 
 ```shell
-flatpak remote-add '{{ $appID }}' --from '{{ .RepoURL }}'
+flatpak remote-add '{{ $appID }}' --from '{{ .URL }}'
 flatpak install -y '{{ $appID }}'
 ```
 
 {{ $appName }} should now be installed and receive updates automatically.
 {{ end }}
 
-## Windows on `amd64`
+{{ range .MSIs }}
 
-1. Download the installer from [https://pojntfx.github.io/hydrapp/hydrapp-example-full/msi/x86_64/main/com.pojtinger.felicitas.hydrapp.example.full.main.windows-x86_64.msi](https://pojntfx.github.io/hydrapp/hydrapp-example-full/msi/x86_64/main/com.pojtinger.felicitas.hydrapp.example.full.main.windows-x86_64.msi)
+## Windows on `{{ .Architecture }}`
+
+1. Download the installer from [{{ .URL }}]({{ .URL }})
 2. Install the application by opening the downloaded file
 
 {{ $appName }} should now be installed and receive updates automatically.
+
+{{ end }}
 
 ## Fedora 36 on `amd64`
 
