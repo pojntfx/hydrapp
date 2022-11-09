@@ -21,6 +21,13 @@ type installationData struct {
 	AppName         string
 	MacOSBinaryURL  string
 	MacOSBinaryName string
+	AppID           string
+	Flatpaks        []flatpak
+}
+
+type flatpak struct {
+	Architecture string
+	RepoURL      string
 }
 
 func main() {
@@ -50,12 +57,22 @@ func main() {
 	appName := builders.GetAppNameForBranch(cfg.App.Name, *branchName)
 	macOSBinaryName := builders.GetAppIDForBranch(cfg.App.ID, *branchID) + ".darwin.dmg"
 
+	flatpaks := []flatpak{}
+	for _, f := range cfg.Flatpak {
+		flatpaks = append(flatpaks, flatpak{
+			Architecture: f.Architecture,
+			RepoURL:      cfg.App.BaseURL + builders.GetPathForBranch(f.Path, *branchID) + "/hydrapp.flatpakrepo",
+		})
+	}
+
 	buf := bytes.NewBuffer([]byte{})
 	if err := t.Execute(buf, installationData{
+		AppID:           builders.GetAppIDForBranch(cfg.App.ID, *branchID),
 		AppName:         appName,
 		AndroidRepoURL:  cfg.App.BaseURL + builders.GetPathForBranch(cfg.APK.Path, *branchID),
 		MacOSBinaryURL:  cfg.App.BaseURL + builders.GetPathForBranch(cfg.DMG.Path, *branchID) + "/" + macOSBinaryName,
 		MacOSBinaryName: macOSBinaryName,
+		Flatpaks:        flatpaks,
 	}); err != nil {
 		panic(err)
 	}

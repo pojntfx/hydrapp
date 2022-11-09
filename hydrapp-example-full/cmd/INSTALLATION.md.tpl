@@ -1,13 +1,16 @@
-# {{ .AppName }} Installation Instructions
+{{ $appID := .AppID }}
+{{ $appName := .AppName }}
+
+# {{ $appName }} Installation Instructions
 
 ## Android
 
 1. Download F-Droid from [f-droid.org](https://f-droid.org/)
 2. Open F-Droid and go to `Settings`, then `Repositories`
 3. Add a new repository with the address `{{ .AndroidRepoURL }}`
-4. Search for `{{ .AppName }}` in F-Droid and tap on `Install`
+4. Search for `{{ $appName }}` in F-Droid and tap on `Install`
 
-{{ .AppName }} should now be installed and receive updates automatically.
+{{ $appName }} should now be installed and receive updates automatically.
 
 ## Debian Sid on `amd64`
 
@@ -50,33 +53,36 @@ apt install -y ./com.pojtinger.felicitas.hydrapp.example.full.main_*.deb
 EOT
 ```
 
-{{ .AppName }} should now be installed and receive updates automatically.
+{{ $appName }} should now be installed and receive updates automatically.
 
 ## macOS
 
 1. Download the `.app` from [{{ .MacOSBinaryURL }}]({{ .MacOSBinaryURL }})
 2. Mount `{{ .MacOSBinaryName }}` by opening it
-3. Drag `{{ .AppName }}` to the `Applications` folder
+3. Drag `{{ $appName }}` to the `Applications` folder
 
-{{ .AppName }} should now be installed and receive updates automatically.
+{{ $appName }} should now be installed and receive updates automatically.
 
-## Linux Universal (Flatpak) on `amd64`
+{{ range .Flatpaks }}
+
+## Linux Universal (Flatpak) on `{{ .Architecture }}`
 
 To install the package, run the following:
 
 ```shell
-flatpak remote-add hydrapp-example-full-main --from 'https://pojntfx.github.io/hydrapp/hydrapp-example-full/flatpak/x86_64/main/hydrapp.flatpakrepo'
-flatpak install -y 'com.pojtinger.felicitas.hydrapp.example.full.main'
+flatpak remote-add '{{ $appID }}' --from '{{ .RepoURL }}'
+flatpak install -y '{{ $appID }}'
 ```
 
-{{ .AppName }} should now be installed and receive updates automatically.
+{{ $appName }} should now be installed and receive updates automatically.
+{{ end }}
 
 ## Windows on `amd64`
 
 1. Download the installer from [https://pojntfx.github.io/hydrapp/hydrapp-example-full/msi/x86_64/main/com.pojtinger.felicitas.hydrapp.example.full.main.windows-x86_64.msi](https://pojntfx.github.io/hydrapp/hydrapp-example-full/msi/x86_64/main/com.pojtinger.felicitas.hydrapp.example.full.main.windows-x86_64.msi)
 2. Install the application by opening the downloaded file
 
-{{ .AppName }} should now be installed and receive updates automatically.
+{{ $appName }} should now be installed and receive updates automatically.
 
 ## Fedora 36 on `amd64`
 
@@ -103,8 +109,8 @@ dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/com.pojtinger.felicitas.hydrapp.exa
 EOT
 ```
 
-{{ .AppName }} should now be installed and receive updates automatically.
+{{ $appName }} should now be installed and receive updates automatically.
 
 ## Other Platforms
 
-{{ .AppName }} is also available as a single static binary. To install it, download the binary for your operating system and processor architecture from [https://pojntfx.github.io/hydrapp/hydrapp-example-full/binaries/main/](https://pojntfx.github.io/hydrapp/hydrapp-example-full/binaries/main/). They include a self-update mechanism, so you should be receiving updates automatically.
+{{ $appName }} is also available as a single static binary. To install it, download the binary for your operating system and processor architecture from [https://pojntfx.github.io/hydrapp/hydrapp-example-full/binaries/main/](https://pojntfx.github.io/hydrapp/hydrapp-example-full/binaries/main/). They include a self-update mechanism, so you should be receiving updates automatically.
