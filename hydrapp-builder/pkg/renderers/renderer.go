@@ -5,6 +5,9 @@ import (
 	"strings"
 	"text/template"
 	"time"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type Release struct {
@@ -34,11 +37,16 @@ func NewRenderer(
 }
 
 func (r *Renderer) Render(templateOverride string) (filePath string, fileContent string, err error) {
+	titler := cases.Title(language.English)
+
 	t, err := template.
 		New(r.filePath).
 		Funcs(template.FuncMap{
 			"LastRelease": func(releases []Release) Release {
 				return releases[len(releases)-1]
+			},
+			"Titlecase": func(title string) string {
+				return titler.String(title)
 			},
 		}).
 		Parse(func() string {

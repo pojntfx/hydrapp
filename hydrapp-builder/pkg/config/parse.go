@@ -18,6 +18,7 @@ type Root struct {
 	RPM      []RPM               `yaml:"rpm"`
 	APK      APK                 `yaml:"apk"`
 	Binaries Binaries            `yaml:"binaries"`
+	Docs     Docs                `yaml:"docs"`
 }
 
 type App struct {
@@ -87,6 +88,10 @@ type Binaries struct {
 	Path     string   `yaml:"path"`
 	Exclude  string   `yaml:"exclude"`
 	Packages []string `yaml:"packages"`
+}
+
+type Docs struct {
+	Path string `yaml:"path"`
 }
 
 func Parse(content []byte) (*Root, error) {

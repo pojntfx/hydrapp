@@ -68,3 +68,5 @@ binaries:
   path: binaries
   exclude: "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)"
   packages: []
+docs:
+  path: docs

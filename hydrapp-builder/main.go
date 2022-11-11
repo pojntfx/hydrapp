@@ -24,6 +24,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/binaries"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/deb"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/dmg"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/docs"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/flatpak"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders/rpm"
@@ -479,6 +480,35 @@ func main() {
 					cfg.Go.Flags,
 					cfg.Go.Generate,
 					cfg.Go.Tests,
+				),
+			)
+		}
+	}
+
+	if strings.TrimSpace(cfg.Docs.Path) != "" {
+		skip, err := checkIfSkip(*exclude, "docs", "")
+		if err != nil {
+			panic(err)
+		}
+
+		if !skip {
+			bdrs = append(
+				bdrs,
+				docs.NewBuilder(
+					ctx,
+					cli,
+
+					docs.Image+":"+*tag,
+					*pull,
+					*src,
+					filepath.Join(*dst, cfg.Docs.Path),
+					handleID,
+					handleOutput,
+					*branchID,
+					*branchName,
+					cfg.Go.Main,
+					cfg,
+					*overwrite,
 				),
 			)
 		}
