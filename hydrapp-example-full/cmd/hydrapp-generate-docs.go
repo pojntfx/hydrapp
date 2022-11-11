@@ -2,9 +2,11 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"strings"
 	"text/template"
 
 	_ "embed"
@@ -12,10 +14,16 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/builders"
 	cconfig "github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
-//go:embed INSTALLATION.md.tpl
-var installationTemplate string
+var (
+	//go:embed INSTALLATION.md.tpl
+	installationTemplate string
+
+	errInvalidRPMDistro = errors.New("invalid RPM distro")
+)
 
 type installationData struct {
 	AndroidRepoURL  string
@@ -25,11 +33,20 @@ type installationData struct {
 	AppID           string
 	Flatpaks        []artifact
 	MSIs            []artifact
+	RPMs            []distroArtifact
+	DEBs            []distroArtifact
+	BinariesURL     string
 }
 
 type artifact struct {
 	Architecture string
 	URL          string
+}
+
+type distroArtifact struct {
+	artifact
+	DistroName    string
+	DistroVersion string
 }
 
 func main() {
@@ -49,8 +66,15 @@ func main() {
 		panic(err)
 	}
 
+	titler := cases.Title(language.English)
+
 	t, err := template.
 		New("INSTALLATION.md").
+		Funcs(template.FuncMap{
+			"Titlecase": func(title string) string {
+				return titler.String(title)
+			},
+		}).
 		Parse(installationTemplate)
 	if err != nil {
 		panic(err)
@@ -75,6 +99,35 @@ func main() {
 		})
 	}
 
+	rpms := []distroArtifact{}
+	for _, r := range cfg.RPM {
+		parts := strings.Split(r.Distro, "-")
+		if len(parts) < 2 {
+			panic(errInvalidRPMDistro)
+		}
+
+		rpms = append(rpms, distroArtifact{
+			artifact: artifact{
+				Architecture: r.Architecture,
+				URL:          cfg.App.BaseURL + builders.GetPathForBranch(r.Path+"/"+parts[0]+"/"+parts[1], *branchID) + "/repodata/hydrapp.repo",
+			},
+			DistroName:    parts[0],
+			DistroVersion: parts[1],
+		})
+	}
+
+	debs := []distroArtifact{}
+	for _, d := range cfg.DEB {
+		debs = append(debs, distroArtifact{
+			artifact: artifact{
+				Architecture: d.Architecture,
+				URL:          cfg.App.BaseURL + builders.GetPathForBranch(d.Path, *branchID),
+			},
+			DistroName:    d.OS,
+			DistroVersion: d.Distro,
+		})
+	}
+
 	buf := bytes.NewBuffer([]byte{})
 	if err := t.Execute(buf, installationData{
 		AppID:           builders.GetAppIDForBranch(cfg.App.ID, *branchID),
@@ -84,6 +137,9 @@ func main() {
 		MacOSBinaryName: macOSBinaryName,
 		Flatpaks:        flatpaks,
 		MSIs:            msis,
+		RPMs:            rpms,
+		DEBs:            debs,
+		BinariesURL:     cfg.App.BaseURL + builders.GetPathForBranch(cfg.Binaries.Path, *branchID),
 	}); err != nil {
 		panic(err)
 	}

@@ -12,23 +12,25 @@
 
 {{ $appName }} should now be installed and receive updates automatically.
 
-## Debian Sid on `amd64`
+{{ range .DEBs }}
+
+## {{ Titlecase .DistroName }} {{ Titlecase .DistroVersion }} on `{{ .Architecture }}`
 
 To install the prebuilt binary package, run the following:
 
 ```shell
 pkexec sudo bash - <<'EOT'
 mkdir -p /usr/local/share/keyrings
-curl -Lo https://pojntfx.github.io/hydrapp/hydrapp-example-full/deb/debian/sid/x86_64/main/repo.asc | gpg --dearmor --output /usr/local/share/keyrings/hydrapp-example-full-main.gpg -
+curl -Lo {{ .URL }}/repo.asc | gpg --dearmor --output /usr/local/share/keyrings/{{ $appID }}.gpg -
 
-cat >/etc/apt/sources.list.d/hydrapp-example-full-main.list <<EOA
-deb [signed-by=/usr/local/share/keyrings/hydrapp-example-full-main.gpg] https://pojntfx.github.io/hydrapp/hydrapp-example-full/deb/debian/sid/x86_64/main/ sid main
-deb-src [signed-by=/usr/local/share/keyrings/hydrapp-example-full-main.gpg] https://pojntfx.github.io/hydrapp/hydrapp-example-full/deb/debian/sid/x86_64/main/ sid main
+cat >/etc/apt/sources.list.d/{{ $appID }}.list <<EOA
+deb [signed-by=/usr/local/share/keyrings/{{ $appID }}.gpg] {{ .URL }} {{ .DistroName }} main
+deb-src [signed-by=/usr/local/share/keyrings/{{ $appID }}.gpg] {{ .URL }} {{ .DistroName }} main
 EOA
 
 apt update
 
-apt install -y 'com.pojtinger.felicitas.hydrapp.example.full.main'
+apt install -y '{{ $appID }}'
 EOT
 ```
 
@@ -37,23 +39,25 @@ To install the source package, build the binary package locally and install it, 
 ```shell
 pkexec sudo bash - <<'EOT'
 mkdir -p /usr/local/share/keyrings
-curl -Lo https://pojntfx.github.io/hydrapp/hydrapp-example-full/deb/debian/sid/x86_64/main/repo.asc | gpg --dearmor --output /usr/local/share/keyrings/hydrapp-example-full-main.gpg -
+curl -Lo {{ .URL }}repo.asc | gpg --dearmor --output /usr/local/share/keyrings/{{ $appID }}.gpg -
 
-cat >/etc/apt/sources.list.d/hydrapp-example-full-main.list <<EOA
-deb [signed-by=/usr/local/share/keyrings/hydrapp-example-full-main.gpg] https://pojntfx.github.io/hydrapp/hydrapp-example-full/deb/debian/sid/x86_64/main/ sid main
-deb-src [signed-by=/usr/local/share/keyrings/hydrapp-example-full-main.gpg] https://pojntfx.github.io/hydrapp/hydrapp-example-full/deb/debian/sid/x86_64/main/ sid main
+cat >/etc/apt/sources.list.d/{{ $appID }}.list <<EOA
+deb [signed-by=/usr/local/share/keyrings/{{ $appID }}.gpg] {{ .URL }} {{ .DistroName }} main
+deb-src [signed-by=/usr/local/share/keyrings/{{ $appID }}.gpg] {{ .URL }} {{ .DistroName }} main
 EOA
 
 apt update
 
 apt install -y dpkg-dev
-apt build-dep -y 'com.pojtinger.felicitas.hydrapp.example.full.main'
-apt source -y --build 'com.pojtinger.felicitas.hydrapp.example.full.main'
-apt install -y ./com.pojtinger.felicitas.hydrapp.example.full.main_*.deb
+apt build-dep -y '{{ $appID }}'
+apt source -y --build '{{ $appID }}'
+apt install -y ./{{ $appID }}_*.deb
 EOT
 ```
 
 {{ $appName }} should now be installed and receive updates automatically.
+
+{{ end }}
 
 ## macOS
 
@@ -88,14 +92,16 @@ flatpak install -y '{{ $appID }}'
 
 {{ end }}
 
-## Fedora 36 on `amd64`
+{{ range .RPMs }}
+
+## {{ Titlecase .DistroName }} {{ Titlecase .DistroVersion }} on `{{ .Architecture }}`
 
 To install the prebuilt binary package, run the following:
 
 ```shell
 pkexec sudo bash - <<'EOT'
-dnf config-manager --add-repo 'https://pojntfx.github.io/hydrapp/hydrapp-example-full/rpm/fedora/36/x86_64/main/repodata/hydrapp.repo'
-dnf install -y 'com.pojtinger.felicitas.hydrapp.example.full.main'
+dnf config-manager --add-repo '{{ .URL }}'
+dnf install -y '{{ $appID }}'
 EOT
 ```
 
@@ -103,18 +109,20 @@ To install the source package, build the binary package locally and install it, 
 
 ```shell
 pkexec sudo bash - <<'EOT'
-dnf config-manager --add-repo 'https://pojntfx.github.io/hydrapp/hydrapp-example-full/rpm/fedora/36/x86_64/main/repodata/hydrapp.repo'
+dnf config-manager --add-repo '{{ .URL }}'
 
 dnf install -y rpm-build
-dnf download --source -y 'com.pojtinger.felicitas.hydrapp.example.full.main'
-dnf builddep -y com.pojtinger.felicitas.hydrapp.example.full.main-*.rpm
-rpmbuild --rebuild com.pojtinger.felicitas.hydrapp.example.full.main-*.rpm
-dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/com.pojtinger.felicitas.hydrapp.example.full.main-*.rpm
+dnf download --source -y '{{ $appID }}'
+dnf builddep -y {{ $appID }}-*.rpm
+rpmbuild --rebuild {{ $appID }}-*.rpm
+dnf install -y ~/rpmbuild/RPMS/"$(uname -m)"/{{ $appID }}-*.rpm
 EOT
 ```
 
 {{ $appName }} should now be installed and receive updates automatically.
 
+{{ end }}
+
 ## Other Platforms
 
-{{ $appName }} is also available as a single static binary. To install it, download the binary for your operating system and processor architecture from [https://pojntfx.github.io/hydrapp/hydrapp-example-full/binaries/main/](https://pojntfx.github.io/hydrapp/hydrapp-example-full/binaries/main/). They include a self-update mechanism, so you should be receiving updates automatically.
+{{ $appName }} is also available as a single static binary. To install it, download the binary for your operating system and processor architecture from [{{ .BinariesURL }}]({{ .BinariesURL }}). They include a self-update mechanism, so you should be receiving updates automatically.
