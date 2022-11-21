@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"context"
 	"encoding/json"
 	"io/ioutil"
 	"net"
@@ -13,7 +14,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 
-func StartServer(addr string, localhostize bool) (string, func() error, error) {
+func StartServer(ctx context.Context, addr string, localhostize bool) (string, func() error, error) {
 	if strings.TrimSpace(addr) == "" {
 		addr = ":0"
 	}

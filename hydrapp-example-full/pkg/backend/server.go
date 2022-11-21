@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"encoding/json"
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -11,109 +11,93 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/rpc"
+	"github.com/pojntfx/dudirekta/pkg/rpc"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
+	"nhooyr.io/websocket"
 )
 
 type exampleStruct struct {
 	Name string `json:"name"`
 }
 
-func StartServer(addr string, heartbeat time.Duration, localhostize bool) (string, func() error, error) {
+type local struct {
+	Peers func() map[string]remote
+}
+
+func (l *local) ExamplePrintString(ctx context.Context, msg string) error {
+	fmt.Println(msg)
+
+	return nil
+}
+
+func (l *local) ExamplePrintStruct(ctx context.Context, input exampleStruct) error {
+	fmt.Println(input)
+
+	return nil
+}
+
+func (l *local) ExampleReturnError(ctx context.Context) error {
+	return errors.New("test error")
+}
+
+func (l *local) ExampleReturnString(ctx context.Context) (string, error) {
+	return "Test string", nil
+}
+
+func (l *local) ExampleReturnStruct(ctx context.Context) (exampleStruct, error) {
+	return exampleStruct{
+		Name: "Alice",
+	}, nil
+}
+
+func (l *local) ExampleReturnStringAndError(ctx context.Context) (string, error) {
+	return "Test string", errors.New("test error")
+}
+
+func (l *local) ExampleNotification(ctx context.Context) error {
+	for peerID, peer := range l.Peers() {
+		if peerID == rpc.GetRemoteID(ctx) {
+			ticker := time.NewTicker(time.Second)
+			i := 0
+			for {
+				if i >= 3 {
+					ticker.Stop()
+
+					return nil
+				}
+
+				<-ticker.C
+
+				if err := peer.ExampleNotification(ctx, time.Now().Format(time.RFC3339)); err != nil {
+					return err
+				}
+
+				i++
+			}
+		}
+	}
+
+	return nil
+}
+
+type remote struct {
+	ExampleNotification func(ctx context.Context, msg string) error
+}
+
+func StartServer(ctx context.Context, addr string, heartbeat time.Duration, localhostize bool) (string, func() error, error) {
 	if strings.TrimSpace(addr) == "" {
 		addr = ":0"
 	}
 
-	registry := rpc.NewRegistry(heartbeat, &rpc.Callbacks{
-		OnReceivePong: func() {
-			log.Println("Received pong from client")
-		},
-		OnSendingPing: func() {
-			log.Println("Sending ping to client")
-		},
-		OnFunctionCall: func(requestID, functionName string, functionArgs []json.RawMessage) {
-			log.Printf("Got request ID %v for function %v with args %v", requestID, functionName, functionArgs)
-		},
-	})
+	l := &local{}
+	registry := rpc.NewRegistry(
+		l,
+		remote{},
 
-	if err := registry.Bind("examplePrintString", func(msg string) {
-		fmt.Println(msg)
-	}); err != nil {
-		panic(err)
-	}
-
-	if err := registry.Bind("examplePrintStruct", func(
-		input exampleStruct,
-	) {
-		fmt.Println(input)
-	}); err != nil {
-		panic(err)
-	}
-
-	if err := registry.Bind("exampleReturnError", func() error {
-		return errors.New("test error")
-	}); err != nil {
-		panic(err)
-	}
-
-	if err := registry.Bind("exampleReturnString", func() string {
-		return "Test string"
-	}); err != nil {
-		panic(err)
-	}
-
-	if err := registry.Bind("exampleReturnStruct", func() exampleStruct {
-		return exampleStruct{
-			Name: "Alice",
-		}
-	}); err != nil {
-		panic(err)
-	}
-
-	if err := registry.Bind("exampleReturnStringAndError", func() (string, error) {
-		return "Test string", errors.New("test error")
-	}); err != nil {
-		panic(err)
-	}
-
-	if err := registry.Bind("exampleReturnStringAndNil", func() (string, error) {
-		return "Test string", nil
-	}); err != nil {
-		panic(err)
-	}
-
-	var notificationChan chan string
-	if err := registry.Bind("exampleNotification", func() (string, error) {
-		if notificationChan == nil {
-			notificationChan = make(chan string)
-
-			ticker := time.NewTicker(time.Second * 2)
-			i := 0
-			go func() {
-				for {
-					<-ticker.C
-
-					if i >= 3 {
-						notificationChan <- ""
-
-						ticker.Stop()
-
-						notificationChan = nil
-
-						return
-					}
-
-					notificationChan <- "Go server time: " + time.Now().Format(time.RFC3339)
-
-					i++
-				}
-			}()
-		}
-
-		return <-notificationChan, nil
-	}); err != nil {
-		panic(err)
-	}
+		time.Second*10,
+		ctx,
+	)
+	l.Peers = registry.Peers
 
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
@@ -141,7 +125,39 @@ func StartServer(addr string, heartbeat time.Duration, localhostize bool) (strin
 
 			switch r.Method {
 			case http.MethodGet:
-				if err := registry.HandlerFunc(w, r); err != nil {
+				c, err := websocket.Accept(w, r, &websocket.AcceptOptions{
+					OriginPatterns: []string{"*"},
+				})
+				if err != nil {
+					panic(err)
+				}
+
+				pings := time.NewTicker(time.Second / 2)
+				defer pings.Stop()
+
+				errs := make(chan error)
+				go func() {
+					for range pings.C {
+						if err := c.Ping(ctx); err != nil {
+							errs <- err
+
+							return
+						}
+					}
+				}()
+
+				conn := websocket.NetConn(ctx, c, websocket.MessageText)
+				defer conn.Close()
+
+				go func() {
+					if err := registry.Link(conn); err != nil {
+						errs <- err
+
+						return
+					}
+				}()
+
+				if err := <-errs; err != nil {
 					panic(err)
 				}
 			default:

@@ -4,6 +4,7 @@ package frontend
 //go:generate npm run build
 
 import (
+	"context"
 	"embed"
 	"io/fs"
 	"net"
@@ -19,7 +20,7 @@ var (
 	UI embed.FS
 )
 
-func StartServer(addr string, backendURL string, localhostize bool) (string, func() error, error) {
+func StartServer(context context.Context, addr string, backendURL string, localhostize bool) (string, func() error, error) {
 	if strings.TrimSpace(addr) == "" {
 		addr = ":0"
 	}

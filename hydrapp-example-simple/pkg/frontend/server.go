@@ -4,6 +4,7 @@ package frontend
 //go:generate cp index.html out/index.html
 
 import (
+	"context"
 	"embed"
 	"io/fs"
 	"net"
@@ -19,7 +20,7 @@ var (
 	UI embed.FS
 )
 
-func StartServer(addr string, backendURL string, localhostize bool) (string, func() error, error) {
+func StartServer(ctx context.Context, addr string, backendURL string, localhostize bool) (string, func() error, error) {
 	if strings.TrimSpace(addr) == "" {
 		addr = ":0"
 	}
