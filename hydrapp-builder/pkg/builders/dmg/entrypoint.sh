@@ -53,10 +53,10 @@ for ARCH in ${ARCHITECTURES}; do
     export DEBARCH="aarch64"
   fi
 
-  export CC="${DEBARCH}-apple-darwin20.4-cc"
-  export CXX="${DEBARCH}-apple-darwin20.4-c++"
-  export PKGCONFIG="${DEBARCH}-apple-darwin20.4-pkg-config"
-  export PKG_CONFIG="${DEBARCH}-apple-darwin20.4-pkg-config"
+  export CC="$(find /osxcross/bin/${DEBARCH}-apple-darwin*-cc)"
+  export CXX="$(find /osxcross/bin/${DEBARCH}-apple-darwin*-c++)"
+  export PKGCONFIG="$(find /osxcross/bin/${DEBARCH}-apple-darwin*-pkg-config)"
+  export PKG_CONFIG="$(find /osxcross/bin/${DEBARCH}-apple-darwin*-pkg-config)"
 
   go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.BranchID=${BRANCH_ID}" -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
   rcodesign sign "/tmp/${APP_ID}.${GOOS}-${DEBARCH}"
