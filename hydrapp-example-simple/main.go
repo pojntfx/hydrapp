@@ -43,7 +43,7 @@ func main() {
 	)
 
 	// Start the backend
-	backendURL, stopBackend, err := backend.StartServer(os.Getenv(utils.EnvBackendLaddr), true)
+	backendURL, stopBackend, err := backend.StartServer(ctx, os.Getenv(utils.EnvBackendLaddr), true)
 	if err != nil {
 		utils.HandlePanic(cfg.App.Name, "could not start backend", err)
 	}
@@ -52,7 +52,7 @@ func main() {
 	log.Println("Backend URL:", backendURL)
 
 	// Start the frontend
-	frontendURL, stopFrontend, err := frontend.StartServer(os.Getenv(utils.EnvFrontendLaddr), backendURL, true)
+	frontendURL, stopFrontend, err := frontend.StartServer(ctx, os.Getenv(utils.EnvFrontendLaddr), backendURL, true)
 	if err != nil {
 		utils.HandlePanic(cfg.App.Name, "could not start frontend", err)
 	}
