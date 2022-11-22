@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { bind } from "./bind";
+import { bind } from "@pojntfx/dudirekta";
 
 export default () => {
   const [remote, setRemote] = useState({
