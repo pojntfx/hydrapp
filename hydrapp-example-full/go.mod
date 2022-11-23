@@ -3,9 +3,9 @@ module github.com/pojntfx/hydrapp/hydrapp-example-full
 go 1.18
 
 require (
-	github.com/pojntfx/dudirekta v0.1.0
-	github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221107183502-9265d8c95df4
-	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221107183502-9265d8c95df4
+	github.com/pojntfx/dudirekta v0.2.0
+	github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221122235507-eed5a50c9caf
+	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221122235507-eed5a50c9caf
 	nhooyr.io/websocket v1.8.7
 )
 
@@ -17,10 +17,11 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/josephspurrier/goversioninfo v1.4.0 // indirect
 	github.com/klauspost/compress v1.15.12 // indirect
-	github.com/ncruces/zenity v0.9.2 // indirect
+	github.com/ncruces/zenity v0.9.3 // indirect
 	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
 	github.com/teivah/broadcast v0.1.0 // indirect
 	golang.org/x/image v0.1.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

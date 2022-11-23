@@ -3,8 +3,8 @@ module github.com/pojntfx/hydrapp/hydrapp-example-simple
 go 1.18
 
 require (
-	github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221107183502-9265d8c95df4
-	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221107183502-9265d8c95df4
+	github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221122235507-eed5a50c9caf
+	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221122235507-eed5a50c9caf
 )
 
 require (
@@ -13,9 +13,10 @@ require (
 	github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/josephspurrier/goversioninfo v1.4.0 // indirect
-	github.com/ncruces/zenity v0.9.2 // indirect
+	github.com/ncruces/zenity v0.9.3 // indirect
 	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
 	golang.org/x/image v0.1.0 // indirect
-	golang.org/x/sys v0.1.0 // indirect
+	golang.org/x/sys v0.2.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -4,6 +4,7 @@ use (
 	.
 	./hydrapp-builder
 	./hydrapp-example-full
+	./hydrapp-example-forms
 	./hydrapp-example-simple
 	./hydrapp-utils
 )
