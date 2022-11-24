@@ -6,5 +6,6 @@ use (
 	./hydrapp-example-full
 	./hydrapp-example-forms
 	./hydrapp-example-simple
+	./hydrapp-generator
 	./hydrapp-utils
 )
