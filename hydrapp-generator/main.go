@@ -4,11 +4,15 @@ import (
 	"flag"
 	"io/ioutil"
 	"os"
+	"path"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 	"gopkg.in/yaml.v3"
 )
 
@@ -51,12 +55,12 @@ func main() {
 	releaseAuthor := flag.String("release-author", "Jean Doe", "Release author name")
 	releaseEmail := flag.String("release-email", "jean.doe@example.com", "Release author email")
 
-	// debArchitectures := flag.String("deb-architectures", "amd64", "DEB architectures to build for (comma-seperated list of GOARCH values)")
-	// flatpakArchitectures := flag.String("flatpak-architectures", "amd64", "Flatpak architectures to build for (comma-seperated list of GOARCH values)")
-	// msiArchitectures := flag.String("msi-architectures", "amd64", "MSI architectures to build for (comma-seperated list of GOARCH values)")
-	// rpmArchitectures := flag.String("rpm-architectures", "amd64", "RPM architectures to build for (comma-seperated list of GOARCH values)")
+	debArchitectures := flag.String("deb-architectures", "amd64", "DEB architectures to build for (comma-seperated list of GOARCH values)")
+	flatpakArchitectures := flag.String("flatpak-architectures", "amd64", "Flatpak architectures to build for (comma-seperated list of GOARCH values)")
+	msiArchitectures := flag.String("msi-architectures", "amd64", "MSI architectures to build for (comma-seperated list of GOARCH values)")
+	rpmArchitectures := flag.String("rpm-architectures", "amd64", "RPM architectures to build for (comma-seperated list of GOARCH values)")
 
-	// binariesExclude := flag.String("binaries-exclude", "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)", "Regex of binaries to exclude from compilation")
+	binariesExclude := flag.String("binaries-exclude", "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)", "Regex of binaries to exclude from compilation")
 
 	dir := flag.String("dir", "myapp", "Directory to write the app to")
 
@@ -91,6 +95,71 @@ func main() {
 			Author:      *releaseAuthor,
 			Email:       *releaseEmail,
 		},
+	}
+
+	cfg.APK = config.APK{
+		Path: "apk",
+	}
+
+	debs := []config.DEB{}
+	for _, arch := range strings.Split(*debArchitectures, ",") {
+		debs = append(debs, config.DEB{
+			Path:            path.Join("deb", "debian", "sid", utils.GetArchIdentifier(arch)),
+			OS:              "debian",
+			Distro:          "sid",
+			Mirrorsite:      "http://http.us.debian.org/debian",
+			Components:      []string{"main", "contrib"},
+			Debootstrapopts: "",
+			Architecture:    arch,
+			Packages:        []rpm.Package{},
+		})
+	}
+	cfg.DEB = debs
+
+	cfg.DMG = config.DMG{
+		Path:     "dmg",
+		Packages: []string{},
+	}
+
+	flatpaks := []config.Flatpak{}
+	for _, arch := range strings.Split(*flatpakArchitectures, ",") {
+		flatpaks = append(flatpaks, config.Flatpak{
+			Path:         path.Join("flatpak", utils.GetArchIdentifier(arch)),
+			Architecture: arch,
+		})
+	}
+	cfg.Flatpak = flatpaks
+
+	msis := []config.MSI{}
+	for _, arch := range strings.Split(*msiArchitectures, ",") {
+		msis = append(msis, config.MSI{
+			Path:         path.Join("msi", utils.GetArchIdentifier(arch)),
+			Architecture: arch,
+			Include:      `^\\b$`,
+			Packages:     []string{},
+		})
+	}
+	cfg.MSI = msis
+
+	rpms := []config.RPM{}
+	for _, arch := range strings.Split(*rpmArchitectures, ",") {
+		rpms = append(rpms, config.RPM{
+			Path:         path.Join("rpm", "fedora", "37", utils.GetArchIdentifier(arch)),
+			Trailer:      "1.fc37",
+			Distro:       "fedora-37",
+			Architecture: arch,
+			Packages:     []rpm.Package{},
+		})
+	}
+	cfg.RPM = rpms
+
+	cfg.Binaries = config.Binaries{
+		Path:     "binaries",
+		Exclude:  *binariesExclude,
+		Packages: []string{},
+	}
+	cfg.Docs = config.Docs{
+		Path: "docs",
 	}
 
 	b, err := yaml.Marshal(cfg)

@@ -60,22 +60,6 @@ func getBinIdentifier(goOS, goArch string) string {
 	return ""
 }
 
-// See https://github.com/pojntfx/bagop/blob/main/main.go#L45
-func GetArchIdentifier(goArch string) string {
-	switch goArch {
-	case "386":
-		return "i686"
-	case "amd64":
-		return "x86_64"
-	case "arm":
-		return "armv7l" // Best effort, could also be `armv6l` etc. depending on `GOARCH`
-	case "arm64":
-		return "aarch64"
-	default:
-		return goArch
-	}
-}
-
 func Update(
 	ctx context.Context,
 
@@ -139,10 +123,10 @@ func Update(
 		return
 	}
 
-	binary := builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
+	binary := builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
 	switch runtime.GOOS {
 	case goosWindows:
-		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + GetArchIdentifier(runtime.GOARCH) + ".msi"
+		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + ".msi"
 	case goosMacOS:
 		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + ".dmg"
 	}
