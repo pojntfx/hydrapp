@@ -59,9 +59,9 @@ msi:
     include: "^\\b$"
     packages: []
 rpm:
-  - path: rpm/fedora/36/x86_64
-    trailer: 1.fc36
-    distro: fedora-36
+  - path: rpm/fedora/37/x86_64
+    trailer: 1.fc37
+    distro: fedora-37
     architecture: amd64
     packages: []
 binaries:

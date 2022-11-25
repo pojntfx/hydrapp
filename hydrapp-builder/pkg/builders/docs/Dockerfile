@@ -1,4 +1,4 @@
-FROM fedora:36
+FROM fedora:37
 
 # Install native dependencies
 RUN dnf install -y pandoc
