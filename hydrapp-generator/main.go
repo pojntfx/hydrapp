@@ -7,7 +7,10 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"text/template"
 	"time"
+
+	_ "embed"
 
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
@@ -34,6 +37,18 @@ On Debian systems, the complete text of the GNU General
 Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".`
 )
 
+var (
+	//go:embed icon.png.tpl
+	iconTpl []byte
+
+	//go:embed go.mod.tpl
+	goModTpl string
+)
+
+type goModData struct {
+	GoMod string
+}
+
 func main() {
 	appID := flag.String("app-id", "com.github.example.myapp", "App ID in reverse domain notation")
 	appName := flag.String("app-name", "My App", "App name")
@@ -48,6 +63,7 @@ func main() {
 	goGenerate := flag.String("go-generate", "go generate ./...", "Go generate command to run")
 	goTests := flag.String("go-tests", "go test ./...", "Go test command to run")
 	goImg := flag.String("go-img", "ghcr.io/pojntfx/hydrapp-build-tests:main", "Go test OCI image to use")
+	goMod := flag.String("go-mod", "github.com/example/myapp", "Go module name")
 
 	licenseSPDX := flag.String("license-spdx", "AGPL-3.0", "License SPDX identifier (see https://spdx.org/licenses/)")
 	licenseText := flag.String("license-text", agplv3LicenseText, "License summary text")
@@ -66,112 +82,139 @@ func main() {
 
 	flag.Parse()
 
-	cfg := config.Root{}
-	cfg.App = config.App{
-		ID:          *appID,
-		Name:        *appName,
-		Summary:     *appSummary,
-		Description: *appDescription,
-		Homepage:    *appHomepage,
-		Git:         *appGit,
-		BaseURL:     *appBaseurl,
-	}
-	cfg.Go = config.Go{
-		Main:     *goMain,
-		Flags:    *goFlags,
-		Generate: *goGenerate,
-		Tests:    *goTests,
-		Image:    *goImg,
-	}
-	cfg.License = config.License{
-		SPDX: *licenseSPDX,
-		Text: *licenseText,
-	}
-	cfg.Releases = []renderers.Release{
-		{
-			Version:     "0.0.1",
-			Date:        time.Now(),
-			Description: "Initial release",
-			Author:      *releaseAuthor,
-			Email:       *releaseEmail,
-		},
+	{
+		cfg := config.Root{}
+		cfg.App = config.App{
+			ID:          *appID,
+			Name:        *appName,
+			Summary:     *appSummary,
+			Description: *appDescription,
+			Homepage:    *appHomepage,
+			Git:         *appGit,
+			BaseURL:     *appBaseurl,
+		}
+		cfg.Go = config.Go{
+			Main:     *goMain,
+			Flags:    *goFlags,
+			Generate: *goGenerate,
+			Tests:    *goTests,
+			Image:    *goImg,
+		}
+		cfg.License = config.License{
+			SPDX: *licenseSPDX,
+			Text: *licenseText,
+		}
+		cfg.Releases = []renderers.Release{
+			{
+				Version:     "0.0.1",
+				Date:        time.Now(),
+				Description: "Initial release",
+				Author:      *releaseAuthor,
+				Email:       *releaseEmail,
+			},
+		}
+
+		cfg.APK = config.APK{
+			Path: "apk",
+		}
+
+		debs := []config.DEB{}
+		for _, arch := range strings.Split(*debArchitectures, ",") {
+			debs = append(debs, config.DEB{
+				Path:            path.Join("deb", "debian", "sid", utils.GetArchIdentifier(arch)),
+				OS:              "debian",
+				Distro:          "sid",
+				Mirrorsite:      "http://http.us.debian.org/debian",
+				Components:      []string{"main", "contrib"},
+				Debootstrapopts: "",
+				Architecture:    arch,
+				Packages:        []rpm.Package{},
+			})
+		}
+		cfg.DEB = debs
+
+		cfg.DMG = config.DMG{
+			Path:     "dmg",
+			Packages: []string{},
+		}
+
+		flatpaks := []config.Flatpak{}
+		for _, arch := range strings.Split(*flatpakArchitectures, ",") {
+			flatpaks = append(flatpaks, config.Flatpak{
+				Path:         path.Join("flatpak", utils.GetArchIdentifier(arch)),
+				Architecture: arch,
+			})
+		}
+		cfg.Flatpak = flatpaks
+
+		msis := []config.MSI{}
+		for _, arch := range strings.Split(*msiArchitectures, ",") {
+			msis = append(msis, config.MSI{
+				Path:         path.Join("msi", utils.GetArchIdentifier(arch)),
+				Architecture: arch,
+				Include:      `^\\b$`,
+				Packages:     []string{},
+			})
+		}
+		cfg.MSI = msis
+
+		rpms := []config.RPM{}
+		for _, arch := range strings.Split(*rpmArchitectures, ",") {
+			rpms = append(rpms, config.RPM{
+				Path:         path.Join("rpm", "fedora", "37", utils.GetArchIdentifier(arch)),
+				Trailer:      "1.fc37",
+				Distro:       "fedora-37",
+				Architecture: arch,
+				Packages:     []rpm.Package{},
+			})
+		}
+		cfg.RPM = rpms
+
+		cfg.Binaries = config.Binaries{
+			Path:     "binaries",
+			Exclude:  *binariesExclude,
+			Packages: []string{},
+		}
+		cfg.Docs = config.Docs{
+			Path: "docs",
+		}
+
+		b, err := yaml.Marshal(cfg)
+		if err != nil {
+			panic(err)
+		}
+
+		if err := os.MkdirAll(*dir, os.ModePerm); err != nil {
+			panic(err)
+		}
+
+		if err := ioutil.WriteFile(filepath.Join(*dir, "hydrapp.yaml"), b, os.ModePerm); err != nil {
+			panic(err)
+		}
 	}
 
-	cfg.APK = config.APK{
-		Path: "apk",
+	{
+		if err := ioutil.WriteFile(filepath.Join(*dir, "icon.png"), iconTpl, os.ModePerm); err != nil {
+			panic(err)
+		}
 	}
 
-	debs := []config.DEB{}
-	for _, arch := range strings.Split(*debArchitectures, ",") {
-		debs = append(debs, config.DEB{
-			Path:            path.Join("deb", "debian", "sid", utils.GetArchIdentifier(arch)),
-			OS:              "debian",
-			Distro:          "sid",
-			Mirrorsite:      "http://http.us.debian.org/debian",
-			Components:      []string{"main", "contrib"},
-			Debootstrapopts: "",
-			Architecture:    arch,
-			Packages:        []rpm.Package{},
-		})
-	}
-	cfg.DEB = debs
+	{
+		tpl, err := template.New("go.mod").Parse(goModTpl)
+		if err != nil {
+			panic(err)
+		}
 
-	cfg.DMG = config.DMG{
-		Path:     "dmg",
-		Packages: []string{},
-	}
+		dst, err := os.OpenFile(filepath.Join(*dir, tpl.Name()), os.O_WRONLY|os.O_CREATE, os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+		defer dst.Close()
 
-	flatpaks := []config.Flatpak{}
-	for _, arch := range strings.Split(*flatpakArchitectures, ",") {
-		flatpaks = append(flatpaks, config.Flatpak{
-			Path:         path.Join("flatpak", utils.GetArchIdentifier(arch)),
-			Architecture: arch,
-		})
-	}
-	cfg.Flatpak = flatpaks
-
-	msis := []config.MSI{}
-	for _, arch := range strings.Split(*msiArchitectures, ",") {
-		msis = append(msis, config.MSI{
-			Path:         path.Join("msi", utils.GetArchIdentifier(arch)),
-			Architecture: arch,
-			Include:      `^\\b$`,
-			Packages:     []string{},
-		})
-	}
-	cfg.MSI = msis
-
-	rpms := []config.RPM{}
-	for _, arch := range strings.Split(*rpmArchitectures, ",") {
-		rpms = append(rpms, config.RPM{
-			Path:         path.Join("rpm", "fedora", "37", utils.GetArchIdentifier(arch)),
-			Trailer:      "1.fc37",
-			Distro:       "fedora-37",
-			Architecture: arch,
-			Packages:     []rpm.Package{},
-		})
-	}
-	cfg.RPM = rpms
-
-	cfg.Binaries = config.Binaries{
-		Path:     "binaries",
-		Exclude:  *binariesExclude,
-		Packages: []string{},
-	}
-	cfg.Docs = config.Docs{
-		Path: "docs",
-	}
-
-	b, err := yaml.Marshal(cfg)
-	if err != nil {
-		panic(err)
-	}
-
-	if err := os.MkdirAll(*dir, os.ModePerm); err != nil {
-		panic(err)
-	}
-
-	if err := ioutil.WriteFile(filepath.Join(*dir, "hydrapp.yaml"), b, os.ModePerm); err != nil {
-		panic(err)
+		if err := tpl.Execute(dst, goModData{
+			GoMod: *goMod,
+		}); err != nil {
+			panic(err)
+		}
 	}
 }
