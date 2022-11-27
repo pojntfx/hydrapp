@@ -43,10 +43,53 @@ var (
 
 	//go:embed go.mod.tpl
 	goModTpl string
+
+	//go:embed main.go.tpl
+	goMainTpl string
+
+	//go:embed android.go.tpl
+	androidTpl string
+
+	//go:embed .gitignore.tpl
+	gitignoreTpl string
+
+	//go:embed backend.go.tpl
+	backendTpl string
+
+	//go:embed frontend.go.tpl
+	frontendTpl string
 )
 
 type goModData struct {
 	GoMod string
+}
+
+type goMainData struct {
+	GoMod string
+}
+
+type androidData struct {
+	GoMod     string
+	JNIExport string
+}
+
+func renderTemplate(path string, tpl string, data any) error {
+	t, err := template.New(path).Parse(tpl)
+	if err != nil {
+		return err
+	}
+
+	if err := os.MkdirAll(filepath.Dir(t.Name()), os.ModePerm); err != nil {
+		return err
+	}
+
+	dst, err := os.OpenFile(t.Name(), os.O_WRONLY|os.O_CREATE, os.ModePerm)
+	if err != nil {
+		return err
+	}
+	defer dst.Close()
+
+	return t.Execute(dst, data)
 }
 
 func main() {
@@ -200,20 +243,68 @@ func main() {
 	}
 
 	{
-		tpl, err := template.New("go.mod").Parse(goModTpl)
-		if err != nil {
+		if err := renderTemplate(
+			filepath.Join(*dir, "go.mod"),
+			goModTpl,
+			goModData{
+				GoMod: *goMod,
+			},
+		); err != nil {
 			panic(err)
 		}
+	}
 
-		dst, err := os.OpenFile(filepath.Join(*dir, tpl.Name()), os.O_WRONLY|os.O_CREATE, os.ModePerm)
-		if err != nil {
+	{
+		if err := renderTemplate(
+			filepath.Join(*dir, "main.go"),
+			goMainTpl,
+			goMainData{
+				GoMod: *goMod,
+			},
+		); err != nil {
 			panic(err)
 		}
-		defer dst.Close()
+	}
 
-		if err := tpl.Execute(dst, goModData{
-			GoMod: *goMod,
-		}); err != nil {
+	{
+		if err := renderTemplate(
+			filepath.Join(*dir, "android.go"),
+			androidTpl,
+			androidData{
+				GoMod:     *goMod,
+				JNIExport: strings.Replace(*appID, ".", "_", -1),
+			},
+		); err != nil {
+			panic(err)
+		}
+	}
+
+	{
+		if err := renderTemplate(
+			filepath.Join(*dir, ".gitignore"),
+			gitignoreTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+	}
+
+	{
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "backend", "server.go"),
+			backendTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+	}
+
+	{
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "server.go"),
+			frontendTpl,
+			nil,
+		); err != nil {
 			panic(err)
 		}
 	}
