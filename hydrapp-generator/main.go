@@ -4,6 +4,7 @@ import (
 	"flag"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -58,6 +59,21 @@ var (
 
 	//go:embed frontend.go.tpl
 	frontendTpl string
+
+	//go:embed App.tsx.tpl
+	appTSXTpl string
+
+	//go:embed main.tsx.tpl
+	mainTSXTpl string
+
+	//go:embed index.html.tpl
+	indexHTMLTpl string
+
+	//go:embed package.json.tpl
+	packageJSONTpl string
+
+	//go:embed tsconfig.json.tpl
+	tsconfigJSONTpl string
 )
 
 type goModData struct {
@@ -71,6 +87,22 @@ type goMainData struct {
 type androidData struct {
 	GoMod     string
 	JNIExport string
+}
+
+type appTSXData struct {
+	AppName string
+}
+
+type indexHTMLData struct {
+	AppName string
+}
+
+type packageJSONData struct {
+	AppID          string
+	AppDescription string
+	ReleaseAuthor  string
+	ReleaseEmail   string
+	LicenseSPDX    string
 }
 
 func renderTemplate(path string, tpl string, data any) error {
@@ -236,75 +268,135 @@ func main() {
 		}
 	}
 
+	if err := ioutil.WriteFile(filepath.Join(*dir, "icon.png"), iconTpl, os.ModePerm); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "go.mod"),
+		goModTpl,
+		goModData{
+			GoMod: *goMod,
+		},
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "main.go"),
+		goMainTpl,
+		goMainData{
+			GoMod: *goMod,
+		},
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "android.go"),
+		androidTpl,
+		androidData{
+			GoMod:     *goMod,
+			JNIExport: strings.Replace(*appID, ".", "_", -1),
+		},
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, ".gitignore"),
+		gitignoreTpl,
+		nil,
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "pkg", "backend", "server.go"),
+		backendTpl,
+		nil,
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "pkg", "frontend", "server.go"),
+		frontendTpl,
+		nil,
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "pkg", "frontend", "src", "App.tsx"),
+		appTSXTpl,
+		appTSXData{
+			AppName: *appName,
+		},
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "pkg", "frontend", "src", "main.tsx"),
+		mainTSXTpl,
+		nil,
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "pkg", "frontend", "index.html"),
+		indexHTMLTpl,
+		indexHTMLData{
+			AppName: *appName,
+		},
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "pkg", "frontend", "package.json"),
+		packageJSONTpl,
+		packageJSONData{
+			AppID:          *appID,
+			AppDescription: *appDescription,
+			ReleaseAuthor:  *releaseAuthor,
+			ReleaseEmail:   *releaseEmail,
+			LicenseSPDX:    *licenseSPDX,
+		},
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(*dir, "pkg", "frontend", "tsconfig.json"),
+		tsconfigJSONTpl,
+		nil,
+	); err != nil {
+		panic(err)
+	}
+
 	{
-		if err := ioutil.WriteFile(filepath.Join(*dir, "icon.png"), iconTpl, os.ModePerm); err != nil {
+		cmd := exec.Command("go", "get", "./...")
+		cmd.Dir = *dir
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		if err := cmd.Run(); err != nil {
 			panic(err)
 		}
 	}
 
 	{
-		if err := renderTemplate(
-			filepath.Join(*dir, "go.mod"),
-			goModTpl,
-			goModData{
-				GoMod: *goMod,
-			},
-		); err != nil {
-			panic(err)
-		}
-	}
+		cmd := exec.Command("go", "generate", "./...")
+		cmd.Dir = *dir
+		cmd.Stdin = os.Stdin
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
 
-	{
-		if err := renderTemplate(
-			filepath.Join(*dir, "main.go"),
-			goMainTpl,
-			goMainData{
-				GoMod: *goMod,
-			},
-		); err != nil {
-			panic(err)
-		}
-	}
-
-	{
-		if err := renderTemplate(
-			filepath.Join(*dir, "android.go"),
-			androidTpl,
-			androidData{
-				GoMod:     *goMod,
-				JNIExport: strings.Replace(*appID, ".", "_", -1),
-			},
-		); err != nil {
-			panic(err)
-		}
-	}
-
-	{
-		if err := renderTemplate(
-			filepath.Join(*dir, ".gitignore"),
-			gitignoreTpl,
-			nil,
-		); err != nil {
-			panic(err)
-		}
-	}
-
-	{
-		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "backend", "server.go"),
-			backendTpl,
-			nil,
-		); err != nil {
-			panic(err)
-		}
-	}
-
-	{
-		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "server.go"),
-			frontendTpl,
-			nil,
-		); err != nil {
+		if err := cmd.Run(); err != nil {
 			panic(err)
 		}
 	}
