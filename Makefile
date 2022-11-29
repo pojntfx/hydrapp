@@ -5,7 +5,7 @@ OUTPUT_DIR ?= out
 DST ?=
 
 # Private variables
-obj = hydrapp-builder hydrapp-example-dudirekta hydrapp-example-rest
+obj = hydrapp-builder hydrapp-example-rest hydrapp-example-forms hydrapp-example-dudirekta
 all: $(addprefix build/,$(obj))
 
 # Build

@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/docker/docker v20.10.21+incompatible
 	github.com/otiai10/copy v1.9.0
-	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221122235507-eed5a50c9caf
+	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221129230518-6f0277614a3c
 	golang.org/x/text v0.4.0
 	gopkg.in/yaml.v3 v3.0.1
 )

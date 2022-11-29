@@ -13,7 +13,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/docs"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/utils"
-	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update"
+	uutils "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 
 const (
@@ -92,7 +92,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	for _, m := range b.cfg.MSI {
 		msis = append(msis, docs.Artifact{
 			Architecture: m.Architecture,
-			URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(m.Path, b.branchID) + "/" + builders.GetAppIDForBranch(b.cfg.App.ID, b.branchID) + ".windows-" + update.GetArchIdentifier(m.Architecture) + ".msi",
+			URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(m.Path, b.branchID) + "/" + builders.GetAppIDForBranch(b.cfg.App.ID, b.branchID) + ".windows-" + uutils.GetArchIdentifier(m.Architecture) + ".msi",
 		})
 	}
 
