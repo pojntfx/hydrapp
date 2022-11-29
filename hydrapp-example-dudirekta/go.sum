@@ -59,8 +59,12 @@ github.com/pojntfx/dudirekta v0.2.0 h1:GoGZ6k+TNWHMMnnYt0rCCkfCjAUnyDEojBwRble/s
 github.com/pojntfx/dudirekta v0.2.0/go.mod h1:9yX/QIumlZhKrYpFAhLD96JbXAFuzPZJ/tTgqVlpTSk=
 github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221122235507-eed5a50c9caf h1:sXRcC+rtXM1omWpbc0RzeVA7YfVKtlP6j9i8jqa8OA4=
 github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221122235507-eed5a50c9caf/go.mod h1:HjbQINTxPBJiW9gfIHNbtTMGUq02mQqLiY7a5TXDUKw=
+github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221129214326-b56da6b84be7 h1:Ketbvtr9gHjOdpvmRnnfX2NJ2Q7DQQNxUsh1o/2Da1A=
+github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221129214326-b56da6b84be7/go.mod h1:TebU63Atxrnsb7/YdrrJnnNKWizA4rseRZS7jB7eDVo=
 github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221122235507-eed5a50c9caf h1:VEFP84wgtgT5MX3Nb/kZvjXVWclj00V4QdjKh5+s0Jk=
 github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221122235507-eed5a50c9caf/go.mod h1:4kCOU2+jf97qllKE95XFYB4Frn5RWeZWOd2c2Waj5vQ=
+github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221129214326-b56da6b84be7 h1:NigphQe1dsta6xwb7T76XccS0SfAnTPZqsTM5Mwq4qU=
+github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221129214326-b56da6b84be7/go.mod h1:vNPvCT6P+KhqRtD45yYYeX5DFEZAPnFAdcpFQ5sghAs=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 h1:GranzK4hv1/pqTIhMTXt2X8MmMOuH3hMeUR0o9SP5yc=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844/go.mod h1:T1TLSfyWVBRXVGzWd0o9BI4kfoO9InEgfQe4NV3mLz8=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

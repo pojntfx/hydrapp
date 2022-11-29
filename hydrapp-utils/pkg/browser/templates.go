@@ -3,6 +3,7 @@ package browser
 const (
 	prefsJSContent = `user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.link.open_newwindow.restriction", 0);
+user_pref("browser.tabs.firefox-view", false);
 user_pref("browser.link.open_newwindow", 1);`
 	userChromeCSSContent = `@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 

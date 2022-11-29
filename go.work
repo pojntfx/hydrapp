@@ -3,9 +3,9 @@ go 1.18
 use (
 	.
 	./hydrapp-builder
-	./hydrapp-example-full
+	./hydrapp-example-dudirekta
 	./hydrapp-example-forms
-	./hydrapp-example-simple
+	./hydrapp-example-rest
 	./hydrapp-generator
 	./hydrapp-utils
 )

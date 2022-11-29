@@ -1,8 +1,8 @@
 app:
   id: com.pojtinger.felicitas.hydrapp.example.forms
-  name: Hydrapp Example Simple
+  name: Hydrapp REST Example
   summary: Hydrapp forms example app
-  description: A forms Hydrapp example app.
+  description: A simple Hydrapp forms example app.
   homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example
   git: https://github.com/pojntfx/hydrapp.git
   baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-forms/

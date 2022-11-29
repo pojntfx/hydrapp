@@ -1,16 +1,16 @@
 app:
-  id: com.pojtinger.felicitas.hydrapp.example.simple
-  name: Hydrapp Example Simple
-  summary: Hydrapp simple example app
-  description: A simple Hydrapp example app.
+  id: com.pojtinger.felicitas.hydrapp.example.dudirekta
+  name: Hydrapp Dudirekta Example
+  summary: Hydrapp Dudirekta Example app
+  description: A full Hydrapp Dudirekta example app.
   homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example
   git: https://github.com/pojntfx/hydrapp.git
-  baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-simple/
+  baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-dudirekta/
 go:
-  main: ./hydrapp-example-simple
+  main: ./hydrapp-example-dudirekta
   flags: ""
-  generate: cd hydrapp-example-simple && go generate ./...
-  tests: go test ./hydrapp-example-simple/...
+  generate: cd hydrapp-example-dudirekta && go generate ./...
+  tests: go test ./hydrapp-example-dudirekta/...
   img: ghcr.io/pojntfx/hydrapp-build-tests:main
 license:
   spdx: AGPL-3.0

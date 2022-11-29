@@ -42,7 +42,7 @@ export default () => {
 
   return (
     <main>
-      <h1>Hydrapp Full Example</h1>
+      <h1>Hydrapp Dudirekta Example</h1>
 
       <div>
         <button

@@ -12,52 +12,52 @@ jobs:
     strategy:
       matrix:
         target:
-          # com.pojtinger.felicitas.hydrapp.example.full
-          - id: hydrapp-apk.hydrapp-example-full
+          # com.pojtinger.felicitas.hydrapp.example.dudirekta
+          - id: hydrapp-apk.hydrapp-example-dudirekta
             src: .
-            pkg: hydrapp-example-full
+            pkg: hydrapp-example-dudirekta
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-deb.hydrapp-example-full
+          - id: hydrapp-deb.hydrapp-example-dudirekta
             src: .
-            pkg: hydrapp-example-full
+            pkg: hydrapp-example-dudirekta
             exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-dmg.hydrapp-example-full
+          - id: hydrapp-dmg.hydrapp-example-dudirekta
             src: .
-            pkg: hydrapp-example-full
+            pkg: hydrapp-example-dudirekta
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-flatpak.hydrapp-example-full
+          - id: hydrapp-flatpak.hydrapp-example-dudirekta
             src: .
-            pkg: hydrapp-example-full
+            pkg: hydrapp-example-dudirekta
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-msi.hydrapp-example-full
+          - id: hydrapp-msi.hydrapp-example-dudirekta
             src: .
-            pkg: hydrapp-example-full
+            pkg: hydrapp-example-dudirekta
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-rpm.hydrapp-example-full
+          - id: hydrapp-rpm.hydrapp-example-dudirekta
             src: .
-            pkg: hydrapp-example-full
+            pkg: hydrapp-example-dudirekta
             exclude: apk|deb|flatpak|dmg|msi|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-binaries.hydrapp-example-full
+          - id: hydrapp-binaries.hydrapp-example-dudirekta
             src: .
-            pkg: hydrapp-example-full
+            pkg: hydrapp-example-dudirekta
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
-          - id: hydrapp-tests.hydrapp-example-full
+          - id: hydrapp-tests.hydrapp-example-dudirekta
             src: .
-            pkg: hydrapp-example-full
+            pkg: hydrapp-example-dudirekta
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
@@ -112,52 +112,52 @@ jobs:
             tag: main
             dst: out/*
 
-          # com.pojtinger.felicitas.hydrapp.example.simple
-          - id: hydrapp-apk.hydrapp-example-simple
+          # com.pojtinger.felicitas.hydrapp.example.rest
+          - id: hydrapp-apk.hydrapp-example-rest
             src: .
-            pkg: hydrapp-example-simple
+            pkg: hydrapp-example-rest
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-deb.hydrapp-example-simple
+          - id: hydrapp-deb.hydrapp-example-rest
             src: .
-            pkg: hydrapp-example-simple
+            pkg: hydrapp-example-rest
             exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-dmg.hydrapp-example-simple
+          - id: hydrapp-dmg.hydrapp-example-rest
             src: .
-            pkg: hydrapp-example-simple
+            pkg: hydrapp-example-rest
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-flatpak.hydrapp-example-simple
+          - id: hydrapp-flatpak.hydrapp-example-rest
             src: .
-            pkg: hydrapp-example-simple
+            pkg: hydrapp-example-rest
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-msi.hydrapp-example-simple
+          - id: hydrapp-msi.hydrapp-example-rest
             src: .
-            pkg: hydrapp-example-simple
+            pkg: hydrapp-example-rest
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-rpm.hydrapp-example-simple
+          - id: hydrapp-rpm.hydrapp-example-rest
             src: .
-            pkg: hydrapp-example-simple
+            pkg: hydrapp-example-rest
             exclude: apk|deb|flatpak|dmg|msi|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-binaries.hydrapp-example-simple
+          - id: hydrapp-binaries.hydrapp-example-rest
             src: .
-            pkg: hydrapp-example-simple
+            pkg: hydrapp-example-rest
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
-          - id: hydrapp-tests.hydrapp-example-simple
+          - id: hydrapp-tests.hydrapp-example-rest
             src: .
-            pkg: hydrapp-example-simple
+            pkg: hydrapp-example-rest
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*

@@ -4,8 +4,8 @@ go 1.18
 
 require (
 	github.com/google/uuid v1.3.0
-	github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221122235507-eed5a50c9caf
-	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221122235507-eed5a50c9caf
+	github.com/pojntfx/hydrapp/hydrapp-builder v0.0.0-20221129214326-b56da6b84be7
+	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221129214326-b56da6b84be7
 )
 
 require (
