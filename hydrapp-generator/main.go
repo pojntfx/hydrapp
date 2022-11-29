@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"io/ioutil"
 	"os"
@@ -21,7 +22,7 @@ import (
 )
 
 const (
-	agplv3LicenseText = `This program is free software: you can redistribute it and/or modify
+	agplv3LicenseTextSummary = `This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -45,20 +46,29 @@ var (
 	//go:embed go.mod.tpl
 	goModTpl string
 
-	//go:embed main.go.tpl
-	goMainTpl string
+	//go:embed main_full.go.tpl
+	goMainFullTpl string
 
-	//go:embed android.go.tpl
-	androidTpl string
+	//go:embed main_forms.go.tpl
+	goMainFormsTpl string
 
-	//go:embed .gitignore.tpl
-	gitignoreTpl string
+	//go:embed android_full.go.tpl
+	androidFullTpl string
 
-	//go:embed backend.go.tpl
-	backendTpl string
+	//go:embed android_forms.go.tpl
+	androidFormsTpl string
 
-	//go:embed frontend.go.tpl
-	frontendTpl string
+	//go:embed .gitignore_full.tpl
+	gitignoreFullTpl string
+
+	//go:embed backend_full.go.tpl
+	backendFullTpl string
+
+	//go:embed frontend_full.go.tpl
+	frontendFullTpl string
+
+	//go:embed frontend_forms.go.tpl
+	frontendFormsTpl string
 
 	//go:embed App.tsx.tpl
 	appTSXTpl string
@@ -66,14 +76,19 @@ var (
 	//go:embed main.tsx.tpl
 	mainTSXTpl string
 
-	//go:embed index.html.tpl
-	indexHTMLTpl string
+	//go:embed index_full.html.tpl
+	indexHTMLFullTpl string
+
+	//go:embed index_forms.html.tpl
+	indexHTMLFormsTpl string
 
 	//go:embed package.json.tpl
 	packageJSONTpl string
 
 	//go:embed tsconfig.json.tpl
 	tsconfigJSONTpl string
+
+	errUnknownProjectType = errors.New("unknown project type")
 )
 
 type goModData struct {
@@ -141,7 +156,7 @@ func main() {
 	goMod := flag.String("go-mod", "github.com/example/myapp", "Go module name")
 
 	licenseSPDX := flag.String("license-spdx", "AGPL-3.0", "License SPDX identifier (see https://spdx.org/licenses/)")
-	licenseText := flag.String("license-text", agplv3LicenseText, "License summary text")
+	licenseTextSummary := flag.String("license-text-summary", agplv3LicenseTextSummary, "License summary text")
 
 	releaseAuthor := flag.String("release-author", "Jean Doe", "Release author name")
 	releaseEmail := flag.String("release-email", "jean.doe@example.com", "Release author email")
@@ -154,6 +169,8 @@ func main() {
 	binariesExclude := flag.String("binaries-exclude", "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)", "Regex of binaries to exclude from compilation")
 
 	dir := flag.String("dir", "myapp", "Directory to write the app to")
+
+	projectType := flag.String("project-type", "full", "Project type to generate (simple, forms or full)")
 
 	flag.Parse()
 
@@ -177,7 +194,7 @@ func main() {
 		}
 		cfg.License = config.License{
 			SPDX: *licenseSPDX,
-			Text: *licenseText,
+			Text: *licenseTextSummary,
 		}
 		cfg.Releases = []renderers.Release{
 			{
@@ -282,103 +299,155 @@ func main() {
 		panic(err)
 	}
 
-	if err := renderTemplate(
-		filepath.Join(*dir, "main.go"),
-		goMainTpl,
-		goMainData{
-			GoMod: *goMod,
-		},
-	); err != nil {
-		panic(err)
+	switch *projectType {
+	case "full":
+		if err := renderTemplate(
+			filepath.Join(*dir, "main.go"),
+			goMainFullTpl,
+			goMainData{
+				GoMod: *goMod,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "android.go"),
+			androidFullTpl,
+			androidData{
+				GoMod:     *goMod,
+				JNIExport: strings.Replace(*appID, ".", "_", -1),
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, ".gitignore"),
+			gitignoreFullTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "backend", "server.go"),
+			backendFullTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "server.go"),
+			frontendFullTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "src", "App.tsx"),
+			appTSXTpl,
+			appTSXData{
+				AppName: *appName,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "src", "main.tsx"),
+			mainTSXTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "index.html"),
+			indexHTMLFullTpl,
+			indexHTMLData{
+				AppName: *appName,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "package.json"),
+			packageJSONTpl,
+			packageJSONData{
+				AppID:          *appID,
+				AppDescription: *appDescription,
+				ReleaseAuthor:  *releaseAuthor,
+				ReleaseEmail:   *releaseEmail,
+				LicenseSPDX:    *licenseSPDX,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "tsconfig.json"),
+			tsconfigJSONTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+	case "forms":
+		if err := renderTemplate(
+			filepath.Join(*dir, "main.go"),
+			goMainFormsTpl,
+			goMainData{
+				GoMod: *goMod,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "android.go"),
+			androidFormsTpl,
+			androidData{
+				GoMod:     *goMod,
+				JNIExport: strings.Replace(*appID, ".", "_", -1),
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "server.go"),
+			frontendFormsTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "index.html"),
+			indexHTMLFormsTpl,
+			indexHTMLData{
+				AppName: *appName,
+			},
+		); err != nil {
+			panic(err)
+		}
+	default:
+		panic(errUnknownProjectType)
 	}
 
 	if err := renderTemplate(
-		filepath.Join(*dir, "android.go"),
-		androidTpl,
-		androidData{
-			GoMod:     *goMod,
-			JNIExport: strings.Replace(*appID, ".", "_", -1),
-		},
-	); err != nil {
-		panic(err)
-	}
-
-	if err := renderTemplate(
-		filepath.Join(*dir, ".gitignore"),
-		gitignoreTpl,
-		nil,
-	); err != nil {
-		panic(err)
-	}
-
-	if err := renderTemplate(
-		filepath.Join(*dir, "pkg", "backend", "server.go"),
-		backendTpl,
-		nil,
-	); err != nil {
-		panic(err)
-	}
-
-	if err := renderTemplate(
-		filepath.Join(*dir, "pkg", "frontend", "server.go"),
-		frontendTpl,
-		nil,
-	); err != nil {
-		panic(err)
-	}
-
-	if err := renderTemplate(
-		filepath.Join(*dir, "pkg", "frontend", "src", "App.tsx"),
-		appTSXTpl,
-		appTSXData{
-			AppName: *appName,
-		},
-	); err != nil {
-		panic(err)
-	}
-
-	if err := renderTemplate(
-		filepath.Join(*dir, "pkg", "frontend", "src", "main.tsx"),
-		mainTSXTpl,
-		nil,
-	); err != nil {
-		panic(err)
-	}
-
-	if err := renderTemplate(
-		filepath.Join(*dir, "pkg", "frontend", "index.html"),
-		indexHTMLTpl,
-		indexHTMLData{
-			AppName: *appName,
-		},
-	); err != nil {
-		panic(err)
-	}
-
-	if err := renderTemplate(
-		filepath.Join(*dir, "pkg", "frontend", "package.json"),
-		packageJSONTpl,
-		packageJSONData{
-			AppID:          *appID,
-			AppDescription: *appDescription,
-			ReleaseAuthor:  *releaseAuthor,
-			ReleaseEmail:   *releaseEmail,
-			LicenseSPDX:    *licenseSPDX,
-		},
-	); err != nil {
-		panic(err)
-	}
-
-	if err := renderTemplate(
-		filepath.Join(*dir, "pkg", "frontend", "tsconfig.json"),
-		tsconfigJSONTpl,
+		filepath.Join(*dir, "LICENSE"),
+		*licenseTextSummary,
 		nil,
 	); err != nil {
 		panic(err)
 	}
 
 	{
-		cmd := exec.Command("go", "get", "./...")
+		cmd := exec.Command("go", "get", "-x", "./...")
 		cmd.Dir = *dir
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
@@ -390,7 +459,7 @@ func main() {
 	}
 
 	{
-		cmd := exec.Command("go", "generate", "./...")
+		cmd := exec.Command("go", "generate", "-x", "./...")
 		cmd.Dir = *dir
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout

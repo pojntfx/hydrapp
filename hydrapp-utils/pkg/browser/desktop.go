@@ -377,7 +377,7 @@ func LaunchBrowser(
 		}
 
 		// Create the profile directory
-		epiphanyID := "org.gnome.Epiphany.WebApp-" + appID
+		epiphanyID := "org.gnome.Epiphany.WebApp_" + appID
 		profileDir := filepath.Join(home, ".local", "share", epiphanyID)
 
 		if err := os.MkdirAll(filepath.Join(profileDir, ".app"), 0755); err != nil {
