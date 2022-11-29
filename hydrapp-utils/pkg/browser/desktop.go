@@ -41,6 +41,7 @@ func LaunchBrowser(
 	chromiumLikeBrowsers Browser,
 	firefoxLikeBrowsers Browser,
 	epiphanyLikeBrowsers Browser,
+	lynxLikeBrowsers Browser,
 
 	state *update.BrowserState,
 	handlePanic func(msg string, err error),
@@ -49,7 +50,7 @@ func LaunchBrowser(
 
 	// Process the browser types
 	// Order matters; whatever comes first and is discovered first will be used
-	rawBrowsers := []Browser{chromiumLikeBrowsers, firefoxLikeBrowsers, epiphanyLikeBrowsers}
+	rawBrowsers := []Browser{chromiumLikeBrowsers, firefoxLikeBrowsers, epiphanyLikeBrowsers, lynxLikeBrowsers}
 	browsers := []Browser{}
 	for _, browser := range rawBrowsers {
 		// Keep already processed fields
@@ -431,6 +432,36 @@ func LaunchBrowser(
 
 		// Wait till lock for browser has been removed
 		utils.WaitForLock(filepath.Join(profileDir, "ephy-history.db-wal"), handlePanic)
+
+	// Launch Lynx-like browser
+	case browserTypeLynx:
+		// Create the browser instance
+		execLine := append(
+			browserBinary,
+			append(
+				[]string{
+					"--nopause",
+					"--accept_all_cookies",
+					url,
+				},
+				os.Args[1:]...,
+			)...,
+		)
+
+		state.Cmd = exec.Command(
+			execLine[0],
+			execLine[1:]...,
+		)
+
+		// Use system stdout, stderr and stdin
+		state.Cmd.Stdout = os.Stdout
+		state.Cmd.Stderr = os.Stderr
+		state.Cmd.Stdin = os.Stdin
+
+		// Start the browser
+		if err := state.Cmd.Run(); err != nil {
+			handlePanic("could not launch browser", err)
+		}
 	case browserTypeDummy:
 		select {}
 	}

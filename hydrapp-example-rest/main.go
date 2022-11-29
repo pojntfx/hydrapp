@@ -71,6 +71,7 @@ func main() {
 		browser.ChromiumLikeBrowsers,
 		browser.FirefoxLikeBrowsers,
 		browser.EpiphanyLikeBrowsers,
+		browser.LynxLikeBrowsers,
 
 		browserState,
 		func(msg string, err error) {

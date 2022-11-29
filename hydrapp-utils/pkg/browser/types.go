@@ -4,6 +4,7 @@ const (
 	browserTypeChromium = "chromium"
 	browserTypeFirefox  = "firefox"
 	browserTypeEpiphany = "epiphany"
+	browserTypeLynx     = "lynx"
 
 	browserTypeDummy = "dummy"
 )
@@ -90,6 +91,16 @@ var EpiphanyLikeBrowsers = Browser{
 	Flatpaks: [][]string{
 		{"org.gnome.Epiphany"},
 	},
+	WindowsBinaries: [][]string{},
+	MacOSBinaries:   [][]string{},
+}
+
+var LynxLikeBrowsers = Browser{
+	Name: browserTypeLynx,
+	LinuxBinaries: [][]string{
+		{"lynx"},
+	},
+	Flatpaks:        [][]string{},
 	WindowsBinaries: [][]string{},
 	MacOSBinaries:   [][]string{},
 }
