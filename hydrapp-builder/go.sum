@@ -56,6 +56,8 @@ github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221122235507-eed5a50c9caf h1:V
 github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221122235507-eed5a50c9caf/go.mod h1:4kCOU2+jf97qllKE95XFYB4Frn5RWeZWOd2c2Waj5vQ=
 github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221129230518-6f0277614a3c h1:wBhfZ3lJWIDXvYWlhIvifw2yBlDJydhGtmvu1CPwSPA=
 github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221129230518-6f0277614a3c/go.mod h1:vNPvCT6P+KhqRtD45yYYeX5DFEZAPnFAdcpFQ5sghAs=
+github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221129232722-0687ddbefdd4 h1:agohSQ6zvyD+z30ReHkItw45c1CBaKYV9s/6I0k7WUE=
+github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221129232722-0687ddbefdd4/go.mod h1:vNPvCT6P+KhqRtD45yYYeX5DFEZAPnFAdcpFQ5sghAs=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 h1:GranzK4hv1/pqTIhMTXt2X8MmMOuH3hMeUR0o9SP5yc=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844/go.mod h1:T1TLSfyWVBRXVGzWd0o9BI4kfoO9InEgfQe4NV3mLz8=
 github.com/sirupsen/logrus v1.9.0 h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=
