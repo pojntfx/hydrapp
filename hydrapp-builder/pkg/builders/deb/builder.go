@@ -85,7 +85,7 @@ func NewBuilder(
 		appGit,
 		extraDebianPackages,
 		appSPDX,
-		appLicenseText,
+		strings.Replace(appLicenseText, "\n\n", "\n.\n", -1),
 		appName,
 		overwrite,
 		branchID,

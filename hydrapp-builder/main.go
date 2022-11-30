@@ -96,6 +96,11 @@ func main() {
 		panic(err)
 	}
 
+	licenseText, err := ioutil.ReadFile(filepath.Join(filepath.Dir(*config), "LICENSE"))
+	if err != nil {
+		panic(err)
+	}
+
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		panic(err)
@@ -205,8 +210,8 @@ func main() {
 				cfg.App.Homepage,
 				cfg.App.Git,
 				c.Packages,
-				cfg.License.SPDX,
-				cfg.License.Text,
+				cfg.App.License,
+				string(licenseText),
 				cfg.App.Name,
 				*overwrite,
 				*branchID,
@@ -285,7 +290,7 @@ func main() {
 				cfg.App.Name,
 				cfg.App.Description,
 				cfg.App.Summary,
-				cfg.License.SPDX,
+				cfg.App.License,
 				cfg.App.Homepage,
 				cfg.Releases,
 				*overwrite,
@@ -372,7 +377,7 @@ func main() {
 				cfg.App.Description,
 				cfg.App.Summary,
 				cfg.App.Homepage,
-				cfg.License.SPDX,
+				cfg.App.License,
 				cfg.Releases,
 				c.Packages,
 				*overwrite,

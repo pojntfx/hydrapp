@@ -9,7 +9,6 @@ import (
 type Root struct {
 	App      App                 `yaml:"app"`
 	Go       Go                  `yaml:"go"`
-	License  License             `yaml:"license"`
 	Releases []renderers.Release `yaml:"releases"`
 	DEB      []DEB               `yaml:"deb"`
 	DMG      DMG                 `yaml:"dmg"`
@@ -26,6 +25,7 @@ type App struct {
 	Name        string `yaml:"name"`
 	Summary     string `yaml:"summary"`
 	Description string `yaml:"description"`
+	License     string `yaml:"license"`
 	Homepage    string `yaml:"homepage"`
 	Git         string `yaml:"git"`
 	BaseURL     string `yaml:"baseurl"`
@@ -37,11 +37,6 @@ type Go struct {
 	Generate string `yaml:"generate"`
 	Tests    string `yaml:"tests"`
 	Image    string `yaml:"img"`
-}
-
-type License struct {
-	SPDX string `yaml:"spdx"`
-	Text string `yaml:"text"`
 }
 
 type DEB struct {

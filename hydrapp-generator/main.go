@@ -4,6 +4,8 @@ import (
 	"errors"
 	"flag"
 	"io/ioutil"
+	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"path"
@@ -23,22 +25,6 @@ import (
 )
 
 const (
-	agplv3LicenseTextSummary = `This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-.
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-.
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-.
-On Debian systems, the complete text of the GNU General
-Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".`
-
 	restKey      = "rest"
 	formsKey     = "forms"
 	dudirektaKey = "dudirekta"
@@ -144,6 +130,15 @@ type packageJSONData struct {
 }
 
 func renderTemplate(path string, tpl string, data any) error {
+	// Assume that templates without data are just files
+	if data == nil {
+		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
+			return err
+		}
+
+		return ioutil.WriteFile(path, []byte(tpl), os.ModePerm)
+	}
+
 	t, err := template.New(path).Parse(tpl)
 	if err != nil {
 		return err
@@ -175,6 +170,8 @@ func main() {
 	rpmArchitectures := flag.String("rpm-architectures", "amd64", "RPM architectures to build for (comma-seperated list of GOARCH values)")
 
 	binariesExclude := flag.String("binaries-exclude", "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)", "Regex of binaries to exclude from compilation")
+
+	noNetwork := flag.Bool("no-network", false, "Disable all network interaction")
 
 	flag.Parse()
 
@@ -261,7 +258,7 @@ func main() {
 
 	licenseSPDX, err := (&promptui.Prompt{
 		Label:   "License SPDX identifier (see https://spdx.org/licenses/)",
-		Default: "AGPL-3.0",
+		Default: "AGPL-3.0-or-later",
 	}).Run()
 	if err != nil {
 		panic(err)
@@ -277,7 +274,7 @@ func main() {
 
 	releaseEmail, err := (&promptui.Prompt{
 		Label:   "Release author email",
-		Default: "name",
+		Default: "jean.doe@example.com",
 	}).Run()
 	if err != nil {
 		panic(err)
@@ -285,21 +282,39 @@ func main() {
 
 	_, advancedConfiguration, err := (&promptui.Select{
 		Label: "Do you want to do any advanced configuration?",
-		Items: []string{"yes", "no"},
+		Items: []string{"no", "yes"},
 	}).Run()
 	if err != nil {
 		panic(err)
 	}
 
-	licenseTextSummary := agplv3LicenseTextSummary
 	if advancedConfiguration == "yes" {
-		licenseTextSummary, err = (&promptui.Prompt{
-			Label:   "License summary text",
-			Default: agplv3LicenseTextSummary,
-		}).Run()
+
+	}
+
+	licenseText := ""
+	if !*noNetwork {
+		log.Println("Fetching full license text from SPDX ...")
+
+		res, err := http.Get("https://raw.githubusercontent.com/spdx/license-list-data/main/text/" + licenseSPDX + ".txt")
 		if err != nil {
 			panic(err)
 		}
+		if res.Body != nil {
+			defer res.Body.Close()
+		}
+		if res.StatusCode != http.StatusOK {
+			panic(errors.New(res.Status))
+		}
+
+		b, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			panic(err)
+		}
+
+		licenseText = string(b)
+
+		log.Println("Success!")
 	}
 
 	{
@@ -309,6 +324,7 @@ func main() {
 			Name:        appName,
 			Summary:     appSummary,
 			Description: appDescription,
+			License:     licenseSPDX,
 			Homepage:    appHomepage,
 			Git:         appGit,
 			BaseURL:     appBaseurl,
@@ -319,10 +335,6 @@ func main() {
 			Generate: *goGenerate,
 			Tests:    *goTests,
 			Image:    *goImg,
-		}
-		cfg.License = config.License{
-			SPDX: licenseSPDX,
-			Text: licenseTextSummary,
 		}
 		cfg.Releases = []renderers.Release{
 			{
@@ -623,33 +635,43 @@ func main() {
 
 	if err := renderTemplate(
 		filepath.Join(dir, "LICENSE"),
-		licenseTextSummary,
+		licenseText,
 		nil,
 	); err != nil {
 		panic(err)
 	}
 
-	{
-		cmd := exec.Command("go", "get", "-x", "./...")
-		cmd.Dir = dir
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+	if !*noNetwork {
+		{
+			log.Println("Downloading Go dependencies ...")
 
-		if err := cmd.Run(); err != nil {
-			panic(err)
+			cmd := exec.Command("go", "get", "-x", "./...")
+			cmd.Dir = dir
+			cmd.Stdin = os.Stdin
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+
+			if err := cmd.Run(); err != nil {
+				panic(err)
+			}
+
+			log.Println("Success!")
 		}
-	}
 
-	{
-		cmd := exec.Command("go", "generate", "-x", "./...")
-		cmd.Dir = dir
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
+		{
+			log.Println("Generating Go dependencies ...")
 
-		if err := cmd.Run(); err != nil {
-			panic(err)
+			cmd := exec.Command("go", "generate", "-x", "./...")
+			cmd.Dir = dir
+			cmd.Stdin = os.Stdin
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+
+			if err := cmd.Run(); err != nil {
+				panic(err)
+			}
+
+			log.Println("Success!")
 		}
 	}
 }
