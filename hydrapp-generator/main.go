@@ -158,19 +158,6 @@ func renderTemplate(path string, tpl string, data any) error {
 }
 
 func main() {
-	goMain := flag.String("go-main", ".", "Go main package path")
-	goFlags := flag.String("go-flags", "", "Go flags to pass to the compiler")
-	goGenerate := flag.String("go-generate", "go generate ./...", "Go generate command to run")
-	goTests := flag.String("go-tests", "go test ./...", "Go test command to run")
-	goImg := flag.String("go-img", "ghcr.io/pojntfx/hydrapp-build-tests:main", "Go test OCI image to use")
-
-	debArchitectures := flag.String("deb-architectures", "amd64", "DEB architectures to build for (comma-seperated list of GOARCH values)")
-	flatpakArchitectures := flag.String("flatpak-architectures", "amd64", "Flatpak architectures to build for (comma-seperated list of GOARCH values)")
-	msiArchitectures := flag.String("msi-architectures", "amd64", "MSI architectures to build for (comma-seperated list of GOARCH values)")
-	rpmArchitectures := flag.String("rpm-architectures", "amd64", "RPM architectures to build for (comma-seperated list of GOARCH values)")
-
-	binariesExclude := flag.String("binaries-exclude", "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)", "Regex of binaries to exclude from compilation")
-
 	noNetwork := flag.Bool("no-network", false, "Disable all network interaction")
 
 	flag.Parse()
@@ -288,8 +275,99 @@ func main() {
 		panic(err)
 	}
 
-	if advancedConfiguration == "yes" {
+	goMain := "."
+	goFlags := ""
+	goGenerate := "go generate ./..."
+	goTests := "go test ./..."
+	goImg := "ghcr.io/pojntfx/hydrapp-build-tests:main"
 
+	debArchitectures := "amd64"
+	flatpakArchitectures := "amd64"
+	msiArchitectures := "amd64"
+	rpmArchitectures := "amd64"
+
+	binariesExclude := "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)"
+
+	if advancedConfiguration == "yes" {
+		goMain, err = (&promptui.Prompt{
+			Label:   "Go main package path",
+			Default: goMain,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		goFlags, err = (&promptui.Prompt{
+			Label:   "Go flags to pass to the compiler",
+			Default: goFlags,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		goGenerate, err = (&promptui.Prompt{
+			Label:   "Go generate command to run",
+			Default: goGenerate,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		goTests, err = (&promptui.Prompt{
+			Label:   "Go test command to run",
+			Default: goTests,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		goImg, err = (&promptui.Prompt{
+			Label:   "Go test OCI image to use",
+			Default: goImg,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		debArchitectures, err = (&promptui.Prompt{
+			Label:   "DEB architectures to build for (comma-seperated list of GOARCH values)",
+			Default: debArchitectures,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		flatpakArchitectures, err = (&promptui.Prompt{
+			Label:   "Flatpak architectures to build for (comma-seperated list of GOARCH values)",
+			Default: flatpakArchitectures,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		msiArchitectures, err = (&promptui.Prompt{
+			Label:   "MSI architectures to build for (comma-seperated list of GOARCH values)",
+			Default: msiArchitectures,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		rpmArchitectures, err = (&promptui.Prompt{
+			Label:   "RPM architectures to build for (comma-seperated list of GOARCH values)",
+			Default: rpmArchitectures,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+
+		binariesExclude, err = (&promptui.Prompt{
+			Label:   "Regex of binaries to exclude from compilation",
+			Default: binariesExclude,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	licenseText := ""
@@ -330,11 +408,11 @@ func main() {
 			BaseURL:     appBaseurl,
 		}
 		cfg.Go = config.Go{
-			Main:     *goMain,
-			Flags:    *goFlags,
-			Generate: *goGenerate,
-			Tests:    *goTests,
-			Image:    *goImg,
+			Main:     goMain,
+			Flags:    goFlags,
+			Generate: goGenerate,
+			Tests:    goTests,
+			Image:    goImg,
 		}
 		cfg.Releases = []renderers.Release{
 			{
@@ -351,7 +429,7 @@ func main() {
 		}
 
 		debs := []config.DEB{}
-		for _, arch := range strings.Split(*debArchitectures, ",") {
+		for _, arch := range strings.Split(debArchitectures, ",") {
 			debs = append(debs, config.DEB{
 				Path:            path.Join("deb", "debian", "sid", utils.GetArchIdentifier(arch)),
 				OS:              "debian",
@@ -371,7 +449,7 @@ func main() {
 		}
 
 		flatpaks := []config.Flatpak{}
-		for _, arch := range strings.Split(*flatpakArchitectures, ",") {
+		for _, arch := range strings.Split(flatpakArchitectures, ",") {
 			flatpaks = append(flatpaks, config.Flatpak{
 				Path:         path.Join("flatpak", utils.GetArchIdentifier(arch)),
 				Architecture: arch,
@@ -380,7 +458,7 @@ func main() {
 		cfg.Flatpak = flatpaks
 
 		msis := []config.MSI{}
-		for _, arch := range strings.Split(*msiArchitectures, ",") {
+		for _, arch := range strings.Split(msiArchitectures, ",") {
 			msis = append(msis, config.MSI{
 				Path:         path.Join("msi", utils.GetArchIdentifier(arch)),
 				Architecture: arch,
@@ -391,7 +469,7 @@ func main() {
 		cfg.MSI = msis
 
 		rpms := []config.RPM{}
-		for _, arch := range strings.Split(*rpmArchitectures, ",") {
+		for _, arch := range strings.Split(rpmArchitectures, ",") {
 			rpms = append(rpms, config.RPM{
 				Path:         path.Join("rpm", "fedora", "37", utils.GetArchIdentifier(arch)),
 				Trailer:      "1.fc37",
@@ -404,7 +482,7 @@ func main() {
 
 		cfg.Binaries = config.Binaries{
 			Path:     "binaries",
-			Exclude:  *binariesExclude,
+			Exclude:  binariesExclude,
 			Packages: []string{},
 		}
 		cfg.Docs = config.Docs{
