@@ -46,26 +46,41 @@ var (
 	//go:embed go.mod.tpl
 	goModTpl string
 
-	//go:embed main_full.go.tpl
-	goMainFullTpl string
+	//go:embed main_dudirekta.go.tpl
+	goMainDudirektaTpl string
 
 	//go:embed main_forms.go.tpl
 	goMainFormsTpl string
 
-	//go:embed android_full.go.tpl
-	androidFullTpl string
+	//go:embed main_rest.go.tpl
+	goMainRESTTpl string
+
+	//go:embed android_dudirekta.go.tpl
+	androidDudirektaTpl string
 
 	//go:embed android_forms.go.tpl
 	androidFormsTpl string
 
-	//go:embed .gitignore_full.tpl
-	gitignoreFullTpl string
+	//go:embed android_rest.go.tpl
+	androidRESTTpl string
 
-	//go:embed backend_full.go.tpl
-	backendFullTpl string
+	//go:embed .gitignore_dudirekta.tpl
+	gitignoreDudirektaTpl string
 
-	//go:embed frontend_full.go.tpl
-	frontendFullTpl string
+	//go:embed .gitignore_rest.tpl
+	gitignoreRESTTpl string
+
+	//go:embed backend_dudirekta.go.tpl
+	backendDudirektaTpl string
+
+	//go:embed backend_rest.go.tpl
+	backendRESTTpl string
+
+	//go:embed frontend_dudirekta.go.tpl
+	frontendDudirektaTpl string
+
+	//go:embed frontend_rest.go.tpl
+	frontendRESTTpl string
 
 	//go:embed frontend_forms.go.tpl
 	frontendFormsTpl string
@@ -76,8 +91,11 @@ var (
 	//go:embed main.tsx.tpl
 	mainTSXTpl string
 
-	//go:embed index_full.html.tpl
-	indexHTMLFullTpl string
+	//go:embed index_dudirekta.html.tpl
+	indexHTMLDudirektaTpl string
+
+	//go:embed index_rest.html.tpl
+	indexHTMLRESTTpl string
 
 	//go:embed index_forms.html.tpl
 	indexHTMLFormsTpl string
@@ -170,7 +188,7 @@ func main() {
 
 	dir := flag.String("dir", "myapp", "Directory to write the app to")
 
-	projectType := flag.String("project-type", "full", "Project type to generate (simple, forms or full)")
+	projectType := flag.String("project-type", "dudirekta", "Project type to generate (rest, forms or dudirekta)")
 
 	flag.Parse()
 
@@ -300,10 +318,10 @@ func main() {
 	}
 
 	switch *projectType {
-	case "full":
+	case "rest":
 		if err := renderTemplate(
 			filepath.Join(*dir, "main.go"),
-			goMainFullTpl,
+			goMainRESTTpl,
 			goMainData{
 				GoMod: *goMod,
 			},
@@ -313,7 +331,7 @@ func main() {
 
 		if err := renderTemplate(
 			filepath.Join(*dir, "android.go"),
-			androidFullTpl,
+			androidRESTTpl,
 			androidData{
 				GoMod:     *goMod,
 				JNIExport: strings.Replace(*appID, ".", "_", -1),
@@ -324,7 +342,7 @@ func main() {
 
 		if err := renderTemplate(
 			filepath.Join(*dir, ".gitignore"),
-			gitignoreFullTpl,
+			gitignoreRESTTpl,
 			nil,
 		); err != nil {
 			panic(err)
@@ -332,7 +350,7 @@ func main() {
 
 		if err := renderTemplate(
 			filepath.Join(*dir, "pkg", "backend", "server.go"),
-			backendFullTpl,
+			backendRESTTpl,
 			nil,
 		); err != nil {
 			panic(err)
@@ -340,25 +358,7 @@ func main() {
 
 		if err := renderTemplate(
 			filepath.Join(*dir, "pkg", "frontend", "server.go"),
-			frontendFullTpl,
-			nil,
-		); err != nil {
-			panic(err)
-		}
-
-		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "src", "App.tsx"),
-			appTSXTpl,
-			appTSXData{
-				AppName: *appName,
-			},
-		); err != nil {
-			panic(err)
-		}
-
-		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "src", "main.tsx"),
-			mainTSXTpl,
+			frontendRESTTpl,
 			nil,
 		); err != nil {
 			panic(err)
@@ -366,32 +366,10 @@ func main() {
 
 		if err := renderTemplate(
 			filepath.Join(*dir, "pkg", "frontend", "index.html"),
-			indexHTMLFullTpl,
+			indexHTMLRESTTpl,
 			indexHTMLData{
 				AppName: *appName,
 			},
-		); err != nil {
-			panic(err)
-		}
-
-		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "package.json"),
-			packageJSONTpl,
-			packageJSONData{
-				AppID:          *appID,
-				AppDescription: *appDescription,
-				ReleaseAuthor:  *releaseAuthor,
-				ReleaseEmail:   *releaseEmail,
-				LicenseSPDX:    *licenseSPDX,
-			},
-		); err != nil {
-			panic(err)
-		}
-
-		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "tsconfig.json"),
-			tsconfigJSONTpl,
-			nil,
 		); err != nil {
 			panic(err)
 		}
@@ -431,6 +409,101 @@ func main() {
 			indexHTMLData{
 				AppName: *appName,
 			},
+		); err != nil {
+			panic(err)
+		}
+	case "dudirekta":
+		if err := renderTemplate(
+			filepath.Join(*dir, "main.go"),
+			goMainDudirektaTpl,
+			goMainData{
+				GoMod: *goMod,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "android.go"),
+			androidDudirektaTpl,
+			androidData{
+				GoMod:     *goMod,
+				JNIExport: strings.Replace(*appID, ".", "_", -1),
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, ".gitignore"),
+			gitignoreDudirektaTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "backend", "server.go"),
+			backendDudirektaTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "server.go"),
+			frontendDudirektaTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "src", "App.tsx"),
+			appTSXTpl,
+			appTSXData{
+				AppName: *appName,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "src", "main.tsx"),
+			mainTSXTpl,
+			nil,
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "index.html"),
+			indexHTMLDudirektaTpl,
+			indexHTMLData{
+				AppName: *appName,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "package.json"),
+			packageJSONTpl,
+			packageJSONData{
+				AppID:          *appID,
+				AppDescription: *appDescription,
+				ReleaseAuthor:  *releaseAuthor,
+				ReleaseEmail:   *releaseEmail,
+				LicenseSPDX:    *licenseSPDX,
+			},
+		); err != nil {
+			panic(err)
+		}
+
+		if err := renderTemplate(
+			filepath.Join(*dir, "pkg", "frontend", "tsconfig.json"),
+			tsconfigJSONTpl,
+			nil,
 		); err != nil {
 			panic(err)
 		}
