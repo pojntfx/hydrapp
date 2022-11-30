@@ -14,6 +14,7 @@ import (
 
 	_ "embed"
 
+	"github.com/manifoldco/promptui"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
@@ -37,6 +38,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 .
 On Debian systems, the complete text of the GNU General
 Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".`
+
+	restKey      = "rest"
+	formsKey     = "forms"
+	dudirektaKey = "dudirekta"
 )
 
 var (
@@ -158,26 +163,11 @@ func renderTemplate(path string, tpl string, data any) error {
 }
 
 func main() {
-	appID := flag.String("app-id", "com.github.example.myapp", "App ID in reverse domain notation")
-	appName := flag.String("app-name", "My App", "App name")
-	appSummary := flag.String("app-summary", "My first app", "App summary")
-	appDescription := flag.String("app-description", "My first application, built with hydrapp.", "App description")
-	appHomepage := flag.String("app-homepage", "https://github.com/example/myapp", "App homepage")
-	appGit := flag.String("app-git", "https://github.com/example/myapp.git", "App git repo")
-	appBaseurl := flag.String("app-baseurl", "https://example.github.io/myapp/myapp/", "App base URL to expect the built assets to be published to")
-
 	goMain := flag.String("go-main", ".", "Go main package path")
 	goFlags := flag.String("go-flags", "", "Go flags to pass to the compiler")
 	goGenerate := flag.String("go-generate", "go generate ./...", "Go generate command to run")
 	goTests := flag.String("go-tests", "go test ./...", "Go test command to run")
 	goImg := flag.String("go-img", "ghcr.io/pojntfx/hydrapp-build-tests:main", "Go test OCI image to use")
-	goMod := flag.String("go-mod", "github.com/example/myapp", "Go module name")
-
-	licenseSPDX := flag.String("license-spdx", "AGPL-3.0", "License SPDX identifier (see https://spdx.org/licenses/)")
-	licenseTextSummary := flag.String("license-text-summary", agplv3LicenseTextSummary, "License summary text")
-
-	releaseAuthor := flag.String("release-author", "Jean Doe", "Release author name")
-	releaseEmail := flag.String("release-email", "jean.doe@example.com", "Release author email")
 
 	debArchitectures := flag.String("deb-architectures", "amd64", "DEB architectures to build for (comma-seperated list of GOARCH values)")
 	flatpakArchitectures := flag.String("flatpak-architectures", "amd64", "Flatpak architectures to build for (comma-seperated list of GOARCH values)")
@@ -186,22 +176,142 @@ func main() {
 
 	binariesExclude := flag.String("binaries-exclude", "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)", "Regex of binaries to exclude from compilation")
 
-	dir := flag.String("dir", "myapp", "Directory to write the app to")
-
-	projectType := flag.String("project-type", "dudirekta", "Project type to generate (rest, forms or dudirekta)")
-
 	flag.Parse()
+
+	// TODO: Add help menu for each select item
+	_, projectType, err := (&promptui.Select{
+		Label: "Project type to generate",
+		Items: []string{restKey, formsKey, dudirektaKey},
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	appID, err := (&promptui.Prompt{
+		Label:   "App ID in reverse domain notation",
+		Default: "com.github.example.myapp",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	appName, err := (&promptui.Prompt{
+		Label:   "App name",
+		Default: "My App",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	appSummary, err := (&promptui.Prompt{
+		Label:   "App summary",
+		Default: "My first app",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	appDescription, err := (&promptui.Prompt{
+		Label:   "App description",
+		Default: "My first application, built with hydrapp.",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	appHomepage, err := (&promptui.Prompt{
+		Label:   "App homepage",
+		Default: "https://github.com/example/myapp",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	appGit, err := (&promptui.Prompt{
+		Label:   "App git repo",
+		Default: appHomepage + ".git",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	appBaseurl, err := (&promptui.Prompt{
+		Label:   "App base URL to expect the built assets to be published to",
+		Default: "https://example.github.io/myapp/myapp/",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	dir, err := (&promptui.Prompt{
+		Label:   "Directory to write the app to",
+		Default: "myapp",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	goMod, err := (&promptui.Prompt{
+		Label:   "Go module name",
+		Default: "github.com/example/myapp",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	licenseSPDX, err := (&promptui.Prompt{
+		Label:   "License SPDX identifier (see https://spdx.org/licenses/)",
+		Default: "AGPL-3.0",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	releaseAuthor, err := (&promptui.Prompt{
+		Label:   "Release author name",
+		Default: "Jean Doe",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	releaseEmail, err := (&promptui.Prompt{
+		Label:   "Release author email",
+		Default: "name",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	_, advancedConfiguration, err := (&promptui.Select{
+		Label: "Do you want to do any advanced configuration?",
+		Items: []string{"yes", "no"},
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	licenseTextSummary := agplv3LicenseTextSummary
+	if advancedConfiguration == "yes" {
+		licenseTextSummary, err = (&promptui.Prompt{
+			Label:   "License summary text",
+			Default: agplv3LicenseTextSummary,
+		}).Run()
+		if err != nil {
+			panic(err)
+		}
+	}
 
 	{
 		cfg := config.Root{}
 		cfg.App = config.App{
-			ID:          *appID,
-			Name:        *appName,
-			Summary:     *appSummary,
-			Description: *appDescription,
-			Homepage:    *appHomepage,
-			Git:         *appGit,
-			BaseURL:     *appBaseurl,
+			ID:          appID,
+			Name:        appName,
+			Summary:     appSummary,
+			Description: appDescription,
+			Homepage:    appHomepage,
+			Git:         appGit,
+			BaseURL:     appBaseurl,
 		}
 		cfg.Go = config.Go{
 			Main:     *goMain,
@@ -211,16 +321,16 @@ func main() {
 			Image:    *goImg,
 		}
 		cfg.License = config.License{
-			SPDX: *licenseSPDX,
-			Text: *licenseTextSummary,
+			SPDX: licenseSPDX,
+			Text: licenseTextSummary,
 		}
 		cfg.Releases = []renderers.Release{
 			{
 				Version:     "0.0.1",
 				Date:        time.Now(),
 				Description: "Initial release",
-				Author:      *releaseAuthor,
-				Email:       *releaseEmail,
+				Author:      releaseAuthor,
+				Email:       releaseEmail,
 			},
 		}
 
@@ -294,54 +404,54 @@ func main() {
 			panic(err)
 		}
 
-		if err := os.MkdirAll(*dir, os.ModePerm); err != nil {
+		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 			panic(err)
 		}
 
-		if err := ioutil.WriteFile(filepath.Join(*dir, "hydrapp.yaml"), b, os.ModePerm); err != nil {
+		if err := ioutil.WriteFile(filepath.Join(dir, "hydrapp.yaml"), b, os.ModePerm); err != nil {
 			panic(err)
 		}
 	}
 
-	if err := ioutil.WriteFile(filepath.Join(*dir, "icon.png"), iconTpl, os.ModePerm); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(dir, "icon.png"), iconTpl, os.ModePerm); err != nil {
 		panic(err)
 	}
 
 	if err := renderTemplate(
-		filepath.Join(*dir, "go.mod"),
+		filepath.Join(dir, "go.mod"),
 		goModTpl,
 		goModData{
-			GoMod: *goMod,
+			GoMod: goMod,
 		},
 	); err != nil {
 		panic(err)
 	}
 
-	switch *projectType {
-	case "rest":
+	switch projectType {
+	case restKey:
 		if err := renderTemplate(
-			filepath.Join(*dir, "main.go"),
+			filepath.Join(dir, "main.go"),
 			goMainRESTTpl,
 			goMainData{
-				GoMod: *goMod,
+				GoMod: goMod,
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "android.go"),
+			filepath.Join(dir, "android.go"),
 			androidRESTTpl,
 			androidData{
-				GoMod:     *goMod,
-				JNIExport: strings.Replace(*appID, ".", "_", -1),
+				GoMod:     goMod,
+				JNIExport: strings.Replace(appID, ".", "_", -1),
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, ".gitignore"),
+			filepath.Join(dir, ".gitignore"),
 			gitignoreRESTTpl,
 			nil,
 		); err != nil {
@@ -349,7 +459,7 @@ func main() {
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "backend", "server.go"),
+			filepath.Join(dir, "pkg", "backend", "server.go"),
 			backendRESTTpl,
 			nil,
 		); err != nil {
@@ -357,7 +467,7 @@ func main() {
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "server.go"),
+			filepath.Join(dir, "pkg", "frontend", "server.go"),
 			frontendRESTTpl,
 			nil,
 		); err != nil {
@@ -365,38 +475,38 @@ func main() {
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "index.html"),
+			filepath.Join(dir, "pkg", "frontend", "index.html"),
 			indexHTMLRESTTpl,
 			indexHTMLData{
-				AppName: *appName,
+				AppName: appName,
 			},
 		); err != nil {
 			panic(err)
 		}
-	case "forms":
+	case formsKey:
 		if err := renderTemplate(
-			filepath.Join(*dir, "main.go"),
+			filepath.Join(dir, "main.go"),
 			goMainFormsTpl,
 			goMainData{
-				GoMod: *goMod,
+				GoMod: goMod,
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "android.go"),
+			filepath.Join(dir, "android.go"),
 			androidFormsTpl,
 			androidData{
-				GoMod:     *goMod,
-				JNIExport: strings.Replace(*appID, ".", "_", -1),
+				GoMod:     goMod,
+				JNIExport: strings.Replace(appID, ".", "_", -1),
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "server.go"),
+			filepath.Join(dir, "pkg", "frontend", "server.go"),
 			frontendFormsTpl,
 			nil,
 		); err != nil {
@@ -404,38 +514,38 @@ func main() {
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "index.html"),
+			filepath.Join(dir, "pkg", "frontend", "index.html"),
 			indexHTMLFormsTpl,
 			indexHTMLData{
-				AppName: *appName,
+				AppName: appName,
 			},
 		); err != nil {
 			panic(err)
 		}
-	case "dudirekta":
+	case dudirektaKey:
 		if err := renderTemplate(
-			filepath.Join(*dir, "main.go"),
+			filepath.Join(dir, "main.go"),
 			goMainDudirektaTpl,
 			goMainData{
-				GoMod: *goMod,
+				GoMod: goMod,
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "android.go"),
+			filepath.Join(dir, "android.go"),
 			androidDudirektaTpl,
 			androidData{
-				GoMod:     *goMod,
-				JNIExport: strings.Replace(*appID, ".", "_", -1),
+				GoMod:     goMod,
+				JNIExport: strings.Replace(appID, ".", "_", -1),
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, ".gitignore"),
+			filepath.Join(dir, ".gitignore"),
 			gitignoreDudirektaTpl,
 			nil,
 		); err != nil {
@@ -443,7 +553,7 @@ func main() {
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "backend", "server.go"),
+			filepath.Join(dir, "pkg", "backend", "server.go"),
 			backendDudirektaTpl,
 			nil,
 		); err != nil {
@@ -451,7 +561,7 @@ func main() {
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "server.go"),
+			filepath.Join(dir, "pkg", "frontend", "server.go"),
 			frontendDudirektaTpl,
 			nil,
 		); err != nil {
@@ -459,17 +569,17 @@ func main() {
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "src", "App.tsx"),
+			filepath.Join(dir, "pkg", "frontend", "src", "App.tsx"),
 			appTSXTpl,
 			appTSXData{
-				AppName: *appName,
+				AppName: appName,
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "src", "main.tsx"),
+			filepath.Join(dir, "pkg", "frontend", "src", "main.tsx"),
 			mainTSXTpl,
 			nil,
 		); err != nil {
@@ -477,31 +587,31 @@ func main() {
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "index.html"),
+			filepath.Join(dir, "pkg", "frontend", "index.html"),
 			indexHTMLDudirektaTpl,
 			indexHTMLData{
-				AppName: *appName,
+				AppName: appName,
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "package.json"),
+			filepath.Join(dir, "pkg", "frontend", "package.json"),
 			packageJSONTpl,
 			packageJSONData{
-				AppID:          *appID,
-				AppDescription: *appDescription,
-				ReleaseAuthor:  *releaseAuthor,
-				ReleaseEmail:   *releaseEmail,
-				LicenseSPDX:    *licenseSPDX,
+				AppID:          appID,
+				AppDescription: appDescription,
+				ReleaseAuthor:  releaseAuthor,
+				ReleaseEmail:   releaseEmail,
+				LicenseSPDX:    licenseSPDX,
 			},
 		); err != nil {
 			panic(err)
 		}
 
 		if err := renderTemplate(
-			filepath.Join(*dir, "pkg", "frontend", "tsconfig.json"),
+			filepath.Join(dir, "pkg", "frontend", "tsconfig.json"),
 			tsconfigJSONTpl,
 			nil,
 		); err != nil {
@@ -512,8 +622,8 @@ func main() {
 	}
 
 	if err := renderTemplate(
-		filepath.Join(*dir, "LICENSE"),
-		*licenseTextSummary,
+		filepath.Join(dir, "LICENSE"),
+		licenseTextSummary,
 		nil,
 	); err != nil {
 		panic(err)
@@ -521,7 +631,7 @@ func main() {
 
 	{
 		cmd := exec.Command("go", "get", "-x", "./...")
-		cmd.Dir = *dir
+		cmd.Dir = dir
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
@@ -533,7 +643,7 @@ func main() {
 
 	{
 		cmd := exec.Command("go", "generate", "-x", "./...")
-		cmd.Dir = *dir
+		cmd.Dir = dir
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
