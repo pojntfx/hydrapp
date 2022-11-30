@@ -18,8 +18,8 @@ import (
 	frontend "github.com/pojntfx/hydrapp/hydrapp-example-dudirekta/pkg/frontend"
 )
 
-//export Java_com_pojtinger_felicitas_hydrapp_example_full_MainActivity_LaunchBackend
-func Java_com_pojtinger_felicitas_hydrapp_example_full_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
+//export Java_com_pojtinger_felicitas_hydrapp_example_dudirekta_MainActivity_LaunchBackend
+func Java_com_pojtinger_felicitas_hydrapp_example_dudirekta_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
 	backendURL, _, err := backend.StartServer(context.Background(), "", time.Second*10, false)
 	if err != nil {
 		log.Fatalln("could not start backend:", err)

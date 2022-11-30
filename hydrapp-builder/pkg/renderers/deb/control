@@ -2,7 +2,7 @@ Source: {{ .AppID }}
 Section: utils
 Priority: optional
 Maintainer: {{ (LastRelease .AppReleases).Author }} <{{ (LastRelease .AppReleases).Email }}>
-Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), gccgo-go (>= 1.19), imagemagick, ca-certificates, desktop-file-utils (>= 0.24), appstream-util (>= 0.7.16), npm (>= 7.5.2){{ range $pkg := .ExtraPackages }}, {{ $pkg.Name }} (>= {{ $pkg.Version }}){{ end }}
+Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), golang-go (>= 1.19), imagemagick, ca-certificates, desktop-file-utils (>= 0.24), appstream-util (>= 0.7.16), npm (>= 7.5.2){{ range $pkg := .ExtraPackages }}, {{ $pkg.Name }} (>= {{ $pkg.Version }}){{ end }}
 Standards-Version: 4.5.1
 Homepage: {{ .AppURL }}
 Vcs-Browser: {{ .AppGit }}
