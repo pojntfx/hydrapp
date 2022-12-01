@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -136,6 +137,11 @@ type hydrappYAMLData struct {
 	AppID string
 }
 
+type projectTypeOption struct {
+	Name        string
+	Description string
+}
+
 func renderTemplate(path string, tpl string, data any) error {
 	// Assume that templates without data are just files
 	if data == nil {
@@ -171,8 +177,28 @@ func main() {
 
 	// TODO: Add help menu for each select item
 	_, projectType, err := (&promptui.Select{
+		Templates: &promptui.SelectTemplates{
+			Label:    fmt.Sprintf("%s {{ .Name }}: ", promptui.IconInitial),
+			Active:   fmt.Sprintf("%s {{ .Name | underline }}", promptui.IconSelect),
+			Inactive: "  {{ .Name }}",
+			Selected: fmt.Sprintf(`{{ "%s" | green }} {{ .Name | faint }}`, promptui.IconGood),
+			Details:  `{{ "Description:" | faint }}	{{ .Description }}`,
+		},
 		Label: "Project type to generate",
-		Items: []string{restKey, formsKey, dudirektaKey},
+		Items: []projectTypeOption{
+			{
+				Name:        restKey,
+				Description: "Simple starter project with a REST API to connect the frontend and backend",
+			},
+			{
+				Name:        formsKey,
+				Description: "Traditional starter project with Web 1.0-style forms to connect the frontend and backend",
+			},
+			{
+				Name:        dudirektaKey,
+				Description: "Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend",
+			},
+		},
 	}).Run()
 	if err != nil {
 		panic(err)
