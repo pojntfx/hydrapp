@@ -97,6 +97,9 @@ var (
 	//go:embed tsconfig.json.tpl
 	tsconfigJSONTpl string
 
+	//go:embed hydrapp.yaml.tpl
+	hydrappYAMLTpl string
+
 	errUnknownProjectType = errors.New("unknown project type")
 )
 
@@ -127,6 +130,10 @@ type packageJSONData struct {
 	ReleaseAuthor  string
 	ReleaseEmail   string
 	LicenseSPDX    string
+}
+
+type hydrappYAMLData struct {
+	AppID string
 }
 
 func renderTemplate(path string, tpl string, data any) error {
@@ -715,6 +722,16 @@ func main() {
 		filepath.Join(dir, "LICENSE"),
 		licenseText,
 		nil,
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(dir, ".github", "workflows", "hydrapp.yaml"),
+		hydrappYAMLTpl,
+		hydrappYAMLData{
+			AppID: appID,
+		},
 	); err != nil {
 		panic(err)
 	}

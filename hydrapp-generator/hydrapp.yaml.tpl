@@ -1,0 +1,161 @@
+name: hydrapp CI
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          # {{ .AppID }}
+          - id: hydrapp-apk.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-deb.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-dmg.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|deb|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-flatpak.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|deb|dmg|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-msi.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-rpm.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|deb|flatpak|dmg|msi|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-binaries.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|deb|flatpak|dmg|msi|rpm|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-tests.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
+            tag: main
+            dst: out/*
+
+    steps:
+      - name: Maximize build space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Set up hydrun
+        run: |
+          curl -L -o /tmp/hydrun "https://github.com/pojntfx/hydrun/releases/latest/download/hydrun.linux-$(uname -m)"
+          sudo install /tmp/hydrun /usr/local/bin
+      - name: Build hydrapp-builder with hydrun
+        working-directory: .
+        run: hydrun -o golang:bullseye "./Hydrunfile go hydrapp-builder"
+      - name: Fix permissions for output
+        run: sudo chown -R $USER .
+      - name: Install hydrapp-builder
+        working-directory: .
+        run: sudo install -D -m 0755 out/hydrapp-builder.linux-x86_64 /usr/local/bin/hydrapp-builder
+      - name: Remove hydrapp-builder build output
+        working-directory: .
+        run: rm -rf out
+      - name: Setup PGP key
+        working-directory: .
+        env:
+          PGP_KEY: {{"${{"}} secrets.PGP_KEY {{"}}"}}
+        run: echo "${PGP_KEY}" | base64 -d >'/tmp/pgp.asc'
+      - name: Setup Android certificate
+        working-directory: .
+        env:
+          APK_CERT: {{"${{"}} secrets.APK_CERT {{"}}"}}
+        run: echo "${APK_CERT}" | base64 -d >'/tmp/keystore.jks'
+      - name: Build with hydrapp
+        working-directory: {{"${{"}} matrix.target.src {{"}}"}}
+        env:
+          PGP_PASSWORD: {{"${{"}} secrets.PGP_PASSWORD {{"}}"}}
+          PGP_ID: {{"${{"}} secrets.PGP_ID {{"}}"}}
+          APK_STOREPASS: {{"${{"}} secrets.APK_STOREPASS {{"}}"}}
+          APK_KEYPASS: {{"${{"}} secrets.APK_KEYPASS {{"}}"}}
+        run: |
+          export BRANCH_ID=""
+          export BRANCH_NAME=""
+          if [ "$(git tag --points-at HEAD)" = "" ]; then
+            export BRANCH_ID="$(git symbolic-ref --short HEAD)"
+            export BRANCH_NAME="$(echo ${BRANCH_ID^})"
+          fi
+
+          hydrapp-builder --config='./{{"${{"}} matrix.target.pkg {{"}}"}}/hydrapp.yaml' --exclude='{{"${{"}} matrix.target.exclude {{"}}"}}' \
+            --pull=true --tag='{{"${{"}} matrix.target.tag {{"}}"}}' \
+            --dst="${PWD}/out/{{"${{"}} matrix.target.pkg {{"}}"}}" --src="${PWD}" \
+            --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \
+            --apk-cert='/tmp/keystore.jks' --apk-storepass="${APK_STOREPASS}" --apk-keypass="${APK_KEYPASS}" \
+            --concurrency="$(nproc)" \
+            --branch-id="${BRANCH_ID}" --branch-name="${BRANCH_NAME}"
+      - name: Fix permissions for output
+        run: sudo chown -R $USER .
+      - name: Upload output
+        uses: actions/upload-artifact@v2
+        with:
+          name: {{"${{"}} matrix.target.id {{"}}"}}
+          path: {{"${{"}} matrix.target.dst {{"}}"}}
+
+  publish-linux:
+    runs-on: ubuntu-latest
+    needs: build-linux
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Download output
+        uses: actions/download-artifact@v2
+        with:
+          path: /tmp/out
+      - name: Isolate the repositories
+        run: |
+          mkdir -p /tmp/github-pages
+          for dir in /tmp/out/*/; do
+            rsync -a "${dir}"/ /tmp/github-pages/
+          done
+      - name: Add index for repositories
+        run: |
+          sudo apt update
+          sudo apt install -y tree
+
+          cd /tmp/github-pages/
+          tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -T 'hydrapp Repositories' --du -h -D -H . -o 'index.html'
+      - name: Publish to GitHub pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: {{"${{"}} secrets.GITHUB_TOKEN {{"}}"}}
+          publish_dir: /tmp/github-pages/
+          keep_files: true
