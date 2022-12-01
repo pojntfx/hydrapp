@@ -175,30 +175,30 @@ func main() {
 
 	flag.Parse()
 
-	// TODO: Add help menu for each select item
-	_, projectType, err := (&promptui.Select{
+	projectTypeItems := []projectTypeOption{
+		{
+			Name:        restKey,
+			Description: "Simple starter project with a REST API to connect the frontend and backend",
+		},
+		{
+			Name:        formsKey,
+			Description: "Traditional starter project with Web 1.0-style forms to connect the frontend and backend",
+		},
+		{
+			Name:        dudirektaKey,
+			Description: "Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend",
+		},
+	}
+
+	projectTypeIndex, _, err := (&promptui.Select{
 		Templates: &promptui.SelectTemplates{
-			Label:    fmt.Sprintf("%s {{ .Name }}: ", promptui.IconInitial),
-			Active:   fmt.Sprintf("%s {{ .Name | underline }}", promptui.IconSelect),
-			Inactive: "  {{ .Name }}",
-			Selected: fmt.Sprintf(`{{ "%s" | green }} {{ .Name | faint }}`, promptui.IconGood),
-			Details:  `{{ "Description:" | faint }}	{{ .Description }}`,
+			Label:    fmt.Sprintf("%s {{.}}: ", promptui.IconInitial),
+			Active:   fmt.Sprintf("%s {{ .Name | underline }}: {{ .Description | faint }}", promptui.IconSelect),
+			Inactive: "  {{ .Name }}: {{ .Description | faint }}",
+			Selected: fmt.Sprintf(`{{ "%s" | green }} {{ .Name | faint }}: {{ .Description | faint }}`, promptui.IconGood),
 		},
-		Label: "Project type to generate",
-		Items: []projectTypeOption{
-			{
-				Name:        restKey,
-				Description: "Simple starter project with a REST API to connect the frontend and backend",
-			},
-			{
-				Name:        formsKey,
-				Description: "Traditional starter project with Web 1.0-style forms to connect the frontend and backend",
-			},
-			{
-				Name:        dudirektaKey,
-				Description: "Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend",
-			},
-		},
+		Label: "Which project type do you want to generate?",
+		Items: projectTypeItems,
 	}).Run()
 	if err != nil {
 		panic(err)
@@ -550,7 +550,7 @@ func main() {
 		panic(err)
 	}
 
-	switch projectType {
+	switch projectTypeItems[projectTypeIndex].Name {
 	case restKey:
 		if err := renderTemplate(
 			filepath.Join(dir, "main.go"),
