@@ -101,6 +101,12 @@ var (
 	//go:embed hydrapp.yaml.tpl
 	hydrappYAMLTpl string
 
+	//go:embed CODE_OF_CONDUCT.md.tpl
+	codeOfConductMDTpl string
+
+	//go:embed README.md.tpl
+	readmeMDTpl string
+
 	errUnknownProjectType = errors.New("unknown project type")
 )
 
@@ -140,6 +146,22 @@ type hydrappYAMLData struct {
 type projectTypeOption struct {
 	Name        string
 	Description string
+}
+
+type codeOfConductMDData struct {
+	ReleaseEmail string
+}
+
+type readmeMDData struct {
+	AppName        string
+	AppSummary     string
+	AppGitWeb      string
+	AppDescription string
+	AppBaseURL     string
+	AppGit         string
+	CurrentYear    string
+	ReleaseAuthor  string
+	LicenseSPDX    string
 }
 
 func renderTemplate(path string, tpl string, data any) error {
@@ -260,14 +282,6 @@ func main() {
 		panic(err)
 	}
 
-	dir, err := (&promptui.Prompt{
-		Label:   "Directory to write the app to",
-		Default: "myapp",
-	}).Run()
-	if err != nil {
-		panic(err)
-	}
-
 	goMod, err := (&promptui.Prompt{
 		Label:   "Go module name",
 		Default: "github.com/example/myapp",
@@ -295,6 +309,14 @@ func main() {
 	releaseEmail, err := (&promptui.Prompt{
 		Label:   "Release author email",
 		Default: "jean.doe@example.com",
+	}).Run()
+	if err != nil {
+		panic(err)
+	}
+
+	dir, err := (&promptui.Prompt{
+		Label:   "Directory to write the app to",
+		Default: "myapp",
 	}).Run()
 	if err != nil {
 		panic(err)
@@ -753,6 +775,34 @@ func main() {
 	}
 
 	if err := renderTemplate(
+		filepath.Join(dir, "CODE_OF_CONDUCT.md"),
+		codeOfConductMDTpl,
+		codeOfConductMDData{
+			ReleaseEmail: releaseEmail,
+		},
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
+		filepath.Join(dir, "README.md"),
+		readmeMDTpl,
+		readmeMDData{
+			AppName:        appName,
+			AppSummary:     appSummary,
+			AppGitWeb:      strings.TrimSuffix(appGit, ".git"),
+			AppDescription: appDescription,
+			AppBaseURL:     appBaseurl,
+			AppGit:         appGit,
+			CurrentYear:    time.Now().Format("2006"),
+			ReleaseAuthor:  releaseAuthor,
+			LicenseSPDX:    licenseSPDX,
+		},
+	); err != nil {
+		panic(err)
+	}
+
+	if err := renderTemplate(
 		filepath.Join(dir, ".github", "workflows", "hydrapp.yaml"),
 		hydrappYAMLTpl,
 		hydrappYAMLData{
@@ -793,6 +843,16 @@ func main() {
 			}
 
 			log.Println("Success!")
+		}
+
+		{
+			fmt.Printf(`Succesfully generated application. To start it, run the following:
+
+cd %v
+go run %v
+
+You can find more information in the generated README.
+`, dir, goMain)
 		}
 	}
 }
