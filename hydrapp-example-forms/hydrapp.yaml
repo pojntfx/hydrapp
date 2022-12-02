@@ -1,6 +1,6 @@
 app:
   id: com.pojtinger.felicitas.hydrapp.example.forms
-  name: Hydrapp REST Example
+  name: Hydrapp Forms Example
   summary: Hydrapp forms example app
   description: A simple Hydrapp forms example app.
   license: AGPL-3.0-or-later
