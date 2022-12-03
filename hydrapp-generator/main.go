@@ -12,15 +12,13 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
-	"text/template"
 	"time"
-
-	_ "embed"
 
 	"github.com/manifoldco/promptui"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-generator/pkg/generators"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 	"gopkg.in/yaml.v3"
 )
@@ -32,172 +30,15 @@ const (
 )
 
 var (
-	//go:embed icon.png.tpl
-	iconTpl []byte
-
-	//go:embed go.mod.tpl
-	goModTpl string
-
-	//go:embed main_dudirekta.go.tpl
-	goMainDudirektaTpl string
-
-	//go:embed main_forms.go.tpl
-	goMainFormsTpl string
-
-	//go:embed main_rest.go.tpl
-	goMainRESTTpl string
-
-	//go:embed android_dudirekta.go.tpl
-	androidDudirektaTpl string
-
-	//go:embed android_forms.go.tpl
-	androidFormsTpl string
-
-	//go:embed android_rest.go.tpl
-	androidRESTTpl string
-
-	//go:embed .gitignore_dudirekta.tpl
-	gitignoreDudirektaTpl string
-
-	//go:embed .gitignore_rest.tpl
-	gitignoreRESTTpl string
-
-	//go:embed backend_dudirekta.go.tpl
-	backendDudirektaTpl string
-
-	//go:embed backend_rest.go.tpl
-	backendRESTTpl string
-
-	//go:embed frontend_dudirekta.go.tpl
-	frontendDudirektaTpl string
-
-	//go:embed frontend_rest.go.tpl
-	frontendRESTTpl string
-
-	//go:embed frontend_forms.go.tpl
-	frontendFormsTpl string
-
-	//go:embed App.tsx.tpl
-	appTSXTpl string
-
-	//go:embed main.tsx.tpl
-	mainTSXTpl string
-
-	//go:embed index_dudirekta.html.tpl
-	indexHTMLDudirektaTpl string
-
-	//go:embed index_rest.html.tpl
-	indexHTMLRESTTpl string
-
-	//go:embed index_forms.html.tpl
-	indexHTMLFormsTpl string
-
-	//go:embed package.json.tpl
-	packageJSONTpl string
-
-	//go:embed tsconfig.json.tpl
-	tsconfigJSONTpl string
-
-	//go:embed hydrapp.yaml.tpl
-	hydrappYAMLTpl string
-
-	//go:embed CODE_OF_CONDUCT.md.tpl
-	codeOfConductMDTpl string
-
-	//go:embed README.md.tpl
-	readmeMDTpl string
-
 	errUnknownProjectType = errors.New("unknown project type")
 )
-
-type goModData struct {
-	GoMod string
-}
-
-type goMainData struct {
-	GoMod string
-}
-
-type androidData struct {
-	GoMod     string
-	JNIExport string
-}
-
-type appTSXData struct {
-	AppName string
-}
-
-type indexHTMLData struct {
-	AppName string
-}
-
-type packageJSONData struct {
-	AppID          string
-	AppDescription string
-	ReleaseAuthor  string
-	ReleaseEmail   string
-	LicenseSPDX    string
-}
-
-type hydrappYAMLData struct {
-	AppID string
-}
-
-type projectTypeOption struct {
-	Name        string
-	Description string
-}
-
-type codeOfConductMDData struct {
-	ReleaseEmail string
-}
-
-type readmeMDData struct {
-	AppName        string
-	AppSummary     string
-	AppGitWeb      string
-	AppDescription string
-	AppBaseURL     string
-	AppGit         string
-	CurrentYear    string
-	ReleaseAuthor  string
-	LicenseSPDX    string
-}
-
-func renderTemplate(path string, tpl string, data any) error {
-	// Assume that templates without data are just files
-	if data == nil {
-		if err := os.MkdirAll(filepath.Dir(path), os.ModePerm); err != nil {
-			return err
-		}
-
-		return ioutil.WriteFile(path, []byte(tpl), os.ModePerm)
-	}
-
-	t, err := template.New(path).Parse(tpl)
-	if err != nil {
-		return err
-	}
-
-	if err := os.MkdirAll(filepath.Dir(t.Name()), os.ModePerm); err != nil {
-		return err
-	}
-
-	dst, err := os.OpenFile(t.Name(), os.O_WRONLY|os.O_CREATE, os.ModePerm)
-	if err != nil {
-		return err
-	}
-	defer dst.Close()
-
-	return t.Execute(dst, data)
-}
 
 func main() {
 	noNetwork := flag.Bool("no-network", false, "Disable all network interaction")
 
 	flag.Parse()
 
-	projectTypeItems := []projectTypeOption{
+	projectTypeItems := []generators.ProjectTypeOption{
 		{
 			Name:        restKey,
 			Description: "Simple starter project with a REST API to connect the frontend and backend",
@@ -558,14 +399,14 @@ func main() {
 		}
 	}
 
-	if err := ioutil.WriteFile(filepath.Join(dir, "icon.png"), iconTpl, os.ModePerm); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(dir, "icon.png"), generators.IconTpl, os.ModePerm); err != nil {
 		panic(err)
 	}
 
-	if err := renderTemplate(
+	if err := generators.RenderTemplate(
 		filepath.Join(dir, "go.mod"),
-		goModTpl,
-		goModData{
+		generators.GoModTpl,
+		generators.GoModData{
 			GoMod: goMod,
 		},
 	); err != nil {
@@ -574,20 +415,20 @@ func main() {
 
 	switch projectTypeItems[projectTypeIndex].Name {
 	case restKey:
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "main.go"),
-			goMainRESTTpl,
-			goMainData{
+			generators.GoMainRESTTpl,
+			generators.GoMainData{
 				GoMod: goMod,
 			},
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "android.go"),
-			androidRESTTpl,
-			androidData{
+			generators.AndroidRESTTpl,
+			generators.AndroidData{
 				GoMod:     goMod,
 				JNIExport: strings.Replace(appID, ".", "_", -1),
 			},
@@ -595,54 +436,54 @@ func main() {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, ".gitignore"),
-			gitignoreRESTTpl,
+			generators.GitignoreRESTTpl,
 			nil,
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "backend", "server.go"),
-			backendRESTTpl,
+			generators.BackendRESTTpl,
 			nil,
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "server.go"),
-			frontendRESTTpl,
+			generators.FrontendRESTTpl,
 			nil,
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "index.html"),
-			indexHTMLRESTTpl,
-			indexHTMLData{
+			generators.IndexHTMLRESTTpl,
+			generators.IndexHTMLData{
 				AppName: appName,
 			},
 		); err != nil {
 			panic(err)
 		}
 	case formsKey:
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "main.go"),
-			goMainFormsTpl,
-			goMainData{
+			generators.GoMainFormsTpl,
+			generators.GoMainData{
 				GoMod: goMod,
 			},
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "android.go"),
-			androidFormsTpl,
-			androidData{
+			generators.AndroidFormsTpl,
+			generators.AndroidData{
 				GoMod:     goMod,
 				JNIExport: strings.Replace(appID, ".", "_", -1),
 			},
@@ -650,38 +491,38 @@ func main() {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "server.go"),
-			frontendFormsTpl,
+			generators.FrontendFormsTpl,
 			nil,
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "index.html"),
-			indexHTMLFormsTpl,
-			indexHTMLData{
+			generators.IndexHTMLFormsTpl,
+			generators.IndexHTMLData{
 				AppName: appName,
 			},
 		); err != nil {
 			panic(err)
 		}
 	case dudirektaKey:
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "main.go"),
-			goMainDudirektaTpl,
-			goMainData{
+			generators.GoMainDudirektaTpl,
+			generators.GoMainData{
 				GoMod: goMod,
 			},
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "android.go"),
-			androidDudirektaTpl,
-			androidData{
+			generators.AndroidDudirektaTpl,
+			generators.AndroidData{
 				GoMod:     goMod,
 				JNIExport: strings.Replace(appID, ".", "_", -1),
 			},
@@ -689,62 +530,62 @@ func main() {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, ".gitignore"),
-			gitignoreDudirektaTpl,
+			generators.GitignoreDudirektaTpl,
 			nil,
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "backend", "server.go"),
-			backendDudirektaTpl,
+			generators.BackendDudirektaTpl,
 			nil,
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "server.go"),
-			frontendDudirektaTpl,
+			generators.FrontendDudirektaTpl,
 			nil,
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "src", "App.tsx"),
-			appTSXTpl,
-			appTSXData{
+			generators.AppTSXTpl,
+			generators.AppTSXData{
 				AppName: appName,
 			},
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "src", "main.tsx"),
-			mainTSXTpl,
+			generators.MainTSXTpl,
 			nil,
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "index.html"),
-			indexHTMLDudirektaTpl,
-			indexHTMLData{
+			generators.IndexHTMLDudirektaTpl,
+			generators.IndexHTMLData{
 				AppName: appName,
 			},
 		); err != nil {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "package.json"),
-			packageJSONTpl,
-			packageJSONData{
+			generators.PackageJSONTpl,
+			generators.PackageJSONData{
 				AppID:          appID,
 				AppDescription: appDescription,
 				ReleaseAuthor:  releaseAuthor,
@@ -755,9 +596,9 @@ func main() {
 			panic(err)
 		}
 
-		if err := renderTemplate(
+		if err := generators.RenderTemplate(
 			filepath.Join(dir, "pkg", "frontend", "tsconfig.json"),
-			tsconfigJSONTpl,
+			generators.TsconfigJSONTpl,
 			nil,
 		); err != nil {
 			panic(err)
@@ -766,7 +607,7 @@ func main() {
 		panic(errUnknownProjectType)
 	}
 
-	if err := renderTemplate(
+	if err := generators.RenderTemplate(
 		filepath.Join(dir, "LICENSE"),
 		licenseText,
 		nil,
@@ -774,20 +615,20 @@ func main() {
 		panic(err)
 	}
 
-	if err := renderTemplate(
+	if err := generators.RenderTemplate(
 		filepath.Join(dir, "CODE_OF_CONDUCT.md"),
-		codeOfConductMDTpl,
-		codeOfConductMDData{
+		generators.CodeOfConductMDTpl,
+		generators.CodeOfConductMDData{
 			ReleaseEmail: releaseEmail,
 		},
 	); err != nil {
 		panic(err)
 	}
 
-	if err := renderTemplate(
+	if err := generators.RenderTemplate(
 		filepath.Join(dir, "README.md"),
-		readmeMDTpl,
-		readmeMDData{
+		generators.ReadmeMDTpl,
+		generators.ReadmeMDData{
 			AppName:        appName,
 			AppSummary:     appSummary,
 			AppGitWeb:      strings.TrimSuffix(appGit, ".git"),
@@ -802,10 +643,10 @@ func main() {
 		panic(err)
 	}
 
-	if err := renderTemplate(
+	if err := generators.RenderTemplate(
 		filepath.Join(dir, ".github", "workflows", "hydrapp.yaml"),
-		hydrappYAMLTpl,
-		hydrappYAMLData{
+		generators.HydrappYAMLTpl,
+		generators.HydrappYAMLData{
 			AppID: appID,
 		},
 	); err != nil {
