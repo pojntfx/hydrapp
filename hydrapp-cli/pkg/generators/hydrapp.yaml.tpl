@@ -78,15 +78,15 @@ jobs:
         run: |
           curl -L -o /tmp/hydrun "https://github.com/pojntfx/hydrun/releases/latest/download/hydrun.linux-$(uname -m)"
           sudo install /tmp/hydrun /usr/local/bin
-      - name: Build hydrapp-builder with hydrun
+      - name: Build hydrapp-cli with hydrun
         working-directory: .
-        run: hydrun -o golang:bullseye "./Hydrunfile go hydrapp-builder"
+        run: hydrun -o golang:bullseye "./Hydrunfile go hydrapp-cli"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
-      - name: Install hydrapp-builder
+      - name: Install hydrapp-cli
         working-directory: .
-        run: sudo install -D -m 0755 out/hydrapp-builder.linux-x86_64 /usr/local/bin/hydrapp-builder
-      - name: Remove hydrapp-builder build output
+        run: sudo install -D -m 0755 out/hydrapp-cli.linux-x86_64 /usr/local/bin/hydrapp-cli
+      - name: Remove hydrapp-cli build output
         working-directory: .
         run: rm -rf out
       - name: Setup PGP key
@@ -114,7 +114,7 @@ jobs:
             export BRANCH_NAME="$(echo ${BRANCH_ID^})"
           fi
 
-          hydrapp-builder --config='./{{"${{"}} matrix.target.pkg {{"}}"}}/hydrapp.yaml' --exclude='{{"${{"}} matrix.target.exclude {{"}}"}}' \
+          hydrapp-cli build --config='./{{"${{"}} matrix.target.pkg {{"}}"}}/hydrapp.yaml' --exclude='{{"${{"}} matrix.target.exclude {{"}}"}}' \
             --pull=true --tag='{{"${{"}} matrix.target.tag {{"}}"}}' \
             --dst="${PWD}/out/{{"${{"}} matrix.target.pkg {{"}}"}}" --src="${PWD}" \
             --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \

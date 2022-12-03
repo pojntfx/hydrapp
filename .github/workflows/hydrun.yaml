@@ -12,24 +12,24 @@ jobs:
     strategy:
       matrix:
         target:
-          # hydrapp-builder
+          # hydrapp-cli
           - id: test.hydrun-builder
             src: .
             os: golang:bullseye
             flags: ""
-            cmd: GOFLAGS="-short" ./Hydrunfile test hydrapp-builder
+            cmd: GOFLAGS="-short" ./Hydrunfile test hydrapp-cli
             dst: out/*
           - id: go.hydrun-builder
             src: .
             os: golang:bullseye
             flags: ""
-            cmd: ./Hydrunfile go hydrapp-builder
+            cmd: ./Hydrunfile go hydrapp-cli
             dst: out/*
           # - id: gccgo.hydrun-builder
           #   src: .
           #   os: ghcr.io/pojntfx/bagccgop-base-sid
           #   flags: -e '--privileged --ulimit nofile=32768:32768'
-          #   cmd: ./Hydrunfile gccgo hydrapp-builder
+          #   cmd: ./Hydrunfile gccgo hydrapp-cli
           #   dst: out/*
 
     steps:

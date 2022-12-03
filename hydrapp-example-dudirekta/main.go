@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
+	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-example-dudirekta/pkg/backend"
 	"github.com/pojntfx/hydrapp/hydrapp-example-dudirekta/pkg/frontend"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/browser"

@@ -15,31 +15,31 @@ jobs:
     strategy:
       matrix:
         target:
-          - src: hydrapp-builder/pkg/builders/apk
+          - src: hydrapp-cli/pkg/builders/apk
             image: ghcr.io/pojntfx/hydrapp-build-apk
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          - src: hydrapp-builder/pkg/builders/deb
+          - src: hydrapp-cli/pkg/builders/deb
             image: ghcr.io/pojntfx/hydrapp-build-deb
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          - src: hydrapp-builder/pkg/builders/dmg
+          - src: hydrapp-cli/pkg/builders/dmg
             image: ghcr.io/pojntfx/hydrapp-build-dmg
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          - src: hydrapp-builder/pkg/builders/flatpak
+          - src: hydrapp-cli/pkg/builders/flatpak
             image: ghcr.io/pojntfx/hydrapp-build-flatpak
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          - src: hydrapp-builder/pkg/builders/msi
+          - src: hydrapp-cli/pkg/builders/msi
             image: ghcr.io/pojntfx/hydrapp-build-msi
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          - src: hydrapp-builder/pkg/builders/rpm
+          - src: hydrapp-cli/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          - src: hydrapp-builder/pkg/builders/binaries
+          - src: hydrapp-cli/pkg/builders/binaries
             image: ghcr.io/pojntfx/hydrapp-build-binaries
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          - src: hydrapp-builder/pkg/builders/tests
+          - src: hydrapp-cli/pkg/builders/tests
             image: ghcr.io/pojntfx/hydrapp-build-tests
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          - src: hydrapp-builder/pkg/builders/docs
+          - src: hydrapp-cli/pkg/builders/docs
             image: ghcr.io/pojntfx/hydrapp-build-docs
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
 

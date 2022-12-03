@@ -14,10 +14,10 @@ import (
 	"time"
 
 	"github.com/manifoldco/promptui"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/config"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers"
-	"github.com/pojntfx/hydrapp/hydrapp-builder/pkg/renderers/rpm"
+	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/generators"
+	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/renderers"
+	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/renderers/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
