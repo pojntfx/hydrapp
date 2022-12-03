@@ -16,10 +16,10 @@ github.com/ncruces/zenity v0.10.0 h1:cu2OKaarFbLHdJx8xStMhdamSjZ+eNB2LGUkFD+0VYU
 github.com/ncruces/zenity v0.10.0/go.mod h1:XKTS4jDNihIYL8aESCCb4bT8uej0gpdnxWdxG470CN0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203233526-2a57ffdc5bc4 h1:mRgfmHD6eoeVzwf5ZnYqx6+dlwkzoLaZMkUR0jf8Rzk=
-github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203233526-2a57ffdc5bc4/go.mod h1:IqcnLycf4GFpz7tV9PWCW+4LjoDF1NuQNXbu2cu1VYk=
-github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221203233526-2a57ffdc5bc4 h1:0d7rgIOn2UyqiN0Apvagp7d65/0BSmGKGtTER10tI9U=
-github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221203233526-2a57ffdc5bc4/go.mod h1:s4x2ouX+0dDP5HYVo7V0uJ5F6wHL+jQdJZ04UX9GXwU=
+github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203235151-7e913bd115f5 h1:5rQAO5dADSOIaGBWg4UDk6fYDLftChOsa9YpA3YpWac=
+github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203235151-7e913bd115f5/go.mod h1:IqcnLycf4GFpz7tV9PWCW+4LjoDF1NuQNXbu2cu1VYk=
+github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221203235151-7e913bd115f5 h1:IFZXFrVx3qy4quMxr5czYUldjUaat/ftGDPO45c8Ql8=
+github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221203235151-7e913bd115f5/go.mod h1:GUuoBLLTlckEI56i/Au/SVP+S5Zh0WZ6QDoa+NN+ZYE=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 h1:GranzK4hv1/pqTIhMTXt2X8MmMOuH3hMeUR0o9SP5yc=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844/go.mod h1:T1TLSfyWVBRXVGzWd0o9BI4kfoO9InEgfQe4NV3mLz8=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

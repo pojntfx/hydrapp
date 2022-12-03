@@ -6,7 +6,7 @@ require (
 	github.com/breml/rootcerts v0.2.8
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/ncruces/zenity v0.10.0
-	github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203233526-2a57ffdc5bc4
+	github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203235151-7e913bd115f5
 	gopkg.in/yaml.v3 v3.0.1
 )
 
