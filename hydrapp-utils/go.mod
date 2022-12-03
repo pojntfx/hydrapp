@@ -6,7 +6,8 @@ require (
 	github.com/breml/rootcerts v0.2.8
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/ncruces/zenity v0.10.0
-	github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203233156-a7ab94292e5d
+	github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203233526-2a57ffdc5bc4
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -17,5 +18,4 @@ require (
 	golang.org/x/image v0.1.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
