@@ -9,7 +9,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/config"
+	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/config"
 	"{{ .GoMod }}/pkg/frontend"
 	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/browser"
 	_ "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/fixes"

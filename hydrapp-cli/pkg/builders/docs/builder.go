@@ -8,11 +8,11 @@ import (
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/builders"
-	cconfig "github.com/pojntfx/hydrapp/hydrapp-cli/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/renderers/docs"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/utils"
+	cconfig "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/config"
 	uutils "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
 )
 

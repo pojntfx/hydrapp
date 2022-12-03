@@ -28,8 +28,8 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/builders/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/builders/tests"
-	cconfig "github.com/pojntfx/hydrapp/hydrapp-cli/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-cli/pkg/utils"
+	cconfig "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

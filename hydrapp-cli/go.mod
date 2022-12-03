@@ -6,7 +6,7 @@ require (
 	github.com/docker/docker v20.10.21+incompatible
 	github.com/manifoldco/promptui v0.9.0
 	github.com/otiai10/copy v1.9.0
-	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221203224101-5065355f50d3
+	github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221203233156-a7ab94292e5d
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.14.0
 	golang.org/x/text v0.4.0
