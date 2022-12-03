@@ -1,10 +1,10 @@
 package generators
 
 import (
-	"html/template"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"text/template"
 )
 
 func RenderTemplate(path string, tpl string, data any) error {
