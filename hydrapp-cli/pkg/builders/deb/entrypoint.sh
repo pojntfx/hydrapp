@@ -20,7 +20,9 @@ export BASEDIR="${PWD}/${GOMAIN}"
 # Build chroot and source package
 export PACKAGE="${APP_ID}_${PACKAGE_VERSION}"
 
-cp -r "${BASEDIR}/debian" debian
+if [ ! -d debian ]; then
+	cp -r "${BASEDIR}/debian" debian
+fi
 
 dpkg-source -b .
 

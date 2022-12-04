@@ -74,21 +74,11 @@ jobs:
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - name: Set up hydrun
+      - name: Set up hydrapp
         run: |
-          curl -L -o /tmp/hydrun "https://github.com/pojntfx/hydrun/releases/latest/download/hydrun.linux-$(uname -m)"
-          sudo install /tmp/hydrun /usr/local/bin
-      - name: Build hydrapp-cli with hydrun
-        working-directory: .
-        run: hydrun -o golang:bullseye "./Hydrunfile go hydrapp-cli"
-      - name: Fix permissions for output
-        run: sudo chown -R $USER .
-      - name: Install hydrapp-cli
-        working-directory: .
-        run: sudo install -D -m 0755 out/hydrapp-cli.linux-x86_64 /usr/local/bin/hydrapp-cli
-      - name: Remove hydrapp-cli build output
-        working-directory: .
-        run: rm -rf out
+          # TODO: Use stable release URL here
+          curl -L -o /tmp/hydrapp-cli "https://github.com/pojntfx/hydrapp/releases/download/main/hydrapp-cli.linux-$(uname -m)" 
+          sudo install /tmp/hydrapp-cli /usr/local/bin
       - name: Setup PGP key
         working-directory: .
         env:
