@@ -397,16 +397,16 @@ var newCmd = &cobra.Command{
 				return err
 			}
 
-			if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+			if err := os.MkdirAll(dir, 0755); err != nil {
 				return err
 			}
 
-			if err := ioutil.WriteFile(filepath.Join(dir, "hydrapp.yaml"), b, os.ModePerm); err != nil {
+			if err := ioutil.WriteFile(filepath.Join(dir, "hydrapp.yaml"), b, 0664); err != nil {
 				return err
 			}
 		}
 
-		if err := ioutil.WriteFile(filepath.Join(dir, "icon.png"), generators.IconTpl, os.ModePerm); err != nil {
+		if err := ioutil.WriteFile(filepath.Join(dir, "icon.png"), generators.IconTpl, 0664); err != nil {
 			return err
 		}
 

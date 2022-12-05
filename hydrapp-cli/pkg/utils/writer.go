@@ -13,7 +13,7 @@ func WriteRenders(workdir string, renders []*renderers.Renderer, overwrite, ejec
 		if path, content, err := renderer.Render(""); err != nil {
 			return err
 		} else {
-			if err := os.MkdirAll(filepath.Dir(filepath.Join(workdir, path)), os.ModePerm); err != nil {
+			if err := os.MkdirAll(filepath.Dir(filepath.Join(workdir, path)), 0755); err != nil {
 				return err
 			}
 
@@ -24,7 +24,7 @@ func WriteRenders(workdir string, renders []*renderers.Renderer, overwrite, ejec
 			}
 
 			if !exists || overwrite {
-				if err := ioutil.WriteFile(file, []byte(content), os.ModePerm); err != nil {
+				if err := ioutil.WriteFile(file, []byte(content), 0664); err != nil {
 					return err
 				}
 			}
@@ -40,7 +40,7 @@ func WriteRenders(workdir string, renders []*renderers.Renderer, overwrite, ejec
 					return err
 				}
 
-				if err := ioutil.WriteFile(file, []byte(content), os.ModePerm); err != nil {
+				if err := ioutil.WriteFile(file, []byte(content), 0664); err != nil {
 					return err
 				}
 			}

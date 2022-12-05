@@ -321,16 +321,16 @@ func LaunchBrowser(
 			handlePanic("could not set profile directory", err)
 		}
 
-		if err := ioutil.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), os.ModePerm); err != nil {
+		if err := ioutil.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), 0664); err != nil {
 			panic(err)
 		}
 
 		chromeDir := filepath.Join(profileDir, "chrome")
-		if err := os.MkdirAll(chromeDir, os.ModePerm); err != nil {
+		if err := os.MkdirAll(chromeDir, 0755); err != nil {
 			panic(err)
 		}
 
-		if err := ioutil.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), os.ModePerm); err != nil {
+		if err := ioutil.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), 0664); err != nil {
 			panic(err)
 		}
 

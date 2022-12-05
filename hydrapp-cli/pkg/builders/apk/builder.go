@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/base64"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"strings"
 
@@ -115,7 +114,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 
 		if !ejecting || b.overwrite {
 			if !strings.Contains(string(stableJNIBindingsContent), mainJavaID) {
-				if err := ioutil.WriteFile(jniBindingsPath, []byte(strings.Replace(string(stableJNIBindingsContent), stableJavaID, mainJavaID, -1)), os.ModePerm); err != nil {
+				if err := ioutil.WriteFile(jniBindingsPath, []byte(strings.Replace(string(stableJNIBindingsContent), stableJavaID, mainJavaID, -1)), 0664); err != nil {
 					return err
 				}
 			}
