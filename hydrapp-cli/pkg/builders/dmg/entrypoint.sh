@@ -17,11 +17,6 @@ gpg --import /tmp/private.pgp
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"
 
-# Install MacPorts packages
-if [ "${MACPORTS}" != "" ]; then
-  osxcross-macports install --static ${MACPORTS}
-fi
-
 # Generate dependencies
 GOFLAGS="${GOFLAGS}" sh -c "${GOGENERATE}"
 
@@ -43,6 +38,7 @@ for ARCH in ${ARCHITECTURES}; do
 
   # See https://github.com/pojntfx/bagop/blob/main/main.go#L45
   export DEBARCH="${GOARCH}"
+  export MACPORTS_ARGS=""
   if [ "${ARCH}" = "386" ]; then
     export DEBARCH="i686"
   elif [ "${ARCH}" = "amd64" ]; then
@@ -50,6 +46,7 @@ for ARCH in ${ARCHITECTURES}; do
   elif [ "${ARCH}" = "arm" ]; then
     export DEBARCH="armv7l"
   elif [ "${ARCH}" = "arm64" ]; then
+    export MACPORTS_ARGS="--arm64"
     export DEBARCH="aarch64"
   fi
 
@@ -57,6 +54,12 @@ for ARCH in ${ARCHITECTURES}; do
   export CXX="$(find /osxcross/bin/${DEBARCH}-apple-darwin*-c++)"
   export PKGCONFIG="$(find /osxcross/bin/${DEBARCH}-apple-darwin*-pkg-config)"
   export PKG_CONFIG="$(find /osxcross/bin/${DEBARCH}-apple-darwin*-pkg-config)"
+
+  # Install MacPorts packages
+  if [ "${MACPORTS}" != "" ]; then
+    rm -rf /osxcross/macports/pkgs/
+    osxcross-macports install ${MACPORTS_ARGS} --static ${MACPORTS}
+  fi
 
   go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update.BranchID=${BRANCH_ID}" -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
   rcodesign sign "/tmp/${APP_ID}.${GOOS}-${DEBARCH}"
