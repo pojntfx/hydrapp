@@ -124,7 +124,7 @@ var newCmd = &cobra.Command{
 
 		appBaseurl, err := (&promptui.Prompt{
 			Label:   "App base URL to expect the built assets to be published to",
-			Default: "https://example.github.io/myapp/myapp/",
+			Default: "https://example.github.io/myapp/",
 		}).Run()
 		if err != nil {
 			return err

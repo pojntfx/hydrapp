@@ -10,7 +10,7 @@
 
 ## Installation
 
-See [INSTALLATION.html]({{ .AppBaseURL }}/docs/INSTALLATION.html).
+See [INSTALLATION.html]({{ .AppBaseURL }}/docs/main/INSTALLATION.html).
 
 ## Reference
 
