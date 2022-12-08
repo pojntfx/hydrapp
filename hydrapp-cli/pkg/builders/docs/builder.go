@@ -106,7 +106,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 		rpms = append(rpms, docs.DistroArtifact{
 			Artifact: docs.Artifact{
 				Architecture: r.Architecture,
-				URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(r.Path+"/"+parts[0]+"/"+parts[1], b.branchID) + "/repodata/hydrapp.repo",
+				URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(r.Path, b.branchID) + "/repodata/hydrapp.repo",
 			},
 			DistroName:    parts[0],
 			DistroVersion: parts[1],
