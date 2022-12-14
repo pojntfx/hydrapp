@@ -17,7 +17,7 @@
     "parcel": "^2.7.0",
     "process": "^0.11.10",
     "typescript": "^4.6.4",
-    "@pojntfx/dudirekta": "^0.2.0"
+    "@pojntfx/dudirekta": "^0.3.0"
   },
   "dependencies": {
     "react": "^18.2.0",

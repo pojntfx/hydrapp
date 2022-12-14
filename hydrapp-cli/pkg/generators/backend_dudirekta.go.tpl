@@ -96,6 +96,7 @@ func StartServer(ctx context.Context, addr string, heartbeat time.Duration, loca
 
 		time.Second*10,
 		ctx,
+		nil,
 	)
 	l.Peers = registry.Peers
 
