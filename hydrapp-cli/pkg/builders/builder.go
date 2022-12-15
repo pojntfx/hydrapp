@@ -26,10 +26,10 @@ func GetAppNameForBranch(appName, branchName string) string {
 func GetPathForBranch(path, branchID string) string {
 	// Stable
 	if strings.TrimSpace(branchID) == "" {
-		return path + "/stable"
+		return "/" + path + "/stable"
 	}
 
-	return path + "/" + branchID
+	return "/" + path + "/" + branchID
 }
 
 func GetFilepathForBranch(path, branchID string) string {
