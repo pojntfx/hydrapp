@@ -106,14 +106,20 @@ var buildCmd = &cobra.Command{
 		}
 		defer cli.Close()
 
-		pgpKeyContent, err := ioutil.ReadFile(viper.GetString(pgpKeyFlag))
-		if err != nil {
-			return err
+		var pgpKeyContent []byte
+		if !viper.GetBool(ejectFlag) {
+			pgpKeyContent, err = ioutil.ReadFile(viper.GetString(pgpKeyFlag))
+			if err != nil {
+				return err
+			}
 		}
 
-		apkCertContent, err := ioutil.ReadFile(viper.GetString(apkCertFlag))
-		if err != nil {
-			return err
+		var apkCertContent []byte
+		if !viper.GetBool(ejectFlag) {
+			apkCertContent, err = ioutil.ReadFile(viper.GetString(apkCertFlag))
+			if err != nil {
+				return err
+			}
 		}
 
 		handleID := func(id string) {
