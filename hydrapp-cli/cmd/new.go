@@ -27,9 +27,10 @@ import (
 const (
 	noNetworkFlag = "no-network"
 
-	restKey      = "rest"
-	formsKey     = "forms"
-	dudirektaKey = "dudirekta"
+	restKey            = "rest"
+	formsKey           = "forms"
+	dudirektaParcelKey = "dudirekta-parcel"
+	dudirektaCRAKey    = "dudirekta-cra"
 )
 
 var (
@@ -45,8 +46,12 @@ var (
 			Description: "Traditional starter project with Web 1.0-style forms to connect the frontend and backend",
 		},
 		{
-			Name:        dudirektaKey,
-			Description: "Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend",
+			Name:        dudirektaParcelKey,
+			Description: "Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend (based on the Parcel bundler)",
+		},
+		{
+			Name:        dudirektaCRAKey,
+			Description: "Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend (based on the Create React App bundler)",
 		},
 	}
 )
@@ -515,7 +520,7 @@ var newCmd = &cobra.Command{
 			); err != nil {
 				return err
 			}
-		case dudirektaKey:
+		case dudirektaParcelKey:
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "main.go"),
 				generators.GoMainDudirektaTpl,
@@ -539,7 +544,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, ".gitignore"),
-				generators.GitignoreDudirektaTpl,
+				generators.GitignoreDudirektaParcelTpl,
 				nil,
 			); err != nil {
 				return err
@@ -581,7 +586,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "index.html"),
-				generators.IndexHTMLDudirektaTpl,
+				generators.IndexHTMLDudirektaParcelTpl,
 				generators.IndexHTMLData{
 					AppName: appName,
 				},
@@ -591,7 +596,102 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "package.json"),
-				generators.PackageJSONTpl,
+				generators.PackageJSONParcelTpl,
+				generators.PackageJSONData{
+					AppID:          appID,
+					AppDescription: appDescription,
+					ReleaseAuthor:  releaseAuthor,
+					ReleaseEmail:   releaseEmail,
+					LicenseSPDX:    licenseSPDX,
+				},
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "pkg", "frontend", "tsconfig.json"),
+				generators.TsconfigJSONTpl,
+				nil,
+			); err != nil {
+				return err
+			}
+		case dudirektaCRAKey:
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "main.go"),
+				generators.GoMainDudirektaTpl,
+				generators.GoMainData{
+					GoMod: goMod,
+				},
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "android.go"),
+				generators.AndroidDudirektaTpl,
+				generators.AndroidData{
+					GoMod:     goMod,
+					JNIExport: strings.Replace(appID, ".", "_", -1),
+				},
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, ".gitignore"),
+				generators.GitignoreDudirektaCRATpl,
+				nil,
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "pkg", "backend", "server.go"),
+				generators.BackendDudirektaTpl,
+				nil,
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "pkg", "frontend", "server.go"),
+				generators.FrontendDudirektaTpl,
+				nil,
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "pkg", "frontend", "src", "App.tsx"),
+				generators.AppTSXTpl,
+				generators.AppTSXData{
+					AppName: appName,
+				},
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "pkg", "frontend", "src", "index.tsx"),
+				generators.MainTSXTpl,
+				nil,
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "pkg", "frontend", "public", "index.html"),
+				generators.IndexHTMLDudirektaCRATpl,
+				generators.IndexHTMLData{
+					AppName: appName,
+				},
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "pkg", "frontend", "package.json"),
+				generators.PackageJSONCRATpl,
 				generators.PackageJSONData{
 					AppID:          appID,
 					AppDescription: appDescription,

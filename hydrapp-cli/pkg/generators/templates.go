@@ -29,8 +29,11 @@ var (
 	//go:embed android_rest.go.tpl
 	AndroidRESTTpl string
 
-	//go:embed .gitignore_dudirekta.tpl
-	GitignoreDudirektaTpl string
+	//go:embed .gitignore_dudirekta_parcel.tpl
+	GitignoreDudirektaParcelTpl string
+
+	//go:embed .gitignore_dudirekta_cra.tpl
+	GitignoreDudirektaCRATpl string
 
 	//go:embed .gitignore_rest.tpl
 	GitignoreRESTTpl string
@@ -56,8 +59,11 @@ var (
 	//go:embed main.tsx.tpl
 	MainTSXTpl string
 
-	//go:embed index_dudirekta.html.tpl
-	IndexHTMLDudirektaTpl string
+	//go:embed index_dudirekta_parcel.html.tpl
+	IndexHTMLDudirektaParcelTpl string
+
+	//go:embed index_dudirekta_cra.html.tpl
+	IndexHTMLDudirektaCRATpl string
 
 	//go:embed index_rest.html.tpl
 	IndexHTMLRESTTpl string
@@ -65,8 +71,11 @@ var (
 	//go:embed index_forms.html.tpl
 	IndexHTMLFormsTpl string
 
-	//go:embed package.json.tpl
-	PackageJSONTpl string
+	//go:embed package_parcel.json.tpl
+	PackageJSONParcelTpl string
+
+	//go:embed package_cra.json.tpl
+	PackageJSONCRATpl string
 
 	//go:embed tsconfig.json.tpl
 	TsconfigJSONTpl string

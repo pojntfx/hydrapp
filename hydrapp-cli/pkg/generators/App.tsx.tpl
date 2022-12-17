@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { bind } from "@pojntfx/dudirekta";
 
-export default () => {
+const App = () => {
   const [remote, setRemote] = useState({
     ExamplePrintString: async (msg: string) => {},
     ExamplePrintStruct: async (input: any) => {},
@@ -118,3 +118,5 @@ export default () => {
     </main>
   );
 };
+
+export default App;
