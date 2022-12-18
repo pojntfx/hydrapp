@@ -1,8 +1,7 @@
-FROM golang:bullseye
+FROM golang:alpine
 
 # Install native dependencies
-RUN apt update
-RUN apt install -y flatpak-builder xz-utils
+RUN apk add flatpak-builder xz bash
 
 COPY entrypoint.sh /entrypoint.sh
 
