@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM alpine
 
 # Install native dependencies
 RUN apk add flatpak-builder xz bash

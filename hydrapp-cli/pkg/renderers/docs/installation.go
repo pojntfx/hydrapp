@@ -20,6 +20,9 @@ type installationData struct {
 	MSIs            []Artifact
 	RPMs            []DistroArtifact
 	DEBs            []DistroArtifact
+	RenderDMG       bool
+	RenderAPK       bool
+	RenderBinaries  bool
 }
 
 type Artifact struct {
@@ -44,6 +47,9 @@ func NewInstallationRenderer(
 	msis []Artifact,
 	rpms,
 	debs []DistroArtifact,
+	renderDMG,
+	renderAPK,
+	renderBinaries bool,
 ) *renderers.Renderer {
 	return renderers.NewRenderer(
 		"INSTALLATION.md",
@@ -59,6 +65,9 @@ func NewInstallationRenderer(
 			msis,
 			rpms,
 			debs,
+			renderDMG,
+			renderAPK,
+			renderBinaries,
 		},
 	)
 }

@@ -3,6 +3,7 @@
 
 # {{ $appName }} Installation Instructions
 
+{{ if .RenderAPK }}
 ## Android
 
 1. Download F-Droid from [f-droid.org](https://f-droid.org/)
@@ -11,6 +12,7 @@
 4. Search for `{{ $appName }}` in F-Droid and tap on `Install`
 
 {{ $appName }} should now be installed and receive updates automatically.
+{{ end }}
 
 {{ range .DEBs }}
 
@@ -59,39 +61,6 @@ EOT
 
 {{ end }}
 
-## macOS
-
-1. Download the `.app` from [{{ .MacOSBinaryURL }}]({{ .MacOSBinaryURL }})
-2. Mount `{{ .MacOSBinaryName }}` by opening it
-3. Drag `{{ $appName }}` to the `Applications` folder
-
-{{ $appName }} should now be installed and receive updates automatically.
-
-{{ range .Flatpaks }}
-
-## Linux Universal (Flatpak) on `{{ .Architecture }}`
-
-To install the package, run the following:
-
-```shell
-flatpak remote-add '{{ $appID }}' --from '{{ .URL }}'
-flatpak install -y '{{ $appID }}'
-```
-
-{{ $appName }} should now be installed and receive updates automatically.
-{{ end }}
-
-{{ range .MSIs }}
-
-## Windows on `{{ .Architecture }}`
-
-1. Download the installer from [{{ .URL }}]({{ .URL }})
-2. Install the application by opening the downloaded file
-
-{{ $appName }} should now be installed and receive updates automatically.
-
-{{ end }}
-
 {{ range .RPMs }}
 
 ## {{ Titlecase .DistroName }} {{ Titlecase .DistroVersion }} on `{{ .Architecture }}`
@@ -123,6 +92,43 @@ EOT
 
 {{ end }}
 
+{{ if .RenderDMG }}
+## macOS
+
+1. Download the `.app` from [{{ .MacOSBinaryURL }}]({{ .MacOSBinaryURL }})
+2. Mount `{{ .MacOSBinaryName }}` by opening it
+3. Drag `{{ $appName }}` to the `Applications` folder
+
+{{ $appName }} should now be installed and receive updates automatically.
+{{ end }}
+
+{{ range .Flatpaks }}
+
+## Linux Universal (Flatpak) on `{{ .Architecture }}`
+
+To install the package, run the following:
+
+```shell
+flatpak remote-add '{{ $appID }}' --from '{{ .URL }}'
+flatpak install -y '{{ $appID }}'
+```
+
+{{ $appName }} should now be installed and receive updates automatically.
+{{ end }}
+
+{{ range .MSIs }}
+
+## Windows on `{{ .Architecture }}`
+
+1. Download the installer from [{{ .URL }}]({{ .URL }})
+2. Install the application by opening the downloaded file
+
+{{ $appName }} should now be installed and receive updates automatically.
+
+{{ end }}
+
+{{ if .RenderBinaries }}
 ## Other Platforms
 
 {{ $appName }} is also available as a single static binary. To install it, download the binary for your operating system and processor architecture from [{{ .BinariesURL }}]({{ .BinariesURL }}). They include a self-update mechanism, so you should be receiving updates automatically.
+{{ end }}
