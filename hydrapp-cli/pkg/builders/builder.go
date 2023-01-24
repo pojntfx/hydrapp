@@ -23,13 +23,13 @@ func GetAppNameForBranch(appName, branchName string) string {
 	return appName + " (" + branchName + ")"
 }
 
-func GetPathForBranch(path, branchID string) string {
+func GetPathForBranch(path, branchID, prefix string) string {
 	// Stable
 	if strings.TrimSpace(branchID) == "" {
-		return "/" + path + "/stable"
+		return prefix + path + "/stable"
 	}
 
-	return "/" + path + "/" + branchID
+	return prefix + path + "/" + branchID
 }
 
 func GetFilepathForBranch(path, branchID string) string {

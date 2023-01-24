@@ -84,7 +84,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	for _, f := range b.cfg.Flatpak {
 		flatpaks = append(flatpaks, docs.Artifact{
 			Architecture: f.Architecture,
-			URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(f.Path, b.branchID) + "/hydrapp.flatpakrepo",
+			URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(f.Path, b.branchID, "/") + "/hydrapp.flatpakrepo",
 		})
 	}
 
@@ -92,7 +92,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	for _, m := range b.cfg.MSI {
 		msis = append(msis, docs.Artifact{
 			Architecture: m.Architecture,
-			URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(m.Path, b.branchID) + "/" + builders.GetAppIDForBranch(b.cfg.App.ID, b.branchID) + ".windows-" + uutils.GetArchIdentifier(m.Architecture) + ".msi",
+			URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(m.Path, b.branchID, "/") + "/" + builders.GetAppIDForBranch(b.cfg.App.ID, b.branchID) + ".windows-" + uutils.GetArchIdentifier(m.Architecture) + ".msi",
 		})
 	}
 
@@ -106,7 +106,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 		rpms = append(rpms, docs.DistroArtifact{
 			Artifact: docs.Artifact{
 				Architecture: r.Architecture,
-				URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(r.Path, b.branchID) + "/repodata/hydrapp.repo",
+				URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(r.Path, b.branchID, "/") + "/repodata/hydrapp.repo",
 			},
 			DistroName:    parts[0],
 			DistroVersion: parts[1],
@@ -118,7 +118,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 		debs = append(debs, docs.DistroArtifact{
 			Artifact: docs.Artifact{
 				Architecture: d.Architecture,
-				URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(d.Path, b.branchID),
+				URL:          b.cfg.App.BaseURL + builders.GetPathForBranch(d.Path, b.branchID, "/"),
 			},
 			DistroName:    d.OS,
 			DistroVersion: d.Distro,
@@ -131,10 +131,10 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			docs.NewInstallationRenderer(
 				appID,
 				appName,
-				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.APK.Path, b.branchID),
-				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.DMG.Path, b.branchID)+"/"+macOSBinaryName,
+				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.APK.Path, b.branchID, "/"),
+				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.DMG.Path, b.branchID, "/")+"/"+macOSBinaryName,
 				macOSBinaryName,
-				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.Binaries.Path, b.branchID),
+				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.Binaries.Path, b.branchID, "/"),
 				flatpaks,
 				msis,
 				rpms,

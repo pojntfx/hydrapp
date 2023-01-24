@@ -195,7 +195,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 func (b *Builder) Build() error {
 	dst := builders.GetFilepathForBranch(b.dst, b.branchID)
 	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
-	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID)
+	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID, "")
 
 	return executors.DockerRunImage(
 		b.ctx,
