@@ -27,10 +27,9 @@ jobs:
           - src: hydrapp/pkg/builders/flatpak
             image: ghcr.io/pojntfx/hydrapp-build-flatpak
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
-          # TODO: Re-enable once Git permission errors are handled
-          # - src: hydrapp/pkg/builders/msi
-          #   image: ghcr.io/pojntfx/hydrapp-build-msi
-          #   arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+          - src: hydrapp/pkg/builders/msi
+            image: ghcr.io/pojntfx/hydrapp-build-msi
+            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
           - src: hydrapp/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
             arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
