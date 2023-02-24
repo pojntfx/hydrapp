@@ -4,9 +4,15 @@ PREFIX ?= /usr/local
 OUTPUT_DIR ?= out
 DST ?=
 
+CONTAINER_PREFIX ?= ghcr.io/pojntfx/hydrapp-build-
+CONTAINER_TAG ?= latest
+
 # Private variables
-obj = hydrapp-cli hydrapp-example-rest hydrapp-example-forms hydrapp-example-dudirekta
-all: $(addprefix build/,$(obj))
+obj = hydrapp hydrapp-example-rest hydrapp-example-forms hydrapp-example-dudirekta
+
+containers = apk deb dmg flatpak msi rpm binaries tests docs
+
+all: $(addprefix build/,$(obj)) $(addprefix build-container/,$(obj))
 
 # Build
 build: $(addprefix build/,$(obj))
@@ -16,6 +22,11 @@ ifdef DST
 else
 	go build -o $(OUTPUT_DIR)/$(subst build/,,$@) ./$(subst build/,,$@)
 endif
+
+# Build containers
+build-containers: $(addprefix build-container/,$(containers))
+$(addprefix build-container/,$(containers)):
+	docker build -t $(CONTAINER_PREFIX)$(subst build-container/,,$@):$(CONTAINER_TAG) ./hydrapp/pkg/builders/$(subst build-container/,,$@)/
 
 # Install
 install: $(addprefix install/,$(obj))

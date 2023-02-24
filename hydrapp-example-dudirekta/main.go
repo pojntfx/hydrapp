@@ -12,11 +12,11 @@ import (
 
 	"github.com/pojntfx/hydrapp/hydrapp-example-dudirekta/pkg/backend"
 	"github.com/pojntfx/hydrapp/hydrapp-example-dudirekta/pkg/frontend"
-	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/browser"
-	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/config"
-	_ "github.com/pojntfx/hydrapp/hydrapp-utils/pkg/fixes"
-	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/update"
-	"github.com/pojntfx/hydrapp/hydrapp-utils/pkg/utils"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/browser"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
+	_ "github.com/pojntfx/hydrapp/hydrapp/pkg/fixes"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/update"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
 //go:embed hydrapp.yaml
