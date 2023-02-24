@@ -572,7 +572,7 @@ func init() {
 	buildCmd.PersistentFlags().Bool(pullFlag, false, "Whether to pull the images or not")
 	buildCmd.PersistentFlags().String(tagFlag, "latest", "Image tag to use")
 	buildCmd.PersistentFlags().Int(concurrencyFlag, 1, "Maximum amount of concurrent builders to run at once")
-	buildCmd.PersistentFlags().Bool(ejectFlag, false, "Write platform-specific config files (AndroidManifest.xml, .spec etc.) to directory specified by --src, then exit (--exclude still applies")
+	buildCmd.PersistentFlags().Bool(ejectFlag, false, "Write platform-specific config files (AndroidManifest.xml, .spec etc.) to directory specified by --src, then exit (--exclude still applies)")
 	buildCmd.PersistentFlags().Bool(overwriteFlag, false, "Overwrite platform-specific config files even if they exist")
 
 	buildCmd.PersistentFlags().String(srcFlag, pwd, "Source directory (must be absolute path)")

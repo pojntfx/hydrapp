@@ -14,10 +14,10 @@ import (
 	"time"
 
 	"github.com/manifoldco/promptui"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/generators"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/rpm"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -194,7 +194,7 @@ var newCmd = &cobra.Command{
 		msiArchitectures := "amd64"
 		rpmArchitectures := "amd64"
 
-		binariesExclude := "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm)"
+		binariesExclude := "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm|openbsd/mips64)"
 
 		if advancedConfiguration == "yes" {
 			goMain, err = (&promptui.Prompt{
