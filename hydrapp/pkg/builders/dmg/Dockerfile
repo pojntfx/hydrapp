@@ -26,7 +26,7 @@ RUN yes 1 | osxcross-macports select-mirror || true
 
 RUN cargo install apple-codesign
 
-RUN go env -w GOFLAGS=-buildvcs=false
+RUN git config --global --add safe.directory '*'
 
 COPY entrypoint.sh /entrypoint.sh
 

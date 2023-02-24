@@ -34,7 +34,7 @@ RUN unzip -d "${ANDROID_HOME}/ndk" '/tmp/sdk-legacy.zip'
 
 ENV ANDROID_NDK_VERSION='30'
 
-RUN go env -w GOFLAGS="-buildvcs=false"
+RUN git config --global --add safe.directory '*'
 
 COPY entrypoint.sh /entrypoint.sh
 

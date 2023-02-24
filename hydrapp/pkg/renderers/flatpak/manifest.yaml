@@ -18,8 +18,9 @@ modules:
   - name: {{ .AppID }}
     buildsystem: simple
     build-commands:
-      - GOFLAGS="-x {{ .GoFlags }}" sh -c '. /usr/lib/sdk/golang/enable.sh && go env -w GOFLAGS=-buildvcs=false && . /usr/lib/sdk/node16/enable.sh && {{ .GoGenerate }}'
-      - . /usr/lib/sdk/golang/enable.sh && go env -w GOFLAGS=-buildvcs=false && export GOFLAGS='-x {{ .GoFlags }}' && go build -o out/{{ .AppID }} {{ .GoMain }}
+      - git config --global --add safe.directory '*'
+      - GOFLAGS="-x {{ .GoFlags }}" sh -c '. /usr/lib/sdk/golang/enable.sh && . /usr/lib/sdk/node16/enable.sh && {{ .GoGenerate }}'
+      - . /usr/lib/sdk/golang/enable.sh && export GOFLAGS='-x {{ .GoFlags }}' && go build -o out/{{ .AppID }} {{ .GoMain }}
       - install -D out/{{ .AppID }} /app/bin/{{ .AppID }}
       - . /usr/lib/sdk/ImageMagick/enable.sh && for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert {{ .GoMain }}/icon.png -resize ${icon} out/icon-${icon}.png; done
       - desktop-file-install --dir=/app/share/applications {{ .GoMain }}/{{ .AppID }}.desktop

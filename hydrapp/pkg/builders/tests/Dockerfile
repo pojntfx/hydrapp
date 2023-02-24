@@ -4,4 +4,4 @@ FROM golang:bullseye
 RUN apt update
 RUN apt install -y npm
 
-RUN go env -w GOFLAGS=-buildvcs=false
+RUN git config --global --add safe.directory '*'
