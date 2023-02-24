@@ -2,7 +2,7 @@ module github.com/pojntfx/hydrapp/hydrapp-example-rest
 
 go 1.18
 
-require github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20221203235151-7e913bd115f5
+require github.com/pojntfx/hydrapp/hydrapp-utils v0.0.0-20230224122700-efda7175f166
 
 require (
 	github.com/akavel/rsrc v0.10.2 // indirect
@@ -10,11 +10,14 @@ require (
 	github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/josephspurrier/goversioninfo v1.4.0 // indirect
-	github.com/ncruces/zenity v0.10.0 // indirect
-	github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20221203235151-7e913bd115f5 // indirect
+	github.com/kr/pretty v0.3.0 // indirect
+	github.com/ncruces/zenity v0.10.1 // indirect
+	github.com/pojntfx/hydrapp/hydrapp-cli v0.0.0-20230224122700-efda7175f166 // indirect
 	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
-	golang.org/x/image v0.1.0 // indirect
-	golang.org/x/sys v0.2.0 // indirect
-	golang.org/x/text v0.4.0 // indirect
+	github.com/stretchr/testify v1.8.1 // indirect
+	golang.org/x/image v0.2.0 // indirect
+	golang.org/x/sys v0.3.0 // indirect
+	golang.org/x/text v0.5.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

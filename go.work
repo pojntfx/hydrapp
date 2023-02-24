@@ -2,9 +2,9 @@ go 1.18
 
 use (
 	.
+	./hydrapp-cli
 	./hydrapp-example-dudirekta
 	./hydrapp-example-forms
 	./hydrapp-example-rest
 	./hydrapp-utils
-	./hydrapp-cli
 )
