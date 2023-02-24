@@ -1,6 +1,6 @@
 module github.com/pojntfx/hydrapp/hydrapp
 
-go 1.18
+go 1.20
 
 require (
 	github.com/breml/rootcerts v0.2.10

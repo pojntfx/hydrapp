@@ -40,6 +40,8 @@ RUN mkdir -p '/root/.wine/drive_c/users/root/Documents/go-workspace'
 
 RUN yes | cpan install File::Slurp
 
+RUN go env -w GOFLAGS=-buildvcs=false
+
 COPY entrypoint.sh /entrypoint.sh
 
 WORKDIR /work

@@ -1,6 +1,6 @@
 module github.com/pojntfx/hydrapp/hydrapp-example-dudirekta-cra
 
-go 1.18
+go 1.20
 
 require (
 	github.com/pojntfx/dudirekta v0.4.0

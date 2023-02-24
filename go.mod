@@ -1,3 +1,3 @@
 module github.com/pojntfx/hydrapp
 
-go 1.18
+go 1.20
