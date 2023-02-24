@@ -2,8 +2,8 @@ go 1.18
 
 use (
 	.
+	./hydrapp
 	./hydrapp-example-dudirekta
 	./hydrapp-example-forms
 	./hydrapp-example-rest
-	./hydrapp
 )
