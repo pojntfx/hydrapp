@@ -8,10 +8,10 @@ app:
   git: https://github.com/pojntfx/hydrapp.git
   baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-dudirekta-cra/
 go:
-  main: .
+  main: ./hydrapp-example-dudirekta-cra
   flags: ""
-  generate: go generate ./...
-  tests: go test ./...
+  generate: cd hydrapp-example-dudirekta-cra && go generate ./...
+  tests: go test ./hydrapp-example-dudirekta-cra/...
   img: ghcr.io/pojntfx/hydrapp-build-tests:main
 releases:
 - version: 0.0.1

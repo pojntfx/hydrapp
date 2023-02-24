@@ -8,10 +8,10 @@ app:
   git: https://github.com/pojntfx/hydrapp.git
   baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-forms
 go:
-  main: .
+  main: ./hydrapp-example-forms
   flags: ""
-  generate: go generate ./...
-  tests: go test ./...
+  generate: cd hydrapp-example-forms && go generate ./...
+  tests: go test ./hydrapp-example-forms/...
   img: ghcr.io/pojntfx/hydrapp-build-tests:main
 releases:
 - version: 0.0.1
