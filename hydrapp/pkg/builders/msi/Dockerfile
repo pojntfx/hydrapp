@@ -11,7 +11,7 @@ RUN git clone https://gitlab.winehq.org/jacek/wine.git /tmp/winesrc
 
 WORKDIR /tmp/winesrc
 
-RUN git checkout wow
+RUN git checkout 4e5fab6214d9304004369d50b6c73b8d88cf46d8
 RUN ./configure --enable-win64
 RUN make -l
 RUN make install
