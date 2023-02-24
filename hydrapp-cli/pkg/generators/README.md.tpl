@@ -40,7 +40,7 @@ To build and start a development version of {{ .AppName }} locally, run the foll
 
 ```shell
 $ git clone {{ .AppGit }}
-$ cd myapp
+$ cd {{ .Dir }}
 $ go generate ./...
 $ go run .
 ```

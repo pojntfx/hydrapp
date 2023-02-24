@@ -745,6 +745,7 @@ var newCmd = &cobra.Command{
 				CurrentYear:    time.Now().Format("2006"),
 				ReleaseAuthor:  releaseAuthor,
 				LicenseSPDX:    licenseSPDX,
+				Dir:            dir,
 			},
 		); err != nil {
 			return err

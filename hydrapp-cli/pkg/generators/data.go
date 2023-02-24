@@ -52,4 +52,5 @@ type ReadmeMDData struct {
 	CurrentYear    string
 	ReleaseAuthor  string
 	LicenseSPDX    string
+	Dir            string
 }
