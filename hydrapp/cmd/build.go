@@ -28,8 +28,8 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/tests"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	cconfig "github.com/pojntfx/hydrapp/hydrapp/pkg/config"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -105,6 +105,9 @@ var buildCmd = &cobra.Command{
 			return err
 		}
 		defer cli.Close()
+
+		// See https://github.com/rancher/rke/issues/1711#issuecomment-578382159
+		cli.NegotiateAPIVersion(ctx)
 
 		var pgpKeyContent []byte
 		if !viper.GetBool(ejectFlag) {
