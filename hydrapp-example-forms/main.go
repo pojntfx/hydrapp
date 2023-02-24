@@ -9,9 +9,9 @@ import (
 	"log"
 	"os"
 
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp-example-forms/pkg/frontend"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/browser"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	_ "github.com/pojntfx/hydrapp/hydrapp/pkg/fixes"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/update"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"

@@ -38,7 +38,9 @@
           <input type="submit" value="Delete task" />
         </form>
       </li>
-      {{ end }}
+      {{
+        end
+      }}
     </ul>
     {{ else }}
     <span>No tasks yet.</span>
@@ -47,7 +49,8 @@
     <footer>
       <p>
         <code>
-          Rendered by Go {{ .GoVersion }} {{ .GoOS }}/{{ .GoArch }} at {{
+          Rendered by Go {{ .GoVersion }} {{ .GoOS }}/{{ .GoArch }} at
+          {{
           .RenderTime }}
         </code>
       </p>

@@ -10,10 +10,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/pojntfx/hydrapp/hydrapp-example-dudirekta/pkg/backend"
-	"github.com/pojntfx/hydrapp/hydrapp-example-dudirekta/pkg/frontend"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/browser"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
+	"github.com/pojntfx/hydrapp/hydrapp-example-dudirekta-cra/pkg/backend"
+	"github.com/pojntfx/hydrapp/hydrapp-example-dudirekta-cra/pkg/frontend"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/browser"
 	_ "github.com/pojntfx/hydrapp/hydrapp/pkg/fixes"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/update"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"

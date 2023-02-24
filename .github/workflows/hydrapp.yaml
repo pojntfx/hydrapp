@@ -12,56 +12,6 @@ jobs:
     strategy:
       matrix:
         target:
-          # com.pojtinger.felicitas.hydrapp.example.dudirekta
-          - id: hydrapp-apk.hydrapp-example-dudirekta
-            src: .
-            pkg: hydrapp-example-dudirekta
-            exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-deb.hydrapp-example-dudirekta
-            src: .
-            pkg: hydrapp-example-dudirekta
-            exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-dmg.hydrapp-example-dudirekta
-            src: .
-            pkg: hydrapp-example-dudirekta
-            exclude: apk|deb|flatpak|msi|rpm|binaries|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-flatpak.hydrapp-example-dudirekta
-            src: .
-            pkg: hydrapp-example-dudirekta
-            exclude: apk|deb|dmg|msi|rpm|binaries|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-msi.hydrapp-example-dudirekta
-            src: .
-            pkg: hydrapp-example-dudirekta
-            exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-rpm.hydrapp-example-dudirekta
-            src: .
-            pkg: hydrapp-example-dudirekta
-            exclude: apk|deb|flatpak|dmg|msi|binaries|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-binaries.hydrapp-example-dudirekta
-            src: .
-            pkg: hydrapp-example-dudirekta
-            exclude: apk|deb|flatpak|dmg|msi|rpm|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-tests.hydrapp-example-dudirekta
-            src: .
-            pkg: hydrapp-example-dudirekta
-            exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
-            tag: main
-            dst: out/*
-
           # com.pojtinger.felicitas.hydrapp.example.forms
           - id: hydrapp-apk.hydrapp-example-forms
             src: .
@@ -158,6 +108,106 @@ jobs:
           - id: hydrapp-tests.hydrapp-example-rest
             src: .
             pkg: hydrapp-example-rest
+            exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
+            tag: main
+            dst: out/*
+
+          # com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel
+          - id: hydrapp-apk.hydrapp-example-dudirekta-parcel
+            src: .
+            pkg: hydrapp-example-dudirekta-parcel
+            exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-deb.hydrapp-example-dudirekta-parcel
+            src: .
+            pkg: hydrapp-example-dudirekta-parcel
+            exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-dmg.hydrapp-example-dudirekta-parcel
+            src: .
+            pkg: hydrapp-example-dudirekta-parcel
+            exclude: apk|deb|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-flatpak.hydrapp-example-dudirekta-parcel
+            src: .
+            pkg: hydrapp-example-dudirekta-parcel
+            exclude: apk|deb|dmg|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-msi.hydrapp-example-dudirekta-parcel
+            src: .
+            pkg: hydrapp-example-dudirekta-parcel
+            exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-rpm.hydrapp-example-dudirekta-parcel
+            src: .
+            pkg: hydrapp-example-dudirekta-parcel
+            exclude: apk|deb|flatpak|dmg|msi|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-binaries.hydrapp-example-dudirekta-parcel
+            src: .
+            pkg: hydrapp-example-dudirekta-parcel
+            exclude: apk|deb|flatpak|dmg|msi|rpm|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-tests.hydrapp-example-dudirekta-parcel
+            src: .
+            pkg: hydrapp-example-dudirekta-parcel
+            exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
+            tag: main
+            dst: out/*
+
+          # com.pojtinger.felicitas.hydrapp.example.dudirekta.cra
+          - id: hydrapp-apk.hydrapp-example-dudirekta-cra
+            src: .
+            pkg: hydrapp-example-dudirekta-cra
+            exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-deb.hydrapp-example-dudirekta-cra
+            src: .
+            pkg: hydrapp-example-dudirekta-cra
+            exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-dmg.hydrapp-example-dudirekta-cra
+            src: .
+            pkg: hydrapp-example-dudirekta-cra
+            exclude: apk|deb|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-flatpak.hydrapp-example-dudirekta-cra
+            src: .
+            pkg: hydrapp-example-dudirekta-cra
+            exclude: apk|deb|dmg|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-msi.hydrapp-example-dudirekta-cra
+            src: .
+            pkg: hydrapp-example-dudirekta-cra
+            exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-rpm.hydrapp-example-dudirekta-cra
+            src: .
+            pkg: hydrapp-example-dudirekta-cra
+            exclude: apk|deb|flatpak|dmg|msi|binaries|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-binaries.hydrapp-example-dudirekta-cra
+            src: .
+            pkg: hydrapp-example-dudirekta-cra
+            exclude: apk|deb|flatpak|dmg|msi|rpm|tests
+            tag: main
+            dst: out/*
+          - id: hydrapp-tests.hydrapp-example-dudirekta-cra
+            src: .
+            pkg: hydrapp-example-dudirekta-cra
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*

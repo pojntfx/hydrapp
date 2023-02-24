@@ -1,12 +1,12 @@
 app:
-  id: com.pojtinger.felicitas.hydrapp.example.rest
-  name: Hydrapp REST Example
-  summary: Hydrapp REST example app
-  description: A simple Hydrapp REST example app.
+  id: com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel
+  name: Hydrapp Dudirekta-Parcel Example
+  summary: Hydrapp Dudirekta and Parcel example app
+  description: A simple Hydrapp Dudirekta and Parcel example app.
   license: AGPL-3.0-or-later
-  homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-rest
+  homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-dudirekta-parcel
   git: https://github.com/pojntfx/hydrapp.git
-  baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-rest/
+  baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-dudirekta-parcel/
 go:
   main: .
   flags: ""
@@ -15,7 +15,7 @@ go:
   img: ghcr.io/pojntfx/hydrapp-build-tests:main
 releases:
 - version: 0.0.1
-  date: 2023-02-24T16:08:35.216471352+01:00
+  date: 2023-02-24T16:16:36.281469219+01:00
   description: Initial release
   author: Felicitas Pojtinger
   email: felicitas@pojtinger.com

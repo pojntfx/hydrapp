@@ -1,10 +1,10 @@
-module github.com/pojntfx/hydrapp/hydrapp-example-dudirekta
+module github.com/pojntfx/hydrapp/hydrapp-example-dudirekta-cra
 
 go 1.18
 
 require (
 	github.com/pojntfx/dudirekta v0.4.0
-	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230224145535-6f2d6e1a4b91
+	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230224150559-f81c3d0c056f
 	nhooyr.io/websocket v1.8.7
 )
 

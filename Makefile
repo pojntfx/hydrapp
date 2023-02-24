@@ -8,11 +8,11 @@ CONTAINER_PREFIX ?= ghcr.io/pojntfx/hydrapp-build-
 CONTAINER_TAG ?= latest
 
 # Private variables
-obj = hydrapp hydrapp-example-rest hydrapp-example-forms hydrapp-example-dudirekta
+obj = hydrapp hydrapp-example-rest hydrapp-example-forms hydrapp-example-dudirekta-parcel hydrapp-example-dudirekta-cra
 
 containers = apk deb dmg flatpak msi rpm binaries tests docs
 
-all: $(addprefix build/,$(obj)) $(addprefix build-container/,$(obj))
+all: $(addprefix build/,$(obj)) $(addprefix build-container/,$(containers))
 
 # Build
 build: $(addprefix build/,$(obj))

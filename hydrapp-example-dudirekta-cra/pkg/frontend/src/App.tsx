@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { bind } from "@pojntfx/dudirekta";
 
-export default () => {
+const App = () => {
   const [remote, setRemote] = useState({
     ExamplePrintString: async (msg: string) => {},
     ExamplePrintStruct: async (input: any) => {},
@@ -42,7 +42,7 @@ export default () => {
 
   return (
     <main>
-      <h1>Hydrapp Dudirekta Example</h1>
+      <h1>Hydrapp Dudirekta-CRA Example</h1>
 
       <div>
         <button
@@ -118,3 +118,5 @@ export default () => {
     </main>
   );
 };
+
+export default App;
