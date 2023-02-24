@@ -8,8 +8,8 @@ if [ "$1" = "test" ]; then
     apt update
     apt install -y npm
 
-    # Configure Go
-    go env -w GOFLAGS=-buildvcs=false
+    # Configure Git
+    git config --global --add safe.directory '*'
 
     # Generate dependencies
     make "depend/${2}"
@@ -26,8 +26,8 @@ if [ "$1" = "go" ]; then
     apt update
     apt install -y curl make npm
 
-    # Configure Go
-    go env -w GOFLAGS=-buildvcs=false
+    # Configure Git
+    git config --global --add safe.directory '*'
 
     # Install bagop
     curl -L -o /tmp/bagop "https://github.com/pojntfx/bagop/releases/latest/download/bagop.linux-$(uname -m)"
@@ -48,8 +48,8 @@ if [ "$1" = "gccgo" ]; then
     apt update
     apt install -y curl npm
 
-    # Configure Go
-    go env -w GOFLAGS=-buildvcs=false
+    # Configure Git
+    git config --global --add safe.directory '*'
 
     # Install bagccgop
     curl -L -o /tmp/bagccgop "https://github.com/pojntfx/bagccgop/releases/latest/download/bagccgop.linux-$(uname -m)"
