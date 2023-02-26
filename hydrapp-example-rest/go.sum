@@ -23,8 +23,8 @@ github.com/ncruces/zenity v0.10.6 h1:lA5SupAxxDSEL4BkaLBkv2LJrh2YxJkbEBxwrF0awXY
 github.com/ncruces/zenity v0.10.6/go.mod h1:Mp6EUzPkII5A30OSUN/zfEVYOZ3196Fzvq1ba+qyxRk=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230224150559-f81c3d0c056f h1:umVCgrf6qcku8+Cztf3Qnb36LeQxs3r/fbihg1DcxCo=
-github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230224150559-f81c3d0c056f/go.mod h1:0vxyr1puLlW6DWz2HWiUjx60WSGyNLhQjs+5FBWctbg=
+github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230225231248-9073dcb0242e h1:jSs8AbNY/9y+yd37Sqj6t28iTV+O1WDw+eYk2kvHAGo=
+github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230225231248-9073dcb0242e/go.mod h1:5d5qRw3RfmwGzYHgAz/Wdo51fGS725IZW0zGgEI0jDY=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 h1:GranzK4hv1/pqTIhMTXt2X8MmMOuH3hMeUR0o9SP5yc=
 github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844/go.mod h1:T1TLSfyWVBRXVGzWd0o9BI4kfoO9InEgfQe4NV3mLz8=
 github.com/rogpeppe/go-internal v1.6.1 h1:/FiVV8dS/e+YqF2JvO3yXRFbBLTIuSDkuC7aBOAvL+k=

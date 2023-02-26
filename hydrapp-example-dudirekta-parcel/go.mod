@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/pojntfx/dudirekta v0.4.0
-	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230224150559-f81c3d0c056f
+	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230225231248-9073dcb0242e
 	nhooyr.io/websocket v1.8.7
 )
 

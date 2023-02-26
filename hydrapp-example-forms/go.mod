@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/google/uuid v1.3.0
-	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230224150559-f81c3d0c056f
+	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230225231248-9073dcb0242e
 )
 
 require (
