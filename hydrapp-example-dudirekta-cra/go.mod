@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/pojntfx/dudirekta v0.4.0
-	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230225231248-9073dcb0242e
+	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230227003011-8e3c58f0bfe6
 	nhooyr.io/websocket v1.8.7
 )
 
@@ -17,13 +17,13 @@ require (
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/josephspurrier/goversioninfo v1.4.0 // indirect
-	github.com/klauspost/compress v1.15.13 // indirect
+	github.com/klauspost/compress v1.16.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/ncruces/zenity v0.10.6 // indirect
 	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
 	github.com/teivah/broadcast v0.1.0 // indirect
-	golang.org/x/image v0.4.0 // indirect
+	golang.org/x/image v0.5.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect

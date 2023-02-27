@@ -2,7 +2,7 @@ module github.com/pojntfx/hydrapp/hydrapp-example-rest
 
 go 1.20
 
-require github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230225231248-9073dcb0242e
+require github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230227003011-8e3c58f0bfe6
 
 require (
 	github.com/akavel/rsrc v0.10.2 // indirect
@@ -14,7 +14,7 @@ require (
 	github.com/ncruces/zenity v0.10.6 // indirect
 	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
-	golang.org/x/image v0.4.0 // indirect
+	golang.org/x/image v0.5.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
