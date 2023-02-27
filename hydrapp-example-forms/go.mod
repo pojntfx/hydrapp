@@ -1,10 +1,10 @@
 module github.com/pojntfx/hydrapp/hydrapp-example-forms
 
-go 1.20
+go 1.19
 
 require (
 	github.com/google/uuid v1.3.0
-	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230227003011-8e3c58f0bfe6
+	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230227032144-c660e080addb
 )
 
 require (

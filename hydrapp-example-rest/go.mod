@@ -1,8 +1,8 @@
 module github.com/pojntfx/hydrapp/hydrapp-example-rest
 
-go 1.20
+go 1.19
 
-require github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230227003011-8e3c58f0bfe6
+require github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230227032144-c660e080addb
 
 require (
 	github.com/akavel/rsrc v0.10.2 // indirect
