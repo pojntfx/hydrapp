@@ -180,7 +180,7 @@ func (b *Builder) Build() error {
 			"BASE_URL":         baseURL,
 			"DISTRO":           b.distro,
 			"ARCHITECTURE":     b.architecture,
-			"PACKAGE_VERSION":  b.releases[len(b.releases)-1].Version,
+			"PACKAGE_VERSION":  b.releases[0].Version,
 			"PACKAGE_SUFFIX":   b.packageSuffix,
 			"GOMAIN":           b.goMain,
 		},

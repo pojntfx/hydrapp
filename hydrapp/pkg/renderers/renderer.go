@@ -43,7 +43,7 @@ func (r *Renderer) Render(templateOverride string) (filePath string, fileContent
 		New(r.filePath).
 		Funcs(template.FuncMap{
 			"LastRelease": func(releases []Release) Release {
-				return releases[len(releases)-1]
+				return releases[0]
 			},
 			"Titlecase": func(title string) string {
 				return titler.String(title)

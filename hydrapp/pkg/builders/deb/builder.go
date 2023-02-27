@@ -219,7 +219,7 @@ func (b *Builder) Build() error {
 			"COMPONENTS":       strings.Join(b.components, " "),
 			"DEBOOTSTRAPOPTS":  b.debootstrapopts,
 			"ARCHITECTURE":     b.architecture,
-			"PACKAGE_VERSION":  b.releases[len(b.releases)-1].Version,
+			"PACKAGE_VERSION":  b.releases[0].Version,
 			"GOMAIN":           b.goMain,
 		},
 		b.Render,
