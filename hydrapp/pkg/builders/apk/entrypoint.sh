@@ -17,6 +17,9 @@ gpg --import /tmp/private.pgp
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"
 
+# Configure Go
+export GOPROXY='https://proxy.golang.org,direct'
+
 # Generate dependencies
 GOFLAGS="${GOFLAGS}" sh -c "${GOGENERATE}"
 

@@ -25,8 +25,8 @@ Suggests: chromium >= 90
 
 
 %build
-GOFLAGS="{{ .GoFlags }}" sh -c '{{ .GoGenerate }}'
-GOFLAGS="{{ .GoFlags }}" CGO_ENABLED=1 go build -o out/{{ .AppID }} {{ .GoMain }}
+GOPROXY='https://proxy.golang.org,direct' GOFLAGS="{{ .GoFlags }}" sh -c '{{ .GoGenerate }}'
+GOPROXY='https://proxy.golang.org,direct' GOFLAGS="{{ .GoFlags }}" CGO_ENABLED=1 go build -o out/{{ .AppID }} {{ .GoMain }}
 for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do convert "{{ .GoMain }}/icon.png" -resize ${icon} out/icon-${icon}.png; done
 
 %install

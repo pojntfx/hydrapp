@@ -17,6 +17,9 @@ gpg --import /tmp/private.pgp
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"
 
+# Configure Go
+export GOPROXY='https://proxy.golang.org,direct'
+
 # Install MSYS2 packages
 if [ "${MSYS2PACKAGES}" != "" ]; then
   wine64 bash.exe -c "pacman --noconfirm --ignore pacman --needed -S ${MSYS2PACKAGES}"
@@ -57,7 +60,7 @@ if [ "${ARCHITECTURE}" = "amd64" ]; then
   cp -r . '/root/.wine/drive_c/users/root/Documents/go-workspace'
   rm -rf '/root/.wine/drive_c/users/root/Documents/go-workspace/out'
 
-  wine64 bash.exe -c "export PATH=$PATH:/ucrt64/bin:/msys64/usr/bin GOPATH=/c/go GOROOT=/ucrt64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 GOFLAGS=${GOFLAGS} && cd /c/users/root/Documents/go-workspace && git config --global --add safe.directory '*' && go build -ldflags='-linkmode=external -H=windowsgui' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ${GOMAIN}"
+  wine64 bash.exe -c "export PATH=$PATH:/ucrt64/bin:/msys64/usr/bin GOPATH=/c/go GOROOT=/ucrt64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 GOPROXY='https://proxy.golang.org,direct' GOFLAGS=${GOFLAGS} && cd /c/users/root/Documents/go-workspace && git config --global --add safe.directory '*' && go build -ldflags='-linkmode=external -H=windowsgui' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ${GOMAIN}"
 
   # Copy binaries to staging directory
   yes | cp -rf /root/.wine/drive_c/users/root/Documents/go-workspace/out/* '/tmp/out'
