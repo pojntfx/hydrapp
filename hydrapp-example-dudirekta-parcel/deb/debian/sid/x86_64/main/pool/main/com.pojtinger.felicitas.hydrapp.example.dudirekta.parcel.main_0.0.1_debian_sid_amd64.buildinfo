@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- e5cc5ae7eacd98696f4460914ee84e39 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- 337d9a81cdfe2c3955be18c4dbc010d7 2819852 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ 283cd9eb71eafe43dad6f5a53c9ec0eb 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 84a0220c1701bf2a2d5ae883309545ed 2819992 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha1:
- ff44aab68da899c87482bbc85078c2d6e40da72a 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- 0c3e385cdebe2a1a51bb3675fffd947767c0c918 2819852 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ 8ec18baf0fbba879a723f85c5fddbd14e4c010a1 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 6350a3bad784b542f34b6d2d71984606d422b18f 2819992 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 194d3a097c1e0999b72e13558f453717eb25913fab09549a337805a01a3a83db 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- 9231eee1b660acd08951684f57c31fc9a36a856627ee193ed8f3bb67c05d445c 2819852 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ 7ad2e97baffad8a1837879d89ce1f46b6984cbc8958f47fa533361d3727f4e12 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 9bc08bca716ec5f3da9c45f1478da180dfce90fbb886ddc7fb6771054522d78e 2819992 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Tue, 28 Feb 2023 10:17:29 +0000
+Build-Date: Tue, 28 Feb 2023 17:04:44 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -59,8 +59,8 @@ Installed-Build-Depends:
  gcc-12-base (= 12.2.0-14),
  gettext (= 0.21-12),
  gettext-base (= 0.21-12),
- git (= 1:2.39.2-1),
- git-man (= 1:2.39.2-1),
+ git (= 1:2.39.2-1.1),
+ git-man (= 1:2.39.2-1.1),
  golang-1.19-go (= 1.19.6-2),
  golang-1.19-src (= 1.19.6-2),
  golang-go (= 2:1.19~1),

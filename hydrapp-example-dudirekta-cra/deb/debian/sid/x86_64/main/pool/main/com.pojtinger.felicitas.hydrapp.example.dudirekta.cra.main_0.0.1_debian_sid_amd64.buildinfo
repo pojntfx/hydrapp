@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 06fc5d691c2fa7e3e08f689abba66ef4 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
- 371d3aa0d2f7e753af3c5c708c2c91d9 2857288 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
+ eb27763162c52ab9d58d3cd3d7ab646d 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
+ 0108fbbfc806ab8b3ea75225e37876fb 2857408 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
 Checksums-Sha1:
- d2668e093ddfe89993f17ba8890ce9e287bec827 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
- efd8dd9fb3cf396b0ac96cedde8442207ea6bf52 2857288 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
+ 1bdc9dbbdaa934d9d46b7c4ca70085b8de482432 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
+ 315355735ee97ce822caae2d97cdcb555e3e9d17 2857408 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 154c39309b4707f014684786dc817b7e5ddc4a1e9868ff69f461e6fdcf3d1dd8 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
- 5c96f63eac1daeb63aa3be5998154dda3e9793b8526603105f27389cb389661e 2857288 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
+ 26abfee095e4fdf7b002b81c800207e8559db1569137d3a78cfc10968c2d9ed3 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
+ 67537684b552f3dcdefe09246b714b7ddf974585d8f714f333c60524b5dc97df 2857408 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Tue, 28 Feb 2023 10:16:48 +0000
+Build-Date: Tue, 28 Feb 2023 17:03:08 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -59,8 +59,8 @@ Installed-Build-Depends:
  gcc-12-base (= 12.2.0-14),
  gettext (= 0.21-12),
  gettext-base (= 0.21-12),
- git (= 1:2.39.2-1),
- git-man (= 1:2.39.2-1),
+ git (= 1:2.39.2-1.1),
+ git-man (= 1:2.39.2-1.1),
  golang-1.19-go (= 1.19.6-2),
  golang-1.19-src (= 1.19.6-2),
  golang-go (= 2:1.19~1),

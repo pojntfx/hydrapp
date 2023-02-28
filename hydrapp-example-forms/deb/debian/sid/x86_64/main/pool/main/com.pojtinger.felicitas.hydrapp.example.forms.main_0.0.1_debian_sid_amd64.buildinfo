@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 6b97143dc4e9c46adf0f0324f1bf46bc 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 2923826480324cda9671d0f071f1f5e1 2703460 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ df5e51b987e8a37212a3f1f8ea741e51 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 1481008f750936dd912bf5731b8967ee 2704516 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- c76fe5c9f219e2939794cb0b22663b0a5282ac2f 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 6802c81bb82ac4fe59e527bf18edd417fa42d0e8 2703460 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 0592670f7ac8117b06bb6a7d068d12840b6c813b 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ d87bfa27e0c97591174ea86bb7aafe4ed6e756f9 2704516 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 482fba78a53987097becd2715499bc1158c37fd8b5b5e30050ac1c7d5f8d6ce4 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 2ba3c18e552705155e2a6d13e5af8ef730b065abfa5020198405814f25f6ae3a 2703460 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ bd92fdfd4d80bcb8feeeea8415cf1c270c9e313bf4d5e654c9904559174a56d7 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 2e9d87c8ab73f1176cfb1d1493798917b771a7ce2de0bb289dfd0dad3ba308b5 2704516 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Tue, 28 Feb 2023 10:17:31 +0000
+Build-Date: Tue, 28 Feb 2023 17:04:55 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.forms.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -59,8 +59,8 @@ Installed-Build-Depends:
  gcc-12-base (= 12.2.0-14),
  gettext (= 0.21-12),
  gettext-base (= 0.21-12),
- git (= 1:2.39.2-1),
- git-man (= 1:2.39.2-1),
+ git (= 1:2.39.2-1.1),
+ git-man (= 1:2.39.2-1.1),
  golang-1.19-go (= 1.19.6-2),
  golang-1.19-src (= 1.19.6-2),
  golang-go (= 2:1.19~1),
