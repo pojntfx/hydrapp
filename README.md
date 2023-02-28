@@ -103,7 +103,7 @@ Also be sure to download the keystore (base64-encoded) so you can use it for loc
 
 ### 3. Generating Your Project
 
-To get started easily, hydrapp provides the `hydrapp` CLI. To use it to generate a project for you, simply run `hydrapp new` with the values that match your usecase.
+To get started easily, hydrapp provides the interactive `hydrapp` CLI. To use it to generate a project for you, simply run `hydrapp new` with the values that match your usecase.
 
 First, select your preferred starter project:
 
@@ -154,7 +154,7 @@ The release author name, author email and directory are self-explanatory:
 ```plaintext
 Release author name: Jean Doe
 Release author email: jean.doe@example.com
-Directory to write the app to: myapp
+Directory to write the app to: .
 ```
 
 Finally, you can choose to do advanced configuration; in this basic introduction, we won't be doing that:
@@ -210,7 +210,60 @@ And open the URL (note the `socketURL` parameter): [http://localhost:3000?socket
 
 Whenever you make changes to the frontend's source code, it should be automatically reloaded.
 
-<!-- TODO: Add notes on building the packages locally, pushing changes GH & enabling GH pages, doing a release (adding to hydrapp.yaml & `git tag` & `git push --tags` & updating installation docs, and linking to the generated docs) -->
+### 5. Build The Packages Locally
+
+While it also possible to build your hydrapp app using the `go build` command you already know, it is recommended to use the `hydrapp build` command instead as its able to not only create binaries, but also proper OS-specific packages.
+
+To use it, first export the path to and credentials for the PGP key you've downloaded above:
+
+```shell
+$ export PGP_KEY="${HOME}/Downloads/19D789F4.asc.txt" PGP_PASSWORD='asdf' PGP_ID='19D789F4'
+```
+
+Next, do the same for the Java keystore:
+
+```shell
+$ export APK_CERT="${HOME}/Downloads/keystoregaen.jks.txt" APK_STOREPASS='asdf' APK_KEYPASS='asdf'
+```
+
+And finally, your branch. hydrapp supports building multiple branches of your app - such as a main branch for your canary builds, the stable branch (for tagged releases) and any further feature branches you might want to build for. In this case, we'll build for the `main` branch:
+
+```shell
+$ export BRANCH_ID="main" BRANCH_NAME="Main"
+```
+
+You're now ready to build your app:
+
+```shell
+$ hydrapp build \
+    --config='./hydrapp.yaml' \
+    --exclude='deb|dmg|flatpak|msi|rpm|apk|tests' \
+    --pull=true \
+    --tag='main' \
+    --dst="${PWD}/out" \
+    --src="${PWD}" \
+    --pgp-key="${PGP_KEY}" \
+    --pgp-password="${PGP_PASSWORD}" \
+    --pgp-id="${PGP_ID}" \
+    --apk-cert="${APK_CERT}" \
+    --apk-storepass="${APK_STOREPASS}" \
+    --apk-keypass="${APK_KEYPASS}" \
+    --concurrency="$(nproc)" \
+    --branch-id="${BRANCH_ID}" \
+    --branch-name="${BRANCH_NAME}"
+```
+
+Note the `--exclude` flag; in this configuration, only `binaries` is missing, meaning that only binaries will be built; you can remove e.g. RPM and an RPM package would be built instead.
+
+### 6. Releasing Your App
+
+As previously mentioned, hydrapp supports feature branches. To release your software to the main branch, push it to your GitHub repository, and the GitHub action will build it for you. After the actions have completed successfully, [enable GitHub pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) for the `gh_pages` branch by following the [link installation instructions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) in your generated `README`.
+
+You can now install and use this canary build of your app by following the instructions in the generated file. When you're ready to tag a release, add a new entry to your `hydrapp.yaml` file under `releases` (ensure that you follow [semantic versioning](https://semver.org/)), run `git tag v<major>.<minor>.<patch>`, and `git push --tags`. The action should then automatically build a tagged release for you. Remember to update the installation instructions link to point to it by replacing `docs/main/INSTALLATION.html` with `docs/stable/INSTALLATION.html`:
+
+![Screenshot of the installation instructions](./docs/screenshot-installation-instructions.png)
+
+**🚀 You're all set to share your app with your users now!** We can't wait to see what you're going to build with hydrapp.
 
 ## Reference
 
