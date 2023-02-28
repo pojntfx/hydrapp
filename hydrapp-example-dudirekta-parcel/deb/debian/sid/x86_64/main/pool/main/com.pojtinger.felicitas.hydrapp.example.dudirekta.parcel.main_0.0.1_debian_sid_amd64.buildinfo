@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- a2b58f0dbdf76a21d91e78bdc9cc5f13 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- bf1bdcbdf78028417de7c2c29e3a5e56 2819808 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ e5cc5ae7eacd98696f4460914ee84e39 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 337d9a81cdfe2c3955be18c4dbc010d7 2819852 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha1:
- d0f4eec643e572c10e82ee8a5806e6070c50f836 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- 9c0a5379957442180e863f9584e3d32dbee5bcd1 2819808 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ ff44aab68da899c87482bbc85078c2d6e40da72a 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 0c3e385cdebe2a1a51bb3675fffd947767c0c918 2819852 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha256:
- cf45aee0939bc6dbd0423f180e8500e32dea8754ef28ac9c82645894c953b138 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- bee0d9b87ebc3ca4f2b524413fca98b3d9711ff147165dc0960e9382be62cffc 2819808 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ 194d3a097c1e0999b72e13558f453717eb25913fab09549a337805a01a3a83db 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 9231eee1b660acd08951684f57c31fc9a36a856627ee193ed8f3bb67c05d445c 2819852 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 26 Feb 2023 23:35:29 +0000
+Build-Date: Tue, 28 Feb 2023 10:17:29 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -231,8 +231,8 @@ Installed-Build-Depends:
  libwebp7 (= 1.2.4-0.1),
  libwebpdemux2 (= 1.2.4-0.1),
  libwebpmux3 (= 1.2.4-0.1),
- libx11-6 (= 2:1.8.3-3),
- libx11-data (= 2:1.8.3-3),
+ libx11-6 (= 2:1.8.4-2),
+ libx11-data (= 2:1.8.4-2),
  libx265-199 (= 3.5-2+b1),
  libxau6 (= 1:1.0.9-1),
  libxcb1 (= 1.15-1),

@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.rest.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 1a0a956c0d486e037546445c3baff46d 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- 3dbeda882c844390bd7f56f9b0a034b1 2194296 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
+ 82afd9d291015da72713ac316c10a7f3 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 86891120ad2960cfc2e41e2ce5ff4c38 2194140 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 7d3fb4ed8428a7155b548a9139df2a2bd2d2f959 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- 2bd409e352bc0f0539c278bcdfd44ab8935ae53c 2194296 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
+ 49c189a16453d60fea9579ef7f527cbd3c35ad6b 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ ba2f3b247a68655dbd3d036dcc4f8823ae13127b 2194140 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 810126b86087e7b4171a8a0ac53d65750140684da3622f29c3f011371723fbb7 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- c840b904300d8e6364e25dd5b6c38250cffa6efe312d43cc29ea72ab8caac7c8 2194296 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
+ f7ea5f62fedb24c00b390b31c076ef8f3f0d8091c2325be5b9ec77ae2cf1c9c5 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 74928b670c50725c63528ad66320a29cc153c4ab674b24daa85995e5cb069357 2194140 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 26 Feb 2023 23:35:26 +0000
+Build-Date: Tue, 28 Feb 2023 10:18:45 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.rest.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -231,8 +231,8 @@ Installed-Build-Depends:
  libwebp7 (= 1.2.4-0.1),
  libwebpdemux2 (= 1.2.4-0.1),
  libwebpmux3 (= 1.2.4-0.1),
- libx11-6 (= 2:1.8.3-3),
- libx11-data (= 2:1.8.3-3),
+ libx11-6 (= 2:1.8.4-2),
+ libx11-data (= 2:1.8.4-2),
  libx265-199 (= 3.5-2+b1),
  libxau6 (= 1:1.0.9-1),
  libxcb1 (= 1.15-1),
