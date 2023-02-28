@@ -53,7 +53,7 @@ You can find binaries for more operating systems and architectures on [GitHub re
 
 ### 1. (Optional) Setting Up a Repo
 
-While not necessary for local development, setting up a repository is a good first step to be able to distribute your app's builds as quickly as possible. On GitHub, head over to [github.com/new] (https://github.com/new) to do so. Please take of the `owner` and `repository name` you've chosen; in these docs, we'll use `example` and `myapp`.
+While not necessary for local development, setting up a repository is a good first step to be able to distribute your app's builds as quickly as possible. On GitHub, head over to [github.com/new](https://github.com/new) to do so. Please take of the `owner` and `repository name` you've chosen; in these docs, we'll use `example` and `myapp`.
 
 ### 2. (Optional) Generating and Uploading Your Secrets
 
@@ -257,11 +257,13 @@ Note the `--exclude` flag; in this configuration, only `binaries` is missing, me
 
 ### 6. Releasing Your App
 
-As previously mentioned, hydrapp supports feature branches. To release your software to the main branch, push it to your GitHub repository, and the GitHub action will build it for you. After the actions have completed successfully, [enable GitHub pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) for the `gh_pages` branch by following the [link installation instructions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) in your generated `README`.
+As previously mentioned, hydrapp supports branches. To release your software to the `main` branch, push it to your GitHub repository, and the GitHub action will build it for you. After the actions have completed successfully, [enable GitHub pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) for the `gh_pages` branch.
 
-You can now install and use this canary build of your app by following the instructions in the generated file. When you're ready to tag a release, add a new entry to your `hydrapp.yaml` file under `releases` (ensure that you follow [semantic versioning](https://semver.org/)), run `git tag v<major>.<minor>.<patch>`, and `git push --tags`. The action should then automatically build a tagged release for you. Remember to update the installation instructions link to point to it by replacing `docs/main/INSTALLATION.html` with `docs/stable/INSTALLATION.html`:
+You can now install and use this canary build of your app by following the instructions in the generated installation docs file linked in your README. When you're ready to tag a release, add a new entry to your `hydrapp.yaml` file under `releases` (ensure that you follow [semantic versioning](https://semver.org/)), run `git tag v<major>.<minor>.<patch>`, and `git push --tags`. The action should then automatically build a tagged release for you. Remember to update the installation instructions link to point to it by replacing `docs/main/INSTALLATION.html` with `docs/stable/INSTALLATION.html`:
 
-![Screenshot of the installation instructions](./docs/screenshot-installation-instructions.png)
+![Screenshot of the generated installation instructions](./docs/screenshot-installation-instructions.png)
+
+Note that there are many more things you can configure in the framework. For example, if you want to introduce native dependencies, check out [connmapper](https://github.com/pojntfx/connmapper) - it's able to easily use `libpcap` thanks to hydrapp's integrated package management support. If you want to overwrite the build configs manually, you can always pass `--eject` to the build command, which will render the Debian `rules` file, the RPM `.spec`, the WIX installer files, the Flatpak manifest, the Android Manifest etc. in-place, giving you the ability to customize everything to your liking.
 
 **🚀 You're all set to share your app with your users now!** We can't wait to see what you're going to build with hydrapp.
 
