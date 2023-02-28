@@ -76,8 +76,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Set up hydrapp
         run: |
-          # TODO: Use stable release URL here
-          curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/download/main/hydrapp.linux-$(uname -m)" 
+          curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.linux-$(uname -m)" 
           sudo install /tmp/hydrapp /usr/local/bin
       - name: Setup PGP key
         working-directory: .
