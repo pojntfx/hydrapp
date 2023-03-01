@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.rest
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 6a5672cb2b9ac6c1029019067fe3fcf1 1066 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
- 55a8c7cf74436aea340a4cd017e3adf6 2194396 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb
+ be03aef5833e4a704299fc1a250726ef 1066 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
+ 1e440592669c80d0240241a69fb55e8e 2187412 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb
 Checksums-Sha1:
- 4fafe8f719a0d2c5500e796d9ac6edb97aeaca20 1066 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
- 2a5e763f69ddde4302cdcfcac5316829d221cf17 2194396 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb
+ f4fc9d57820a0bfd3ae0fef323983f9cd9731256 1066 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
+ 1d85338c2c22c9f4fa30c427a2810c825d50aee6 2187412 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb
 Checksums-Sha256:
- 1c42ea6460b20506167976eebcf7c03e943938d03819b383448cc252473533ec 1066 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
- 1c28a0441126920606b5aa0106d6b74e3bf4a795d9fc805480a4f7aea56b4d7a 2194396 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb
+ 11336d1a904ab3f68eeb8a1f7b13424c094f499963065056cbcfed37f8f27535 1066 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
+ 5efba35138ebca12d66a2d17e33d1d715b56b51fd1a03a83a259a42017a7b332 2187412 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Wed, 01 Mar 2023 01:44:20 +0000
+Build-Date: Wed, 01 Mar 2023 04:04:32 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.rest-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -199,8 +199,8 @@ Installed-Build-Depends:
  libquadmath0 (= 12.2.0-14),
  libreadline8 (= 8.2-1.3),
  librtmp1 (= 2.4+20151223.gitfa8646d.1-2+b2),
- libsasl2-2 (= 2.1.28+dfsg-10),
- libsasl2-modules-db (= 2.1.28+dfsg-10),
+ libsasl2-2 (= 2.1.28+dfsg-11),
+ libsasl2-modules-db (= 2.1.28+dfsg-11),
  libseccomp2 (= 2.5.4-1+b3),
  libselinux1 (= 3.4-1+b5),
  libsmartcols1 (= 2.38.1-5),

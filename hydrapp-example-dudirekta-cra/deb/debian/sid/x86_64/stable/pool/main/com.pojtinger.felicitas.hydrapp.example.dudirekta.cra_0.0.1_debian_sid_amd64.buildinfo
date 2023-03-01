@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.dudirekta.cra
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 5686d8e1341b06e15b13e9914ed7726c 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
- 615206b6eb32ccb2caeec6e660e2f74a 2857632 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
+ bbdd7673f902d058fade4d9ec71c0105 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
+ 3fb5122e8965df7907f7b2f9a8714bc3 2850168 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
 Checksums-Sha1:
- bd6f1360a93a05b515fbb8323ece8a3b4ce058f1 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
- c45f689ae7b99695f80996429d45986b066db6b8 2857632 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
+ 0cc2aeed8735cf51f125e6014d95c4b8585c46a3 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
+ dc28c4ef599a79d401c8ee386745f8c1278c84e7 2850168 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
 Checksums-Sha256:
- 2298e844383dfcfe17d322c9d6c23e5008096a09b55b45593ada828965c1ef8f 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
- 4a9482b6bc21109a30bf2a03fae2f5b2b5061fb062dc858f4965c46f4a7a0fef 2857632 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
+ b0e803e0fed24312f5b6828780b1f44ce899547064f28e0bc7dad6552fab252a 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
+ 0bd22b8a4b3d551efadd4a6ba7dc943a82ddf751caf481433d987d8f67cbbdd8 2850168 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Wed, 01 Mar 2023 01:42:08 +0000
+Build-Date: Wed, 01 Mar 2023 03:57:39 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.dudirekta.cra-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -199,8 +199,8 @@ Installed-Build-Depends:
  libquadmath0 (= 12.2.0-14),
  libreadline8 (= 8.2-1.3),
  librtmp1 (= 2.4+20151223.gitfa8646d.1-2+b2),
- libsasl2-2 (= 2.1.28+dfsg-10),
- libsasl2-modules-db (= 2.1.28+dfsg-10),
+ libsasl2-2 (= 2.1.28+dfsg-11),
+ libsasl2-modules-db (= 2.1.28+dfsg-11),
  libseccomp2 (= 2.5.4-1+b3),
  libselinux1 (= 3.4-1+b5),
  libsmartcols1 (= 2.38.1-5),
