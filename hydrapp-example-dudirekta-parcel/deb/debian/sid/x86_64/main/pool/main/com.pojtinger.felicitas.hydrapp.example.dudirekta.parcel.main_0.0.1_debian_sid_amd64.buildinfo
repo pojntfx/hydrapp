@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- d6c009028630c001b2ccfe254c07ef37 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- c6aea20edc3b7565d93750423abf2a45 2819640 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ eb317b3f178653a7192d44f71b5b9d96 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ da49ab23201c30d11b4d77ec2c590bb2 2812452 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 9733342d7d6cf95de0d48659225029148c05f121 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- d67e28187966e382ebe120298193603b017a8bbd 2819640 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ 32b1e286dffcb2065c9c832fd960b4d622557e62 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 389881b306489d1125c8f6f487b21b86529594fa 2812452 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 8e144aca5979698d416dd8abefa1b2c09559215dfaf6b058c81ab4d3ac30afdc 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- 8ff37158b9dd794f0c530995efa74d2f573de54c63501b37c6c1cd9fff56b431 2819640 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ 110fc373172762bfa2343f4e4dac163309a0cefd4bec8ee4fcaf2df5fdbbdb3e 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 36dcab83c27302b5f2cf41f4165ac7660a7ef4bebd539a481f78ac338a5521f0 2812452 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Wed, 01 Mar 2023 01:11:09 +0000
+Build-Date: Wed, 01 Mar 2023 03:21:47 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -199,8 +199,8 @@ Installed-Build-Depends:
  libquadmath0 (= 12.2.0-14),
  libreadline8 (= 8.2-1.3),
  librtmp1 (= 2.4+20151223.gitfa8646d.1-2+b2),
- libsasl2-2 (= 2.1.28+dfsg-10),
- libsasl2-modules-db (= 2.1.28+dfsg-10),
+ libsasl2-2 (= 2.1.28+dfsg-11),
+ libsasl2-modules-db (= 2.1.28+dfsg-11),
  libseccomp2 (= 2.5.4-1+b3),
  libselinux1 (= 3.4-1+b5),
  libsmartcols1 (= 2.38.1-5),

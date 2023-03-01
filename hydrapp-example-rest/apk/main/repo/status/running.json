@@ -2,6 +2,6 @@
   "commandLine": [
     "/usr/bin/fdroid gpgsign"
   ],
-  "startTimestamp": 1677632753000,
+  "startTimestamp": 1677640986000,
   "subcommand": "gpgsign"
 }
