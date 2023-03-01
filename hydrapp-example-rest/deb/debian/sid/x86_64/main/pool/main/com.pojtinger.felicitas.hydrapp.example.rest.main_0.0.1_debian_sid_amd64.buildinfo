@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.rest.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- f6b560bb81d4d635aab284d9a52d43d8 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- 02d0085c44b0cb31d245cfc67c85752e 2194132 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
+ a3f878d7483c11ec44ddd1c01956b821 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 2e5698fbc8ae48fe0a0106eb35b4a1a5 2194356 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 84075a42ebb3ae9095542bb69fbe886f5abd8544 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- 54e41e0165b2262ee3fd6bc7bbde8c9636d22362 2194132 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
+ 18f8f421a5975661a2270045ed984a71b991e641 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ ec5ba5a8d4a6df7d1a403e2800a5c3ba72658363 2194356 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 7e69391af2af4a10c60494b9e3f66c0128f56440ad9e5933be5d8cfec3686256 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- 81badfedebad2ec5d761dbc7790ab64e992375a564975365d5704a077b508bcf 2194132 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
+ b76c1855cc2640b0d20c0fe207940bfb75775c28b625b05e57f98482b42bff82 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 7db710b7ab4696c607340371a72b7393ba53c481826f0a5f62dba7a28ca90fa9 2194356 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Tue, 28 Feb 2023 17:07:37 +0000
+Build-Date: Tue, 28 Feb 2023 23:57:27 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.rest.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),

@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- eb27763162c52ab9d58d3cd3d7ab646d 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
- 0108fbbfc806ab8b3ea75225e37876fb 2857408 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
+ a6768d846078f2debcffe6304f3bc635 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
+ 7dd35690d43970624592b9763909e815 2857216 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 1bdc9dbbdaa934d9d46b7c4ca70085b8de482432 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
- 315355735ee97ce822caae2d97cdcb555e3e9d17 2857408 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
+ 52b64d73a52c674adf453b38c16f6b038f2dfa09 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
+ d14fcd377b0d017125ba95e3165c99378ba460d9 2857216 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 26abfee095e4fdf7b002b81c800207e8559db1569137d3a78cfc10968c2d9ed3 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
- 67537684b552f3dcdefe09246b714b7ddf974585d8f714f333c60524b5dc97df 2857408 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
+ 9882277136531523ab886b1d26d4c79e11f3c3e42a86b9b36e516a0c4d416df2 1159 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.dsc
+ a63fa43f625b78752be12cac587648b3f4a8ca4ecb36c8ebe50d64c032358b6d 2857216 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Tue, 28 Feb 2023 17:03:08 +0000
+Build-Date: Tue, 28 Feb 2023 23:54:25 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
