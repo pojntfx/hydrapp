@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- f9251d62205070fd4f7cede774d9087a 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 22f2a7c41802f5af97b94ddda4035581 2703632 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 3ae994fd8fc4f643c9a787699ae4a615 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 86feec4c7ce52ee389fb36d171e709bb 2703720 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 09c9f8a32fded6be3f9947badb4399b8a9e0e134 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 74aca7fd79e463463bffcd883c09c0fc4e090770 2703632 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 3689f3ee1c3bfab98d2eb062a9921e00e75fc461 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 1228e7b1c00074f88200bdc7e499122e74b49e6b 2703720 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- e1870146936cc612c09908189e5bfd7512d624e2b7fe44ada46a5455af80157d 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- a447769871d8faa3498cfa4076a1b60f417b61c2d3223aae7f6b3933d2e986e4 2703632 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 19bb586c03af6b54df1279ba607e43dbc244b28093894d3e458551d66f625cb6 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ b586cd6df47a7c9f19a9658892467ab39eb0e0df83a26be91daf7b797a467a05 2703720 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Tue, 28 Feb 2023 23:53:49 +0000
+Build-Date: Wed, 01 Mar 2023 01:05:51 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.forms.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
