@@ -3,7 +3,7 @@ app:
   name: Hydrapp Dudirekta-CRA Example
   summary: Hydrapp Dudirekta and Create React App example app
   description: A simple Hydrapp Dudirekta and Create React App example app.
-  license: AGPL-3.0-or-later
+  license: Apache-2.0
   homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-dudirekta-cra
   git: https://github.com/pojntfx/hydrapp.git
   baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-dudirekta-cra/

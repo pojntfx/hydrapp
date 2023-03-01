@@ -145,7 +145,7 @@ var newCmd = &cobra.Command{
 
 		licenseSPDX, err := (&promptui.Prompt{
 			Label:   "License SPDX identifier (see https://spdx.org/licenses/)",
-			Default: "AGPL-3.0-or-later",
+			Default: "Apache-2.0",
 		}).Run()
 		if err != nil {
 			return err

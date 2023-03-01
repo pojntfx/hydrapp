@@ -3,7 +3,7 @@ app:
   name: Hydrapp Forms Example
   summary: Hydrapp forms example app
   description: A simple Hydrapp forms example app.
-  license: AGPL-3.0-or-later
+  license: Apache-2.0
   homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-forms
   git: https://github.com/pojntfx/hydrapp.git
   baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-forms

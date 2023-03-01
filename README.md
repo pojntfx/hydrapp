@@ -146,7 +146,7 @@ Go module name: github.com/example/myapp
 You can set a license by choosing a SPDX identifier; note that this **has** to be a valid [SPDX identifier](https://spdx.org/licenses/) as it downloads the license text:
 
 ```plaintext
-License SPDX identifier (see https://spdx.org/licenses/): AGPL-3.0-or-later
+License SPDX identifier (see https://spdx.org/licenses/): Apache-2.0
 ```
 
 The release author name, author email and directory are self-explanatory:
@@ -392,4 +392,4 @@ Have any questions or need help? Chat with us [on Matrix](https://matrix.to/#/#h
 
 hydrapp (c) 2023 Felicitas Pojtinger and contributors
 
-SPDX-License-Identifier: AGPL-3.0
+SPDX-License-Identifier: Apache-2.0

@@ -51,4 +51,4 @@ Note that you can also set `HYDRAPP_BACKEND_LADDR` to a fixed value, `HYDRAPP_TY
 
 Hydrapp Dudirekta-CRA Example (c) 2023 Felicitas Pojtinger and contributors
 
-SPDX-License-Identifier: AGPL-3.0-or-later
+SPDX-License-Identifier: Apache-2.0

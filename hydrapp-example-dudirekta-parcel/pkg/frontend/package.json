@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "Felicitas Pojtinger <felicitas@pojtinger.com>",
-  "license": "AGPL-3.0-or-later",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
