@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Fri, 24 Feb 2023 16:16:36 +0100
+Source: com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel
+Architecture: source
+Version: 0.0.1
+Distribution: unstable
+Urgency: medium
+Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changed-By: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changes:
+ com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel (0.0.1) unstable; urgency=medium
+ .
+   * Initial release
+Checksums-Sha1:
+ 1ae9e27597cd823c62e33b01678f35111fcbaa0f 1150 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.dsc
+ 73747750dc2139531bc511a712edd3166f3f51a7 5087332 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz
+ dcc55327cdf2c63ddbcb432f5e61b9754f3e256e 20697 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1_amd64.buildinfo
+Checksums-Sha256:
+ 75c761f55cd33419c86849db8196afe0fdf373dc4ab83c5026559bbf76351469 1150 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.dsc
+ 4003d2c9ce20350f1e8be8e2e89cd36c24f20bbd6296807336c58de801b067e5 5087332 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz
+ 177e7f4fe939bbda554bcc422592c27adf33ef0bdafed9410d8f6a78ccebeca2 20697 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1_amd64.buildinfo
+Files:
+ fa1032ac9d6c213ab93ada848b9f9f5c 1150 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.dsc
+ 311adad56e608a6c5b0672193510212e 5087332 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz
+ 6203bd55cc35220376d2fe55dc7a81a6 20697 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1_amd64.buildinfo

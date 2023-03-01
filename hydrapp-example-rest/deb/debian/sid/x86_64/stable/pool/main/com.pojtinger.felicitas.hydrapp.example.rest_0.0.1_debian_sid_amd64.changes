@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Fri, 24 Feb 2023 16:08:35 +0100
+Source: com.pojtinger.felicitas.hydrapp.example.rest
+Binary: com.pojtinger.felicitas.hydrapp.example.rest
+Architecture: source amd64
+Version: 0.0.1
+Distribution: unstable
+Urgency: medium
+Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changed-By: Felicitas Pojtinger <felicitas@pojtinger.com>
+Description:
+ com.pojtinger.felicitas.hydrapp.example.rest - Hydrapp REST example app
+Changes:
+ com.pojtinger.felicitas.hydrapp.example.rest (0.0.1) unstable; urgency=medium
+ .
+   * Initial release
+Checksums-Sha1:
+ 4fafe8f719a0d2c5500e796d9ac6edb97aeaca20 1066 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
+ 6ed027dc974d496d9f67f176f702122c6bae2c91 5086372 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.tar.xz
+ f4fd348320b6322f38012d1018dd5e6b3955164f 20589 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.buildinfo
+ 2a5e763f69ddde4302cdcfcac5316829d221cf17 2194396 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb
+Checksums-Sha256:
+ 1c42ea6460b20506167976eebcf7c03e943938d03819b383448cc252473533ec 1066 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
+ c5f7e61cfba927edcf8e30d8fc8573796bd4a49374e1912d801c230e0ed55756 5086372 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.tar.xz
+ 2ec8a1ddc6257f998354dac28664593bd7532529c4d19ff2ce56730f64b46b73 20589 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.buildinfo
+ 1c28a0441126920606b5aa0106d6b74e3bf4a795d9fc805480a4f7aea56b4d7a 2194396 com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb
+Files:
+ 6a5672cb2b9ac6c1029019067fe3fcf1 1066 utils optional com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.dsc
+ 750518139ef82bd4c1d01a09208e229d 5086372 utils optional com.pojtinger.felicitas.hydrapp.example.rest_0.0.1.tar.xz
+ e0bec1d6e1d4cb01bd65011d0ffc1869 20589 utils optional com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.buildinfo
+ 55a8c7cf74436aea340a4cd017e3adf6 2194396 utils optional com.pojtinger.felicitas.hydrapp.example.rest_0.0.1_amd64.deb

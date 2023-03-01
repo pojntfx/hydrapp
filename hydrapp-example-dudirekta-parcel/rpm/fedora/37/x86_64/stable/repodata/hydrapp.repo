@@ -1,0 +1,6 @@
+[hydrapp-repo]
+name=Hydrapp YUM repo
+baseurl=https://pojntfx.github.io/hydrapp/hydrapp-example-dudirekta-parcel//rpm/fedora/37/x86_64/stable
+enabled=1
+gpgcheck=1
+gpgkey=https://pojntfx.github.io/hydrapp/hydrapp-example-dudirekta-parcel//rpm/fedora/37/x86_64/stable/repodata/repo.asc

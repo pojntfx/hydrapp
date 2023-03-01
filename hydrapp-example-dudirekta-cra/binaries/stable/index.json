@@ -1,0 +1,342 @@
+[
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.darwin-aarch64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.darwin-aarch64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.darwin-x86_64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.darwin-x86_64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.dragonfly-x86_64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.dragonfly-x86_64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-aarch64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-aarch64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-armv7l",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-armv7l.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-i686",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-i686.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-riscv64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-riscv64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-x86_64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.freebsd-x86_64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.illumos-x86_64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.illumos-x86_64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-aarch64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-aarch64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-armv7l",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-armv7l.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-i686",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-i686.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-mips",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-mips.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-mips64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-mips64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-mips64le",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-mips64le.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-mipsle",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-mipsle.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-ppc64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-ppc64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-ppc64le",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-ppc64le.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-riscv64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-riscv64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-s390x",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-s390x.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-x86_64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.linux-x86_64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.netbsd-aarch64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.netbsd-aarch64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.netbsd-armv7l",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.netbsd-armv7l.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.netbsd-i686",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.netbsd-i686.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.netbsd-x86_64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.netbsd-x86_64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.openbsd-aarch64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.openbsd-aarch64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.openbsd-armv7l",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.openbsd-armv7l.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.openbsd-i686",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.openbsd-i686.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.openbsd-x86_64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.openbsd-x86_64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.solaris-x86_64",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.solaris-x86_64.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.windows-aarch64.exe",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.windows-aarch64.exe.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.windows-armv7l.exe",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.windows-armv7l.exe.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.windows-i686.exe",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.windows-i686.exe.asc",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.windows-x86_64.exe",
+    "time": "2023-03-01T01:20:08Z"
+  },
+  {
+    "type": "file",
+    "name": "com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.windows-x86_64.exe.asc",
+    "time": "2023-03-01T01:20:08Z"
+  }
+]
