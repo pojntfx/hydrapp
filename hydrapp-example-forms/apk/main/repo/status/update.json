@@ -1,1 +1,1 @@
-{"antiFeatures":{},"commandLine":["/usr/bin/fdroid update","--create-metadata"],"disabled":[],"endTimestamp":1677640995951,"failedBuilds":{},"noPackages":["com.pojtinger.felicitas.hydrapp.example.forms.main"],"startTimestamp":1677640992000,"subcommand":"update"}
+{"antiFeatures":{},"commandLine":["/usr/bin/fdroid update","--create-metadata"],"disabled":[],"endTimestamp":1677977022048,"failedBuilds":{},"noPackages":["com.pojtinger.felicitas.hydrapp.example.forms.main"],"startTimestamp":1677977018000,"subcommand":"update"}

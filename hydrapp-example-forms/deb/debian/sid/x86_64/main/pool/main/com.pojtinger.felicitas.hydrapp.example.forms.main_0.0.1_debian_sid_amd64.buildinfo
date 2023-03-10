@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- d6de2525ed520dec0fe62919d7414a44 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ fc998502f367370e2361e2dfb1982878 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
  910bc3b264d167b6b94ce9b988dea6a4 2696700 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 78e384150d13fe7243c2001adcc61d0e33113000 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 0ecb62728224e1ab5fb267cd7f59cd6d5ea14c1d 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
  c6602e970aec219f36558fa96e3d6dfb68b8529d 2696700 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- f36eedbd0603c3dee48b3ca079aa538d10ec113a17f228334f8b56d304c60fd5 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ d17aefd73c2b9d42b32d7eff884895748174532317804522e03ccee0c16fd900 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
  370411ce446949e625c17b76abe5ecbd65eceef4c62b4410888d635ad1a87982 2696700 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Wed, 01 Mar 2023 03:29:15 +0000
+Build-Date: Sun, 05 Mar 2023 00:43:11 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.forms.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -22,7 +22,7 @@ Installed-Build-Depends:
  automake (= 1:1.16.5-1.3),
  autopoint (= 0.21-12),
  autotools-dev (= 20220109.1),
- base-files (= 12.3),
+ base-files (= 12.4),
  base-passwd (= 3.6.1),
  bash (= 5.2.15-2+b1),
  binutils (= 2.40-2),
@@ -90,7 +90,7 @@ Installed-Build-Depends:
  libbinutils (= 2.40-2),
  libblkid1 (= 2.38.1-5),
  libbrotli1 (= 1.0.9-2+b6),
- libbsd0 (= 0.11.7-2),
+ libbsd0 (= 0.11.7-3),
  libbz2-1.0 (= 1.0.8-5+b1),
  libc-ares2 (= 1.18.1-2),
  libc-bin (= 2.36-8),
@@ -105,7 +105,7 @@ Installed-Build-Depends:
  libcrypt1 (= 1:4.4.33-2),
  libctf-nobfd0 (= 2.40-2),
  libctf0 (= 2.40-2),
- libcurl3-gnutls (= 7.88.1-1),
+ libcurl3-gnutls (= 7.88.1-2),
  libdav1d6 (= 1.0.0-2),
  libdb5.3 (= 5.3.28+dfsg2-1),
  libde265-0 (= 1.0.11-1),
@@ -128,14 +128,14 @@ Installed-Build-Depends:
  libgdbm6 (= 1.23-3),
  libgdk-pixbuf-2.0-0 (= 2.42.10+dfsg-1+b1),
  libgdk-pixbuf2.0-common (= 2.42.10+dfsg-1),
- libglib2.0-0 (= 2.74.5-1),
+ libglib2.0-0 (= 2.74.6-1),
  libgmp10 (= 2:6.2.1+dfsg1-1.1),
  libgnutls30 (= 3.7.9-1),
  libgomp1 (= 12.2.0-14),
  libgpg-error0 (= 1.46-1),
  libgprofng0 (= 2.40-2),
  libgssapi-krb5-2 (= 1.20.1-1),
- libheif1 (= 1.14.2-1),
+ libheif1 (= 1.15.1-1),
  libhogweed6 (= 3.8.1-2),
  libicu72 (= 72.1-3),
  libidn2-0 (= 2.3.3-1+b1),
@@ -212,7 +212,7 @@ Installed-Build-Depends:
  libstdc++6 (= 12.2.0-14),
  libstemmer0d (= 2.2.0-2),
  libsub-override-perl (= 0.09-4),
- libsystemd0 (= 252.5-2),
+ libsystemd0 (= 252.6-1),
  libtasn1-6 (= 4.19.0-2),
  libtiff6 (= 4.5.0-5),
  libtinfo6 (= 6.4-2),
@@ -223,7 +223,7 @@ Installed-Build-Depends:
  libtsan2 (= 12.2.0-14),
  libubsan1 (= 12.2.0-14),
  libuchardet0 (= 0.0.7-1),
- libudev1 (= 252.5-2),
+ libudev1 (= 252.6-1),
  libunistring2 (= 1.0-2),
  libuuid1 (= 2.38.1-5),
  libuv1 (= 1.44.2-1),
@@ -519,7 +519,7 @@ Installed-Build-Depends:
  node-safe-buffer (= 5.2.1+~cs2.1.2-3),
  node-schema-utils (= 3.1.1~ds-2),
  node-semver (= 7.3.5+~7.3.9-2),
- node-serialize-javascript (= 6.0.0-2),
+ node-serialize-javascript (= 6.0.1-1),
  node-set-blocking (= 2.0.0-2),
  node-set-immediate-shim (= 2.0.0-2),
  node-shebang-command (= 2.0.0-1),
@@ -545,7 +545,7 @@ Installed-Build-Depends:
  node-tapable (= 2.2.1-2),
  node-tape (= 5.6.1+~cs8.20.19-1),
  node-tar (= 6.1.13+~cs7.0.5-1),
- node-terser (= 5.16.4-1),
+ node-terser (= 5.16.5-1),
  node-text-table (= 0.2.0-4),
  node-through (= 2.3.8+~cs0.0.30-1),
  node-time-stamp (= 2.2.0-2),
@@ -606,7 +606,7 @@ Installed-Build-Depends:
  shared-mime-info (= 2.2-1),
  sysvinit-utils (= 3.06-2),
  tar (= 1.34+dfsg-1.1),
- terser (= 5.16.4-1),
+ terser (= 5.16.5-1),
  usr-is-merged (= 35),
  util-linux (= 2.38.1-5),
  util-linux-extra (= 2.38.1-5),
