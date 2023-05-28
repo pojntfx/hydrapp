@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.rest.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 46ccb8e5c8e8946baf8a4ebdff97ef0d 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 3ab2a461e38338ba10e451e949a11306 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  3586f9839594e5a68c6aa3d39fb0f6f4 2188264 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha1:
- c55006b1757142e1b2cf13f4a2b2334e36bf7e0c 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 336276a3cff9ef173a70a4c2756d36825afca168 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  f28071285252908d74b522c5742f520a227ed8b4 2188264 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha256:
- e7b6a9bd617a7745a56e68bd3bf6f6668f0434b1bd381df6be44bcee4885a12f 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 6675633f16f240dd3ee399e4e5f40cf5ebe3340fa2174e40188b7ed7f94e4f60 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  e5123bae49200acce460dcd101fa65ae438a5258a95c01eb70d1e352649f690e 2188264 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 21 May 2023 00:50:29 +0000
+Build-Date: Sun, 28 May 2023 00:51:37 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.rest.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -92,7 +92,7 @@ Installed-Build-Depends:
  libbrotli1 (= 1.0.9-2+b6),
  libbsd0 (= 0.11.7-4),
  libbz2-1.0 (= 1.0.8-5+b1),
- libc-ares2 (= 1.18.1-2),
+ libc-ares2 (= 1.18.1-3),
  libc-bin (= 2.36-9),
  libc-dev-bin (= 2.36-9),
  libc6 (= 2.36-9),
@@ -109,7 +109,7 @@ Installed-Build-Depends:
  libdav1d6 (= 1.0.0-2),
  libdb5.3 (= 5.3.28+dfsg2-1),
  libde265-0 (= 1.0.11-1),
- libdebconfclient0 (= 0.269),
+ libdebconfclient0 (= 0.270),
  libdebhelper-perl (= 13.11.4),
  libdeflate0 (= 1.14-1),
  libdpkg-perl (= 1.21.22),
@@ -176,13 +176,13 @@ Installed-Build-Depends:
  libmpfr6 (= 4.2.0-1),
  libncursesw6 (= 6.4-4),
  libnettle8 (= 3.8.1-2),
- libnghttp2-14 (= 1.52.0-1),
+ libnghttp2-14 (= 1.53.0-1),
  libnode-dev (= 18.13.0+dfsg1-1),
  libnode108 (= 18.13.0+dfsg1-1),
  libnsl-dev (= 1.3.0-2),
  libnsl2 (= 1.3.0-2),
  libnuma1 (= 2.0.16-1),
- libopenjp2-7 (= 2.5.0-1+b1),
+ libopenjp2-7 (= 2.5.0-2),
  libp11-kit0 (= 0.24.1-2),
  libpam-modules (= 1.5.2-6),
  libpam-modules-bin (= 1.5.2-6),
@@ -202,7 +202,7 @@ Installed-Build-Depends:
  libsasl2-2 (= 2.1.28+dfsg-11),
  libsasl2-modules-db (= 2.1.28+dfsg-11),
  libseccomp2 (= 2.5.4-1+b3),
- libselinux1 (= 3.4-1+b5),
+ libselinux1 (= 3.4-1+b6),
  libsmartcols1 (= 2.38.1-5+b1),
  libsqlite3-0 (= 3.40.1-2),
  libssh2-1 (= 1.10.0-3+b1),
