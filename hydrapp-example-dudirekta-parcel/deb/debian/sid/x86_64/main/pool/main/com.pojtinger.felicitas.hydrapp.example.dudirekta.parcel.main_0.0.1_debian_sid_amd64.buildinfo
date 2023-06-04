@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- cb88d7ff45fff3b698954c89e5b7003e 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ e05b095b697cb23ed1f405d382c7d1db 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
  e93165abe426edfeea6c6c1fb5aec8b4 2813052 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 04e00c86c8581c316bd95c8e83c13bb032b40886 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ ee8126d633cb20263f34166489ee78a69ef342f3 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
  6983f2c1cd49f36707e612280a282b8dff9eba97 2813052 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 266b274f3b587c02cd205a7b0ac44c286f4301955e93848f9a819fc564fdfca3 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 29682df55b2e7c8caf02f57721de53682e039cb26d10053ea1cf1f3bb1157717 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
  0f7f0f71f9c0ac94375d16d259127df066cdf1aaae8a82fa93f8a8d79e729cea 2813052 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 28 May 2023 00:47:11 +0000
+Build-Date: Sun, 04 Jun 2023 00:49:07 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main-0.0.1
 Installed-Build-Depends:
  appstream-util (= 0.8.2-1),
@@ -206,8 +206,8 @@ Installed-Build-Depends:
  libsmartcols1 (= 2.38.1-5+b1),
  libsqlite3-0 (= 3.40.1-2),
  libssh2-1 (= 1.10.0-3+b1),
- libssl-dev (= 3.0.8-1),
- libssl3 (= 3.0.8-1),
+ libssl-dev (= 3.0.9-1),
+ libssl3 (= 3.0.9-1),
  libstdc++-12-dev (= 12.2.0-14),
  libstdc++6 (= 12.2.0-14),
  libstemmer0d (= 2.2.0-2),
@@ -274,8 +274,8 @@ Installed-Build-Depends:
  node-babel-plugin-polyfill-corejs2 (= 0.3.3~0~20220913+ds1-1),
  node-babel-plugin-polyfill-corejs3 (= 0.6.0~0~20220913+ds1-1),
  node-babel-plugin-polyfill-regenerator (= 0.4.1~0~20220913+ds1-1),
- node-babel7 (= 7.20.15+ds1+~cs214.269.168-2),
- node-babel7-runtime (= 7.20.15+ds1+~cs214.269.168-2),
+ node-babel7 (= 7.20.15+ds1+~cs214.269.168-3),
+ node-babel7-runtime (= 7.20.15+ds1+~cs214.269.168-3),
  node-balanced-match (= 2.0.0-1),
  node-base64-js (= 1.5.1+dfsg+~1.3.0-2),
  node-binary-extensions (= 2.2.0-2),
@@ -587,7 +587,7 @@ Installed-Build-Depends:
  node-yargs-parser (= 21.1.1+~21.0.0-4),
  nodejs (= 18.13.0+dfsg1-1),
  npm (= 9.2.0~ds1-1),
- openssl (= 3.0.8-1),
+ openssl (= 3.0.9-1),
  patch (= 2.7.6-7),
  perl (= 5.36.0-7),
  perl-base (= 5.36.0-7),
