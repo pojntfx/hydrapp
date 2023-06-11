@@ -12,8 +12,8 @@ Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), golang-go (>= 1.19), image
 Package-List:
  com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main deb utils optional arch=any
 Checksums-Sha1:
- ca961920ffe0ef2feac8caa0507adf18a40bb208 5069552 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.tar.xz
+ a0c15dba1d25df826f738d6f67d65aa062283673 5069564 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.tar.xz
 Checksums-Sha256:
- 4172a7ab35018071630ac9ea349ec996196a6c1a0a7036e7616e0c9559063cdc 5069552 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.tar.xz
+ c80dddfd0efe68d610c0e3542aa88e4f1c0e23d522df45092f55e5fadf25aa00 5069564 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.tar.xz
 Files:
- 50c6d919bcf4b471c328da735c4f0a6c 5069552 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.tar.xz
+ 3b46ef2b351eaa39f4c7ad71808e7d74 5069564 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.main_0.0.1.tar.xz
