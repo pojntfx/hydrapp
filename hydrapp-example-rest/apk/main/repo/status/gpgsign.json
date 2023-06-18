@@ -1,1 +1,1 @@
-{"commandLine":["/usr/bin/fdroid gpgsign"],"endTimestamp":1686444368587,"signed":["com.pojtinger.felicitas.hydrapp.example.rest.main.apk"],"startTimestamp":1686444367000,"subcommand":"gpgsign"}
+{"commandLine":["/usr/bin/fdroid gpgsign"],"endTimestamp":1687048974719,"signed":["com.pojtinger.felicitas.hydrapp.example.rest.main.apk"],"startTimestamp":1687048974000,"subcommand":"gpgsign"}
