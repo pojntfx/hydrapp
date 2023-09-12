@@ -17,7 +17,7 @@ RUN make -l
 RUN make install
 
 # Install MSYS2
-RUN curl -L -o /tmp/msys2.exe 'https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-base-x86_64-20221028.sfx.exe'
+RUN curl -L -o /tmp/msys2.exe 'https://github.com/msys2/msys2-installer/releases/download/2023-07-18/msys2-base-x86_64-20230718.sfx.exe'
 RUN wine64 /tmp/msys2.exe x -y -oC:/
 
 # Fix MSYS2
