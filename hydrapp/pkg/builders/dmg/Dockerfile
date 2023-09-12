@@ -1,6 +1,6 @@
 FROM crazymax/osxcross:latest-debian AS osxcross
 
-FROM golang:bullseye
+FROM golang:bookworm
 
 COPY --from=osxcross /osxcross /osxcross
 

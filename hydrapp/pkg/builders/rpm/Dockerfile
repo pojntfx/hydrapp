@@ -1,4 +1,4 @@
-FROM fedora:37
+FROM fedora:38
 
 # Install native dependencies
 RUN dnf install -y fedora-packager @development-tools qemu-user-static rpm-sign

@@ -1,4 +1,4 @@
-FROM fedora:37
+FROM fedora:38
 
 # Install native dependencies
 RUN dnf install -y 'dnf-command(config-manager)' 'dnf-command(builddep)'

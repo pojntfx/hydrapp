@@ -1,4 +1,4 @@
-FROM golang:bullseye
+FROM golang:bookworm
 
 # Install native dependencies
 RUN apt update
