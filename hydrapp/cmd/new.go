@@ -194,7 +194,7 @@ var newCmd = &cobra.Command{
 		msiArchitectures := "amd64"
 		rpmArchitectures := "amd64"
 
-		binariesExclude := "(android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm|openbsd/mips64)"
+		binariesExclude := "(android/*|ios/*|plan9/*|aix/*|linux/loong64|freebsd/riscv64|wasip1/wasm|js/wasm|openbsd/mips64)"
 
 		if advancedConfiguration == "yes" {
 			goMain, err = (&promptui.Prompt{

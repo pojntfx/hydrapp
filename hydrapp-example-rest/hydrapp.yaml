@@ -51,7 +51,7 @@ apk:
   path: apk
 binaries:
   path: binaries
-  exclude: (android/*|ios/*|plan9/*|aix/*|linux/loong64|js/wasm|openbsd/mips64)
+  exclude: (android/*|ios/*|plan9/*|aix/*|linux/loong64|freebsd/riscv64|wasip1/wasm|js/wasm|openbsd/mips64)
   packages: []
 docs:
   path: docs
