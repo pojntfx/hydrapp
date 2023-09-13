@@ -5,7 +5,7 @@ RUN apt install -y curl make imagemagick msitools curl uuid-runtime git cpanminu
 
 # Install WINE
 RUN wget -nv -O- https://dl.winehq.org/wine-builds/winehq.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
-RUN echo "deb https://dl.winehq.org/wine-builds/ubuntu/ $(grep VERSION_CODENAME= /etc/os-release | cut -d= -f2) main" >>/etc/apt/sources.list
+RUN echo "deb https://dl.winehq.org/wine-builds/debian/ $(grep VERSION_CODENAME= /etc/os-release | cut -d= -f2) main" >>/etc/apt/sources.list
 RUN dpkg --add-architecture i386
 RUN apt update
 RUN DEBIAN_FRONTEND="noninteractive" apt install -y --install-recommends winehq-stable
