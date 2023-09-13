@@ -230,7 +230,7 @@ jobs:
           sudo install /tmp/hydrun /usr/local/bin
       - name: Build hydrapp with hydrun
         working-directory: .
-        run: hydrun -o golang:bullseye "./Hydrunfile go hydrapp"
+        run: hydrun -o golang:bookworm "./Hydrunfile go hydrapp"
       - name: Fix permissions for output
         run: sudo chown -R $USER .
       - name: Install hydrapp

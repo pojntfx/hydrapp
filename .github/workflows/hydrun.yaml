@@ -15,13 +15,13 @@ jobs:
           # hydrapp
           - id: test.hydrun-builder
             src: .
-            os: golang:bullseye
+            os: golang:bookworm
             flags: ""
             cmd: GOFLAGS="-short" ./Hydrunfile test hydrapp
             dst: out/nonexistent
           - id: go.hydrun-builder
             src: .
-            os: golang:bullseye
+            os: golang:bookworm
             flags: ""
             cmd: ./Hydrunfile go hydrapp
             dst: out/*
