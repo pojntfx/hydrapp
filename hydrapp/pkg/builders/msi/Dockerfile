@@ -1,20 +1,7 @@
-FROM fedora:38
+FROM scottyhardy/docker-wine
 
-# Install native dependencies
-RUN dnf install -y 'dnf-command(config-manager)' 'dnf-command(builddep)'
-RUN dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/38/winehq.repo
-RUN dnf install -y make ImageMagick msitools curl uuid go git perl-CPAN npm tree jq
-RUN dnf builddep -y winehq-staging
-
-# Build WINE
-RUN git clone https://gitlab.winehq.org/jacek/wine.git /tmp/winesrc
-
-WORKDIR /tmp/winesrc
-
-RUN git checkout 4e5fab6214d9304004369d50b6c73b8d88cf46d8
-RUN ./configure --enable-win64
-RUN make -l
-RUN make install
+RUN apt update
+RUN apt install -y curl
 
 # Install MSYS2
 RUN curl -L -o /tmp/msys2.exe 'https://github.com/msys2/msys2-installer/releases/download/2023-07-18/msys2-base-x86_64-20230718.sfx.exe'
@@ -27,7 +14,7 @@ ENV WINEPATH="C:\\ucrt64\\bin;C:\\msys64\\usr\\bin"
 ENV MSYSTEM="UCRT64"
 
 # Install GCC and Go
-RUN yes | wine64 bash.exe -c 'pacman --noconfirm --ignore pacman -Syu'
+RUN yes | wine64 bash.exe -c 'pacman --noconfirm --ignore pacman -Syu --debug'
 
 COPY perl-Convert-BinHex-999-1-x86_64.pkg.tar.gz /root/.wine/drive_c/msys64/tmp
 
