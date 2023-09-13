@@ -379,9 +379,9 @@ var newCmd = &cobra.Command{
 			rpms := []config.RPM{}
 			for _, arch := range strings.Split(rpmArchitectures, ",") {
 				rpms = append(rpms, config.RPM{
-					Path:         path.Join("rpm", "fedora", "37", utils.GetArchIdentifier(arch)),
-					Trailer:      "1.fc37",
-					Distro:       "fedora-37",
+					Path:         path.Join("rpm", "fedora", "38", utils.GetArchIdentifier(arch)),
+					Trailer:      "1.fc38",
+					Distro:       "fedora-38",
 					Architecture: arch,
 					Packages:     []rpm.Package{},
 				})
