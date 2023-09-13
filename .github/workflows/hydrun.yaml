@@ -25,6 +25,7 @@ jobs:
             flags: ""
             cmd: ./Hydrunfile go hydrapp
             dst: out/*
+          # Disabled until `gccgo` supports generics/Go 1.21: https://go.dev/doc/install/gccgo
           # - id: gccgo.hydrun-builder
           #   src: .
           #   os: ghcr.io/pojntfx/bagccgop-base-sid
