@@ -131,7 +131,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			docs.NewInstallationRenderer(
 				appID,
 				appName,
-				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.APK.Path, b.branchID, "/"),
+				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.APK.Path, b.branchID, "/")+"/repo", // F-Droid requires the path to end with `/repo`: `CRITICAL: repo_url needs to end with /repo`
 				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.DMG.Path, b.branchID, "/")+"/"+macOSBinaryName,
 				macOSBinaryName,
 				b.cfg.App.BaseURL+builders.GetPathForBranch(b.cfg.Binaries.Path, b.branchID, "/"),
