@@ -1,7 +1,7 @@
 FROM golang:bookworm
 
 RUN apt update
-RUN apt install -y curl make imagemagick msitools curl uuid-runtime git cpanminus npm tree jq apt-transport-https ca-certificates cabextract git gnupg gosu gpg-agent locales p7zip pulseaudio pulseaudio-utils sudo tzdata unzip wget winbind xvfb zenity
+RUN apt install -y curl make imagemagick msitools curl uuid-runtime git cpanminus npm tree jq apt-transport-https ca-certificates cabextract git gnupg gosu gpg-agent locales p7zip pulseaudio pulseaudio-utils sudo tzdata unzip wget winbind xvfb zenity wixl libxml2-utils
 
 # Install WINE
 RUN wget -nv -O- https://dl.winehq.org/wine-builds/winehq.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
