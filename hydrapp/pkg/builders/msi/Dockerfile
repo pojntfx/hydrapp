@@ -29,12 +29,12 @@ RUN wine64 bash.exe -c 'pacman --debug --noconfirm -U /tmp/perl-Convert-BinHex-9
 RUN wine64 bash.exe -c 'pacman --debug --noconfirm --ignore pacman --needed -S ca-certificates git mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-go mingw-w64-ucrt-x86_64-pkg-config'
 RUN wine64 bash.exe -c 'update-ca-trust'
 RUN sed -i /root/.wine/drive_c/msys64/ucrt64/lib/pkgconfig/* -e 's/-Wl,-luuid/-luuid/g' # See https://github.com/gotk3/gotk3/wiki/Installing-on-Windows#chocolatey, fails with invalid flag in pkg-config --libs: -Wl,-luuid otherwise
-RUN mkdir -p '/root/.wine/drive_c/go' '/root/.wine/drive_c/tmp'
-RUN mkdir -p '/root/.wine/drive_c/users/root/Documents/go-workspace'
 
 RUN yes | cpan install File::Slurp
 
 RUN git config --global --add safe.directory '*'
+
+RUN mv /root/.wine/drive_c/msys64 /tmp/msys64
 
 COPY entrypoint.sh /entrypoint.sh
 

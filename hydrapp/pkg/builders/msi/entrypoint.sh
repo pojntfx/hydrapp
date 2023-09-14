@@ -14,6 +14,12 @@ EOT
 echo "${PGP_KEY_CONTENT}" | base64 -d >'/tmp/private.pgp'
 gpg --import /tmp/private.pgp
 
+# Re-initialize WINE at runtime
+rm -rf /root/.wine
+wine64 cmd.exe /c dir
+mv /tmp/msys64 /root/.wine/drive_c/msys64
+mkdir -p '/root/.wine/drive_c/go' '/root/.wine/drive_c/tmp' '/root/.wine/drive_c/users/root/Documents/go-workspace'
+
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"
 

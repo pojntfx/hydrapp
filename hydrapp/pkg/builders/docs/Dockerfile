@@ -1,7 +1,8 @@
-FROM fedora:38
+FROM debian:bookworm
 
 # Install native dependencies
-RUN dnf install -y pandoc
+RUN apt update
+RUN apt install -y pandoc
 
 COPY entrypoint.sh /entrypoint.sh
 
