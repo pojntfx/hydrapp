@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- af45a79b88794691d4164bfc5e702c33 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ eb276fe882f3020b2e8a8fcd56ff0904 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
  806bb1d90173d315c9c921f1980133a9 2791120 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 4141c68895b2aa65857d16d067cd1788b5cc2a4f 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ ffa0838446fc94e9d7cf0e2fd00d08dc350d77be 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
  095c18b9cfd2563637145056268f3d979d3f5132 2791120 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- a4e375b9b83c40f2451602174475687129aa32047d3997d89b15db9c1306632b 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ be3c2c128eef5be34d789299b7f6c8c6c644230cf900e26719c9b337d72b5483 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
  0bda498e2228ddad4118ef14062b1750d1ae8e19fc400c74299e2f290bf8c60f 2791120 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 17 Sep 2023 00:55:22 +0000
+Build-Date: Sun, 24 Sep 2023 00:55:13 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.forms.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -41,7 +41,7 @@ Installed-Build-Depends:
  dash (= 0.5.12-6),
  debconf (= 1.5.82),
  debhelper (= 13.11.6),
- debianutils (= 5.12),
+ debianutils (= 5.13),
  desktop-file-utils (= 0.26-1),
  dh-autoreconf (= 20),
  dh-strip-nondeterminism (= 1.13.1-1),
@@ -110,8 +110,8 @@ Installed-Build-Depends:
  libcurl3-gnutls (= 8.3.0-1),
  libdav1d6 (= 1.2.1-2),
  libdb5.3 (= 5.3.28+dfsg2-2),
- libde265-0 (= 1.0.12-1+b1),
- libdebconfclient0 (= 0.270),
+ libde265-0 (= 1.0.12-2),
+ libdebconfclient0 (= 0.271),
  libdebhelper-perl (= 13.11.6),
  libdeflate0 (= 1.18-1),
  libdpkg-perl (= 1.22.0),
@@ -125,21 +125,21 @@ Installed-Build-Depends:
  libfreetype6 (= 2.13.2+dfsg-1),
  libgcc-13-dev (= 13.2.0-4),
  libgcc-s1 (= 13.2.0-4),
- libgcrypt20 (= 1.10.2-2),
+ libgcrypt20 (= 1.10.2-3),
  libgdbm-compat4 (= 1.23-3),
  libgdbm6 (= 1.23-3),
  libgdk-pixbuf-2.0-0 (= 2.42.10+dfsg-1+b1),
  libgdk-pixbuf2.0-common (= 2.42.10+dfsg-1),
- libglib2.0-0 (= 2.78.0-1),
+ libglib2.0-0 (= 2.78.0-2),
  libgmp10 (= 2:6.3.0+dfsg-2),
  libgnutls30 (= 3.8.1-4+b1),
  libgomp1 (= 13.2.0-4),
  libgpg-error0 (= 1.47-2),
  libgprofng0 (= 2.41-5),
  libgssapi-krb5-2 (= 1.20.1-4),
- libheif-plugin-dav1d (= 1.16.2-2),
- libheif-plugin-libde265 (= 1.16.2-2),
- libheif1 (= 1.16.2-2),
+ libheif-plugin-dav1d (= 1.16.2-2+b1),
+ libheif-plugin-libde265 (= 1.16.2-2+b1),
+ libheif1 (= 1.16.2-2+b1),
  libhogweed6 (= 3.9.1-2),
  libhwasan0 (= 13.2.0-4),
  libicu72 (= 72.1-3),
@@ -208,16 +208,17 @@ Installed-Build-Depends:
  libseccomp2 (= 2.5.4-1+b3),
  libselinux1 (= 3.5-1),
  libsframe1 (= 2.41-5),
+ libsharpyuv0 (= 1.3.2-0.3),
  libsmartcols1 (= 2.39.2-1),
  libsqlite3-0 (= 3.43.1-1),
  libssh2-1 (= 1.11.0-2),
- libssl-dev (= 3.0.10-1),
- libssl3 (= 3.0.10-1),
+ libssl-dev (= 3.0.11-1),
+ libssl3 (= 3.0.11-1),
  libstdc++-13-dev (= 13.2.0-4),
  libstdc++6 (= 13.2.0-4),
  libstemmer0d (= 2.2.0-4),
  libsub-override-perl (= 0.09-4),
- libsystemd0 (= 254.3-1),
+ libsystemd0 (= 254.4-1),
  libtasn1-6 (= 4.19.0-3),
  libtiff6 (= 4.5.1+git230720-1),
  libtinfo6 (= 6.4+20230625-2),
@@ -228,14 +229,14 @@ Installed-Build-Depends:
  libtsan2 (= 13.2.0-4),
  libubsan1 (= 13.2.0-4),
  libuchardet0 (= 0.0.7-1),
- libudev1 (= 254.3-1),
+ libudev1 (= 254.4-1),
  libunistring5 (= 1.1-2),
  libuuid1 (= 2.39.2-1),
  libuv1 (= 1.44.2-1),
  libuv1-dev (= 1.44.2-1),
- libwebp7 (= 1.2.4-0.3),
- libwebpdemux2 (= 1.2.4-0.3),
- libwebpmux3 (= 1.2.4-0.3),
+ libwebp7 (= 1.3.2-0.3),
+ libwebpdemux2 (= 1.3.2-0.3),
+ libwebpmux3 (= 1.3.2-0.3),
  libx11-6 (= 2:1.8.6-1),
  libx11-data (= 2:1.8.6-1),
  libxau6 (= 1:1.0.9-1),
@@ -244,7 +245,7 @@ Installed-Build-Depends:
  libxext6 (= 2:1.3.4-1+b1),
  libxml2 (= 2.9.14+dfsg-1.3),
  libyaml-0-2 (= 0.2.5-1),
- libzstd1 (= 1.5.5+dfsg2-1),
+ libzstd1 (= 1.5.5+dfsg2-2),
  linux-libc-dev (= 6.5.3-1),
  login (= 1:4.13+dfsg1-1+b1),
  m4 (= 1.4.19-4),
@@ -283,7 +284,7 @@ Installed-Build-Depends:
  node-balanced-match (= 2.0.0-1),
  node-base64-js (= 1.5.1+dfsg+~1.3.0-2),
  node-binary-extensions (= 2.2.0-2),
- node-brace-expansion (= 2.0.1-2),
+ node-brace-expansion (= 2.0.1+~1.1.0-1),
  node-braces (= 3.0.2+~3.0.1-1),
  node-browserslist (= 4.21.10+~cs6.1.25-1),
  node-builtins (= 5.0.1-1),
@@ -591,7 +592,7 @@ Installed-Build-Depends:
  node-yargs-parser (= 21.1.1+~21.0.0-4),
  nodejs (= 18.13.0+dfsg1-1),
  npm (= 9.2.0~ds1-1),
- openssl (= 3.0.10-1),
+ openssl (= 3.0.11-1),
  patch (= 2.7.6-7),
  perl (= 5.36.0-9),
  perl-base (= 5.36.0-9),
@@ -608,7 +609,7 @@ Installed-Build-Depends:
  sed (= 4.9-1),
  sensible-utils (= 0.0.20),
  shared-mime-info (= 2.2-1),
- sysvinit-utils (= 3.07-1),
+ sysvinit-utils (= 3.08-1),
  tar (= 1.34+dfsg-1.2),
  terser (= 5.19.2-1),
  tzdata (= 2023c-10),
