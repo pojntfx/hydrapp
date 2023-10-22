@@ -15,17 +15,17 @@ Changes:
  .
    * Initial release
 Checksums-Sha1:
- a3df62b8a38309416729102f12d75f95e0c1136e 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- ef295d655685eb2d213099f3256ee8af6ae23871 5070692 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.tar.xz
- e6f1c47b20f4f3d0f10cc35cc55cc7b83048300b 20838 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.buildinfo
+ 21538176c52a0b37db176a43e199d319116a1ec7 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 273d7c73e37c40ac455725e1b1933b12e9c02f21 5070688 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.tar.xz
+ e5d29fced167a8f5fec71125ec0fe0abbb334519 20833 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.buildinfo
  bc75d5fc5d0a219d7441f7650a12963fbb5369c8 2259288 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 4a0d508b7138bc3624ff35b58268c02967a66e9188619c53861487dd7b07172e 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- 9a22e5ef877e46f7bd580aa55921944dc0e2df3c2592c5d7904000d37828e0bb 5070692 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.tar.xz
- 37d28e2160c82e8caac6f9a1a3f50061ff90801c5ab138dcd00f115d86f70b5e 20838 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.buildinfo
+ c26dadd459de509e90fa1159255cc01127e3ac36fe5c806b39139ad60975c86e 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ a3770f73bf673942419e4c25c43a153221608d28024db6f270f78e7d8600f7f6 5070688 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.tar.xz
+ f37272ca100c922e121b2af4ff92de0db6dd2fa58b59596eadb3402913154096 20833 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.buildinfo
  eb26517a62107c271417a8273aa8df1e7eb2244a2f0a4a22afaa4ab967043359 2259288 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Files:
- f060b4d3c2185c8391aed17723754ee1 1096 utils optional com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
- c9ccb5c08a1c4dcb19574b4fe130337b 5070692 utils optional com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.tar.xz
- 11c65d3051af3bac88d4b397e344c521 20838 utils optional com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.buildinfo
+ fea92ba46672fd6351bce6601a4090dd 1096 utils optional com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 5fa51b0e875342736f2c5c6fdc158fc5 5070688 utils optional com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.tar.xz
+ 31cac72f69c33075b9925ae4dc8b449d 20833 utils optional com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.buildinfo
  375fa126fa468c81f9f468c9e9582733 2259288 utils optional com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
