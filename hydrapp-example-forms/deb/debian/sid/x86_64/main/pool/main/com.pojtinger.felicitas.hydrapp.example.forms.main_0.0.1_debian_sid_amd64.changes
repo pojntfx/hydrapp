@@ -15,17 +15,17 @@ Changes:
  .
    * Initial release
 Checksums-Sha1:
- f7bf29ca3ab8fd5512876b51bb5efc6c4e849e31 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 0e08e0707364360690c7f011e23c3df5c899c62b 5070620 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
- 6e20f5c4497786e9ace855ac06e74894e7c9d5b0 20842 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.buildinfo
- 5620e2218c109ade320a033104187a799569b238 2791776 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 500bb6c7e5b636af21575a5573a76a05cf64465f 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ a84d66bad04d5c76ddd07656e66104fa8289a2fc 5070640 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
+ 6c409247b3eba4bdc1b7f5fc02a891952db3c738 20861 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.buildinfo
+ 5d4c7702bd7fc76881ed4a265f4d1d299401c89b 2793132 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 3a155ce3557ae3e172dbbdef8ecf42814e5e31cba97bca369ea15ceb1b079063 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 2e5f677add89a5a03704a6626fe792483996b54fa204d824fbf374287a01e40e 5070620 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
- 1332692c43f6d6fa3a7fb0664fd65d7e71f539fcfdcbd5ac224da0c193eb3a19 20842 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.buildinfo
- b640d13a9766485b001904827b4c2fc2c7d10e751d56189cf5d4678540f285b5 2791776 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 96f35da3df9c9ecf1a84d2d43c6701d07f49d7ac45251e3becaf39bb693c8236 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ faf644134fcfb2d319af392ab6281994c124fd6550fc4ad5ea5e4e5cc63ec002 5070640 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
+ 9fd6c1b441d4d232d3486938ac653125f25ab15f17295650fc890171220702ca 20861 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.buildinfo
+ ea2535d15063af2dba0197dda66034dff0e8eca859fe25cc49e348ed13dd6830 2793132 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Files:
- ba2658b6ca25cff85fb2673e4a4a6182 1103 utils optional com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 969a844af45f8096b69469beaa144f8a 5070620 utils optional com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
- 764584cf7cb84cd009e1c0bd9405433c 20842 utils optional com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.buildinfo
- 5ae42d801f83a75d9496311df299e64d 2791776 utils optional com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ eaf69ec9263d013b2ebfb1a4c5a2bdf2 1103 utils optional com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 5483a71e8547b85ac9bf2445bfb25502 5070640 utils optional com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
+ 9712dade8e7f446a5fd8f0cc384ed246 20861 utils optional com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.buildinfo
+ b6f678f13d7b2fbb52f045f192797f4d 2793132 utils optional com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
