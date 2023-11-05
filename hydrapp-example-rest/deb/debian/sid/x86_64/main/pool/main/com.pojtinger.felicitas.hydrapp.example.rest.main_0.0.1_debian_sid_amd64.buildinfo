@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.rest.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 543e59471e35cb8b9d785633072cb01f 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 9931b9ceb77ce520b0b5937c5b4ebe19 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  42a07a9f2232037b17adda3461dbf94b 2260532 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha1:
- edd70a9a5d653146d2f834928ba6e1d79eee05cd 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 6661857088a43a6b926e428b22622fd6ecb3939a 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  86801b549c6ab503bda5c7f958716490bb89baa7 2260532 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 7933829e8143583a5dfbc482ee5bde0fd51e2fbe6df9991652c91566a361c4b9 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ c57db7b6b2cd85e67ea867f25645ea1a12f73ca19b83756bc019a731da7e138c 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  93e5229dc30eb4d587ce9f570b8bfc54893f62a8b40478a45ab98b3fd48df8ad 2260532 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 29 Oct 2023 00:58:43 +0000
+Build-Date: Sun, 05 Nov 2023 00:48:04 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.rest.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -30,8 +30,8 @@ Installed-Build-Depends:
  binutils (= 2.41-6),
  binutils-common (= 2.41-6),
  binutils-x86-64-linux-gnu (= 2.41-6),
- bsdextrautils (= 2.39.2-4),
- bsdutils (= 1:2.39.2-4),
+ bsdextrautils (= 2.39.2-5),
+ bsdutils (= 1:2.39.2-5),
  build-essential (= 12.10),
  bzip2 (= 1.0.8-5+b1),
  ca-certificates (= 20230311),
@@ -46,8 +46,8 @@ Installed-Build-Depends:
  dh-autoreconf (= 20),
  dh-strip-nondeterminism (= 1.13.1-1),
  diffutils (= 1:3.10-1),
- dpkg (= 1.22.0),
- dpkg-dev (= 1.22.0),
+ dpkg (= 1.22.1),
+ dpkg-dev (= 1.22.1),
  dwz (= 0.15-1),
  eslint (= 6.4.0~dfsg+~6.1.9-7),
  file (= 1:5.45-2),
@@ -75,9 +75,9 @@ Installed-Build-Depends:
  handlebars (= 3:4.7.7+~4.1.0-1),
  hicolor-icon-theme (= 0.17-2),
  hostname (= 3.23+nmu1),
- imagemagick (= 8:6.9.12.98+dfsg1-3),
- imagemagick-6-common (= 8:6.9.12.98+dfsg1-3),
- imagemagick-6.q16 (= 8:6.9.12.98+dfsg1-3),
+ imagemagick (= 8:6.9.12.98+dfsg1-4),
+ imagemagick-6-common (= 8:6.9.12.98+dfsg1-4),
+ imagemagick-6.q16 (= 8:6.9.12.98+dfsg1-4),
  init-system-helpers (= 1.65.2),
  intltool-debian (= 0.35.0+20060710.6),
  libacl1 (= 2.3.1-3),
@@ -90,7 +90,7 @@ Installed-Build-Depends:
  libaudit-common (= 1:3.1.1-1),
  libaudit1 (= 1:3.1.1-1),
  libbinutils (= 2.41-6),
- libblkid1 (= 2.39.2-4),
+ libblkid1 (= 2.39.2-5),
  libbrotli1 (= 1.0.9-2+b6),
  libbsd0 (= 0.11.7-4),
  libbz2-1.0 (= 1.0.8-5+b1),
@@ -114,7 +114,7 @@ Installed-Build-Depends:
  libdebconfclient0 (= 0.271),
  libdebhelper-perl (= 13.11.7),
  libdeflate0 (= 1.18-1),
- libdpkg-perl (= 1.22.0),
+ libdpkg-perl (= 1.22.1),
  libelf1 (= 0.189-4),
  liberror-perl (= 0.17029-2),
  libexpat1 (= 2.5.0-2),
@@ -128,9 +128,9 @@ Installed-Build-Depends:
  libgcrypt20 (= 1.10.2-3),
  libgdbm-compat4 (= 1.23-3),
  libgdbm6 (= 1.23-3),
- libgdk-pixbuf-2.0-0 (= 2.42.10+dfsg-1+b1),
- libgdk-pixbuf2.0-common (= 2.42.10+dfsg-1),
- libglib2.0-0 (= 2.78.1-1),
+ libgdk-pixbuf-2.0-0 (= 2.42.10+dfsg-2),
+ libgdk-pixbuf2.0-common (= 2.42.10+dfsg-2),
+ libglib2.0-0 (= 2.78.1-2),
  libgmp10 (= 2:6.3.0+dfsg-2),
  libgnutls30 (= 3.8.1-4+b1),
  libgomp1 (= 13.2.0-6),
@@ -173,10 +173,10 @@ Installed-Build-Depends:
  liblzma5 (= 5.4.4-0.1),
  libmagic-mgc (= 1:5.45-2),
  libmagic1 (= 1:5.45-2),
- libmagickcore-6.q16-7 (= 8:6.9.12.98+dfsg1-3),
- libmagickwand-6.q16-7 (= 8:6.9.12.98+dfsg1-3),
+ libmagickcore-6.q16-7 (= 8:6.9.12.98+dfsg1-4),
+ libmagickwand-6.q16-7 (= 8:6.9.12.98+dfsg1-4),
  libmd0 (= 1.1.0-1),
- libmount1 (= 2.39.2-4),
+ libmount1 (= 2.39.2-5),
  libmpc3 (= 1.3.1-1),
  libmpfr6 (= 4.2.1-1),
  libncursesw6 (= 6.4+20231016-1),
@@ -206,12 +206,12 @@ Installed-Build-Depends:
  librtmp1 (= 2.4+20151223.gitfa8646d.1-2+b2),
  libsasl2-2 (= 2.1.28+dfsg1-3),
  libsasl2-modules-db (= 2.1.28+dfsg1-3),
- libseccomp2 (= 2.5.4-1+b3),
+ libseccomp2 (= 2.5.4-2),
  libselinux1 (= 3.5-1),
  libsframe1 (= 2.41-6),
  libsharpyuv0 (= 1.3.2-0.3),
- libsmartcols1 (= 2.39.2-4),
- libsqlite3-0 (= 3.43.2-1),
+ libsmartcols1 (= 2.39.2-5),
+ libsqlite3-0 (= 3.44.0-1),
  libssh2-1 (= 1.11.0-2),
  libssl-dev (= 3.0.12-1),
  libssl3 (= 3.0.12-1),
@@ -232,7 +232,7 @@ Installed-Build-Depends:
  libuchardet0 (= 0.0.7-1),
  libudev1 (= 254.5-1),
  libunistring5 (= 1.1-2),
- libuuid1 (= 2.39.2-4),
+ libuuid1 (= 2.39.2-5),
  libuv1 (= 1.46.0-2),
  libuv1-dev (= 1.46.0-2),
  libwebp7 (= 1.3.2-0.3),
@@ -247,7 +247,7 @@ Installed-Build-Depends:
  libxml2 (= 2.9.14+dfsg-1.3),
  libyaml-0-2 (= 0.2.5-1),
  libzstd1 (= 1.5.5+dfsg2-2),
- linux-libc-dev (= 6.5.8-1),
+ linux-libc-dev (= 6.5.10-1),
  login (= 1:4.13+dfsg1-3),
  m4 (= 1.4.19-4),
  make (= 4.3-4.1),
@@ -334,9 +334,8 @@ Installed-Build-Depends:
  node-depd (= 2.0.0-2),
  node-diff (= 5.0.0~dfsg+~5.0.1-4),
  node-doctrine (= 3.0.0-4),
- node-electron-to-chromium (= 1.4.552-1),
+ node-electron-to-chromium (= 1.4.568-1),
  node-encoding (= 0.1.13-2),
- node-end-of-stream (= 1.4.4+~1.4.1-1),
  node-enhanced-resolve (= 5.15.0-1),
  node-err-code (= 2.0.3+dfsg-3),
  node-errno (= 1.0.0-3),
@@ -376,7 +375,7 @@ Installed-Build-Depends:
  node-functional-red-black-tree (= 1.0.1+20181105-7),
  node-gauge (= 4.0.4-2),
  node-get-caller-file (= 2.0.5+~cs1.1.1-4),
- node-get-stream (= 6.0.1-1),
+ node-get-stream (= 8.0.1-6),
  node-glob (= 8.0.3+~cs8.4.15-4),
  node-glob-parent (= 6.0.2+~5.1.1-2),
  node-globals (= 13.23.0-1),
@@ -467,7 +466,7 @@ Installed-Build-Depends:
  node-npmlog (= 7.0.1+~4.1.4-1),
  node-object-assign (= 4.1.1-7),
  node-object-inspect (= 1.12.2+~cs1.8.1-1),
- node-once (= 1.4.0-7),
+ node-once (= 1.4.1-1),
  node-optimist (= 0.6.1+~0.0.30-2),
  node-optionator (= 0.9.1+dfsg+~cs1.2.3-1),
  node-osenv (= 0.1.5+~0.1.1-1),
@@ -495,7 +494,6 @@ Installed-Build-Depends:
  node-promise-retry (= 2.0.1-4),
  node-promzard (= 0.3.0-2),
  node-prr (= 1.0.1-3),
- node-pump (= 3.0.0-5),
  node-punycode (= 2.2.3-2),
  node-quick-lru (= 6.1.1-4),
  node-randombytes (= 2.1.0+~2.0.0-2),
@@ -507,8 +505,8 @@ Installed-Build-Depends:
  node-rechoir (= 0.8.0+~0.6.1-2),
  node-regenerate (= 1.4.2-3),
  node-regenerate-unicode-properties (= 10.1.0+ds-1),
- node-regenerator-runtime (= 0.15.1+~0.10.8-1),
- node-regenerator-transform (= 0.15.1+~0.10.8-1),
+ node-regenerator-runtime (= 0.15.2+~0.10.8-1),
+ node-regenerator-transform (= 0.15.2+~0.10.8-1),
  node-regexpp (= 3.2.0-4),
  node-regexpu-core (= 5.2.2-3),
  node-regjsgen (= 0.7.1+ds-1),
@@ -615,12 +613,12 @@ Installed-Build-Depends:
  terser (= 5.19.2-1),
  tzdata (= 2023c-10),
  usr-is-merged (= 38),
- util-linux (= 2.39.2-4),
+ util-linux (= 2.39.2-5),
  webpack (= 5.76.1+dfsg1+~cs17.16.16-1),
  xz-utils (= 5.4.4-0.1),
  zlib1g (= 1:1.2.13.dfsg-3)
 Environment:
- DEB_BUILD_OPTIONS="parallel=2"
+ DEB_BUILD_OPTIONS="parallel=4"
  LANG="C"
  LC_ALL="C"
  SOURCE_DATE_EPOCH="1677251315"

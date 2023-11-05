@@ -12,8 +12,8 @@ Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), golang-go (>= 1.19), image
 Package-List:
  com.pojtinger.felicitas.hydrapp.example.forms.main deb utils optional arch=any
 Checksums-Sha1:
- a84d66bad04d5c76ddd07656e66104fa8289a2fc 5070640 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
+ 9ce376f1f67ac304c0057ab690cbe66784215459 5070644 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
 Checksums-Sha256:
- faf644134fcfb2d319af392ab6281994c124fd6550fc4ad5ea5e4e5cc63ec002 5070640 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
+ 4083a89d3cf8dc1cab68d8df93f158aa142e97b8683a2266ddc41186f470b5bb 5070644 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
 Files:
- 5483a71e8547b85ac9bf2445bfb25502 5070640 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
+ d80ccd1d26697bf6dd5a270ecb91b0db 5070644 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.tar.xz
