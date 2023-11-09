@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { bind } from "@pojntfx/dudirekta";
+import { linkWebSocket } from "@pojntfx/dudirekta";
 
 const App = () => {
   const [remote, setRemote] = useState({
@@ -13,31 +13,60 @@ const App = () => {
   });
 
   useEffect(() => {
-    bind(
-      () =>
-        new WebSocket(
-          new URLSearchParams(window.location.search).get("socketURL") ||
-            "ws://localhost:1337"
-        ),
-      {
-        ExampleNotification: async (msg: string) => {
-          if (
-            "Notification" in window &&
-            Notification.permission !== "granted"
-          ) {
-            await Notification.requestPermission();
-          }
+    (async () => {
+      const socket = new WebSocket(
+        new URLSearchParams(window.location.search).get("socketURL") ||
+          "ws://localhost:1337"
+      );
 
-          if ("Notification" in window) {
-            new Notification(msg);
-          } else {
-            alert(msg);
-          }
-        },
-      },
-      remote,
-      setRemote
-    );
+      socket.addEventListener("close", (e) => {
+        console.error("Disconnected with error:", e.reason);
+      });
+
+      await new Promise<void>((res, rej) => {
+        socket.addEventListener("open", () => res());
+        socket.addEventListener("error", rej);
+      });
+
+      setRemote(
+        linkWebSocket(
+          socket,
+          {
+            ExampleNotification: async (msg: string) => {
+              if (
+                "Notification" in window &&
+                Notification.permission !== "granted"
+              ) {
+                await Notification.requestPermission();
+              }
+
+              if ("Notification" in window) {
+                new Notification(msg);
+              } else {
+                alert(msg);
+              }
+            },
+          },
+          {
+            ExamplePrintString: async (msg: string) => {},
+            ExamplePrintStruct: async (input: any) => {},
+            ExampleReturnError: async () => {},
+            ExampleReturnString: async () => "",
+            ExampleReturnStruct: async (): Promise<any> => {},
+            ExampleReturnStringAndError: async () => "",
+            ExampleNotification: async () => {},
+          },
+
+          1000 * 10,
+
+          JSON.stringify,
+          JSON.parse,
+
+          (v) => v,
+          (v) => v
+        )
+      );
+    })();
   }, []);
 
   return (

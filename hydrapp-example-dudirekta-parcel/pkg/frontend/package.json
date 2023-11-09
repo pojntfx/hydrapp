@@ -19,6 +19,6 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@pojntfx/dudirekta": "^0.3.0"
+    "@pojntfx/dudirekta": "^0.6.1"
   }
 }

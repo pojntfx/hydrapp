@@ -3,7 +3,7 @@ module github.com/pojntfx/hydrapp/hydrapp-example-dudirekta-parcel
 go 1.19
 
 require (
-	github.com/pojntfx/dudirekta v0.4.0
+	github.com/pojntfx/dudirekta v0.6.1
 	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230227032144-c660e080addb
 	nhooyr.io/websocket v1.8.7
 )
