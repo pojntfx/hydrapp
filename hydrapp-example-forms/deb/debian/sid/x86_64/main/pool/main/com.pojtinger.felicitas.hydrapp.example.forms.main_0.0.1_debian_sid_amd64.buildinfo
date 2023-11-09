@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- f73d24ba356427797367931d900a1de1 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- b6f678f13d7b2fbb52f045f192797f4d 2793132 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 64c459861ca162b7436c63e92cbc3cd7 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 7aceab1e6e3d7899dbf2264efa0c2ffd 2783568 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 23f7b65064df806740c94c498178c7d887214318 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 5d4c7702bd7fc76881ed4a265f4d1d299401c89b 2793132 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 28f20cf703f7b7119af1c747a5c19a21314d5542 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ eb33460250cd2f99af01a11fec9ba59fdf025c58 2783568 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 63961d9f92fa2c3b3aab494cfc65f769ef0927be844c93b76b66c33c2a801e99 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- ea2535d15063af2dba0197dda66034dff0e8eca859fe25cc49e348ed13dd6830 2793132 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ ef58f3b1300cd46383d383c73e9f8c95ca81b234ec15a121683c63589477d1bf 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ de196371136395281df5179ed0581e66ef83fcada6a6010ec9c7a00bae4789f8 2783568 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 05 Nov 2023 00:51:17 +0000
+Build-Date: Thu, 09 Nov 2023 22:11:17 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.forms.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -64,8 +64,8 @@ Installed-Build-Depends:
  gettext-base (= 0.21-13+b1),
  git (= 1:2.42.0-1),
  git-man (= 1:2.42.0-1),
- golang-1.21-go (= 1.21.3-1),
- golang-1.21-src (= 1.21.3-1),
+ golang-1.21-go (= 1.21.4-1),
+ golang-1.21-src (= 1.21.4-1),
  golang-go (= 2:1.21~2),
  golang-src (= 2:1.21~2),
  grep (= 3.11-3),
@@ -91,7 +91,7 @@ Installed-Build-Depends:
  libaudit1 (= 1:3.1.1-1),
  libbinutils (= 2.41-6),
  libblkid1 (= 2.39.2-5),
- libbrotli1 (= 1.0.9-2+b6),
+ libbrotli1 (= 1.1.0-1),
  libbsd0 (= 0.11.7-4),
  libbz2-1.0 (= 1.0.8-5+b1),
  libc-ares2 (= 1.21.0-1),
@@ -108,8 +108,8 @@ Installed-Build-Depends:
  libctf-nobfd0 (= 2.41-6),
  libctf0 (= 2.41-6),
  libcurl3-gnutls (= 8.4.0-2),
- libdav1d6 (= 1.2.1-2),
- libdb5.3 (= 5.3.28+dfsg2-2),
+ libdav1d7 (= 1.3.0-2),
+ libdb5.3 (= 5.3.28+dfsg2-3),
  libde265-0 (= 1.0.12-2),
  libdebconfclient0 (= 0.271),
  libdebhelper-perl (= 13.11.7),
@@ -130,16 +130,16 @@ Installed-Build-Depends:
  libgdbm6 (= 1.23-3),
  libgdk-pixbuf-2.0-0 (= 2.42.10+dfsg-2),
  libgdk-pixbuf2.0-common (= 2.42.10+dfsg-2),
- libglib2.0-0 (= 2.78.1-2),
+ libglib2.0-0 (= 2.78.1-3),
  libgmp10 (= 2:6.3.0+dfsg-2),
  libgnutls30 (= 3.8.1-4+b1),
  libgomp1 (= 13.2.0-6),
  libgpg-error0 (= 1.47-2),
  libgprofng0 (= 2.41-6),
  libgssapi-krb5-2 (= 1.20.1-5),
- libheif-plugin-dav1d (= 1.17.1-1),
- libheif-plugin-libde265 (= 1.17.1-1),
- libheif1 (= 1.17.1-1),
+ libheif-plugin-dav1d (= 1.17.1-1+b1),
+ libheif-plugin-libde265 (= 1.17.1-1+b1),
+ libheif1 (= 1.17.1-1+b1),
  libhogweed6 (= 3.9.1-2),
  libhwasan0 (= 13.2.0-6),
  libicu72 (= 72.1-4),
@@ -181,7 +181,7 @@ Installed-Build-Depends:
  libmpfr6 (= 4.2.1-1),
  libncursesw6 (= 6.4+20231016-1),
  libnettle8 (= 3.9.1-2),
- libnghttp2-14 (= 1.57.0-1),
+ libnghttp2-14 (= 1.58.0-1),
  libnode-dev (= 18.13.0+dfsg1-1),
  libnode108 (= 18.13.0+dfsg1-1),
  libnsl-dev (= 1.3.0-3),
@@ -213,8 +213,8 @@ Installed-Build-Depends:
  libsmartcols1 (= 2.39.2-5),
  libsqlite3-0 (= 3.44.0-1),
  libssh2-1 (= 1.11.0-2),
- libssl-dev (= 3.0.12-1),
- libssl3 (= 3.0.12-1),
+ libssl-dev (= 3.0.12-2),
+ libssl3 (= 3.0.12-2),
  libstdc++-13-dev (= 13.2.0-6),
  libstdc++6 (= 13.2.0-6),
  libstemmer0d (= 2.2.0-4),
@@ -375,7 +375,7 @@ Installed-Build-Depends:
  node-functional-red-black-tree (= 1.0.1+20181105-7),
  node-gauge (= 4.0.4-2),
  node-get-caller-file (= 2.0.5+~cs1.1.1-4),
- node-get-stream (= 8.0.1-6),
+ node-get-stream (= 8.0.1-8),
  node-glob (= 8.0.3+~cs8.4.15-4),
  node-glob-parent (= 6.0.2+~5.1.1-2),
  node-globals (= 13.23.0-1),
@@ -591,7 +591,7 @@ Installed-Build-Depends:
  node-yargs-parser (= 21.1.1+~21.0.0-4),
  nodejs (= 18.13.0+dfsg1-1),
  npm (= 9.2.0~ds1-1),
- openssl (= 3.0.12-1),
+ openssl (= 3.0.12-2),
  patch (= 2.7.6-7),
  perl (= 5.36.0-9),
  perl-base (= 5.36.0-9),
@@ -618,7 +618,7 @@ Installed-Build-Depends:
  xz-utils (= 5.4.4-0.1),
  zlib1g (= 1:1.2.13.dfsg-3)
 Environment:
- DEB_BUILD_OPTIONS="parallel=4"
+ DEB_BUILD_OPTIONS="parallel=2"
  LANG="C"
  LC_ALL="C"
  SOURCE_DATE_EPOCH="1677251476"
