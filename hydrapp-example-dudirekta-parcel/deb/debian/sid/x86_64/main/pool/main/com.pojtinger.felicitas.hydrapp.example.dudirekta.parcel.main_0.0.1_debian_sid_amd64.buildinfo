@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- ac60ddafbbb0e96f396a4e51f4593f7e 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- 6f0048e90dd2ebff55131733fae8e14c 2913256 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ a0ca945e3c6753afcb04fd31c636914b 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ fa221c47cd512463afb2b47a3916bea0 2913228 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 3103d19d0e199d9911ee767ef268e1840f3ea347 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- 71147686c04b27890dd3096ea961a1a54f5102f6 2913256 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ b1f3d5828fdc5ec645a4c189445668fca3b30397 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ 8f553c21bf7c7a75c0946e569f8d4b828e77f0c3 2913228 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Checksums-Sha256:
- f72274fda22c90903748b549479b7fa5291bbdce676f613a1b5e0d4fc27eea99 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
- 699bb5434d4453a2b93bd12922cdd5315346dc2c1c33fcde381d00eee161aeb7 2913256 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
+ f1225524dbb21ba434d991819be1cae71646d50281ed526174795b2e8c94fd67 1180 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1.dsc
+ caa476686632a5506809977607e952b80021246290576387a61567daa7e34db9 2913228 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Thu, 09 Nov 2023 22:07:27 +0000
+Build-Date: Thu, 09 Nov 2023 22:35:49 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -618,7 +618,7 @@ Installed-Build-Depends:
  xz-utils (= 5.4.4-0.1),
  zlib1g (= 1:1.2.13.dfsg-3)
 Environment:
- DEB_BUILD_OPTIONS="parallel=2"
+ DEB_BUILD_OPTIONS="parallel=4"
  LANG="C"
  LC_ALL="C"
  SOURCE_DATE_EPOCH="1677251796"

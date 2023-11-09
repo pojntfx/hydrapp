@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 64c459861ca162b7436c63e92cbc3cd7 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- 7aceab1e6e3d7899dbf2264efa0c2ffd 2783568 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ ae2f5d07fc32c78757cea4c6ec655525 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 16b09171bea2697380d91ebd59e9055f 2783496 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 28f20cf703f7b7119af1c747a5c19a21314d5542 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- eb33460250cd2f99af01a11fec9ba59fdf025c58 2783568 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 635c9a5035c4efba16f6299d1ca190229dcf9d9a 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ 4e382a377dae039de0a662be82d7f1e7426de933 2783496 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- ef58f3b1300cd46383d383c73e9f8c95ca81b234ec15a121683c63589477d1bf 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
- de196371136395281df5179ed0581e66ef83fcada6a6010ec9c7a00bae4789f8 2783568 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
+ 6c6cd09c690cd1c583a59c9422ab14eebf9e1d19eeed2e149b74909a3c79bbc6 1103 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1.dsc
+ d911d83dd0e48524e24b30d641b9fb422558726f9dffd1dd124ee86fa1cd490b 2783496 com.pojtinger.felicitas.hydrapp.example.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Thu, 09 Nov 2023 22:11:17 +0000
+Build-Date: Thu, 09 Nov 2023 22:35:54 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.forms.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -618,7 +618,7 @@ Installed-Build-Depends:
  xz-utils (= 5.4.4-0.1),
  zlib1g (= 1:1.2.13.dfsg-3)
 Environment:
- DEB_BUILD_OPTIONS="parallel=2"
+ DEB_BUILD_OPTIONS="parallel=4"
  LANG="C"
  LC_ALL="C"
  SOURCE_DATE_EPOCH="1677251476"
