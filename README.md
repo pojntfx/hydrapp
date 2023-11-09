@@ -69,7 +69,7 @@ Create a key with your name and email, and take note of the password you've chos
 
 ![Screenshot of the create PGP key dialog](./docs/screenshot-create-pgp-key.png)
 
-The first GitHub Actions secret you need to save is `PGP_PASSWORD`; simply use the password you've created above as the value.
+The first GitHub Actions secret you need to save is `PGP_PASSWORD`; simply use the password you've created above as the value (base64-encoded).
 
 Now that you've generated your key, you can add it to your repository's secrets; let's start with the PGP key ID. To find it, copy the string next to your key's email:
 
@@ -93,7 +93,7 @@ Create a key with your name, and take note of the password you've chosen:
 
 ![Screenshot of the keystore generation dialog](./docs/screenshot-create-keystore.png)
 
-The first two GitHub Actions secrets you need to save are `APK_STOREPASS` and `APK_KEYPASS`; set them to the passwords you've chosen above respectively.
+The first two GitHub Actions secrets you need to save are `APK_STOREPASS` and `APK_KEYPASS`; set them to the passwords you've chosen above respectively (base64-encoded).
 
 Next, let's add the keystore's contents to the repo. To do so, export it with base64-encoding enabled, copy it's content and add it to a secret named `APK_CERT`:
 
@@ -217,13 +217,13 @@ While it also possible to build your hydrapp app using the `go build` command yo
 To use it, first export the path to and credentials for the PGP key you've downloaded above:
 
 ```shell
-$ export PGP_KEY="${HOME}/Downloads/19D789F4.asc.txt" PGP_PASSWORD='asdf' PGP_ID='19D789F4'
+$ export PGP_KEY="${HOME}/Downloads/19D789F4.asc.txt" PGP_PASSWORD="$(echo asdf | base64)" PGP_ID='19D789F4'
 ```
 
 Next, do the same for the Java keystore:
 
 ```shell
-$ export APK_CERT="${HOME}/Downloads/keystoregaen.jks.txt" APK_STOREPASS='asdf' APK_KEYPASS='asdf'
+$ export APK_CERT="${HOME}/Downloads/keystoregaen.jks.txt" APK_STOREPASS="$(echo asdf | base64)" APK_KEYPASS="$(echo asdf | base64)"
 ```
 
 And finally, your branch. hydrapp supports building multiple branches of your app - such as a main branch for your canary builds, the stable branch (for tagged releases) and any further feature branches you might want to build for. In this case, we'll build for the `main` branch:

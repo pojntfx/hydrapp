@@ -581,12 +581,12 @@ func init() {
 	buildCmd.PersistentFlags().String(excludeFlag, "", "Regex of platforms and architectures not to build for, i.e. (apk|dmg|msi/386|flatpak/amd64)")
 
 	buildCmd.PersistentFlags().String(pgpKeyFlag, "", "Path to armored PGP private key")
-	buildCmd.PersistentFlags().String(pgpPasswordFlag, "", "Password for PGP key")
+	buildCmd.PersistentFlags().String(pgpPasswordFlag, "", "Password for PGP key (base64-encoded)")
 	buildCmd.PersistentFlags().String(pgpIDFlag, "", "ID of the PGP key to use")
 
 	buildCmd.PersistentFlags().String(apkCertFlag, "", "Path to Android keystore")
-	buildCmd.PersistentFlags().String(apkStorepassFlag, "", "Password for Android keystore")
-	buildCmd.PersistentFlags().String(apkKeypassFlag, "", " Password for Android certificate (if keystore uses PKCS12, this will be the same as --apk-storepass)")
+	buildCmd.PersistentFlags().String(apkStorepassFlag, "", "Password for Android keystore (base64-encoded)")
+	buildCmd.PersistentFlags().String(apkKeypassFlag, "", " Password for Android certificate (base64-encoded) (if keystore uses PKCS12, this will be the same as --apk-storepass)")
 
 	buildCmd.PersistentFlags().String(branchIDFlag, "", `Branch ID to build the app as, i.e. main (for an app ID like "myappid.main" and baseURL like "mybaseurl/main"`)
 	buildCmd.PersistentFlags().String(branchNameFlag, "", `Branch name to build the app as, i.e. Main (for an app name like "myappname (Main)"`)
