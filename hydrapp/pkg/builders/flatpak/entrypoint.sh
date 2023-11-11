@@ -35,7 +35,7 @@ elif [ "${ARCHITECTURE}" = "arm64" ]; then
 fi
 
 # Install pre-build SDKs
-flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//21.08" "org.freedesktop.Sdk//21.08" "org.freedesktop.Sdk.Extension.golang//21.08" "org.freedesktop.Sdk.Extension.node16//21.08"
+flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//23.08" "org.freedesktop.Sdk//23.08" "org.freedesktop.Sdk.Extension.golang//23.08" "org.freedesktop.Sdk.Extension.node18//23.08"
 
 # Build SDK and export to repo
 flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${PGP_KEY_ID}" --repo='/dst' --force-clean --user --install "build-dir" "${GOMAIN}/org.freedesktop.Sdk.Extension.ImageMagick.yaml"
