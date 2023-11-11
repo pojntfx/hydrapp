@@ -1,6 +1,6 @@
 module github.com/pojntfx/hydrapp/hydrapp-example-rest
 
-go 1.19
+go 1.21.1
 
 require github.com/pojntfx/hydrapp/hydrapp v0.0.0-20230227032144-c660e080addb
 

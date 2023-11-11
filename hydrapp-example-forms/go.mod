@@ -1,6 +1,6 @@
 module github.com/pojntfx/hydrapp/hydrapp-example-forms
 
-go 1.19
+go 1.21.1
 
 require (
 	github.com/google/uuid v1.3.0

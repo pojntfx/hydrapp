@@ -5,7 +5,7 @@
 Build fast apps that run everywhere with Go and a browser engine of your choice.
 
 [![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
-![Go Version](https://img.shields.io/badge/go%20version-%3E=1.19-61CFDD.svg)
+![Go Version](https://img.shields.io/badge/go%20version-%3E=1.21-61CFDD.svg)
 [![Go Reference](https://pkg.go.dev/badge/github.com/pojntfx/hydrapp/hydrapp.svg)](https://pkg.go.dev/github.com/pojntfx/hydrapp/hydrapp)
 [![Matrix](https://img.shields.io/matrix/hydrapp:matrix.org)](https://matrix.to/#/#hydrapp:matrix.org?via=matrix.org)
 
