@@ -1,7 +1,1 @@
-{
-  "commandLine": [
-    "/usr/bin/fdroid gpgsign"
-  ],
-  "startTimestamp": 1677642999000,
-  "subcommand": "gpgsign"
-}
+{"/etc/issue.net":"Debian GNU/Linux 12","commandLine":["/usr/bin/fdroid gpgsign"],"endTimestamp":1700095855295,"signed":["com.pojtinger.felicitas.hydrapp.example.dudirekta.cra.apk","entry.json","index-v1.json","index-v2.json"],"startTimestamp":1700095852000,"subcommand":"gpgsign"}

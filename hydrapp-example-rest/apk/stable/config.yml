@@ -1,6 +1,6 @@
 ---
 sdk_path: "/root/Android/Sdk"
-repo_url: "https://pojntfx.github.io/hydrapp/hydrapp-example-rest//apk/stable"
+repo_url: "https://pojntfx.github.io/hydrapp/hydrapp-example-rest//apk/stable/repo"
 repo_name: Hydrapp F-Droid Repo
 repo_description: >-
   Android apps for Hydrapp.

@@ -8,12 +8,12 @@ Homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-dudirekta
 Standards-Version: 4.5.1
 Vcs-Browser: https://github.com/pojntfx/hydrapp.git
 Vcs-Git: https://github.com/pojntfx/hydrapp.git
-Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), golang-go (>= 1.19), imagemagick, ca-certificates, desktop-file-utils (>= 0.24), appstream-util (>= 0.7.16), npm (>= 7.5.2)
+Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), golang-go (>= 1.21), imagemagick, ca-certificates, desktop-file-utils (>= 0.24), appstream-util (>= 0.7.16), npm (>= 7.5.2)
 Package-List:
  com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel deb utils optional arch=any
 Checksums-Sha1:
- 4857a5c786c41b9abdb814ff3ab0a2ac32f33b8d 5069304 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz
+ e5d1050dc4f5d8309d2931a8ce9e2c0a30dfb045 5079880 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz
 Checksums-Sha256:
- ab89cce539b8787b01285b61a2627592a7f51596b3c32891240e411e3c11b8dc 5069304 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz
+ 60a7e84902135b876ba312138563d8be11a9ff90ffded995e038ce3fe4f2225c 5079880 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz
 Files:
- e0354c5e0995d99a98dee7dd4498e5ed 5069304 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz
+ d3e8b3dc3c964d541ccaa1c4bed2fb2a 5079880 com.pojtinger.felicitas.hydrapp.example.dudirekta.parcel_0.0.1.tar.xz

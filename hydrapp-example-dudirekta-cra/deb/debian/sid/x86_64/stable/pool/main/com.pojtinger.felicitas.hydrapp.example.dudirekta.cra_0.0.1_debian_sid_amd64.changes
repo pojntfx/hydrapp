@@ -15,17 +15,17 @@ Changes:
  .
    * Initial release
 Checksums-Sha1:
- 0cc2aeed8735cf51f125e6014d95c4b8585c46a3 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
- fafce8364fd767cbbc8349aa89f583bd7d4161a2 5068936 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.tar.xz
- 4992fe4c9e76c82b0d571a0217674972c85fcc05 20670 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.buildinfo
- dc28c4ef599a79d401c8ee386745f8c1278c84e7 2850168 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
+ f4e085a989a689b7a0465bc0de7b72af77af6243 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
+ 6221d05ea87efbe7d46804157fd9c5175525a135 5079640 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.tar.xz
+ a54f2598c8d64b12c2666208948bae400333c562 20913 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.buildinfo
+ a212e9d30c225f13a8617618e9280dc70307ab49 2949860 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
 Checksums-Sha256:
- b0e803e0fed24312f5b6828780b1f44ce899547064f28e0bc7dad6552fab252a 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
- 44e3ac1c39751e02952ffa98a462630ecf682d6a354a6a052e482ccf9a370855 5068936 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.tar.xz
- 6b9618224878785f87c2d2322737e21d3f9e0faf900d87b0d71b49bf8f25bbf8 20670 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.buildinfo
- 0bd22b8a4b3d551efadd4a6ba7dc943a82ddf751caf481433d987d8f67cbbdd8 2850168 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
+ d4cc9f79bf8f0535bf12bbc1c4ae6583b501a8fff72f80477f92273180d3971d 1129 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
+ 8e4a115acc70cb73634261109c15018eebcd7c83bf74b8255ccc3b443962eb6f 5079640 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.tar.xz
+ 1f3a9a2fa74f45029b2c9e4df28e9a6ce01ff51f59fb121fe5430ab935bcd0b9 20913 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.buildinfo
+ f6c8b2868ec38eebd2de9836e5e79032248b2fd88544aa106821227f5b7f2f34 2949860 com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
 Files:
- bbdd7673f902d058fade4d9ec71c0105 1129 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
- bfcf51f25ccee05f1415bd4501ef5429 5068936 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.tar.xz
- 103f7291d4bf244daac1c9d2a2fe7dce 20670 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.buildinfo
- 3fb5122e8965df7907f7b2f9a8714bc3 2850168 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
+ 04dffad3c81e6646187908bcc29de806 1129 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.dsc
+ e2ed0a0e14209d74bf322bb633f03a05 5079640 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1.tar.xz
+ 6e9b0ff5e900bcb45e55e99b52aa4d85 20913 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.buildinfo
+ 372bf69340db2c3e189655224ef57afe 2949860 utils optional com.pojtinger.felicitas.hydrapp.example.dudirekta.cra_0.0.1_amd64.deb
