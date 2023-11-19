@@ -1,14 +1,14 @@
 Codename: sid
 Components: main
-Date: Mon, 13 Nov 2023 22:46:18 +0000
+Date: Sun, 19 Nov 2023 00:26:44 +0000
 Label: Packages for Hydrapp
 Origin: Hydrapp APT repo
 Suite: sid
 MD5Sum:
- fa0f2cb5dc3003b0e8f668ac2936ee15              133 Release
+ eb6ede7bbd7fabef576cdcba8e4d1f0c              133 Release
 SHA1:
- 4683838414fa5626ff5a1107d601cad08bd7e921              133 Release
+ 0b20977db67a7ce3d4668f970603ef565b13369a              133 Release
 SHA256:
- 4e6dd5f2195c6b06c01b7c4f6217ed0d24cf07238d3d8ee6ae5268d2c23c0946              133 Release
+ 774e2f9eb97e0df477a86fea92d1c094c328e9846e8e1a0cfc0465fe25a4fbd6              133 Release
 SHA512:
- a74b90feb1f0402a810a804e9d8f11c99d516a9bef0ab5f78f20f4ec9b18f2c3b76298460efc7bc909022b2b46281c0490236ce54b249f2042d36cc6dff82759              133 Release
+ bafb305f80f86450ca706d002fe2f8ecc9b6dd63998b777126092709611485f1510d6bd90aeb9c1526bca39f46bbccc21f82b275a42ff6ae2bd0133d5e164f4d              133 Release

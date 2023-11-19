@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.rest.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 536ee4f12908694bf8e45866ecb1b236 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 397d871123c0d1077b58630b6e980b18 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  acfe7165204ffe574ee6f0af41eed8c1 2251464 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 31e64d47ca0c274434fc29bb11a43f0ec5da335c 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 8d7430f1d552f1203680397e48661a7ce112adff 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  f54a2748f76cc16cb9f152a413c1325b58baf2e1 2251464 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 20435733691714b3f4a6ed809f65fa4a0cf245c88fc780305c491f6e4343ec68 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
+ 496bffcacd682da8c1199ca4912a918633cecf130342c7d5b7f8ab5ac4cc4dfa 1096 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1.dsc
  68b765e12c9b1618d058306c17edb72ae9e7415e42d9a02937a85ce4fc7ca8c3 2251464 com.pojtinger.felicitas.hydrapp.example.rest.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Mon, 13 Nov 2023 22:31:54 +0000
+Build-Date: Sun, 19 Nov 2023 00:26:00 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.rest.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -40,7 +40,7 @@ Installed-Build-Depends:
  cpp-13 (= 13.2.0-6),
  dash (= 0.5.12-6),
  debconf (= 1.5.82),
- debhelper (= 13.11.7),
+ debhelper (= 13.11.8),
  debianutils (= 5.14),
  desktop-file-utils (= 0.27-1),
  dh-autoreconf (= 20),
@@ -94,7 +94,7 @@ Installed-Build-Depends:
  libbrotli1 (= 1.1.0-1),
  libbsd0 (= 0.11.7-4),
  libbz2-1.0 (= 1.0.8-5+b1),
- libc-ares2 (= 1.21.0-1),
+ libc-ares2 (= 1.22.0-1),
  libc-bin (= 2.37-12),
  libc-dev-bin (= 2.37-12),
  libc6 (= 2.37-12),
@@ -112,10 +112,10 @@ Installed-Build-Depends:
  libdb5.3 (= 5.3.28+dfsg2-4),
  libde265-0 (= 1.0.12-2),
  libdebconfclient0 (= 0.271),
- libdebhelper-perl (= 13.11.7),
+ libdebhelper-perl (= 13.11.8),
  libdeflate0 (= 1.18-1),
  libdpkg-perl (= 1.22.1),
- libelf1 (= 0.189-4),
+ libelf1 (= 0.190-1),
  liberror-perl (= 0.17029-2),
  libexpat1 (= 2.5.0-2),
  libffi8 (= 3.4.4-1),
@@ -128,13 +128,13 @@ Installed-Build-Depends:
  libgcrypt20 (= 1.10.2-3),
  libgdbm-compat4 (= 1.23-3),
  libgdbm6 (= 1.23-3),
- libgdk-pixbuf-2.0-0 (= 2.42.10+dfsg-2),
- libgdk-pixbuf2.0-common (= 2.42.10+dfsg-2),
+ libgdk-pixbuf-2.0-0 (= 2.42.10+dfsg-3),
+ libgdk-pixbuf2.0-common (= 2.42.10+dfsg-3),
  libglib2.0-0 (= 2.78.1-4),
  libgmp10 (= 2:6.3.0+dfsg-2),
  libgnutls30 (= 3.8.1-4+b1),
  libgomp1 (= 13.2.0-6),
- libgpg-error0 (= 1.47-2),
+ libgpg-error0 (= 1.47-3),
  libgprofng0 (= 2.41-6),
  libgssapi-krb5-2 (= 1.20.1-5),
  libheif-plugin-dav1d (= 1.17.1-1+b1),
@@ -219,7 +219,7 @@ Installed-Build-Depends:
  libstdc++6 (= 13.2.0-6),
  libstemmer0d (= 2.2.0-4),
  libsub-override-perl (= 0.09-4),
- libsystemd0 (= 254.5-1),
+ libsystemd0 (= 255~rc2-1),
  libtasn1-6 (= 4.19.0-3),
  libtiff6 (= 4.5.1+git230720-1),
  libtinfo6 (= 6.4+20231016-1),
@@ -230,7 +230,7 @@ Installed-Build-Depends:
  libtsan2 (= 13.2.0-6),
  libubsan1 (= 13.2.0-6),
  libuchardet0 (= 0.0.7-1),
- libudev1 (= 254.5-1),
+ libudev1 (= 255~rc2-1),
  libunistring5 (= 1.1-2),
  libuuid1 (= 2.39.2-6),
  libuv1 (= 1.46.0-2),
@@ -252,7 +252,7 @@ Installed-Build-Depends:
  m4 (= 1.4.19-4),
  make (= 4.3-4.1),
  man-db (= 2.12.0-1),
- mawk (= 1.3.4.20230808-1),
+ mawk (= 1.3.4.20231102-1),
  media-types (= 10.1.0),
  ncurses-base (= 6.4+20231016-1),
  ncurses-bin (= 6.4+20231016-1),
@@ -293,11 +293,11 @@ Installed-Build-Depends:
  node-cacache (= 17.0.3+~cs10.3.7-1),
  node-camelcase (= 7.0.0-3),
  node-caniuse-lite (= 1.0.30001547+dfsg+~1.0.2-1),
- node-chalk (= 5.2.0-1),
+ node-chalk (= 5.3.0-1),
  node-chokidar (= 3.5.3-2),
  node-chownr (= 2.0.0-2),
  node-chrome-trace-event (= 1.0.3-2),
- node-ci-info (= 3.6.1+~cs1.1.0-1),
+ node-ci-info (= 4.0.0+~cs1.1.0-1),
  node-cjs-module-lexer (= 1.2.2+dfsg-5),
  node-cli-table (= 0.3.11+~cs0.13.4-3),
  node-cliui (= 7.0.4+repack+~cs3.1.0-4),
@@ -313,9 +313,9 @@ Installed-Build-Depends:
  node-console-control-strings (= 1.1.0-3),
  node-convert-source-map (= 1.9.0+~1.5.2-1),
  node-copy-concurrently (= 1.0.5-9),
- node-core-js (= 3.26.1-3),
- node-core-js-compat (= 3.26.1-3),
- node-core-js-pure (= 3.26.1-3),
+ node-core-js (= 3.33.2-1),
+ node-core-js-compat (= 3.33.2-1),
+ node-core-js-pure (= 3.33.2-1),
  node-core-util-is (= 1.0.3-1),
  node-css-loader (= 6.8.1+~cs14.0.17-1),
  node-css-selector-tokenizer (= 0.8.0+~cs4.8.3-1),
@@ -618,7 +618,7 @@ Installed-Build-Depends:
  util-linux (= 2.39.2-6),
  webpack (= 5.76.1+dfsg1+~cs17.16.16-1),
  xz-utils (= 5.4.4-0.1),
- zlib1g (= 1:1.2.13.dfsg-3)
+ zlib1g (= 1:1.3.dfsg-2)
 Environment:
  DEB_BUILD_OPTIONS="parallel=4"
  LANG="C"
