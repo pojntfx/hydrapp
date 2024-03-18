@@ -3,8 +3,8 @@ go 1.21.1
 use (
 	.
 	./hydrapp
-	./hydrapp-example-dudirekta-cra
-	./hydrapp-example-dudirekta-parcel
+	./hydrapp-example-panrpc-cra
+	./hydrapp-example-panrpc-parcel
 	./hydrapp-example-forms
 	./hydrapp-example-rest
 )

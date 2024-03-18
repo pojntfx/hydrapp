@@ -16,7 +16,7 @@ hydrapp is a small Go framework similar to Electron with unique feature: It **ca
 It enables you too ...
 
 - **Build apps in Go and JS:** Use the speedy and easy-to-learn Go language to create your app's backend, then use your web tech know-how to develop a top-notch, user-friendly frontend.
-- **Connect frontend and backend with ease:** With hydrapp and [dudirekta](https://github.com/pojntfx/dudirekta), you can easily call functions between the frontend and backend without any complicated manual setup.
+- **Connect frontend and backend with ease:** With hydrapp and [panrpc](https://github.com/pojntfx/panrpc), you can easily call functions between the frontend and backend without any complicated manual setup.
 - **Compatible with all browsers:** Hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Firefox/Gecko, Epiphany/Webkit, and even Android WebView.
 - **Cross-compile easily with full CGo support:** Hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using non-Linux machines.
 - **Effortlessly build, sign, distribute, and update your app:** Hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, EXE, DMG, APK, and static binaries for all other platforms. Hydrapp can also generate APT, YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
@@ -111,8 +111,8 @@ First, select your preferred starter project:
 ? Which project type do you want to generate?:
     rest: Simple starter project with a REST API to connect the frontend and backend
     forms: Traditional starter project with Web 1.0-style forms to connect the frontend and backend
-    dudirekta-parcel: Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend (based on the Parcel bundler)
-  ▸ dudirekta-cra: Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend (based on the Create React App bundler)
+    panrpc-parcel: Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Parcel bundler)
+  ▸ panrpc-cra: Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Create React App bundler)
 ```
 
 Next, set your app ID; this can be anything that's a valid reverse FQDN, e.g. the GitHub repo you're using:
@@ -275,8 +275,8 @@ To make getting started with hydrapp easier, take a look at the following exampl
 
 - [**REST**](./hydrapp-example-rest/): Simple starter project with a REST API to connect the frontend and backend
 - [**Forms**](./hydrapp-example-forms/): Traditional starter project with Web 1.0-style forms to connect the frontend and backend
-- [**Dudirekta & Parcel**](./hydrapp-example-dudirekta-parcel/): Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend (based on the Parcel bundler)
-- [**Dudirekta & CRA**](./hydrapp-example-dudirekta-cra/): Complete starter project with bi-directional Dudirekta RPCs to connect the frontend and backend (based on the Create React App bundler)
+- [**panrpc & Parcel**](./hydrapp-example-panrpc-parcel/): Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Parcel bundler)
+- [**panrpc & CRA**](./hydrapp-example-panrpc-cra/): Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Create React App bundler)
 
 ### Command Line Arguments
 
@@ -380,8 +380,8 @@ To build and start a development version of one of the examples locally, run the
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
 $ cd hydrapp
-$ make depend/hydrapp-example-dudirekta-cra
-$ go run ./hydrapp-example-dudirekta-cra
+$ make depend/hydrapp-example-panrpc-cra
+$ go run ./hydrapp-example-panrpc-cra
 ```
 
 This project uses [Go workspaces](https://go.dev/doc/tutorial/workspaces), so any changes you make to the `hydrapp` module should be used by the examples without any manual adjustments.

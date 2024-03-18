@@ -1,24 +1,25 @@
 {
-  "name": "{{ .AppID }}",
+  "name": "com.pojtinger.felicitas.hydrapp.example.panrpc.parcel",
   "version": "0.0.1",
-  "description": "{{ .AppDescription }}",
+  "description": "A simple Hydrapp panrpc and Parcel example app.",
   "type": "module",
   "scripts": {
     "dev": "parcel index.html --dist-dir out",
     "build": "tsc && parcel build index.html --dist-dir out"
   },
   "keywords": [],
-  "author": "{{ .ReleaseAuthor }} <{{ .ReleaseEmail }}>",
-  "license": "{{ .LicenseSPDX }}",
+  "author": "Felicitas Pojtinger <felicitas@pojtinger.com>",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
-    "parcel": "^2.7.0",
+    "parcel": "^2.12.0",
     "typescript": "^4.6.4"
   },
   "dependencies": {
+    "@pojntfx/panrpc": "^0.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@pojntfx/panrpc": "^0.6.1"
+    "use-async": "^1.1.0"
   }
 }

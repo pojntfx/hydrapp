@@ -11,8 +11,8 @@ var (
 	//go:embed go.mod.tpl
 	GoModTpl string
 
-	//go:embed main_dudirekta.go.tpl
-	GoMainDudirektaTpl string
+	//go:embed main_panrpc.go.tpl
+	GoMainpanrpcTpl string
 
 	//go:embed main_forms.go.tpl
 	GoMainFormsTpl string
@@ -20,8 +20,8 @@ var (
 	//go:embed main_rest.go.tpl
 	GoMainRESTTpl string
 
-	//go:embed android_dudirekta.go.tpl
-	AndroidDudirektaTpl string
+	//go:embed android_panrpc.go.tpl
+	AndroidpanrpcTpl string
 
 	//go:embed android_forms.go.tpl
 	AndroidFormsTpl string
@@ -29,23 +29,23 @@ var (
 	//go:embed android_rest.go.tpl
 	AndroidRESTTpl string
 
-	//go:embed .gitignore_dudirekta_parcel.tpl
-	GitignoreDudirektaParcelTpl string
+	//go:embed .gitignore_panrpc_parcel.tpl
+	GitignorepanrpcParcelTpl string
 
-	//go:embed .gitignore_dudirekta_cra.tpl
-	GitignoreDudirektaCRATpl string
+	//go:embed .gitignore_panrpc_cra.tpl
+	GitignorepanrpcCRATpl string
 
 	//go:embed .gitignore_rest.tpl
 	GitignoreRESTTpl string
 
-	//go:embed backend_dudirekta.go.tpl
-	BackendDudirektaTpl string
+	//go:embed backend_panrpc.go.tpl
+	BackendpanrpcTpl string
 
 	//go:embed backend_rest.go.tpl
 	BackendRESTTpl string
 
-	//go:embed frontend_dudirekta.go.tpl
-	FrontendDudirektaTpl string
+	//go:embed frontend_panrpc.go.tpl
+	FrontendpanrpcTpl string
 
 	//go:embed frontend_rest.go.tpl
 	FrontendRESTTpl string
@@ -59,11 +59,11 @@ var (
 	//go:embed main.tsx.tpl
 	MainTSXTpl string
 
-	//go:embed index_dudirekta_parcel.html.tpl
-	IndexHTMLDudirektaParcelTpl string
+	//go:embed index_panrpc_parcel.html.tpl
+	IndexHTMLpanrpcParcelTpl string
 
-	//go:embed index_dudirekta_cra.html.tpl
-	IndexHTMLDudirektaCRATpl string
+	//go:embed index_panrpc_cra.html.tpl
+	IndexHTMLpanrpcCRATpl string
 
 	//go:embed index_rest.html.tpl
 	IndexHTMLRESTTpl string
