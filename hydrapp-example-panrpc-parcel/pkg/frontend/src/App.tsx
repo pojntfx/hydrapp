@@ -42,8 +42,16 @@ class Remote {
     return "";
   }
 
-  async ExampleNotification(ctx: IRemoteContext) {
+  async ExampleCallback(ctx: IRemoteContext) {
     return;
+  }
+
+  async ExampleClosure(
+    ctx: IRemoteContext,
+    length: number,
+    onIteration: (ctx: ILocalContext, i: number, b: string) => Promise<string>
+  ): Promise<number> {
+    return 0;
   }
 }
 
@@ -235,14 +243,43 @@ const App = () => {
           onClick={() =>
             registry.forRemotes(async (_, remote) => {
               try {
-                await remote.ExampleNotification(undefined);
+                await remote.ExampleCallback(undefined);
               } catch (e) {
                 alert(JSON.stringify((e as Error).message));
               }
             })
           }
         >
-          Get three notifications
+          Get three time notifications (with callback)
+        </button>
+
+        <button
+          onClick={() =>
+            registry.forRemotes(async (_, remote) => {
+              try {
+                await remote.ExampleClosure(undefined, 3, async (_, i, b) => {
+                  if (
+                    "Notification" in window &&
+                    Notification.permission !== "granted"
+                  ) {
+                    await Notification.requestPermission();
+                  }
+
+                  if ("Notification" in window) {
+                    new Notification(`In iteration ${i} ${b}`);
+                  } else {
+                    alert(`In iteration ${i} ${b}`);
+                  }
+
+                  return "This is from the frontend";
+                });
+              } catch (e) {
+                alert(JSON.stringify((e as Error).message));
+              }
+            })
+          }
+        >
+          Get three iteration notifications (with closure)
         </button>
       </div>
     </main>

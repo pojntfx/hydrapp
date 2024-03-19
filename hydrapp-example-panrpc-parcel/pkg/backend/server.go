@@ -57,7 +57,7 @@ func (l *local) ExampleReturnStringAndError(ctx context.Context) (string, error)
 	return "Test string", errors.New("test error")
 }
 
-func (l *local) ExampleNotification(ctx context.Context) error {
+func (l *local) ExampleCallback(ctx context.Context) error {
 	var peer *remote
 
 	_ = l.ForRemotes(func(remoteID string, remote remote) error {
@@ -78,7 +78,7 @@ func (l *local) ExampleNotification(ctx context.Context) error {
 
 			<-ticker.C
 
-			if err := peer.ExampleNotification(ctx, time.Now().Format(time.RFC3339)); err != nil {
+			if err := peer.ExampleNotification(ctx, "Backend time: "+time.Now().Format(time.RFC3339)); err != nil {
 				return err
 			}
 
@@ -87,6 +87,23 @@ func (l *local) ExampleNotification(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (s *local) ExampleClosure(
+	ctx context.Context,
+	length int,
+	onIteration func(ctx context.Context, i int, b string) (string, error),
+) (int, error) {
+	for i := 0; i < length; i++ {
+		rv, err := onIteration(ctx, i, "This is from the backend")
+		if err != nil {
+			return -1, err
+		}
+
+		log.Println("Closure returned:", rv)
+	}
+
+	return length, nil
 }
 
 type remote struct {
