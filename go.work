@@ -3,7 +3,6 @@ go 1.21.1
 use (
 	.
 	./hydrapp
-	./hydrapp-example-panrpc-cra
 	./hydrapp-example-panrpc-parcel
 	./hydrapp-example-forms
 	./hydrapp-example-rest

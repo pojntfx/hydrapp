@@ -71,7 +71,7 @@ const App = () => {
 
   return (
     <main>
-      <h1>Hydrapp panrpc-CRA Example</h1>
+      <h1>Hydrapp React and panrpc Example</h1>
 
       <div>
         <button

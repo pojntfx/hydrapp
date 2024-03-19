@@ -1,12 +1,12 @@
-## Hydrapp panrpc-Parcel Example
+## Hydrapp React and panrpc Example
 
-Hydrapp panrpc and Parcel example app.
+Hydrapp React and panrpc example app.
 
 [![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
 
 ## Overview
 
-A simple Hydrapp panrpc and Parcel example app.
+A simple Hydrapp React and panrpc example app.
 
 ## Installation
 
@@ -36,7 +36,7 @@ All arguments passed to the binary will be forwarded to the browser used to disp
 
 To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-To build and start a development version of Hydrapp panrpc-Parcel Example locally, run the following:
+To build and start a development version of Hydrapp React and panrpc Example locally, run the following:
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
@@ -49,6 +49,6 @@ Note that you can also set `HYDRAPP_BACKEND_LADDR` to a fixed value, `HYDRAPP_TY
 
 ## License
 
-Hydrapp panrpc-Parcel Example (c) 2023 Felicitas Pojtinger and contributors
+Hydrapp React and panrpc Example (c) 2023 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: Apache-2.0

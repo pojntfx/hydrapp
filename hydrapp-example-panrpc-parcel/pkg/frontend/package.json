@@ -1,7 +1,7 @@
 {
   "name": "com.pojtinger.felicitas.hydrapp.example.panrpc.parcel",
   "version": "0.0.1",
-  "description": "A simple Hydrapp panrpc and Parcel example app.",
+  "description": "A simple Hydrapp React and panrpc example app.",
   "type": "module",
   "scripts": {
     "dev": "parcel index.html --dist-dir out",

@@ -112,7 +112,6 @@ First, select your preferred starter project:
     rest: Simple starter project with a REST API to connect the frontend and backend
     forms: Traditional starter project with Web 1.0-style forms to connect the frontend and backend
     panrpc-parcel: Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Parcel bundler)
-  ▸ panrpc-cra: Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Create React App bundler)
 ```
 
 Next, set your app ID; this can be anything that's a valid reverse FQDN, e.g. the GitHub repo you're using:
@@ -276,7 +275,6 @@ To make getting started with hydrapp easier, take a look at the following exampl
 - [**REST**](./hydrapp-example-rest/): Simple starter project with a REST API to connect the frontend and backend
 - [**Forms**](./hydrapp-example-forms/): Traditional starter project with Web 1.0-style forms to connect the frontend and backend
 - [**panrpc & Parcel**](./hydrapp-example-panrpc-parcel/): Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Parcel bundler)
-- [**panrpc & CRA**](./hydrapp-example-panrpc-cra/): Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Create React App bundler)
 
 ### Command Line Arguments
 
@@ -380,8 +378,8 @@ To build and start a development version of one of the examples locally, run the
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
 $ cd hydrapp
-$ make depend/hydrapp-example-panrpc-cra
-$ go run ./hydrapp-example-panrpc-cra
+$ make depend/hydrapp-example-panrpc-parcel
+$ go run ./hydrapp-example-panrpc-parcel
 ```
 
 This project uses [Go workspaces](https://go.dev/doc/tutorial/workspaces), so any changes you make to the `hydrapp` module should be used by the examples without any manual adjustments.

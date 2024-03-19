@@ -3,9 +3,9 @@ module github.com/pojntfx/hydrapp/hydrapp-example-panrpc-parcel
 go 1.21.1
 
 require (
-	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20240318195354-18b626d3ee15
+	github.com/pojntfx/hydrapp/hydrapp v0.0.0-20240319223556-6627a66c63ea
 	github.com/pojntfx/panrpc/go v0.0.0-20240319212337-7b7169ecdc68
-	nhooyr.io/websocket v1.8.7
+	nhooyr.io/websocket v1.8.10
 )
 
 require (
@@ -15,7 +15,6 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/josephspurrier/goversioninfo v1.4.0 // indirect
-	github.com/klauspost/compress v1.15.13 // indirect
 	github.com/ncruces/zenity v0.10.6 // indirect
 	github.com/randall77/makefat v0.0.0-20210315173500-7ddd0e42c844 // indirect
 	golang.org/x/image v0.5.0 // indirect

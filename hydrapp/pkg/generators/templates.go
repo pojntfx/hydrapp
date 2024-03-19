@@ -32,9 +32,6 @@ var (
 	//go:embed .gitignore_panrpc_parcel.tpl
 	GitignorepanrpcParcelTpl string
 
-	//go:embed .gitignore_panrpc_cra.tpl
-	GitignorepanrpcCRATpl string
-
 	//go:embed .gitignore_rest.tpl
 	GitignoreRESTTpl string
 
@@ -62,9 +59,6 @@ var (
 	//go:embed index_panrpc_parcel.html.tpl
 	IndexHTMLpanrpcParcelTpl string
 
-	//go:embed index_panrpc_cra.html.tpl
-	IndexHTMLpanrpcCRATpl string
-
 	//go:embed index_rest.html.tpl
 	IndexHTMLRESTTpl string
 
@@ -73,9 +67,6 @@ var (
 
 	//go:embed package_parcel.json.tpl
 	PackageJSONParcelTpl string
-
-	//go:embed package_cra.json.tpl
-	PackageJSONCRATpl string
 
 	//go:embed tsconfig.json.tpl
 	TsconfigJSONTpl string
