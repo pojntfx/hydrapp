@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pojntfx/panrpc/pkg/rpc"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
+	"github.com/pojntfx/panrpc/go/pkg/rpc"
 	"nhooyr.io/websocket"
 )
 
@@ -22,7 +22,9 @@ type exampleStruct struct {
 }
 
 type local struct {
-	ForRemotes func(cb func(remoteID string, remote remote) error) error
+	ForRemotes func(
+		cb func(remoteID string, remote remote) error,
+	) error
 }
 
 func (l *local) ExamplePrintString(ctx context.Context, msg string) error {
@@ -96,38 +98,46 @@ func StartServer(ctx context.Context, addr string, heartbeat time.Duration, loca
 		addr = ":0"
 	}
 
-	l := &local{}
-	registry := rpc.NewRegistry[remote, json.RawMessage](
-		l,
+	service := &local{}
 
-		time.Second*10,
+	clients := 0
+	registry := rpc.NewRegistry[remote, json.RawMessage](
+		service,
+
 		ctx,
-		nil,
+
+		&rpc.Options{
+			OnClientConnect: func(remoteID string) {
+				clients++
+
+				log.Printf("%v clients connected", clients)
+			},
+			OnClientDisconnect: func(remoteID string) {
+				clients--
+
+				log.Printf("%v clients connected", clients)
+			},
+		},
 	)
-	l.ForRemotes = registry.ForRemotes
+	service.ForRemotes = registry.ForRemotes
 
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
-		return "", nil, err
+		panic(err)
 	}
 
-	clients := 0
+	log.Println("Listening on", listener.Addr())
+
 	go func() {
+		defer listener.Close()
+
 		if err := http.Serve(listener, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			clients++
-
-			log.Printf("%v clients connected", clients)
-
 			defer func() {
-				clients--
-
 				if err := recover(); err != nil {
 					w.WriteHeader(http.StatusInternalServerError)
 
 					log.Printf("Client disconnected with error: %v", err)
 				}
-
-				log.Printf("%v clients connected", clients)
 			}()
 
 			switch r.Method {
@@ -156,10 +166,10 @@ func StartServer(ctx context.Context, addr string, heartbeat time.Duration, loca
 				conn := websocket.NetConn(ctx, c, websocket.MessageText)
 				defer conn.Close()
 
-				go func() {
-					encoder := json.NewEncoder(conn)
-					decoder := json.NewDecoder(conn)
+				encoder := json.NewEncoder(conn)
+				decoder := json.NewDecoder(conn)
 
+				go func() {
 					if err := registry.LinkStream(
 						func(v rpc.Message[json.RawMessage]) error {
 							return encoder.Encode(v)

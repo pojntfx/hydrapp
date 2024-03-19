@@ -68,7 +68,7 @@ const App = () => {
       new URLSearchParams(window.location.search).get("socketURL") ||
       "ws://localhost:1337";
 
-    const socket = new WebSocket(`ws://${addr}`);
+    const socket = new WebSocket(addr);
 
     socket.addEventListener("error", (e) => {
       console.error("Disconnected with error:", e);

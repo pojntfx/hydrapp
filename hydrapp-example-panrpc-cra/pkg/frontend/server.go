@@ -1,6 +1,6 @@
 package frontend
 
-//go:generate npm i
+//go:generate npm install
 //go:generate npm run build
 
 import (
