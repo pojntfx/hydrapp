@@ -8,7 +8,7 @@
 
 1. Download F-Droid from [f-droid.org](https://f-droid.org/)
 2. Open F-Droid and go to `Settings`, then `Repositories`
-3. Add a new repository with the address `{{ .AndroidRepoURL }}`
+3. Add a new repository by following the instructions at [{{ .AndroidRepoURL }}]({{ .AndroidRepoURL }})
 4. Search for `{{ $appName }}` in F-Droid and tap on `Install`
 
 {{ $appName }} should now be installed and receive updates automatically.
