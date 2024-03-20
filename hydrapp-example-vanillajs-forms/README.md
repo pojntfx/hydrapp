@@ -49,6 +49,6 @@ Note that you can also set `HYDRAPP_BACKEND_LADDR` to a fixed value, `HYDRAPP_TY
 
 ## License
 
-Hydrapp Vanilla JS and Forms (c) 2023 Felicitas Pojtinger and contributors
+Hydrapp Vanilla JS and Forms (c) 2024 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: Apache-2.0
