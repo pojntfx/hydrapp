@@ -3,15 +3,21 @@ FROM golang:bookworm
 RUN apt update
 RUN apt install -y curl make imagemagick msitools curl uuid-runtime git cpanminus npm tree jq apt-transport-https ca-certificates cabextract git gnupg gosu gpg-agent locales p7zip pulseaudio pulseaudio-utils sudo tzdata unzip wget winbind xvfb zenity wixl libxml2-utils
 
-# Install WINE
-RUN wget -nv -O- https://dl.winehq.org/wine-builds/winehq.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1 apt-key add -
-RUN echo "deb https://dl.winehq.org/wine-builds/debian/ $(grep VERSION_CODENAME= /etc/os-release | cut -d= -f2) main" >>/etc/apt/sources.list
-RUN dpkg --add-architecture i386
+# Install WINE build dependencies
+RUN sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources
 RUN apt update
-RUN DEBIAN_FRONTEND="noninteractive" apt install -y --install-recommends winehq-stable
+RUN DEBIAN_FRONTEND="noninteractive" apt-get build-dep --install-recommends -y wine
+
+# Build and install patched WINE (see https://github.com/msys2/MSYS2-packages/issues/682)
+RUN git clone https://gitlab.winehq.org/jhol/wine.git /tmp/winesrc
+WORKDIR /tmp/winesrc
+RUN git checkout msys2-hacks-17
+RUN ./configure --enable-win64
+RUN make -j $(nproc)
+RUN make install
 
 # Install MSYS2
-RUN curl -L -o /tmp/msys2.exe 'https://github.com/msys2/msys2-installer/releases/download/2023-07-18/msys2-base-x86_64-20230718.sfx.exe'
+RUN curl -L -o /tmp/msys2.exe 'https://github.com/msys2/msys2-installer/releases/download/2024-01-13/msys2-base-x86_64-20240113.sfx.exe'
 RUN wine64 /tmp/msys2.exe x -y -oC:/
 
 # Fix MSYS2
