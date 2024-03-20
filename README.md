@@ -388,6 +388,6 @@ Have any questions or need help? Chat with us [on Matrix](https://matrix.to/#/#h
 
 ## License
 
-hydrapp (c) 2023 Felicitas Pojtinger and contributors
+hydrapp (c) 2024 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: Apache-2.0
