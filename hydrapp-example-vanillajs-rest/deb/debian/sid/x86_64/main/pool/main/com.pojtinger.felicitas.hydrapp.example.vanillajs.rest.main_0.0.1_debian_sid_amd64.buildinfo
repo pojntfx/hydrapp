@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- d3b840ddc866338b2d57d3b7e98d9367 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
- b2d91c5c7b62aab074b526d2ad175d76 2317960 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
+ 904c0a7cbf4848bab6dc37ef53aad419 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
+ 9fcc83f7505045b208855ceaa76e7768 2317884 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
 Checksums-Sha1:
- e6a34e4eab94ba9902ba98675995c6bffd72d618 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
- c9efe876359f359e853ba5931b6700bc285b47ac 2317960 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
+ 8f000539956a3d9ec315d4d9ee41047dc61a0d55 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
+ 04aafa28938fa2b8d3cc6aba18a1874de4287f64 2317884 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
 Checksums-Sha256:
- baf1abffd8787b3ec0f77776f227a64319bf6865d3283749e64cb510f4a4b5fd 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
- 2cb6babca4b1aaca3ab03e0efdb512d5f8a4fc2bfc89700cce428d961ceec510 2317960 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
+ c8f87742778c56448b31a22fc12cb3f071ab929b118f33aceb8c0b874a8a2ca6 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
+ 7210c8905976a6a2cb18622bfa549fbe427a6139731f60a32e270b698c3adf5c 2317884 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Wed, 20 Mar 2024 21:28:41 +0000
+Build-Date: Wed, 20 Mar 2024 21:50:24 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -630,4 +630,4 @@ Environment:
  DEB_BUILD_OPTIONS="parallel=4"
  LANG="C"
  LC_ALL="C"
- SOURCE_DATE_EPOCH="1677251315"
+ SOURCE_DATE_EPOCH="1710969689"

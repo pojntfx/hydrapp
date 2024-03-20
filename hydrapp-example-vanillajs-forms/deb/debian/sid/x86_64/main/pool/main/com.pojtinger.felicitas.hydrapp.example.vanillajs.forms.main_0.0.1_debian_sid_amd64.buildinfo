@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- bee06b775ef168261c36ecb2cd656ab5 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- aac1fcfe24a14e1c56cd6c66ec82b3b6 2849528 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ 87728b9fc94e38cf5b8e0461f57fe91c 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 2cc9f3b3b2952cab8ec565ea0cfd5113 2849956 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 5fefe7f4b4bc9d3aeb856f87a16203e8dfa2d021 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- 7852c5ed052b143239817432b17692ae820fed44 2849528 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ f438cb0da8da47aed27574152c97eb60ff96538e 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 4b1fb49978fcbb599bdef8e092f52e00ddf1be2a 2849956 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- b6d141117e1320ded95a541fb593c20a2c696408b9b014979069b3acc65c68ab 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- 550404085beec0bd8859f7208fb3ed0b551ae2a7774024628e1cd5af68e0e88e 2849528 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ 13a0ad061eb5eb5a752622fce5439caf5c1148a53f8bb081578cd327e1da4a72 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ cf2caa661e4eb08678cca5e534e82de9082bf7f3329675d220fe497ee8d86832 2849956 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Wed, 20 Mar 2024 21:32:40 +0000
+Build-Date: Wed, 20 Mar 2024 21:50:15 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -630,4 +630,4 @@ Environment:
  DEB_BUILD_OPTIONS="parallel=4"
  LANG="C"
  LC_ALL="C"
- SOURCE_DATE_EPOCH="1677251476"
+ SOURCE_DATE_EPOCH="1710969957"
