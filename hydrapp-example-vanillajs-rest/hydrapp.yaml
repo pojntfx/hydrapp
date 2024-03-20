@@ -1,17 +1,17 @@
 app:
-  id: com.pojtinger.felicitas.hydrapp.example.rest
+  id: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest
   name: Hydrapp Vanilla JS and REST
   summary: Hydrapp Vanilla JS and REST app
   description: A simple Hydrapp Vanilla JS and REST app.
   license: Apache-2.0
-  homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-rest
+  homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-vanillajs-rest
   git: https://github.com/pojntfx/hydrapp.git
-  baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-rest/
+  baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-vanillajs-rest/
 go:
-  main: ./hydrapp-example-rest
+  main: ./hydrapp-example-vanillajs-rest
   flags: ""
-  generate: cd hydrapp-example-rest && go generate ./...
-  tests: go test ./hydrapp-example-rest/...
+  generate: cd hydrapp-example-vanillajs-rest && go generate ./...
+  tests: go test ./hydrapp-example-vanillajs-rest/...
   img: ghcr.io/pojntfx/hydrapp-build-tests:main
 releases:
 - version: 0.0.1
@@ -36,11 +36,12 @@ dmg:
 flatpak:
 - path: flatpak/x86_64
   architecture: amd64
-msi:
-- path: msi/x86_64
-  architecture: amd64
-  include: ^\\b$
-  packages: []
+# Disabled until Cygwin no longer freezes in WINE
+# msi:
+# - path: msi/x86_64
+#   architecture: amd64
+#   include: ^\\b$
+#   packages: []
 rpm:
 - path: rpm/fedora/39/x86_64
   trailer: 1.fc39

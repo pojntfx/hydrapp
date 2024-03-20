@@ -1,4 +1,4 @@
-module github.com/pojntfx/hydrapp/hydrapp-example-rest
+module github.com/pojntfx/hydrapp/hydrapp-example-vanillajs-rest
 
 go 1.21.1
 

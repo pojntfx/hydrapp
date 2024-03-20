@@ -12,102 +12,104 @@ jobs:
     strategy:
       matrix:
         target:
-          # com.pojtinger.felicitas.hydrapp.example.forms
-          - id: hydrapp-apk.hydrapp-example-forms
+          # com.pojtinger.felicitas.hydrapp.example.vanillajs.forms
+          - id: hydrapp-apk.hydrapp-example-vanillajs-forms
             src: .
-            pkg: hydrapp-example-forms
+            pkg: hydrapp-example-vanillajs-forms
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-deb.hydrapp-example-forms
+          - id: hydrapp-deb.hydrapp-example-vanillajs-forms
             src: .
-            pkg: hydrapp-example-forms
+            pkg: hydrapp-example-vanillajs-forms
             exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-dmg.hydrapp-example-forms
+          - id: hydrapp-dmg.hydrapp-example-vanillajs-forms
             src: .
-            pkg: hydrapp-example-forms
+            pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-flatpak.hydrapp-example-forms
+          - id: hydrapp-flatpak.hydrapp-example-vanillajs-forms
             src: .
-            pkg: hydrapp-example-forms
+            pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-msi.hydrapp-example-forms
+          # Disabled until Cygwin no longer freezes in WINE
+          # - id: hydrapp-msi.hydrapp-example-vanillajs-forms
+          #   src: .
+          #   pkg: hydrapp-example-vanillajs-forms
+          #   exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
+          #   tag: main
+          #   dst: out/*
+          - id: hydrapp-rpm.hydrapp-example-vanillajs-forms
             src: .
-            pkg: hydrapp-example-forms
-            exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-rpm.hydrapp-example-forms
-            src: .
-            pkg: hydrapp-example-forms
+            pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|msi|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-binaries.hydrapp-example-forms
+          - id: hydrapp-binaries.hydrapp-example-vanillajs-forms
             src: .
-            pkg: hydrapp-example-forms
+            pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
-          - id: hydrapp-tests.hydrapp-example-forms
+          - id: hydrapp-tests.hydrapp-example-vanillajs-forms
             src: .
-            pkg: hydrapp-example-forms
+            pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
 
-          # com.pojtinger.felicitas.hydrapp.example.rest
-          - id: hydrapp-apk.hydrapp-example-rest
+          # com.pojtinger.felicitas.hydrapp.example.vanillajs.rest
+          - id: hydrapp-apk.hydrapp-example-vanillajs-rest
             src: .
-            pkg: hydrapp-example-rest
+            pkg: hydrapp-example-vanillajs-rest
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-deb.hydrapp-example-rest
+          - id: hydrapp-deb.hydrapp-example-vanillajs-rest
             src: .
-            pkg: hydrapp-example-rest
+            pkg: hydrapp-example-vanillajs-rest
             exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-dmg.hydrapp-example-rest
+          - id: hydrapp-dmg.hydrapp-example-vanillajs-rest
             src: .
-            pkg: hydrapp-example-rest
+            pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-flatpak.hydrapp-example-rest
+          - id: hydrapp-flatpak.hydrapp-example-vanillajs-rest
             src: .
-            pkg: hydrapp-example-rest
+            pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-msi.hydrapp-example-rest
+          # Disabled until Cygwin no longer freezes in WINE
+          # - id: hydrapp-msi.hydrapp-example-vanillajs-rest
+          #   src: .
+          #   pkg: hydrapp-example-vanillajs-rest
+          #   exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
+          #   tag: main
+          #   dst: out/*
+          - id: hydrapp-rpm.hydrapp-example-vanillajs-rest
             src: .
-            pkg: hydrapp-example-rest
-            exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
-            tag: main
-            dst: out/*
-          - id: hydrapp-rpm.hydrapp-example-rest
-            src: .
-            pkg: hydrapp-example-rest
+            pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|msi|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-binaries.hydrapp-example-rest
+          - id: hydrapp-binaries.hydrapp-example-vanillajs-rest
             src: .
-            pkg: hydrapp-example-rest
+            pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
-          - id: hydrapp-tests.hydrapp-example-rest
+          - id: hydrapp-tests.hydrapp-example-vanillajs-rest
             src: .
-            pkg: hydrapp-example-rest
+            pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
@@ -137,12 +139,13 @@ jobs:
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-msi.hydrapp-example-react-panrpc
-            src: .
-            pkg: hydrapp-example-react-panrpc
-            exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
-            tag: main
-            dst: out/*
+          # Disabled until Cygwin no longer freezes in WINE
+          # - id: hydrapp-msi.hydrapp-example-react-panrpc
+          #   src: .
+          #   pkg: hydrapp-example-react-panrpc
+          #   exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
+          #   tag: main
+          #   dst: out/*
           - id: hydrapp-rpm.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc

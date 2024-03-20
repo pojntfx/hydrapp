@@ -3,7 +3,7 @@ go 1.21.1
 use (
 	.
 	./hydrapp
-	./hydrapp-example-panrpc-parcel
-	./hydrapp-example-forms
-	./hydrapp-example-rest
+	./hydrapp-example-react-panrpc
+	./hydrapp-example-vanillajs-forms
+	./hydrapp-example-vanillajs-rest
 )

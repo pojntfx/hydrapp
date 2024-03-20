@@ -10,7 +10,7 @@ A simple Hydrapp Vanilla JS and REST app.
 
 ## Installation
 
-See [INSTALLATION.html](https://pojntfx.github.io/hydrapp/hydrapp-example-rest//docs/main/INSTALLATION.html).
+See [INSTALLATION.html](https://pojntfx.github.io/hydrapp/hydrapp-example-vanillajs-rest//docs/main/INSTALLATION.html).
 
 ## Reference
 
@@ -40,7 +40,7 @@ To build and start a development version of Hydrapp Vanilla JS and REST locally,
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
-$ cd hydrapp-example-rest
+$ cd hydrapp-example-vanillajs-rest
 $ go generate ./...
 $ go run .
 ```

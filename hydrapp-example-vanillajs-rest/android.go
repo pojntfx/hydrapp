@@ -13,12 +13,12 @@ import (
 
 	_ "github.com/pojntfx/hydrapp/hydrapp/pkg/fixes"
 
-	backend "github.com/pojntfx/hydrapp/hydrapp-example-rest/pkg/backend"
-	frontend "github.com/pojntfx/hydrapp/hydrapp-example-rest/pkg/frontend"
+	backend "github.com/pojntfx/hydrapp/hydrapp-example-vanillajs-rest/pkg/backend"
+	frontend "github.com/pojntfx/hydrapp/hydrapp-example-vanillajs-rest/pkg/frontend"
 )
 
-//export Java_com_pojtinger_felicitas_hydrapp_example_rest_MainActivity_LaunchBackend
-func Java_com_pojtinger_felicitas_hydrapp_example_rest_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
+//export Java_com_pojtinger_felicitas_hydrapp_example_vanillajs_rest_MainActivity_LaunchBackend
+func Java_com_pojtinger_felicitas_hydrapp_example_vanillajs_rest_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
 	backendURL, _, err := backend.StartServer(context.Background(), "", false)
 	if err != nil {
 		log.Fatalln("could not start backend:", err)

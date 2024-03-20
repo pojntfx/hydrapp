@@ -11,44 +11,44 @@ var (
 	//go:embed go.mod.tpl
 	GoModTpl string
 
-	//go:embed main_panrpc.go.tpl
-	GoMainpanrpcTpl string
+	//go:embed main_react_panrpc.go.tpl
+	GoMainReactPanrpcTpl string
 
-	//go:embed main_forms.go.tpl
-	GoMainFormsTpl string
+	//go:embed main_vanillajs_forms.go.tpl
+	GoMainVanillaJSFormsTpl string
 
-	//go:embed main_rest.go.tpl
-	GoMainRESTTpl string
+	//go:embed main_vanillajs_rest.go.tpl
+	GoMainVanillaJSRESTTpl string
 
-	//go:embed android_panrpc.go.tpl
-	AndroidpanrpcTpl string
+	//go:embed android_react_panrpc.go.tpl
+	AndroidReactPanrpcTpl string
 
-	//go:embed android_forms.go.tpl
-	AndroidFormsTpl string
+	//go:embed android_vanillajs_forms.go.tpl
+	AndroidVanillaJSFormsTpl string
 
-	//go:embed android_rest.go.tpl
-	AndroidRESTTpl string
+	//go:embed android_vanillajs_rest.go.tpl
+	AndroidVanillaJSRESTTpl string
 
 	//go:embed .gitignore_react_panrpc.tpl
-	GitignorereactPanrpcTpl string
+	GitignoreReactPanrpcTpl string
 
-	//go:embed .gitignore_rest.tpl
-	GitignoreRESTTpl string
+	//go:embed .gitignore_vanillajs_rest.tpl
+	GitignoreVanillaJSRESTTpl string
 
-	//go:embed backend_panrpc.go.tpl
-	BackendpanrpcTpl string
+	//go:embed backend_react_panrpc.go.tpl
+	BackendReactPanrpcTpl string
 
-	//go:embed backend_rest.go.tpl
-	BackendRESTTpl string
+	//go:embed backend_vanillajs_rest.go.tpl
+	BackendVanillaJSRESTTpl string
 
-	//go:embed frontend_panrpc.go.tpl
-	FrontendpanrpcTpl string
+	//go:embed frontend_react_panrpc.go.tpl
+	FrontendReactPanrpcTpl string
 
-	//go:embed frontend_rest.go.tpl
-	FrontendRESTTpl string
+	//go:embed frontend_vanillajs_rest.go.tpl
+	FrontendVanillaJSRESTTpl string
 
-	//go:embed frontend_forms.go.tpl
-	FrontendFormsTpl string
+	//go:embed frontend_vanillajs_forms.go.tpl
+	FrontendVanillaJSFormsTpl string
 
 	//go:embed App.tsx.tpl
 	AppTSXTpl string
@@ -57,16 +57,16 @@ var (
 	MainTSXTpl string
 
 	//go:embed index_react_panrpc.html.tpl
-	IndexHTMLreactPanrpcTpl string
+	IndexHTMLReactPanrpcTpl string
 
-	//go:embed index_rest.html.tpl
-	IndexHTMLRESTTpl string
+	//go:embed index_vanillajs_rest.html.tpl
+	IndexHTMLVanillaJSRESTTpl string
 
-	//go:embed index_forms.html.tpl
-	IndexHTMLFormsTpl string
+	//go:embed index_vanillajs_forms.html.tpl
+	IndexHTMLVanillaJSFormsTpl string
 
-	//go:embed package_parcel.json.tpl
-	PackageJSONParcelTpl string
+	//go:embed package_react_panrpc.json.tpl
+	PackageJSONReactPanrpcTpl string
 
 	//go:embed tsconfig.json.tpl
 	TsconfigJSONTpl string

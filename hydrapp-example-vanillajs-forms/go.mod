@@ -1,4 +1,4 @@
-module github.com/pojntfx/hydrapp/hydrapp-example-forms
+module github.com/pojntfx/hydrapp/hydrapp-example-vanillajs-forms
 
 go 1.21.1
 

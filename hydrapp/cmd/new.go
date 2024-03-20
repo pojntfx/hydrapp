@@ -38,11 +38,11 @@ var (
 	projectTypeItems = []generators.ProjectTypeOption{
 		{
 			Name:        vanillaJSRESTKey,
-			Description: "Simple starter project with a REST API to connect the vanilla JS frontend and backend",
+			Description: "Simple starter project with a REST API to connect the Vanilla JS frontend and backend",
 		},
 		{
 			Name:        vanillaJSFormsKey,
-			Description: "Traditional starter project with Web 1.0-style forms to connect the vanilla JS frontend and backend",
+			Description: "Traditional starter project with Web 1.0-style forms to connect the Vanilla JS frontend and backend",
 		},
 		{
 			Name:        reactPanrpcKey,
@@ -424,7 +424,7 @@ var newCmd = &cobra.Command{
 		case vanillaJSRESTKey:
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "main.go"),
-				generators.GoMainRESTTpl,
+				generators.GoMainVanillaJSRESTTpl,
 				generators.GoMainData{
 					GoMod: goMod,
 				},
@@ -434,7 +434,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "android.go"),
-				generators.AndroidRESTTpl,
+				generators.AndroidVanillaJSRESTTpl,
 				generators.AndroidData{
 					GoMod:     goMod,
 					JNIExport: strings.Replace(appID, ".", "_", -1),
@@ -445,7 +445,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, ".gitignore"),
-				generators.GitignoreRESTTpl,
+				generators.GitignoreVanillaJSRESTTpl,
 				nil,
 			); err != nil {
 				return err
@@ -453,7 +453,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "backend", "server.go"),
-				generators.BackendRESTTpl,
+				generators.BackendVanillaJSRESTTpl,
 				nil,
 			); err != nil {
 				return err
@@ -461,7 +461,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "server.go"),
-				generators.FrontendRESTTpl,
+				generators.FrontendVanillaJSRESTTpl,
 				nil,
 			); err != nil {
 				return err
@@ -469,7 +469,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "index.html"),
-				generators.IndexHTMLRESTTpl,
+				generators.IndexHTMLVanillaJSRESTTpl,
 				generators.IndexHTMLData{
 					AppName: appName,
 				},
@@ -479,7 +479,7 @@ var newCmd = &cobra.Command{
 		case vanillaJSFormsKey:
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "main.go"),
-				generators.GoMainFormsTpl,
+				generators.GoMainVanillaJSFormsTpl,
 				generators.GoMainData{
 					GoMod: goMod,
 				},
@@ -489,7 +489,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "android.go"),
-				generators.AndroidFormsTpl,
+				generators.AndroidVanillaJSFormsTpl,
 				generators.AndroidData{
 					GoMod:     goMod,
 					JNIExport: strings.Replace(appID, ".", "_", -1),
@@ -500,7 +500,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "server.go"),
-				generators.FrontendFormsTpl,
+				generators.FrontendVanillaJSFormsTpl,
 				nil,
 			); err != nil {
 				return err
@@ -508,7 +508,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "index.html"),
-				generators.IndexHTMLFormsTpl,
+				generators.IndexHTMLVanillaJSFormsTpl,
 				generators.IndexHTMLData{
 					AppName: appName,
 				},
@@ -518,7 +518,7 @@ var newCmd = &cobra.Command{
 		case reactPanrpcKey:
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "main.go"),
-				generators.GoMainpanrpcTpl,
+				generators.GoMainReactPanrpcTpl,
 				generators.GoMainData{
 					GoMod: goMod,
 				},
@@ -528,7 +528,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "android.go"),
-				generators.AndroidpanrpcTpl,
+				generators.AndroidReactPanrpcTpl,
 				generators.AndroidData{
 					GoMod:     goMod,
 					JNIExport: strings.Replace(appID, ".", "_", -1),
@@ -539,7 +539,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, ".gitignore"),
-				generators.GitignorereactPanrpcTpl,
+				generators.GitignoreReactPanrpcTpl,
 				nil,
 			); err != nil {
 				return err
@@ -547,7 +547,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "backend", "server.go"),
-				generators.BackendpanrpcTpl,
+				generators.BackendReactPanrpcTpl,
 				nil,
 			); err != nil {
 				return err
@@ -555,7 +555,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "server.go"),
-				generators.FrontendpanrpcTpl,
+				generators.FrontendReactPanrpcTpl,
 				nil,
 			); err != nil {
 				return err
@@ -581,7 +581,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "index.html"),
-				generators.IndexHTMLreactPanrpcTpl,
+				generators.IndexHTMLReactPanrpcTpl,
 				generators.IndexHTMLData{
 					AppName: appName,
 				},
@@ -591,7 +591,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "package.json"),
-				generators.PackageJSONParcelTpl,
+				generators.PackageJSONReactPanrpcTpl,
 				generators.PackageJSONData{
 					AppID:          appID,
 					AppDescription: appDescription,

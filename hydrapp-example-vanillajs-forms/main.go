@@ -9,10 +9,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
-	"github.com/pojntfx/hydrapp/hydrapp-example-rest/pkg/backend"
-	"github.com/pojntfx/hydrapp/hydrapp-example-rest/pkg/frontend"
+	"github.com/pojntfx/hydrapp/hydrapp-example-vanillajs-forms/pkg/frontend"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/browser"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	_ "github.com/pojntfx/hydrapp/hydrapp/pkg/fixes"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/update"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
@@ -42,17 +41,8 @@ func main() {
 		utils.HandlePanic,
 	)
 
-	// Start the backend
-	backendURL, stopBackend, err := backend.StartServer(ctx, os.Getenv(utils.EnvBackendLaddr), true)
-	if err != nil {
-		utils.HandlePanic(cfg.App.Name, "could not start backend", err)
-	}
-	defer stopBackend()
-
-	log.Println("Backend URL:", backendURL)
-
 	// Start the frontend
-	frontendURL, stopFrontend, err := frontend.StartServer(ctx, os.Getenv(utils.EnvFrontendLaddr), backendURL, true)
+	frontendURL, stopFrontend, err := frontend.StartServer(ctx, os.Getenv(utils.EnvFrontendLaddr), true)
 	if err != nil {
 		utils.HandlePanic(cfg.App.Name, "could not start frontend", err)
 	}

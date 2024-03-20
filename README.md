@@ -301,9 +301,9 @@ Note that there are many more things you can configure in the framework. For exa
 
 To make getting started with hydrapp easier, take a look at the following examples:
 
-- [**REST**](./hydrapp-example-rest/): Simple starter project with a REST API to connect the frontend and backend
-- [**Forms**](./hydrapp-example-forms/): Traditional starter project with Web 1.0-style forms to connect the frontend and backend
-- [**panrpc & Parcel**](./hydrapp-example-react-panrpc/): Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Parcel bundler)
+- [**Vanilla JS and REST**](./hydrapp-example-vanillajs-rest/): Simple starter project with a REST API to connect the Vanilla JS frontend and backend
+- [**Vanilla JS and Forms**](./hydrapp-example-vanillajs-forms/): Traditional starter project with Web 1.0-style forms to connect the Vanilla JS frontend and backend
+- [**React and panrpc**](./hydrapp-example-react-panrpc/): Complete starter project with panrpc RPCs to connect the React frontend and backend
 
 ### Command Line Arguments
 

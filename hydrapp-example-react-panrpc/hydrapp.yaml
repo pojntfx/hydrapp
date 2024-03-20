@@ -36,11 +36,12 @@ dmg:
 flatpak:
 - path: flatpak/x86_64
   architecture: amd64
-msi:
-- path: msi/x86_64
-  architecture: amd64
-  include: ^\\b$
-  packages: []
+# Disabled until Cygwin no longer freezes in WINE
+# msi:
+# - path: msi/x86_64
+#   architecture: amd64
+#   include: ^\\b$
+#   packages: []
 rpm:
 - path: rpm/fedora/39/x86_64
   trailer: 1.fc39

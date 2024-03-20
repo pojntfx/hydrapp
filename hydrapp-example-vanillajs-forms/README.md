@@ -1,16 +1,16 @@
 ## Hydrapp Vanilla JS and Forms
 
-Hydrapp vanilla JS and forms app.
+Hydrapp Vanilla JS and forms app.
 
 [![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
 
 ## Overview
 
-A simple Hydrapp vanilla JS and forms app.
+A simple Hydrapp Vanilla JS and forms app.
 
 ## Installation
 
-See [INSTALLATION.html](https://pojntfx.github.io/hydrapp/hydrapp-example-forms/docs/main/INSTALLATION.html).
+See [INSTALLATION.html](https://pojntfx.github.io/hydrapp/hydrapp-example-vanillajs-forms/docs/main/INSTALLATION.html).
 
 ## Reference
 
@@ -40,7 +40,7 @@ To build and start a development version of Hydrapp Vanilla JS and Forms locally
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
-$ cd hydrapp-example-forms
+$ cd hydrapp-example-vanillajs-forms
 $ go generate ./...
 $ go run .
 ```
