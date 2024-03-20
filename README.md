@@ -1,10 +1,14 @@
-# hydrapp
+<img alt="Project icon" style="vertical-align: middle;" src="./docs/icon.svg" width="128" height="128" align="left">
 
-![Logo](./docs/logo-readme.png)
+# hydrapp
 
 Build fast apps that run everywhere with Go and a browser engine of your choice.
 
+<br/>
+
 [![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
+[![hydrun CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrun.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrun.yaml)
+[![Docker CI](https://github.com/pojntfx/hydrapp/actions/workflows/docker.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/docker.yaml)
 ![Go Version](https://img.shields.io/badge/go%20version-%3E=1.21-61CFDD.svg)
 [![Go Reference](https://pkg.go.dev/badge/github.com/pojntfx/hydrapp/hydrapp.svg)](https://pkg.go.dev/github.com/pojntfx/hydrapp/hydrapp)
 [![Matrix](https://img.shields.io/matrix/hydrapp:matrix.org)](https://matrix.to/#/#hydrapp:matrix.org?via=matrix.org)
@@ -49,7 +53,7 @@ PS> Invoke-WebRequest https://github.com/pojntfx/hydrapp/releases/latest/downloa
 
 You can find binaries for more operating systems and architectures on [GitHub releases](https://github.com/pojntfx/hydrapp/releases).
 
-## Usage
+## Tutorial
 
 ### 1. (Optional) Setting Up a Repo
 
@@ -58,6 +62,9 @@ While not necessary for local development, setting up a repository is a good fir
 ### 2. (Optional) Generating and Uploading Your Secrets
 
 While also not strictly necessary, in order to be able to distribute your applications safely, you'll need to generate and upload two secrets - a PGP key and a Java keystore.
+
+<details>
+  <summary>Expand section</summary>
 
 **Generating the PGP key**:
 
@@ -101,9 +108,14 @@ Next, let's add the keystore's contents to the repo. To do so, export it with ba
 
 Also be sure to download the keystore (base64-encoded) so you can use it for local builds.
 
+</details>
+
 ### 3. Generating Your Project
 
 To get started easily, hydrapp provides the interactive `hydrapp` CLI. To use it to generate a project for you, simply run `hydrapp new` with the values that match your usecase.
+
+<details>
+  <summary>Expand section</summary>
 
 First, select your preferred starter project:
 
@@ -176,7 +188,12 @@ go run .
 You can find more information in the generated README.
 ```
 
+</details>
+
 ### 4. Starting the Project
+
+<details>
+  <summary>Expand section</summary>
 
 You can start the project in its own PWA-mode browser instance and with the pre-compiled frontend like so:
 
@@ -209,9 +226,14 @@ And open the URL (note the `socketURL` parameter): [http://localhost:3000?socket
 
 Whenever you make changes to the frontend's source code, it should be automatically reloaded.
 
+</details>
+
 ### 5. Build The Packages Locally
 
 While it also possible to build your hydrapp app using the `go build` command you already know, it is recommended to use the `hydrapp build` command instead as its able to not only create binaries, but also proper OS-specific packages.
+
+<details>
+  <summary>Expand section</summary>
 
 To use it, first export the path to and credentials for the PGP key you've downloaded above:
 
@@ -254,9 +276,14 @@ $ hydrapp build \
 
 Note the `--exclude` flag; in this configuration, only `binaries` is missing, meaning that only binaries will be built; you can remove e.g. RPM and an RPM package would be built instead.
 
+</details>
+
 ### 6. Releasing Your App
 
 As previously mentioned, hydrapp supports branches. To release your software to the `main` branch, push it to your GitHub repository, and the GitHub action will build it for you. After the actions have completed successfully, [enable GitHub pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) for the `gh_pages` branch.
+
+<details>
+  <summary>Expand section</summary>
 
 You can now install and use this canary build of your app by following the instructions in the generated installation docs file linked in your README. When you're ready to tag a release, add a new entry to your `hydrapp.yaml` file under `releases` (ensure that you follow [semantic versioning](https://semver.org/)), run `git tag v<major>.<minor>.<patch>`, and `git push --tags`. The action should then automatically build a tagged release for you. Remember to update the installation instructions link to point to it by replacing `docs/main/INSTALLATION.html` with `docs/stable/INSTALLATION.html`:
 
@@ -265,6 +292,8 @@ You can now install and use this canary build of your app by following the instr
 Note that there are many more things you can configure in the framework. For example, if you want to introduce native dependencies, check out [connmapper](https://github.com/pojntfx/connmapper) - it's able to easily use `libpcap` thanks to hydrapp's integrated package management support. If you want to overwrite the build configs manually, you can always pass `--eject` to the build command, which will render the Debian `rules` file, the RPM `.spec`, the WIX installer files, the Flatpak manifest, the Android Manifest etc. in-place, giving you the ability to customize everything to your liking.
 
 **🚀 You're all set to share your app with your users now!** We can't wait to see what you're going to build with hydrapp.
+
+</details>
 
 ## Reference
 
