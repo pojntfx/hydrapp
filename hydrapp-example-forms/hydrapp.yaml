@@ -1,8 +1,8 @@
 app:
   id: com.pojtinger.felicitas.hydrapp.example.forms
-  name: Hydrapp Forms Example
-  summary: Hydrapp forms example app
-  description: A simple Hydrapp forms example app.
+  name: Hydrapp Vanilla JS and Forms
+  summary: Hydrapp vanilla JS and forms app
+  description: A simple Hydrapp vanilla JS and forms app.
   license: Apache-2.0
   homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-forms
   git: https://github.com/pojntfx/hydrapp.git

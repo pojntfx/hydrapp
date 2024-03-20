@@ -1,4 +1,4 @@
-module github.com/pojntfx/hydrapp/hydrapp-example-panrpc-parcel
+module github.com/pojntfx/hydrapp/hydrapp-example-react-panrpc
 
 go 1.21.1
 

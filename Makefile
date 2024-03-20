@@ -8,7 +8,7 @@ CONTAINER_PREFIX ?= ghcr.io/pojntfx/hydrapp-build-
 CONTAINER_TAG ?= latest
 
 # Private variables
-obj = hydrapp hydrapp-example-rest hydrapp-example-forms hydrapp-example-panrpc-parcel
+obj = hydrapp hydrapp-example-rest hydrapp-example-forms hydrapp-example-react-panrpc
 containers = apk deb dmg flatpak msi rpm binaries tests docs
 
 all: $(addprefix build/,$(obj))

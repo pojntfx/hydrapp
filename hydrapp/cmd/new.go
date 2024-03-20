@@ -27,9 +27,9 @@ import (
 const (
 	noNetworkFlag = "no-network"
 
-	restKey         = "rest"
-	formsKey        = "forms"
-	panrpcParcelKey = "panrpc-parcel"
+	vanillaJSRESTKey  = "vanillajs-rest"
+	vanillaJSFormsKey = "vanillajs-forms"
+	reactPanrpcKey    = "react-panrpc"
 )
 
 var (
@@ -37,16 +37,16 @@ var (
 
 	projectTypeItems = []generators.ProjectTypeOption{
 		{
-			Name:        restKey,
-			Description: "Simple starter project with a REST API to connect the frontend and backend",
+			Name:        vanillaJSRESTKey,
+			Description: "Simple starter project with a REST API to connect the vanilla JS frontend and backend",
 		},
 		{
-			Name:        formsKey,
-			Description: "Traditional starter project with Web 1.0-style forms to connect the frontend and backend",
+			Name:        vanillaJSFormsKey,
+			Description: "Traditional starter project with Web 1.0-style forms to connect the vanilla JS frontend and backend",
 		},
 		{
-			Name:        panrpcParcelKey,
-			Description: "Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Parcel bundler)",
+			Name:        reactPanrpcKey,
+			Description: "Complete starter project with panrpc RPCs to connect the React frontend and backend",
 		},
 	}
 )
@@ -421,7 +421,7 @@ var newCmd = &cobra.Command{
 		}
 
 		switch projectTypeItems[projectTypeIndex].Name {
-		case restKey:
+		case vanillaJSRESTKey:
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "main.go"),
 				generators.GoMainRESTTpl,
@@ -476,7 +476,7 @@ var newCmd = &cobra.Command{
 			); err != nil {
 				return err
 			}
-		case formsKey:
+		case vanillaJSFormsKey:
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "main.go"),
 				generators.GoMainFormsTpl,
@@ -515,7 +515,7 @@ var newCmd = &cobra.Command{
 			); err != nil {
 				return err
 			}
-		case panrpcParcelKey:
+		case reactPanrpcKey:
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "main.go"),
 				generators.GoMainpanrpcTpl,
@@ -539,7 +539,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, ".gitignore"),
-				generators.GitignorepanrpcParcelTpl,
+				generators.GitignorereactPanrpcTpl,
 				nil,
 			); err != nil {
 				return err
@@ -581,7 +581,7 @@ var newCmd = &cobra.Command{
 
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "pkg", "frontend", "index.html"),
-				generators.IndexHTMLpanrpcParcelTpl,
+				generators.IndexHTMLreactPanrpcTpl,
 				generators.IndexHTMLData{
 					AppName: appName,
 				},

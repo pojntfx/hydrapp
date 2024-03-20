@@ -10,7 +10,7 @@ A simple Hydrapp React and panrpc example app.
 
 ## Installation
 
-See [INSTALLATION.html](https://pojntfx.github.io/hydrapp/hydrapp-example-panrpc-parcel//docs/main/INSTALLATION.html).
+See [INSTALLATION.html](https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//docs/main/INSTALLATION.html).
 
 ## Reference
 
@@ -40,7 +40,7 @@ To build and start a development version of Hydrapp React and panrpc Example loc
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
-$ cd hydrapp-example-panrpc-parcel
+$ cd hydrapp-example-react-panrpc
 $ go generate ./...
 $ go run .
 ```

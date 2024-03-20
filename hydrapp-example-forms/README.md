@@ -1,12 +1,12 @@
-## Hydrapp Forms Example
+## Hydrapp Vanilla JS and Forms
 
-Hydrapp forms example app.
+Hydrapp vanilla JS and forms app.
 
 [![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
 
 ## Overview
 
-A simple Hydrapp forms example app.
+A simple Hydrapp vanilla JS and forms app.
 
 ## Installation
 
@@ -36,7 +36,7 @@ All arguments passed to the binary will be forwarded to the browser used to disp
 
 To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-To build and start a development version of Hydrapp Forms Example locally, run the following:
+To build and start a development version of Hydrapp Vanilla JS and Forms locally, run the following:
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
@@ -49,6 +49,6 @@ Note that you can also set `HYDRAPP_BACKEND_LADDR` to a fixed value, `HYDRAPP_TY
 
 ## License
 
-Hydrapp Forms Example (c) 2023 Felicitas Pojtinger and contributors
+Hydrapp Vanilla JS and Forms (c) 2023 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: Apache-2.0

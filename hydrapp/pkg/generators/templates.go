@@ -29,8 +29,8 @@ var (
 	//go:embed android_rest.go.tpl
 	AndroidRESTTpl string
 
-	//go:embed .gitignore_panrpc_parcel.tpl
-	GitignorepanrpcParcelTpl string
+	//go:embed .gitignore_react_panrpc.tpl
+	GitignorereactPanrpcTpl string
 
 	//go:embed .gitignore_rest.tpl
 	GitignoreRESTTpl string
@@ -56,8 +56,8 @@ var (
 	//go:embed main.tsx.tpl
 	MainTSXTpl string
 
-	//go:embed index_panrpc_parcel.html.tpl
-	IndexHTMLpanrpcParcelTpl string
+	//go:embed index_react_panrpc.html.tpl
+	IndexHTMLreactPanrpcTpl string
 
 	//go:embed index_rest.html.tpl
 	IndexHTMLRESTTpl string

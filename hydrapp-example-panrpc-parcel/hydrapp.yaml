@@ -1,17 +1,17 @@
 app:
-  id: com.pojtinger.felicitas.hydrapp.example.panrpc.parcel
+  id: com.pojtinger.felicitas.hydrapp.example.react.panrpc
   name: Hydrapp React and panrpc Example
   summary: Hydrapp React and panrpc example app
   description: A simple Hydrapp React and panrpc example app.
   license: Apache-2.0
-  homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-panrpc-parcel
+  homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-react-panrpc
   git: https://github.com/pojntfx/hydrapp.git
-  baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-panrpc-parcel/
+  baseurl: https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc/
 go:
-  main: ./hydrapp-example-panrpc-parcel
+  main: ./hydrapp-example-react-panrpc
   flags: ""
-  generate: cd hydrapp-example-panrpc-parcel && go generate ./...
-  tests: go test ./hydrapp-example-panrpc-parcel/...
+  generate: cd hydrapp-example-react-panrpc && go generate ./...
+  tests: go test ./hydrapp-example-react-panrpc/...
   img: ghcr.io/pojntfx/hydrapp-build-tests:main
 releases:
 - version: 0.0.1

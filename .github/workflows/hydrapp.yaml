@@ -112,52 +112,52 @@ jobs:
             tag: main
             dst: out/*
 
-          # com.pojtinger.felicitas.hydrapp.example.panrpc.parcel
-          - id: hydrapp-apk.hydrapp-example-panrpc-parcel
+          # com.pojtinger.felicitas.hydrapp.example.react.panrpc
+          - id: hydrapp-apk.hydrapp-example-react-panrpc
             src: .
-            pkg: hydrapp-example-panrpc-parcel
+            pkg: hydrapp-example-react-panrpc
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-deb.hydrapp-example-panrpc-parcel
+          - id: hydrapp-deb.hydrapp-example-react-panrpc
             src: .
-            pkg: hydrapp-example-panrpc-parcel
+            pkg: hydrapp-example-react-panrpc
             exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-dmg.hydrapp-example-panrpc-parcel
+          - id: hydrapp-dmg.hydrapp-example-react-panrpc
             src: .
-            pkg: hydrapp-example-panrpc-parcel
+            pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-flatpak.hydrapp-example-panrpc-parcel
+          - id: hydrapp-flatpak.hydrapp-example-react-panrpc
             src: .
-            pkg: hydrapp-example-panrpc-parcel
+            pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-msi.hydrapp-example-panrpc-parcel
+          - id: hydrapp-msi.hydrapp-example-react-panrpc
             src: .
-            pkg: hydrapp-example-panrpc-parcel
+            pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-rpm.hydrapp-example-panrpc-parcel
+          - id: hydrapp-rpm.hydrapp-example-react-panrpc
             src: .
-            pkg: hydrapp-example-panrpc-parcel
+            pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|msi|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-binaries.hydrapp-example-panrpc-parcel
+          - id: hydrapp-binaries.hydrapp-example-react-panrpc
             src: .
-            pkg: hydrapp-example-panrpc-parcel
+            pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
-          - id: hydrapp-tests.hydrapp-example-panrpc-parcel
+          - id: hydrapp-tests.hydrapp-example-react-panrpc
             src: .
-            pkg: hydrapp-example-panrpc-parcel
+            pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
