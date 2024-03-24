@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 39a6a0e669fe052ae9c2257a7abf4988 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
- 1714915c76f578476467a53792c1bc10 2317572 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
+ 8a684bf609ee1e416771c176a7ea9a48 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
+ a5fd0fb34c88b5cfc088c7f242b39f57 2317712 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
 Checksums-Sha1:
- e0fea986409ab6abe210e40554c3ddbe923045d9 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
- 99bbed5c36e730e8e0674eb88d2d77c13e927321 2317572 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
+ 5acbd2e9bd2a603854e716429e06d9409c36a2e4 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
+ cd8327d4875f68ff17201074b3487a5dfdefc52b 2317712 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
 Checksums-Sha256:
- eafbcb50af15d018ad04401d23fb1b1242eb6074981e4e0ba8bc8ab0fc4ebac7 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
- 838d450ef8fb74ffe3239e8e04a3e399791f4f0425f3041418c3925b6ac34dac 2317572 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
+ f4fb3bc7bb5f297dc9cdab2b50c40cb0a9ea15b72ef8a889b2aece92d44b415e 1166 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1.dsc
+ bf9c35e3dd5db0c1b9a93fece26bcff9e0beb36bb60bece5bad2ca0f07a69ee4 2317712 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Thu, 21 Mar 2024 20:49:08 +0000
+Build-Date: Sun, 24 Mar 2024 00:14:56 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -37,12 +37,12 @@ Installed-Build-Depends:
  ca-certificates (= 20240203),
  coreutils (= 9.4-3.1),
  cpp (= 4:13.2.0-7),
- cpp-13 (= 13.2.0-19),
- cpp-13-x86-64-linux-gnu (= 13.2.0-19),
+ cpp-13 (= 13.2.0-20),
+ cpp-13-x86-64-linux-gnu (= 13.2.0-20),
  cpp-x86-64-linux-gnu (= 4:13.2.0-7),
  dash (= 0.5.12-6),
  debconf (= 1.5.86),
- debhelper (= 13.14.1),
+ debhelper (= 13.15.1),
  debianutils (= 5.17),
  desktop-file-utils (= 0.27-2),
  dh-autoreconf (= 20),
@@ -58,13 +58,13 @@ Installed-Build-Depends:
  fonts-dejavu-core (= 2.37-8),
  fonts-dejavu-mono (= 2.37-8),
  g++ (= 4:13.2.0-7),
- g++-13 (= 13.2.0-19),
- g++-13-x86-64-linux-gnu (= 13.2.0-19),
+ g++-13 (= 13.2.0-20),
+ g++-13-x86-64-linux-gnu (= 13.2.0-20),
  g++-x86-64-linux-gnu (= 4:13.2.0-7),
  gcc (= 4:13.2.0-7),
- gcc-13 (= 13.2.0-19),
- gcc-13-base (= 13.2.0-19),
- gcc-13-x86-64-linux-gnu (= 13.2.0-19),
+ gcc-13 (= 13.2.0-20),
+ gcc-13-base (= 13.2.0-20),
+ gcc-13-x86-64-linux-gnu (= 13.2.0-20),
  gcc-14-base (= 14-20240315-1),
  gcc-x86-64-linux-gnu (= 4:13.2.0-7),
  gettext (= 0.21-14+b1),
@@ -119,8 +119,8 @@ Installed-Build-Depends:
  libdb5.3t64 (= 5.3.28+dfsg2-6),
  libde265-0 (= 1.0.15-1+b1),
  libdebconfclient0 (= 0.271+b2),
- libdebhelper-perl (= 13.14.1),
- libdeflate0 (= 1.19-1),
+ libdebhelper-perl (= 13.15.1),
+ libdeflate0 (= 1.20-1),
  libdpkg-perl (= 1.22.6),
  libelf1t64 (= 0.191-1),
  liberror-perl (= 0.17029-2),
@@ -130,7 +130,7 @@ Installed-Build-Depends:
  libfile-stripnondeterminism-perl (= 1.13.1-1),
  libfontconfig1 (= 2.15.0-1.1),
  libfreetype6 (= 2.13.2+dfsg-1+b2),
- libgcc-13-dev (= 13.2.0-19),
+ libgcc-13-dev (= 13.2.0-20),
  libgcc-s1 (= 14-20240315-1),
  libgcrypt20 (= 1.10.3-2),
  libgdbm-compat4t64 (= 1.23-5.1),
@@ -207,10 +207,10 @@ Installed-Build-Depends:
  libpython3.11-stdlib (= 3.11.8-3),
  libquadmath0 (= 14-20240315-1),
  libraw23t64 (= 0.21.2-2.1),
- libreadline8t64 (= 8.2-3.1),
+ libreadline8t64 (= 8.2-4),
  librtmp1 (= 2.4+20151223.gitfa8646d.1-2+b3),
- libsasl2-2 (= 2.1.28+dfsg1-5),
- libsasl2-modules-db (= 2.1.28+dfsg1-5),
+ libsasl2-2 (= 2.1.28+dfsg1-6),
+ libsasl2-modules-db (= 2.1.28+dfsg1-6),
  libseccomp2 (= 2.5.5-1),
  libselinux1 (= 3.5-2+b1),
  libsframe1 (= 2.42-4),
@@ -220,7 +220,7 @@ Installed-Build-Depends:
  libssh2-1t64 (= 1.11.0-4.1+b1),
  libssl-dev (= 3.1.5-1.1),
  libssl3t64 (= 3.1.5-1.1),
- libstdc++-13-dev (= 13.2.0-19),
+ libstdc++-13-dev (= 13.2.0-20),
  libstdc++6 (= 14-20240315-1),
  libstemmer0d (= 2.2.0-4+b1),
  libsub-override-perl (= 0.10-1),
@@ -233,7 +233,7 @@ Installed-Build-Depends:
  libubsan1 (= 14-20240315-1),
  libuchardet0 (= 0.0.8-1+b1),
  libudev1 (= 255.4-1+b1),
- libunistring5 (= 1.1-2),
+ libunistring5 (= 1.2-1),
  libuuid1 (= 2.39.3-10),
  libuv1-dev (= 1.48.0-1.1),
  libuv1t64 (= 1.48.0-1.1),
@@ -612,7 +612,7 @@ Installed-Build-Depends:
  python3-pkg-resources (= 68.1.2-2),
  python3.11 (= 3.11.8-3),
  python3.11-minimal (= 3.11.8-3),
- readline-common (= 8.2-3.1),
+ readline-common (= 8.2-4),
  rpcsvc-proto (= 1.4.3-1),
  sed (= 4.9-2),
  sensible-utils (= 0.0.22),
