@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
+	s "github.com/pojntfx/hydrapp/hydrapp/pkg/secrets"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -43,7 +43,7 @@ var secretsNewCmd = &cobra.Command{
 
 		keystorePassword := viper.GetString(apkKeystorePasswordFlag)
 		if strings.TrimSpace(keystorePassword) == "" {
-			v, err := utils.GeneratePassword(32)
+			v, err := s.GeneratePassword(32)
 			if err != nil {
 				panic(err)
 			}
@@ -53,7 +53,7 @@ var secretsNewCmd = &cobra.Command{
 
 		certificatePassword := viper.GetString(apkCertificatePasswordFlag)
 		if strings.TrimSpace(certificatePassword) == "" {
-			v, err := utils.GeneratePassword(32)
+			v, err := s.GeneratePassword(32)
 			if err != nil {
 				panic(err)
 			}
@@ -62,7 +62,7 @@ var secretsNewCmd = &cobra.Command{
 		}
 
 		keystoreBuf := &bytes.Buffer{}
-		if err := utils.GenerateKeystore(
+		if err := s.GenerateKeystore(
 			keystorePassword,
 			certificatePassword,
 			viper.GetString(apkCertificateAliasFlag),
