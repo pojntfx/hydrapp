@@ -1,10 +1,16 @@
 package cmd
 
 import (
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+)
+
+const (
+	secretsFlag = "secrets"
 )
 
 var rootCmd = &cobra.Command{
@@ -26,6 +32,18 @@ https://github.com/pojntfx/hydrapp`,
 }
 
 func Execute() error {
+	dataHomeDir := os.Getenv("XDG_DATA_HOME")
+	if strings.TrimSpace(dataHomeDir) == "" {
+		userHomeDir, err := os.UserHomeDir()
+		if err != nil {
+			panic(err)
+		}
+
+		dataHomeDir = filepath.Join(userHomeDir, ".local", "share")
+	}
+
+	rootCmd.PersistentFlags().String(secretsFlag, filepath.Join(dataHomeDir, "hydrapp", "secrets.yaml"), "Secrets file to use")
+
 	if err := viper.BindPFlags(rootCmd.PersistentFlags()); err != nil {
 		return err
 	}

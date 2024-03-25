@@ -9,6 +9,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/ncruces/zenity v0.10.12
 	github.com/otiai10/copy v1.14.0
+	github.com/pavlo-v-chernykh/keystore-go/v4 v4.5.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	golang.org/x/text v0.14.0
