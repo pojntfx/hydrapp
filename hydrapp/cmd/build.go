@@ -45,7 +45,6 @@ const (
 	dstFlag          = "dst"
 	excludeFlag      = "exclude"
 	pgpKeyFlag       = "pgp-key"
-	pgpPasswordFlag  = "pgp-password"
 	pgpIDFlag        = "pgp-id"
 	apkCertFlag      = "apk-cert"
 	apkStorepassFlag = "apk-storepass"

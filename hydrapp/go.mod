@@ -3,6 +3,7 @@ module github.com/pojntfx/hydrapp/hydrapp
 go 1.21.1
 
 require (
+	github.com/ProtonMail/gopenpgp/v2 v2.7.5
 	github.com/breml/rootcerts v0.2.16
 	github.com/docker/docker v25.0.5+incompatible
 	github.com/fsnotify/fsnotify v1.7.0
@@ -19,8 +20,11 @@ require (
 
 require (
 	github.com/Microsoft/go-winio v0.4.14 // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20230717121422-5aa5874ade95 // indirect
+	github.com/ProtonMail/go-mime v0.0.0-20230322103455-7d82a3887f2f // indirect
 	github.com/akavel/rsrc v0.10.2 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
+	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/dchest/jsmin v0.0.0-20220218165748-59f39799265f // indirect
 	github.com/distribution/reference v0.5.0 // indirect
@@ -57,6 +61,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
+	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/image v0.15.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
