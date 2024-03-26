@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 5355f1f256e64e1785792571ae3260ca 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- 959ea91f6291451a2475b55ce837e0ea 2849696 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ 055c7b5aece50b14105f47bddad714c7 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 88f07c6f0394d284e9b3226f580e143f 2850088 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- fc88d9d4843b97f3de89f6ce54a619bbf30f1675 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- ff78faec7fbffee1049da2744089f316297f43ce 2849696 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ ccbdb26f9b553991331d3664b0080587c4a919bf 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 2b473725e7f4aaf4c8fd9f96ff5f95559573c31e 2850088 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- 1fdbfaf418bdd778a7d593943433f34194d962a395168c1fca70ed811ce310d7 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- ef28672f5d68e7bf16bbd849fa5854a3ab7fa7f79a4e11ca103340b730ac476b 2849696 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ e15d48ce3f0b6acaf954c18903852f9041cdd4379a180e43dd736476e1202d93 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 8fde161d8890fbacf17626f99955f65602da9c8ac0fbfdf10aec2a665f7795d8 2850088 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Mon, 25 Mar 2024 21:01:56 +0000
+Build-Date: Tue, 26 Mar 2024 22:44:02 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -126,7 +126,7 @@ Installed-Build-Depends:
  liberror-perl (= 0.17029-2),
  libexpat1 (= 2.6.2-1),
  libffi8 (= 3.4.6-1),
- libfftw3-double3 (= 3.3.10-1+b1),
+ libfftw3-double3 (= 3.3.10-1+b2),
  libfile-stripnondeterminism-perl (= 1.13.1-1),
  libfontconfig1 (= 2.15.0-1.1),
  libfreetype6 (= 2.13.2+dfsg-1+b2),
@@ -203,8 +203,8 @@ Installed-Build-Depends:
  libpng16-16t64 (= 1.6.43-3),
  libpsl5t64 (= 0.21.2-1.1),
  libpython3-stdlib (= 3.11.8-1),
- libpython3.11-minimal (= 3.11.8-3+b1),
- libpython3.11-stdlib (= 3.11.8-3+b1),
+ libpython3.11-minimal (= 3.11.8-3+b2),
+ libpython3.11-stdlib (= 3.11.8-3+b2),
  libquadmath0 (= 14-20240315-1),
  libraw23t64 (= 0.21.2-2.1),
  libreadline8t64 (= 8.2-4),
@@ -253,7 +253,7 @@ Installed-Build-Depends:
  login (= 1:4.13+dfsg1-4),
  m4 (= 1.4.19-4),
  make (= 4.3-4.1),
- man-db (= 2.12.0-3),
+ man-db (= 2.12.0-3+b1),
  mawk (= 1.3.4.20240123-1),
  media-types (= 10.1.0),
  ncurses-base (= 6.4+20240113-1),
@@ -610,8 +610,8 @@ Installed-Build-Depends:
  python3-minimal (= 3.11.8-1),
  python3-packaging (= 23.2-1),
  python3-pkg-resources (= 68.1.2-2),
- python3.11 (= 3.11.8-3+b1),
- python3.11-minimal (= 3.11.8-3+b1),
+ python3.11 (= 3.11.8-3+b2),
+ python3.11-minimal (= 3.11.8-3+b2),
  readline-common (= 8.2-4),
  rpcsvc-proto (= 1.4.3-1),
  sed (= 4.9-2),
