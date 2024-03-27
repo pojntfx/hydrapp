@@ -29,7 +29,7 @@ func NewBuilder(
 	onID func(id string), // Callback to handle container ID
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID string, // Android app ID to use
-	pgpKeyContent []byte, // PGP key contents
+	pgpKey []byte, // PGP key contents
 	pgpKeyPassword, // Password for the PGP key
 	pgpKeyID, // ID of the PGP key to use
 	baseURL, // Base URL where the repo is to be hosted
@@ -58,7 +58,7 @@ func NewBuilder(
 		onID,
 		onOutput,
 		appID,
-		base64.StdEncoding.EncodeToString(pgpKeyContent),
+		base64.StdEncoding.EncodeToString(pgpKey),
 		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
 		pgpKeyID,
 		baseURL,
@@ -89,7 +89,7 @@ type Builder struct {
 	onID     func(id string)
 	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
-	pgpKeyContent,
+	pgpKey,
 	pgpKeyPassword,
 	pgpKeyID,
 	baseURL,
@@ -159,7 +159,7 @@ func (b *Builder) Build() error {
 		b.onOutput,
 		map[string]string{
 			"APP_ID":           appID,
-			"PGP_KEY_CONTENT":  b.pgpKeyContent,
+			"PGP_KEY":          b.pgpKey,
 			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
 			"PGP_KEY_ID":       b.pgpKeyID,
 			"BASE_URL":         baseURL,

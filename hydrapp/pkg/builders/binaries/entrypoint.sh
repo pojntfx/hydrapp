@@ -11,7 +11,7 @@ passphrase-file /tmp/pgp-pass
 pinentry-mode loopback
 EOT
 
-echo "${PGP_KEY_CONTENT}" | base64 -d >'/tmp/private.pgp'
+echo "${PGP_KEY}" | base64 -d >'/tmp/private.pgp'
 gpg --import /tmp/private.pgp
 
 # Prepare build environment

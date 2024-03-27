@@ -78,23 +78,26 @@ jobs:
         run: |
           curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.linux-$(uname -m)" 
           sudo install /tmp/hydrapp /usr/local/bin
+      - name: Setup Java/APK keystore
+        working-directory: .
+        env:
+          JAVA_KEYSTORE: {{"${{"}} secrets.JAVA_KEYSTORE {{"}}"}}
+        run: echo "${JAVA_KEYSTORE}" | base64 -d >'/tmp/keystore.jks'
       - name: Setup PGP key
         working-directory: .
         env:
           PGP_KEY: {{"${{"}} secrets.PGP_KEY {{"}}"}}
         run: echo "${PGP_KEY}" | base64 -d >'/tmp/pgp.asc'
-      - name: Setup Android certificate
-        working-directory: .
-        env:
-          APK_CERT: {{"${{"}} secrets.APK_CERT {{"}}"}}
-        run: echo "${APK_CERT}" | base64 -d >'/tmp/keystore.jks'
       - name: Build with hydrapp
-        working-directory: {{"${{"}} matrix.target.src {{"}}"}}
+        working-directory: ${{ matrix.target.src }}
         env:
-          PGP_PASSWORD: {{"${{"}} secrets.PGP_PASSWORD {{"}}"}}
-          PGP_ID: {{"${{"}} secrets.PGP_ID {{"}}"}}
-          APK_STOREPASS: {{"${{"}} secrets.APK_STOREPASS {{"}}"}}
-          APK_KEYPASS: {{"${{"}} secrets.APK_KEYPASS {{"}}"}}
+          HYDRAPP_JAVA_KEYSTORE: /tmp/keystore.jks
+          HYDRAPP_JAVA_KEYSTORE_PASSWORD: {{"${{"}} secrets.JAVA_KEYSTORE_PASSWORD {{"}}"}}
+          HYDRAPP_JAVA_CERTIFICATE_PASSWORD: {{"${{"}} secrets.JAVA_CERTIFICATE_PASSWORD {{"}}"}}
+
+          HYDRAPP_PGP_KEY: /tmp/pgp.asc
+          HYDRAPP_PGP_KEY_PASSWORD: {{"${{"}} secrets.PGP_KEY_PASSWORD {{"}}"}}
+          HYDRAPP_PGP_KEY_ID: {{"${{"}} secrets.PGP_KEY_ID {{"}}"}}
         run: |
           export BRANCH_ID=""
           export BRANCH_NAME=""
@@ -106,8 +109,6 @@ jobs:
           hydrapp build --config='./{{"${{"}} matrix.target.pkg {{"}}"}}/hydrapp.yaml' --exclude='{{"${{"}} matrix.target.exclude {{"}}"}}' \
             --pull=true --tag='{{"${{"}} matrix.target.tag {{"}}"}}' \
             --dst="${PWD}/out/{{"${{"}} matrix.target.pkg {{"}}"}}" --src="${PWD}" \
-            --pgp-key='/tmp/pgp.asc' --pgp-password="${PGP_PASSWORD}" --pgp-id="${PGP_ID}" \
-            --apk-cert='/tmp/keystore.jks' --apk-storepass="${APK_STOREPASS}" --apk-keypass="${APK_KEYPASS}" \
             --concurrency="$(nproc)" \
             --branch-id="${BRANCH_ID}" --branch-name="${BRANCH_NAME}"
       - name: Fix permissions for output

@@ -11,14 +11,14 @@ passphrase-file /tmp/pgp-pass
 pinentry-mode loopback
 EOT
 
-echo "${PGP_KEY_CONTENT}" | base64 -d >'/tmp/private.pgp'
+echo "${PGP_KEY}" | base64 -d >'/tmp/private.pgp'
 gpg --import /tmp/private.pgp
 
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"
 
 echo "%_signature gpg
-%_gpg_name ${PGP_KEY_ID}" >"${HOME}/.rpmmacros"
+%_gpg_name $(echo ${PGP_KEY_ID} | base64 -d)" >"${HOME}/.rpmmacros"
 
 # Build tarball and source package
 export PACKAGE="${APP_ID}-${PACKAGE_VERSION}"

@@ -11,7 +11,7 @@ passphrase-file /tmp/pgp-pass
 pinentry-mode loopback
 EOT
 
-echo "${PGP_KEY_CONTENT}" | base64 -d >'/tmp/private.pgp'
+echo "${PGP_KEY}" | base64 -d >'/tmp/private.pgp'
 gpg --import /tmp/private.pgp
 
 # Prepare build environment
@@ -50,13 +50,13 @@ zip -ur "${APP_ID}.unsigned" 'lib' 'classes.dex'
 mkdir -p "/tmp/out/android-certs" # Append *.jar here to use an external library
 
 # Sign package with Android certificate
-echo "${ANDROID_CERT_CONTENT}" | base64 -d >"/tmp/out/android-certs/${APP_ID}.keystore"
+echo "${JAVA_KEYSTORE}" | base64 -d >"/tmp/out/android-certs/${APP_ID}.keystore"
 
-export ANDROID_CERT_CN="$(keytool -noprompt -storepass $(echo ${ANDROID_STOREPASS} | base64 -d) -keypass $(echo ${ANDROID_KEYPASS} | base64 -d) -v -list -keystore /tmp/out/android-certs/${APP_ID}.keystore | grep -oP 'Owner: CN=\K\w(.*)')"
-export ANDROID_CERT_ALIAS="$(keytool -noprompt -storepass $(echo ${ANDROID_STOREPASS} | base64 -d) -keypass $(echo ${ANDROID_KEYPASS} | base64 -d) -v -list -keystore /tmp/out/android-certs/${APP_ID}.keystore | grep -oP 'Alias name: \K\w(.*)')"
+export ANDROID_CERT_CN="$(keytool -noprompt -storepass $(echo ${JAVA_KEYSTORE_PASSWORD} | base64 -d) -keypass $(echo ${JAVA_CERTIFICATE_PASSWORD} | base64 -d) -v -list -keystore /tmp/out/android-certs/${APP_ID}.keystore | grep -oP 'Owner: CN=\K\w(.*)')"
+export ANDROID_CERT_ALIAS="$(keytool -noprompt -storepass $(echo ${JAVA_KEYSTORE_PASSWORD} | base64 -d) -keypass $(echo ${JAVA_CERTIFICATE_PASSWORD} | base64 -d) -v -list -keystore /tmp/out/android-certs/${APP_ID}.keystore | grep -oP 'Alias name: \K\w(.*)')"
 
 "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign" -f -p 4 "${APP_ID}.unsigned" "${APP_ID}.apk"
-"${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner" sign --ks "/tmp/out/android-certs/${APP_ID}.keystore" --ks-pass pass:"$(echo ${ANDROID_STOREPASS} | base64 -d)" --key-pass pass:"$(echo ${ANDROID_KEYPASS} | base64 -d)" "${APP_ID}.apk"
+"${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/apksigner" sign --ks "/tmp/out/android-certs/${APP_ID}.keystore" --ks-pass pass:"$(echo ${JAVA_KEYSTORE_PASSWORD} | base64 -d)" --key-pass pass:"$(echo ${JAVA_CERTIFICATE_PASSWORD} | base64 -d)" "${APP_ID}.apk"
 
 # Sign package with PGP and stage
 gpg --detach-sign --armor "${APP_ID}.apk"
@@ -76,8 +76,8 @@ repo_description: >-
 repo_icon: icon.png
 repo_keyalias: ${ANDROID_CERT_ALIAS}
 keystore: keystore.p12
-keystorepass: "$(echo ${ANDROID_STOREPASS} | base64 -d)"
-keypass: "$(echo ${ANDROID_KEYPASS} | base64 -d)"
+keystorepass: "$(echo ${JAVA_KEYSTORE_PASSWORD} | base64 -d)"
+keypass: "$(echo ${JAVA_CERTIFICATE_PASSWORD} | base64 -d)"
 keydname: CN=${ANDROID_CERT_CN}
 apksigner: /usr/bin/apksigner
 EOT

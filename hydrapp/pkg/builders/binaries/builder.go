@@ -25,7 +25,7 @@ func NewBuilder(
 	onID func(id string), // Callback to handle container ID
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID string, // App ID to use
-	pgpKeyContent []byte, // PGP key contents
+	pgpKey []byte, // PGP key contents
 	pgpKeyPassword, // password for the PGP key
 	appName string, // App name
 	branchID, // Branch ID
@@ -47,7 +47,7 @@ func NewBuilder(
 		onID,
 		onOutput,
 		appID,
-		base64.StdEncoding.EncodeToString(pgpKeyContent),
+		base64.StdEncoding.EncodeToString(pgpKey),
 		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
 		appName,
 		branchID,
@@ -71,7 +71,7 @@ type Builder struct {
 	onID     func(id string)
 	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
-	pgpKeyContent,
+	pgpKey,
 	pgpKeyPassword,
 	appName,
 	branchID,
@@ -104,7 +104,7 @@ func (b *Builder) Build() error {
 		b.onOutput,
 		map[string]string{
 			"APP_ID":           appID,
-			"PGP_KEY_CONTENT":  b.pgpKeyContent,
+			"PGP_KEY":          b.pgpKey,
 			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
 			"APP_NAME":         appName,
 			"GOMAIN":           b.goMain,

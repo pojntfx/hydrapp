@@ -38,9 +38,9 @@ const (
 	javaCertificateValidityFlag = "java-certificate-validity"
 	javaRSABitsFlag             = "java-rsa-bits"
 
-	pgpFullNameFlag = "pgp-full-name"
-	pgpEmailFlag    = "pgp-email"
-	pgpPasswordFlag = "pgp-password"
+	pgpKeyFullNameFlag = "pgp-key-full-name"
+	pgpKeyEmailFlag    = "pgp-key-email"
+	pgpKeyPasswordFlag = "pgp-key-password"
 )
 
 var secretsNewCmd = &cobra.Command{
@@ -85,7 +85,7 @@ var secretsNewCmd = &cobra.Command{
 			panic(err)
 		}
 
-		pgpPassword := viper.GetString(pgpPasswordFlag)
+		pgpPassword := viper.GetString(pgpKeyPasswordFlag)
 		if strings.TrimSpace(pgpPassword) == "" {
 			v, err := s.GeneratePassword(32)
 			if err != nil {
@@ -96,8 +96,8 @@ var secretsNewCmd = &cobra.Command{
 		}
 
 		pgpKey, pgpKeyID, err := s.GeneratePGPKey(
-			viper.GetString(pgpFullNameFlag),
-			viper.GetString(pgpEmailFlag),
+			viper.GetString(pgpKeyFullNameFlag),
+			viper.GetString(pgpKeyEmailFlag),
 			pgpPassword,
 		)
 		if err != nil {
@@ -139,9 +139,9 @@ func init() {
 	secretsNewCmd.PersistentFlags().Duration(javaCertificateValidityFlag, time.Hour*24*365, "Java/APK certificate validty")
 	secretsNewCmd.PersistentFlags().Uint32(javaRSABitsFlag, 2048, "Java/APK RSA bits")
 
-	secretsNewCmd.PersistentFlags().String(pgpFullNameFlag, "Anonymous Hydrapp Developer", "PGP full name")
-	secretsNewCmd.PersistentFlags().String(pgpEmailFlag, "test@example.com", "PGP E-Mail")
-	secretsNewCmd.PersistentFlags().String(pgpPasswordFlag, "", "PGP password (auto-generated if not specified)")
+	secretsNewCmd.PersistentFlags().String(pgpKeyFullNameFlag, "Anonymous Hydrapp Developer", "PGP key full name")
+	secretsNewCmd.PersistentFlags().String(pgpKeyEmailFlag, "test@example.com", "PGP key E-Mail")
+	secretsNewCmd.PersistentFlags().String(pgpKeyPasswordFlag, "", "PGP key password (auto-generated if not specified)")
 
 	viper.AutomaticEnv()
 

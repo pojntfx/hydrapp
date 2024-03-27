@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -30,11 +31,11 @@ func NewBuilder(
 	onID func(id string), // Callback to handle container ID
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID string, // Android app ID to use
-	pgpKeyContent []byte, // PGP key contents
+	javaKeystore []byte, // Android cert contents
+	javaKeystorePassword string, // Password for the Android keystore
+	javaCertificatePassword string, // Password for the Android certificate
+	pgpKey []byte, // PGP key contents
 	pgpKeyPassword string, // Password for the PGP key
-	androidCertContent []byte, // Android cert contents
-	androidStorepass string, // Password for the Android keystore
-	androidKeypass string, // Password for the Android certificate
 	baseURL, // Base URL where the repo is to be hosted
 	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
@@ -55,11 +56,11 @@ func NewBuilder(
 		onID,
 		onOutput,
 		appID,
-		base64.StdEncoding.EncodeToString(pgpKeyContent),
+		base64.StdEncoding.EncodeToString(javaKeystore),
+		base64.StdEncoding.EncodeToString([]byte(javaKeystorePassword)),
+		base64.StdEncoding.EncodeToString([]byte(javaCertificatePassword)),
+		base64.StdEncoding.EncodeToString(pgpKey),
 		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
-		base64.StdEncoding.EncodeToString(androidCertContent),
-		base64.StdEncoding.EncodeToString([]byte(androidStorepass)),
-		base64.StdEncoding.EncodeToString([]byte(androidKeypass)),
 		baseURL,
 		appName,
 		overwrite,
@@ -82,11 +83,11 @@ type Builder struct {
 	onID     func(id string)
 	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
-	pgpKeyContent,
+	javaKeystore,
+	javaKeystorePassword,
+	javaCertificatePassword,
+	pgpKey,
 	pgpKeyPassword,
-	androidCertContent,
-	androidStorepass,
-	androidKeypass,
 	baseURL,
 	appName string
 	overwrite bool
@@ -104,7 +105,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	if strings.TrimSpace(b.branchID) != "" {
 		jniBindingsPath := filepath.Join(workdir, b.goMain, "android.go")
 
-		stableJNIBindingsContent, err := ioutil.ReadFile(jniBindingsPath)
+		stableJNIBindingsContent, err := os.ReadFile(jniBindingsPath)
 		if err != nil {
 			return err
 		}
@@ -156,16 +157,16 @@ func (b *Builder) Build() error {
 		b.onID,
 		b.onOutput,
 		map[string]string{
-			"APP_ID":               appID,
-			"PGP_KEY_CONTENT":      b.pgpKeyContent,
-			"PGP_KEY_PASSWORD":     b.pgpKeyPassword,
-			"ANDROID_CERT_CONTENT": b.androidCertContent,
-			"ANDROID_STOREPASS":    b.androidStorepass,
-			"ANDROID_KEYPASS":      b.androidKeypass,
-			"BASE_URL":             baseURL,
-			"GOMAIN":               b.goMain,
-			"GOFLAGS":              b.goFlags,
-			"GOGENERATE":           b.goGenerate,
+			"APP_ID":                    appID,
+			"JAVA_KEYSTORE":             b.javaKeystore,
+			"JAVA_KEYSTORE_PASSWORD":    b.javaKeystorePassword,
+			"JAVA_CERTIFICATE_PASSWORD": b.javaCertificatePassword,
+			"PGP_KEY":                   b.pgpKey,
+			"PGP_KEY_PASSWORD":          b.pgpKeyPassword,
+			"BASE_URL":                  baseURL,
+			"GOMAIN":                    b.goMain,
+			"GOFLAGS":                   b.goFlags,
+			"GOGENERATE":                b.goGenerate,
 		},
 		b.Render,
 		[]string{},

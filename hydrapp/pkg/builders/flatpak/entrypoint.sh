@@ -11,7 +11,7 @@ passphrase-file /tmp/pgp-pass
 pinentry-mode loopback
 EOT
 
-echo "${PGP_KEY_CONTENT}" | base64 -d >'/tmp/private.pgp'
+echo "${PGP_KEY}" | base64 -d >'/tmp/private.pgp'
 gpg --import /tmp/private.pgp
 
 # Prepare build environment
@@ -38,13 +38,13 @@ fi
 flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//23.08" "org.freedesktop.Sdk//23.08" "org.freedesktop.Sdk.Extension.golang//23.08" "org.freedesktop.Sdk.Extension.node18//23.08"
 
 # Build SDK and export to repo
-flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${PGP_KEY_ID}" --repo='/dst' --force-clean --user --install "build-dir" "${GOMAIN}/org.freedesktop.Sdk.Extension.ImageMagick.yaml"
+flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" --repo='/dst' --force-clean --user --install "build-dir" "${GOMAIN}/org.freedesktop.Sdk.Extension.ImageMagick.yaml"
 
 # Build app and export to repo
-flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="${PGP_KEY_ID}" --repo='/dst' --force-clean "build-dir" "${GOMAIN}/${APP_ID}.yaml"
+flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" --repo='/dst' --force-clean "build-dir" "${GOMAIN}/${APP_ID}.yaml"
 
 # Export `.flatpak` to out dir
-flatpak --arch="${DEBARCH}" --gpg-sign="${PGP_KEY_ID}" build-bundle '/dst' "/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"
+flatpak --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" build-bundle '/dst' "/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"
 
 echo "[Flatpak Repo]
 Title=Hydrapp Flatpak repo

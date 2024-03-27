@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
@@ -35,22 +34,23 @@ import (
 )
 
 const (
-	configFlag       = "config"
-	pullFlag         = "pull"
-	tagFlag          = "tag"
-	concurrencyFlag  = "concurrency"
-	ejectFlag        = "eject"
-	overwriteFlag    = "overwrite"
-	srcFlag          = "src"
-	dstFlag          = "dst"
-	excludeFlag      = "exclude"
-	pgpKeyFlag       = "pgp-key"
-	pgpIDFlag        = "pgp-id"
-	apkCertFlag      = "apk-cert"
-	apkStorepassFlag = "apk-storepass"
-	apkKeypassFlag   = "apk-keypass"
-	branchIDFlag     = "branch-id"
-	branchNameFlag   = "branch-name"
+	configFlag      = "config"
+	pullFlag        = "pull"
+	tagFlag         = "tag"
+	concurrencyFlag = "concurrency"
+	ejectFlag       = "eject"
+	overwriteFlag   = "overwrite"
+	srcFlag         = "src"
+	dstFlag         = "dst"
+	excludeFlag     = "exclude"
+
+	javaKeystoreFlag = "java-keystore"
+
+	pgpKeyFlag   = "pgp-key"
+	pgpKeyIDFlag = "pgp-key-id"
+
+	branchIDFlag   = "branch-id"
+	branchNameFlag = "branch-name"
 )
 
 func checkIfSkip(exclude string, platform, architecture string) (bool, error) {
@@ -84,7 +84,7 @@ var buildCmd = &cobra.Command{
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		content, err := ioutil.ReadFile(viper.GetString(configFlag))
+		content, err := os.ReadFile(viper.GetString(configFlag))
 		if err != nil {
 			return err
 		}
@@ -94,7 +94,7 @@ var buildCmd = &cobra.Command{
 			return err
 		}
 
-		licenseText, err := ioutil.ReadFile(filepath.Join(filepath.Dir(viper.GetString(configFlag)), "LICENSE"))
+		licenseText, err := os.ReadFile(filepath.Join(filepath.Dir(viper.GetString(configFlag)), "LICENSE"))
 		if err != nil {
 			return err
 		}
@@ -108,24 +108,24 @@ var buildCmd = &cobra.Command{
 		// See https://github.com/rancher/rke/issues/1711#issuecomment-578382159
 		cli.NegotiateAPIVersion(ctx)
 
-		var pgpKeyContent []byte
+		var javaKeystore []byte
 		if !viper.GetBool(ejectFlag) {
-			pgpKeyContent, err = ioutil.ReadFile(viper.GetString(pgpKeyFlag))
+			javaKeystore, err = os.ReadFile(viper.GetString(javaKeystoreFlag))
 			if err != nil {
 				return err
 			}
 		}
 
-		var apkCertContent []byte
+		var pgpKey []byte
 		if !viper.GetBool(ejectFlag) {
-			apkCertContent, err = ioutil.ReadFile(viper.GetString(apkCertFlag))
+			pgpKey, err = os.ReadFile(viper.GetString(pgpKeyFlag))
 			if err != nil {
 				return err
 			}
 		}
 
 		handleID := func(id string) {
-			s := make(chan os.Signal)
+			s := make(chan os.Signal, 1)
 			signal.Notify(s, os.Interrupt, syscall.SIGTERM)
 
 			go func() {
@@ -201,9 +201,9 @@ var buildCmd = &cobra.Command{
 					handleID,
 					handleOutput,
 					cfg.App.ID,
-					pgpKeyContent,
-					viper.GetString(pgpPasswordFlag),
-					viper.GetString(pgpIDFlag),
+					pgpKey,
+					viper.GetString(pgpKeyPasswordFlag),
+					viper.GetString(pgpKeyIDFlag),
 					cfg.App.BaseURL+"/"+c.Path,
 					c.OS,
 					c.Distro,
@@ -251,8 +251,8 @@ var buildCmd = &cobra.Command{
 						handleOutput,
 						cfg.App.ID,
 						cfg.App.Name,
-						pgpKeyContent,
-						viper.GetString(pgpPasswordFlag),
+						pgpKey,
+						viper.GetString(pgpKeyPasswordFlag),
 						cfg.DMG.Packages,
 						cfg.Releases,
 						viper.GetBool(overwriteFlag),
@@ -289,9 +289,9 @@ var buildCmd = &cobra.Command{
 					handleID,
 					handleOutput,
 					cfg.App.ID,
-					pgpKeyContent,
-					viper.GetString(pgpPasswordFlag),
-					viper.GetString(pgpIDFlag),
+					pgpKey,
+					viper.GetString(pgpKeyPasswordFlag),
+					viper.GetString(pgpKeyIDFlag),
 					cfg.App.BaseURL+"/"+c.Path,
 					c.Architecture,
 					cfg.App.Name,
@@ -334,8 +334,8 @@ var buildCmd = &cobra.Command{
 					handleOutput,
 					cfg.App.ID,
 					cfg.App.Name,
-					pgpKeyContent,
-					viper.GetString(pgpPasswordFlag),
+					pgpKey,
+					viper.GetString(pgpKeyPasswordFlag),
 					c.Architecture,
 					c.Packages,
 					cfg.Releases,
@@ -373,9 +373,9 @@ var buildCmd = &cobra.Command{
 					handleID,
 					handleOutput,
 					cfg.App.ID,
-					pgpKeyContent,
-					viper.GetString(pgpPasswordFlag),
-					viper.GetString(pgpIDFlag),
+					pgpKey,
+					viper.GetString(pgpKeyPasswordFlag),
+					viper.GetString(pgpKeyIDFlag),
 					cfg.App.BaseURL+"/"+c.Path,
 					c.Distro,
 					c.Architecture,
@@ -417,11 +417,11 @@ var buildCmd = &cobra.Command{
 						handleID,
 						handleOutput,
 						cfg.App.ID,
-						pgpKeyContent,
-						viper.GetString(pgpPasswordFlag),
-						apkCertContent,
-						viper.GetString(apkStorepassFlag),
-						viper.GetString(apkKeypassFlag),
+						javaKeystore,
+						viper.GetString(javaKeystorePasswordFlag),
+						viper.GetString(javaCertificatePasswordFlag),
+						pgpKey,
+						viper.GetString(pgpKeyPasswordFlag),
 						cfg.App.BaseURL+"/"+cfg.APK.Path,
 						cfg.App.Name,
 						viper.GetBool(overwriteFlag),
@@ -455,8 +455,8 @@ var buildCmd = &cobra.Command{
 						handleID,
 						handleOutput,
 						cfg.App.ID,
-						pgpKeyContent,
-						viper.GetString(pgpPasswordFlag),
+						pgpKey,
+						viper.GetString(pgpKeyPasswordFlag),
 						cfg.App.Name,
 						viper.GetString(branchIDFlag),
 						viper.GetString(branchNameFlag),
@@ -579,16 +579,16 @@ func init() {
 
 	buildCmd.PersistentFlags().String(excludeFlag, "", "Regex of platforms and architectures not to build for, i.e. (apk|dmg|msi/386|flatpak/amd64)")
 
-	buildCmd.PersistentFlags().String(pgpKeyFlag, "", "Path to armored PGP private key")
-	buildCmd.PersistentFlags().String(pgpPasswordFlag, "", "Password for PGP key (base64-encoded)")
-	buildCmd.PersistentFlags().String(pgpIDFlag, "", "ID of the PGP key to use")
+	buildCmd.PersistentFlags().String(javaKeystoreFlag, "", "Path to Java/APK keystore (neither path nor content should be not base64-encoded)")
+	buildCmd.PersistentFlags().String(javaKeystorePasswordFlag, "", "Java/APK keystore password (base64-encoded)")
+	buildCmd.PersistentFlags().String(javaCertificatePasswordFlag, "", " Java/APK certificate password (base64-encoded) (if keystore uses PKCS12, this will be the same as --java-keystore-password)")
 
-	buildCmd.PersistentFlags().String(apkCertFlag, "", "Path to Android keystore")
-	buildCmd.PersistentFlags().String(apkStorepassFlag, "", "Password for Android keystore (base64-encoded)")
-	buildCmd.PersistentFlags().String(apkKeypassFlag, "", " Password for Android certificate (base64-encoded) (if keystore uses PKCS12, this will be the same as --apk-storepass)")
+	buildCmd.PersistentFlags().String(pgpKeyFlag, "", "Path to armored PGP private key (neither path nor content should be not base64-encoded)")
+	buildCmd.PersistentFlags().String(pgpKeyPasswordFlag, "", "PGP key password (base64-encoded)")
+	buildCmd.PersistentFlags().String(pgpKeyIDFlag, "", "PGP key ID (base64-encoded)")
 
-	buildCmd.PersistentFlags().String(branchIDFlag, "", `Branch ID to build the app as, i.e. main (for an app ID like "myappid.main" and baseURL like "mybaseurl/main"`)
-	buildCmd.PersistentFlags().String(branchNameFlag, "", `Branch name to build the app as, i.e. Main (for an app name like "myappname (Main)"`)
+	buildCmd.PersistentFlags().String(branchIDFlag, "main", `Branch ID to build the app as, i.e. main (for an app ID like "myappid.main" and baseURL like "mybaseurl/main"`)
+	buildCmd.PersistentFlags().String(branchNameFlag, "Main", `Branch name to build the app as, i.e. Main (for an app name like "myappname (Main)"`)
 
 	viper.AutomaticEnv()
 

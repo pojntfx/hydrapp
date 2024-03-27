@@ -31,7 +31,7 @@ func WriteRenders(workdir string, renders []*renderers.Renderer, overwrite, ejec
 
 			if exists && !ejecting {
 				// Read existing file and allow for templating in them
-				t, err := ioutil.ReadFile(file)
+				t, err := os.ReadFile(file)
 				if err != nil {
 					return err
 				}

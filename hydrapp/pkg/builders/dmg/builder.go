@@ -30,7 +30,7 @@ func NewBuilder(
 	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
 	appID, // macOS app ID to use
 	appName string, // Human-readable name for the app
-	pgpKeyContent []byte, // PGP key contents
+	pgpKey []byte, // PGP key contents
 	pgpKeyPassword string, // Password for the PGP key
 	packages []string, // MacPorts packages to install
 	releases []renderers.Release, // App releases
@@ -53,7 +53,7 @@ func NewBuilder(
 		onOutput,
 		appID,
 		appName,
-		base64.StdEncoding.EncodeToString(pgpKeyContent),
+		base64.StdEncoding.EncodeToString(pgpKey),
 		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
 		packages,
 		releases,
@@ -78,7 +78,7 @@ type Builder struct {
 	onOutput func(shortID string, color string, timestamp int64, message string)
 	appID,
 	appName,
-	pgpKeyContent,
+	pgpKey,
 	pgpKeyPassword string
 	packages  []string
 	releases  []renderers.Release
@@ -126,7 +126,7 @@ func (b *Builder) Build() error {
 		map[string]string{
 			"APP_ID":           appID,
 			"APP_NAME":         appName,
-			"PGP_KEY_CONTENT":  b.pgpKeyContent,
+			"PGP_KEY":          b.pgpKey,
 			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
 			"ARCHITECTURES":    "amd64 arm64",
 			"MACPORTS":         strings.Join(b.packages, " "),
