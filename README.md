@@ -55,245 +55,7 @@ You can find binaries for more operating systems and architectures on [GitHub re
 
 ## Tutorial
 
-### 1. (Optional) Setting Up a Repo
-
-While not necessary for local development, setting up a repository is a good first step to be able to distribute your app's builds as quickly as possible. On GitHub, head over to [github.com/new](https://github.com/new) to do so. Please take of the `owner` and `repository name` you've chosen; in these docs, we'll use `example` and `myapp`.
-
-### 2. (Optional) Generating and Uploading Your Secrets
-
-While also not strictly necessary, in order to be able to distribute your applications safely, you'll need to generate and upload two secrets - a PGP key and a Java keystore.
-
-<details>
-  <summary>Expand section</summary>
-
-**Generating the PGP key**:
-
-First, generate a PGP key. You can do this using the `gpg` CLI, but an easier way is to use [keygaen](https://pojntfx.github.io/keygaen/), which allows you to do it in directly in your browser:
-
-[<img src="https://github.com/pojntfx/webnetesctl/raw/main/img/launch.png" width="240">](https://pojntfx.github.io/keygaen/)
-
-Create a key with your name and email, and take note of the password you've chosen:
-
-![Screenshot of the create PGP key dialog](./docs/screenshot-create-pgp-key.png)
-
-The first GitHub Actions secret you need to save is `PGP_KEY_PASSWORD`; simply use the password you've created above as the value (base64-encoded).
-
-Now that you've generated your key, you can add it to your repository's secrets; let's start with the PGP key ID. To find it, copy the string next to your key's email:
-
-![Screenshot of the PGP key ID](./docs/screenshot-copy-pgp-key-id.png)
-
-Save this in a new GitHub Actions secret `PGP_KEY_ID` in the repository you've set up earlier.
-
-Next, let's add the PGP _private_ key's contents to the repo. To do so, export the key with armor and base64-encoding enabled, copy it's content and add it to a secret named `PGP_KEY`:
-
-![Screenshot of the PGP key export dialog](./docs/screenshot-copy-pgp-export.png)
-
-Also be sure to download the key (armored & base64-encoded) so you can use it for local builds.
-
-**Generating the Java keystore**:
-
-You'll also need to generate a keystore. You can do this using the `keytool` CLI, but an easier way again is to use [keystoregaen](https://pojntfx.github.io/keystoregaen/), a tool similar to keygaen, but for Java keystores:
-
-[<img src="https://github.com/pojntfx/webnetesctl/raw/main/img/launch.png" width="240">](https://pojntfx.github.io/keystoregaen/)
-
-Create a key with your name, and take note of the password you've chosen:
-
-![Screenshot of the keystore generation dialog](./docs/screenshot-create-keystore.png)
-
-The first two GitHub Actions secrets you need to save are `JAVA_KEYSTORE_PASSWORD` and `JAVA_CERTIFICATE_PASSWORD`; set them to the passwords you've chosen above respectively (base64-encoded).
-
-Next, let's add the keystore's contents to the repo. To do so, export it with base64-encoding enabled, copy it's content and add it to a secret named `JAVA_KEYSTORE`:
-
-![Screenshot of the keystore export dialog](./docs/screenshot-copy-keystore-export.png)
-
-Also be sure to download the keystore (base64-encoded) so you can use it for local builds.
-
-</details>
-
-### 3. Generating Your Project
-
-To get started easily, hydrapp provides the interactive `hydrapp` CLI. To use it to generate a project for you, simply run `hydrapp new` with the values that match your usecase.
-
-<details>
-  <summary>Expand section</summary>
-
-First, select your preferred starter project:
-
-```plaintext
-? Which project type do you want to generate?:
-    rest: Simple starter project with a REST API to connect the frontend and backend
-    forms: Traditional starter project with Web 1.0-style forms to connect the frontend and backend
-    react-panrpc: Complete starter project with bi-directional panrpc RPCs to connect the frontend and backend (based on the Parcel bundler)
-```
-
-Next, set your app ID; this can be anything that's a valid reverse FQDN, e.g. the GitHub repo you're using:
-
-```plaintext
-App ID in reverse domain notation: com.github.example.myapp
-```
-
-The app name, summary, description, homepage and git repo are self-explanatory:
-
-```plaintext
-App name: My App
-App summary: My first app
-App description: My first application, built with hydrapp.
-App homepage: https://github.com/example/myapp
-App git repo: https://github.com/example/myapp.git
-```
-
-The base URL should be the URL that you're planning to host the generated repos on; for GitHub pages without a custom domain, this should follow the scheme `https://<username|orgname>.github.io/<reponame>/`:
-
-```plaintext
-App base URL to expect the built assets to be published to: https://example.github.io/myapp/
-```
-
-The Go module name should be your vanity URL or GitHub repo to use:
-
-```plaintext
-Go module name: github.com/example/myapp
-```
-
-You can set a license by choosing a SPDX identifier; note that this **has** to be a valid [SPDX identifier](https://spdx.org/licenses/) as it downloads the license text:
-
-```plaintext
-License SPDX identifier (see https://spdx.org/licenses/): Apache-2.0
-```
-
-The release author name, author email and directory are self-explanatory:
-
-```plaintext
-Release author name: Jean Doe
-Release author email: jean.doe@example.com
-Directory to write the app to: .
-```
-
-Finally, you can choose to do advanced configuration; in this basic introduction, we won't be doing that:
-
-```plaintext
-? Do you want to do any advanced configuration?:
-  ▸ no
-    yes
-```
-
-After pressing <kbd>Enter</kbd>, the project will be generated, dependencies will be installed and the instructions for continuing will be displayed:
-
-```shell
-2023/02/28 17:25:58 Success!
-Succesfully generated application. To start it, run the following:
-
-cd myapp
-go run .
-
-You can find more information in the generated README.
-```
-
-</details>
-
-### 4. Starting the Project
-
-<details>
-  <summary>Expand section</summary>
-
-You can start the project in its own PWA-mode browser instance and with the pre-compiled frontend like so:
-
-```shell
-$ cd myapp
-$ go run .
-```
-
-The basic example should look like this:
-
-![Screenshot of the launched compiled frontend](./docs/screenshot-compiled-frontend.png)
-
-When you are developing locally however, you can also start the frontend manually with hot-reloading and in your preferred browser by exporting a few environment variables:
-
-```shell
-# In the first terminal
-$ export HYDRAPP_BACKEND_LADDR="localhost:1234" HYDRAPP_TYPE="dummy"
-$ go run .
-2023/02/28 17:35:02 Backend URL: ws://localhost:1234
-2023/02/28 17:35:02 Frontend URL: http://localhost:38031?socketURL=ws%3A%2F%2Flocalhost%3A1234
-
-# In the second terminal
-$ cd pkg/frontend
-$ npm run dev
-```
-
-And open the URL (note the `socketURL` parameter): [http://localhost:3000?socketURL=ws%3A%2F%2Flocalhost%3A1234](http://localhost:3000?socketURL=ws%3A%2F%2Flocalhost%3A1234):
-
-![Screenshot of the launched HMR-enabled frontend](./docs/screenshot-hmr-frontend.png)
-
-Whenever you make changes to the frontend's source code, it should be automatically reloaded.
-
-</details>
-
-### 5. Build The Packages Locally
-
-While it also possible to build your hydrapp app using the `go build` command you already know, it is recommended to use the `hydrapp build` command instead as its able to not only create binaries, but also proper OS-specific packages.
-
-<details>
-  <summary>Expand section</summary>
-
-To use it, first export the path to and credentials for the PGP key you've downloaded above:
-
-```shell
-$ export PGP_KEY="${HOME}/Downloads/19D789F4.asc.txt" PGP_KEY_PASSWORD="$(echo asdf | base64)" PGP_KEY_ID='19D789F4'
-```
-
-Next, do the same for the Java keystore:
-
-```shell
-$ export JAVA_KEYSTORE="${HOME}/Downloads/keystoregaen.jks.txt" JAVA_KEYSTORE_PASSWORD="$(echo asdf | base64)" JAVA_CERTIFICATE_PASSWORD="$(echo asdf | base64)"
-```
-
-And finally, your branch. hydrapp supports building multiple branches of your app - such as a main branch for your canary builds, the stable branch (for tagged releases) and any further feature branches you might want to build for. In this case, we'll build for the `main` branch:
-
-```shell
-$ export BRANCH_ID="main" BRANCH_NAME="Main"
-```
-
-You're now ready to build your app:
-
-```shell
-$ hydrapp build \
-    --config='./hydrapp.yaml' \
-    --exclude='deb|dmg|flatpak|msi|rpm|apk|tests' \
-    --pull=true \
-    --tag='main' \
-    --dst="${PWD}/out" \
-    --src="${PWD}" \
-    --pgp-key="${PGP_KEY}" \
-    --pgp-password="${PGP_KEY_PASSWORD}" \
-    --pgp-id="${PGP_KEY_ID}" \
-    --apk-cert="${JAVA_KEYSTORE}" \
-    --apk-storepass="${JAVA_KEYSTORE_PASSWORD}" \
-    --apk-keypass="${JAVA_CERTIFICATE_PASSWORD}" \
-    --concurrency="$(nproc)" \
-    --branch-id="${BRANCH_ID}" \
-    --branch-name="${BRANCH_NAME}"
-```
-
-Note the `--exclude` flag; in this configuration, only `binaries` is missing, meaning that only binaries will be built; you can remove e.g. RPM and an RPM package would be built instead.
-
-</details>
-
-### 6. Releasing Your App
-
-As previously mentioned, hydrapp supports branches. To release your software to the `main` branch, push it to your GitHub repository, and the GitHub action will build it for you. After the actions have completed successfully, [enable GitHub pages](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) for the `gh_pages` branch.
-
-<details>
-  <summary>Expand section</summary>
-
-You can now install and use this canary build of your app by following the instructions in the generated installation docs file linked in your README. When you're ready to tag a release, add a new entry to your `hydrapp.yaml` file under `releases` (ensure that you follow [semantic versioning](https://semver.org/)), run `git tag v<major>.<minor>.<patch>`, and `git push --tags`. The action should then automatically build a tagged release for you. Remember to update the installation instructions link to point to it by replacing `docs/main/INSTALLATION.html` with `docs/stable/INSTALLATION.html`:
-
-![Screenshot of the generated installation instructions](./docs/screenshot-installation-instructions.png)
-
-Note that there are many more things you can configure in the framework. For example, if you want to introduce native dependencies, check out [connmapper](https://github.com/pojntfx/connmapper) - it's able to easily use `libpcap` thanks to hydrapp's integrated package management support. If you want to overwrite the build configs manually, you can always pass `--eject` to the build command, which will render the Debian `rules` file, the RPM `.spec`, the WIX installer files, the Flatpak manifest, the Android Manifest etc. in-place, giving you the ability to customize everything to your liking.
-
-**🚀 You're all set to share your app with your users now!** We can't wait to see what you're going to build with hydrapp.
-
-</details>
+🚧 This project is a work-in-progress! Instructions will be added as soon as it is usable. 🚧
 
 ## Reference
 
@@ -321,9 +83,11 @@ Available Commands:
   completion  Generate the autocompletion script for the specified shell
   help        Help about any command
   new         Generate a new hydrapp project
+  secrets     Manage secrets
 
 Flags:
-  -h, --help   help for hydrapp
+  -h, --help             help for hydrapp
+      --secrets string   Secrets file to use (default "/home/pojntfx/.local/share/hydrapp/secrets.yaml")
 
 Use "hydrapp [command] --help" for more information about a command.
 ```
@@ -346,6 +110,9 @@ Aliases:
 Flags:
   -h, --help         help for new
       --no-network   Disable all network interaction
+
+Global Flags:
+      --secrets string   Secrets file to use (default "/home/pojntfx/.local/share/hydrapp/secrets.yaml")
 ```
 
 #### Build
@@ -361,25 +128,75 @@ Aliases:
   build, b
 
 Flags:
-      --apk-cert string        Path to Android keystore
-      --apk-keypass string      Password for Android certificate (if keystore uses PKCS12, this will be the same as --apk-storepass)
-      --apk-storepass string   Password for Android keystore
-      --branch-id string       Branch ID to build the app as, i.e. main (for an app ID like "myappid.main" and baseURL like "mybaseurl/main"
-      --branch-name string     Branch name to build the app as, i.e. Main (for an app name like "myappname (Main)"
-      --concurrency int        Maximum amount of concurrent builders to run at once (default 1)
-      --config string          Config file to use (default "hydrapp.yaml")
-      --dst string             Output directory (must be absolute path) (default "/home/pojntfx/Projects/hydrapp/out")
-      --eject                  Write platform-specific config files (AndroidManifest.xml, .spec etc.) to directory specified by --src, then exit (--exclude still applies)
-      --exclude string         Regex of platforms and architectures not to build for, i.e. (apk|dmg|msi/386|flatpak/amd64)
-  -h, --help                   help for build
-      --no-network             Disable all network interaction
-      --overwrite              Overwrite platform-specific config files even if they exist
-      --pgp-id string          ID of the PGP key to use
-      --pgp-key string         Path to armored PGP private key
-      --pgp-password string    Password for PGP key
-      --pull                   Whether to pull the images or not
-      --src string             Source directory (must be absolute path) (default "/home/pojntfx/Projects/hydrapp")
-      --tag string             Image tag to use (default "latest")
+      --branch-id string                   Branch ID to build the app as, i.e. main (for an app ID like "myappid.main" and baseURL like "mybaseurl/main" (default "main")
+      --branch-name string                 Branch name to build the app as, i.e. Main (for an app name like "myappname (Main)" (default "Main")
+      --concurrency int                    Maximum amount of concurrent builders to run at once (default 1)
+      --config string                      Config file to use (default "hydrapp.yaml")
+      --dst string                         Output directory (must be absolute path) (default "/home/pojntfx/out")
+      --eject                              Write platform-specific config files (AndroidManifest.xml, .spec etc.) to directory specified by --src, then exit (--exclude still applies)
+      --exclude string                     Regex of platforms and architectures not to build for, i.e. (apk|dmg|msi/386|flatpak/amd64)
+  -h, --help                               help for build
+      --java-certificate-password string    Java/APK certificate password (base64-encoded) (if keystore uses PKCS12, this will be the same as --java-keystore-password)
+      --java-keystore string               Path to Java/APK keystore (neither path nor content should be not base64-encoded)
+      --java-keystore-password string      Java/APK keystore password (base64-encoded)
+      --no-network                         Disable all network interaction
+      --overwrite                          Overwrite platform-specific config files even if they exist
+      --pgp-key string                     Path to armored PGP private key (neither path nor content should be not base64-encoded)
+      --pgp-key-id string                  PGP key ID (base64-encoded)
+      --pgp-key-password string            PGP key password (base64-encoded)
+      --pull                               Whether to pull the images or not
+      --src string                         Source directory (must be absolute path) (default "/home/pojntfx")
+      --tag string                         Image tag to use (default "latest")
+
+Global Flags:
+      --secrets string   Secrets file to use (default "/home/pojntfx/.local/share/hydrapp/secrets.yaml")
+```
+
+#### Secrets New
+
+```shell
+$ hydrapp secrets new --help
+Generate new hydrapp secrets
+
+Usage:
+  hydrapp secrets new [flags]
+
+Aliases:
+  new, n
+
+Flags:
+  -h, --help                                 help for new
+      --java-certificate-alias string        Java/APK certificate alias (default "Anonymous Hydrapp Developer")
+      --java-certificate-cname string        Java/APK certificate CNAME (default "Anonymous Hydrapp Developer")
+      --java-certificate-password string     Java/APK certificate password (auto-generated if not specified)
+      --java-certificate-validity duration   Java/APK certificate validty (default 8760h0m0s)
+      --java-keystore-password string        Java/APK keystore password (auto-generated if not specified)
+      --java-rsa-bits uint32                 Java/APK RSA bits (default 2048)
+      --pgp-key-email string                 PGP key E-Mail (default "test@example.com")
+      --pgp-key-full-name string             PGP key full name (default "Anonymous Hydrapp Developer")
+      --pgp-key-password string              PGP key password (auto-generated if not specified)
+
+Global Flags:
+      --secrets string   Secrets file to use (default "/home/pojntfx/.local/share/hydrapp/secrets.yaml")
+```
+
+#### Secrets Show
+
+```shell
+$ hydrapp secrets show --help
+Show hydrapp secrets as env variables
+
+Usage:
+  hydrapp secrets show [flags]
+
+Aliases:
+  show, s
+
+Flags:
+  -h, --help   help for show
+
+Global Flags:
+      --secrets string   Secrets file to use (default "/home/pojntfx/.local/share/hydrapp/secrets.yaml")
 ```
 
 </details>
