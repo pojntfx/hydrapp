@@ -1,6 +1,8 @@
 package config
 
 import (
+	"io"
+
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/rpm"
 	"gopkg.in/yaml.v3"
@@ -89,9 +91,9 @@ type Docs struct {
 	Path string `yaml:"path"`
 }
 
-func Parse(content []byte) (*Root, error) {
+func Parse(r io.Reader) (*Root, error) {
 	var root Root
-	if err := yaml.Unmarshal(content, &root); err != nil {
+	if err := yaml.NewDecoder(r).Decode(&root); err != nil {
 		return nil, err
 	}
 

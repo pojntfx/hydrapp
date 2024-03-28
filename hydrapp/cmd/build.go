@@ -27,7 +27,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/msi"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/tests"
-	cconfig "github.com/pojntfx/hydrapp/hydrapp/pkg/config"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -84,15 +84,27 @@ var buildCmd = &cobra.Command{
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		content, err := os.ReadFile(viper.GetString(configFlag))
+		configFile, err := os.Open(viper.GetString(configFlag))
+		if err != nil {
+			return err
+		}
+		defer configFile.Close()
+
+		cfg, err := config.Parse(configFile)
 		if err != nil {
 			return err
 		}
 
-		cfg, err := cconfig.Parse(content)
-		if err != nil {
-			return err
-		}
+		// secretsFile, err := os.Open(viper.GetString(secretsFlag))
+		// if err != nil {
+		// 	return err
+		// }
+		// defer secretsFile.Close()
+
+		// scs, err := secrets.Parse(secretsFile)
+		// if err != nil {
+		// 	return err
+		// }
 
 		licenseText, err := os.ReadFile(filepath.Join(filepath.Dir(viper.GetString(configFlag)), "LICENSE"))
 		if err != nil {

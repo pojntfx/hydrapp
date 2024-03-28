@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/secrets"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gopkg.in/yaml.v2"
 )
 
 var secretsShowCmd = &cobra.Command{
@@ -19,14 +19,14 @@ var secretsShowCmd = &cobra.Command{
 			return err
 		}
 
-		in, err := os.Open(viper.GetString(secretsFlag))
+		secretsFile, err := os.Open(viper.GetString(secretsFlag))
 		if err != nil {
 			return err
 		}
-		defer in.Close()
+		defer secretsFile.Close()
 
-		var input secrets
-		if err := yaml.NewDecoder(in).Decode(&input); err != nil {
+		scs, err := secrets.Parse(secretsFile)
+		if err != nil {
 			return err
 		}
 
@@ -38,13 +38,13 @@ export PGP_KEY_ID="%v"
 export PGP_KEY_PASSWORD="%v"
 `,
 
-			base64.StdEncoding.EncodeToString(input.JavaSecrets.Keystore),
-			base64.StdEncoding.EncodeToString([]byte(input.JavaSecrets.KeystorePassword)),
-			base64.StdEncoding.EncodeToString([]byte(input.JavaSecrets.CertificatePassword)),
+			base64.StdEncoding.EncodeToString(scs.JavaSecrets.Keystore),
+			base64.StdEncoding.EncodeToString([]byte(scs.JavaSecrets.KeystorePassword)),
+			base64.StdEncoding.EncodeToString([]byte(scs.JavaSecrets.CertificatePassword)),
 
-			base64.StdEncoding.EncodeToString([]byte(input.PGPSecrets.Key)),
-			base64.StdEncoding.EncodeToString([]byte(input.PGPSecrets.KeyID)),
-			base64.StdEncoding.EncodeToString([]byte(input.PGPSecrets.KeyPassword)),
+			base64.StdEncoding.EncodeToString([]byte(scs.PGPSecrets.Key)),
+			base64.StdEncoding.EncodeToString([]byte(scs.PGPSecrets.KeyID)),
+			base64.StdEncoding.EncodeToString([]byte(scs.PGPSecrets.KeyPassword)),
 		)
 
 		return nil

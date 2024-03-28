@@ -7,28 +7,11 @@ import (
 	"strings"
 	"time"
 
-	s "github.com/pojntfx/hydrapp/hydrapp/pkg/secrets"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/secrets"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
 )
-
-type secrets struct {
-	JavaSecrets javaSecrets `yaml:"java"`
-	PGPSecrets  pgpSecrets  `yaml:"pgp"`
-}
-
-type javaSecrets struct {
-	Keystore            []byte `yaml:"keystore"`
-	KeystorePassword    string `yaml:"keystorePassword"`
-	CertificatePassword string `yaml:"certificatePassword"`
-}
-
-type pgpSecrets struct {
-	Key         string `yaml:"key"`
-	KeyID       string `yaml:"keyID"`
-	KeyPassword string `yaml:"keyPassword"`
-}
 
 const (
 	javaKeystorePasswordFlag    = "java-keystore-password"
@@ -54,7 +37,7 @@ var secretsNewCmd = &cobra.Command{
 
 		keystorePassword := viper.GetString(javaKeystorePasswordFlag)
 		if strings.TrimSpace(keystorePassword) == "" {
-			v, err := s.GeneratePassword(32)
+			v, err := secrets.GeneratePassword(32)
 			if err != nil {
 				panic(err)
 			}
@@ -64,7 +47,7 @@ var secretsNewCmd = &cobra.Command{
 
 		certificatePassword := viper.GetString(javaCertificatePasswordFlag)
 		if strings.TrimSpace(certificatePassword) == "" {
-			v, err := s.GeneratePassword(32)
+			v, err := secrets.GeneratePassword(32)
 			if err != nil {
 				panic(err)
 			}
@@ -73,7 +56,7 @@ var secretsNewCmd = &cobra.Command{
 		}
 
 		keystoreBuf := &bytes.Buffer{}
-		if err := s.GenerateKeystore(
+		if err := secrets.GenerateKeystore(
 			keystorePassword,
 			certificatePassword,
 			viper.GetString(javaCertificateAliasFlag),
@@ -87,7 +70,7 @@ var secretsNewCmd = &cobra.Command{
 
 		pgpPassword := viper.GetString(pgpKeyPasswordFlag)
 		if strings.TrimSpace(pgpPassword) == "" {
-			v, err := s.GeneratePassword(32)
+			v, err := secrets.GeneratePassword(32)
 			if err != nil {
 				panic(err)
 			}
@@ -95,7 +78,7 @@ var secretsNewCmd = &cobra.Command{
 			pgpPassword = v
 		}
 
-		pgpKey, pgpKeyID, err := s.GeneratePGPKey(
+		pgpKey, pgpKeyID, err := secrets.GeneratePGPKey(
 			viper.GetString(pgpKeyFullNameFlag),
 			viper.GetString(pgpKeyEmailFlag),
 			pgpPassword,
@@ -104,13 +87,13 @@ var secretsNewCmd = &cobra.Command{
 			panic(err)
 		}
 
-		output := &secrets{
-			JavaSecrets: javaSecrets{
+		output := &secrets.Root{
+			JavaSecrets: secrets.JavaSecrets{
 				Keystore:            keystoreBuf.Bytes(),
 				KeystorePassword:    keystorePassword,
 				CertificatePassword: certificatePassword,
 			},
-			PGPSecrets: pgpSecrets{
+			PGPSecrets: secrets.PGPSecrets{
 				Key:         pgpKey,
 				KeyID:       pgpKeyID,
 				KeyPassword: pgpPassword,
