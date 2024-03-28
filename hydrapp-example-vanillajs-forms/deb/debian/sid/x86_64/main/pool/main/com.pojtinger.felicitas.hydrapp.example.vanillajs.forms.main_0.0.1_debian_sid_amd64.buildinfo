@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- 055c7b5aece50b14105f47bddad714c7 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- 88f07c6f0394d284e9b3226f580e143f 2850088 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ c884f4a00315e7c38499e70f44109260 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 7f863d95c24e02ab3ea1ac033ca034db 2852020 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- ccbdb26f9b553991331d3664b0080587c4a919bf 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- 2b473725e7f4aaf4c8fd9f96ff5f95559573c31e 2850088 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ 274d685e5aa7af7449eef40d9b5a4b245e603226 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ b3014610fb9e762ddbf37c80b01fa79d8958eb13 2852020 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- e15d48ce3f0b6acaf954c18903852f9041cdd4379a180e43dd736476e1202d93 1173 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- 8fde161d8890fbacf17626f99955f65602da9c8ac0fbfdf10aec2a665f7795d8 2850088 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ f6662b07a1f4dbcdde0936e8bccee987270b0bcf320cc66a60da00131fa21267 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 4f3906ac0ed14de86e9a34ecea5547297847bdb2e9d410522c69f12804828be7 2852020 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Tue, 26 Mar 2024 22:44:02 +0000
+Build-Date: Thu, 28 Mar 2024 17:53:26 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -30,8 +30,8 @@ Installed-Build-Depends:
  binutils (= 2.42-4),
  binutils-common (= 2.42-4),
  binutils-x86-64-linux-gnu (= 2.42-4),
- bsdextrautils (= 2.39.3-10),
- bsdutils (= 1:2.39.3-10),
+ bsdextrautils (= 2.39.3-11),
+ bsdutils (= 1:2.39.3-11),
  build-essential (= 12.10),
  bzip2 (= 1.0.8-5.1),
  ca-certificates (= 20240203),
@@ -42,7 +42,7 @@ Installed-Build-Depends:
  cpp-x86-64-linux-gnu (= 4:13.2.0-7),
  dash (= 0.5.12-6),
  debconf (= 1.5.86),
- debhelper (= 13.15.2),
+ debhelper (= 13.15.3),
  debianutils (= 5.17),
  desktop-file-utils (= 0.27-2),
  dh-autoreconf (= 20),
@@ -69,7 +69,7 @@ Installed-Build-Depends:
  gcc-x86-64-linux-gnu (= 4:13.2.0-7),
  gettext (= 0.21-14+b1),
  gettext-base (= 0.21-14+b1),
- git (= 1:2.43.0-1),
+ git (= 1:2.43.0-1+b1),
  git-man (= 1:2.43.0-1),
  golang-1.22-go (= 1.22.1-1),
  golang-1.22-src (= 1.22.1-1),
@@ -97,7 +97,7 @@ Installed-Build-Depends:
  libaudit-common (= 1:3.1.2-2.1),
  libaudit1 (= 1:3.1.2-2.1),
  libbinutils (= 2.42-4),
- libblkid1 (= 2.39.3-10),
+ libblkid1 (= 2.39.3-11),
  libbrotli1 (= 1.1.0-2+b3),
  libbsd0 (= 0.12.2-1),
  libbz2-1.0 (= 1.0.8-5.1),
@@ -114,12 +114,12 @@ Installed-Build-Depends:
  libcrypt1 (= 1:4.4.36-4),
  libctf-nobfd0 (= 2.42-4),
  libctf0 (= 2.42-4),
- libcurl3t64-gnutls (= 8.6.0-4),
+ libcurl3t64-gnutls (= 8.7.1-1),
  libdav1d7 (= 1.4.1-1),
  libdb5.3t64 (= 5.3.28+dfsg2-6),
  libde265-0 (= 1.0.15-1+b1),
  libdebconfclient0 (= 0.271+b3),
- libdebhelper-perl (= 13.15.2),
+ libdebhelper-perl (= 13.15.3),
  libdeflate0 (= 1.20-1),
  libdpkg-perl (= 1.22.6),
  libelf1t64 (= 0.191-1),
@@ -143,7 +143,7 @@ Installed-Build-Depends:
  libgomp1 (= 14-20240315-1),
  libgpg-error0 (= 1.47-3),
  libgprofng0 (= 2.42-4),
- libgssapi-krb5-2 (= 1.20.1-6),
+ libgssapi-krb5-2 (= 1.20.1-6+b1),
  libheif-plugin-dav1d (= 1.17.6-1+b2),
  libheif-plugin-libde265 (= 1.17.6-1+b2),
  libheif1 (= 1.17.6-1+b2),
@@ -166,10 +166,10 @@ Installed-Build-Depends:
  libjs-sprintf-js (= 1.1.2+ds1+~1.1.2-1),
  libjs-typedarray-to-buffer (= 4.0.0-2),
  libjs-util (= 0.12.5+~1.0.10-1),
- libk5crypto3 (= 1.20.1-6),
+ libk5crypto3 (= 1.20.1-6+b1),
  libkeyutils1 (= 1.6.3-3),
- libkrb5-3 (= 1.20.1-6),
- libkrb5support0 (= 1.20.1-6),
+ libkrb5-3 (= 1.20.1-6+b1),
+ libkrb5support0 (= 1.20.1-6+b1),
  liblcms2-2 (= 2.14-2+b1),
  libldap-2.5-0 (= 2.5.16+dfsg-2),
  liblerc4 (= 4.0.0+ds-4+b1),
@@ -177,13 +177,13 @@ Installed-Build-Depends:
  liblsan0 (= 14-20240315-1),
  libltdl7 (= 2.4.7-7),
  liblz4-1 (= 1.9.4-1+b2),
- liblzma5 (= 5.6.0-0.2),
+ liblzma5 (= 5.6.1-1),
  libmagic-mgc (= 1:5.45-3),
  libmagic1t64 (= 1:5.45-3),
  libmagickcore-6.q16-7t64 (= 8:6.9.12.98+dfsg1-5.2),
  libmagickwand-6.q16-7t64 (= 8:6.9.12.98+dfsg1-5.2),
  libmd0 (= 1.1.0-2),
- libmount1 (= 2.39.3-10),
+ libmount1 (= 2.39.3-11),
  libmpc3 (= 1.3.1-1+b2),
  libmpfr6 (= 4.2.1-1+b1),
  libncursesw6 (= 6.4+20240113-1),
@@ -215,7 +215,7 @@ Installed-Build-Depends:
  libselinux1 (= 3.5-2+b1),
  libsframe1 (= 2.42-4),
  libsharpyuv0 (= 1.3.2-0.4+b1),
- libsmartcols1 (= 2.39.3-10),
+ libsmartcols1 (= 2.39.3-11),
  libsqlite3-0 (= 3.45.2-1),
  libssh2-1t64 (= 1.11.0-4.1+b1),
  libssl-dev (= 3.1.5-1.1),
@@ -234,7 +234,7 @@ Installed-Build-Depends:
  libuchardet0 (= 0.0.8-1+b1),
  libudev1 (= 255.4-1+b1),
  libunistring5 (= 1.2-1),
- libuuid1 (= 2.39.3-10),
+ libuuid1 (= 2.39.3-11),
  libuv1-dev (= 1.48.0-1.1),
  libuv1t64 (= 1.48.0-1.1),
  libwebp7 (= 1.3.2-0.4+b1),
@@ -622,9 +622,9 @@ Installed-Build-Depends:
  terser (= 5.19.2-1),
  tzdata (= 2024a-1),
  usr-is-merged (= 39),
- util-linux (= 2.39.3-10),
+ util-linux (= 2.39.3-11),
  webpack (= 5.76.1+dfsg2+~cs10.8.15-3),
- xz-utils (= 5.6.0-0.2),
+ xz-utils (= 5.6.1-1),
  zlib1g (= 1:1.3.dfsg-3.1)
 Environment:
  DEB_BUILD_OPTIONS="parallel=4"
