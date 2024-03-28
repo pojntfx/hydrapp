@@ -70,3 +70,7 @@ baseurl=${BASE_URL}
 enabled=1
 gpgcheck=1
 gpgkey=${BASE_URL}/repodata/repo.asc" >"/dst/repodata/hydrapp.repo"
+
+if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
+    chown -R "${DST_UID}:${DST_GID}" /dst
+fi

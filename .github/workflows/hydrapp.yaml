@@ -222,8 +222,6 @@ jobs:
             --dst="${PWD}/out/${{ matrix.target.pkg }}" --src="${PWD}" \
             --concurrency="$(nproc)" \
             --branch-id="${BRANCH_ID}" --branch-name="${BRANCH_NAME}"
-      - name: Fix permissions for output
-        run: sudo chown -R $USER .
       - name: Upload output
         uses: actions/upload-artifact@v2
         with:

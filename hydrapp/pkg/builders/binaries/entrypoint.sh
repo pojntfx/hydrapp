@@ -46,3 +46,7 @@ cd /dst
 
 tree -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
 tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ". |= map( . + {time: \"${COMMIT_TIME_RFC3339}\"} )" | tee 'index.json'
+
+if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
+    chown -R "${DST_UID}:${DST_GID}" /dst
+fi

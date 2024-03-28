@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/user"
+	"runtime"
 	"strings"
 	"time"
 	"unicode"
@@ -31,6 +33,16 @@ func DockerRunImage(
 	renderTemplates func(workdir string, ejecting bool) error,
 	cmds []string,
 ) error {
+	currentUser, err := user.Current()
+	if err != nil {
+		return err
+	}
+
+	if runtime.GOOS != "windows" {
+		env["DST_UID"] = currentUser.Uid
+		env["DST_GID"] = currentUser.Gid
+	}
+
 	images, err := cli.ImageList(ctx, types.ImageListOptions{})
 	if err != nil {
 		return err

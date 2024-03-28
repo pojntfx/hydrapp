@@ -53,3 +53,7 @@ Homepage=${BASE_URL}
 Description=Flatpaks for Hydrapp
 GPGKey=$(base64 -w 0 /tmp/repo.asc)
 " >/dst/hydrapp.flatpakrepo
+
+if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
+    chown -R "${DST_UID}:${DST_GID}" /dst
+fi

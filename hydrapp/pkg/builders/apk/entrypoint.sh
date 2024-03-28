@@ -97,3 +97,7 @@ cat >'.gitignore' <<'EOT'
 *config.py
 tmp
 EOT
+
+if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
+  chown -R "${DST_UID}:${DST_GID}" /dst
+fi

@@ -82,3 +82,7 @@ apt-ftparchive -c "${OS}-${DISTRO}.conf" release "." >"Release"
 gpg --output "repo.asc" --armor --export
 
 gpg --output "Release.gpg" -ba "Release"
+
+if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
+	chown -R "${DST_UID}:${DST_GID}" /dst
+fi
