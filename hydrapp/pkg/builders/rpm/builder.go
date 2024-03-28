@@ -62,7 +62,7 @@ func NewBuilder(
 		onOutput,
 		appID,
 		base64.StdEncoding.EncodeToString(pgpKey),
-		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
+		pgpKeyPassword,
 		pgpKeyID,
 		baseURL,
 		distro,

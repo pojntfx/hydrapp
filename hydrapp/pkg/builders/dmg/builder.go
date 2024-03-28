@@ -54,7 +54,7 @@ func NewBuilder(
 		appID,
 		appName,
 		base64.StdEncoding.EncodeToString(pgpKey),
-		base64.StdEncoding.EncodeToString([]byte(pgpKeyPassword)),
+		pgpKeyPassword,
 		packages,
 		releases,
 		overwrite,
