@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main
 Architecture: amd64 source
 Version: 0.0.1
 Checksums-Md5:
- c884f4a00315e7c38499e70f44109260 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- 7f863d95c24e02ab3ea1ac033ca034db 2852020 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ aa811e45b1a535ca917cc8a546c404bb 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 002bf5ed858282f3dbfe0693675ddf4c 2849764 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Checksums-Sha1:
- 274d685e5aa7af7449eef40d9b5a4b245e603226 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- b3014610fb9e762ddbf37c80b01fa79d8958eb13 2852020 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ cbd05d3a23df061c2387fd8ebfbc69bb3e43b650 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 8e414bdf6c9c69e677518db514dad09bf7da5d7e 2849764 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Checksums-Sha256:
- f6662b07a1f4dbcdde0936e8bccee987270b0bcf320cc66a60da00131fa21267 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
- 4f3906ac0ed14de86e9a34ecea5547297847bdb2e9d410522c69f12804828be7 2852020 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
+ 7255fa5d4dec5fa14cd0fd80794a3d197755873e3bd4c0d95c753d492d15c313 1170 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1.dsc
+ 5903828e9bb264e62f09c5b24849ae8dcf6c3333602f890808fdbae274a3b57e 2849764 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Thu, 28 Mar 2024 17:53:26 +0000
+Build-Date: Thu, 28 Mar 2024 20:43:45 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main-0.0.1
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
