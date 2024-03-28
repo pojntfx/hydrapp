@@ -4,6 +4,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	_ "embed"
 	"log"
@@ -26,7 +27,7 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	cfg, err := config.Parse(configFile)
+	cfg, err := config.Parse(bytes.NewBuffer(configFile))
 	if err != nil {
 		utils.HandlePanic("App", "could not parse config file", err)
 
