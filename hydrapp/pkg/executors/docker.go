@@ -31,7 +31,24 @@ func DockerRunImage(
 	renderTemplates func(workdir string, ejecting bool) error,
 	cmds []string,
 ) error {
-	if pull {
+	images, err := cli.ImageList(ctx, types.ImageListOptions{})
+	if err != nil {
+		return err
+	}
+
+	imageExists := false
+o:
+	for _, i := range images {
+		for _, t := range i.RepoTags {
+			if t == image {
+				imageExists = true
+
+				break o
+			}
+		}
+	}
+
+	if pull || !imageExists {
 		reader, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
 		if err != nil {
 			return err

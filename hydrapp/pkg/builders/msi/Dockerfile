@@ -15,6 +15,7 @@ RUN git checkout msys2-hacks-17
 RUN ./configure --enable-win64
 RUN make -j $(nproc)
 RUN make install
+RUN rm -rf /tmp/winesrc
 
 # Install MSYS2
 RUN curl -L -o /tmp/msys2.exe 'https://github.com/msys2/msys2-installer/releases/download/2024-01-13/msys2-base-x86_64-20240113.sfx.exe'

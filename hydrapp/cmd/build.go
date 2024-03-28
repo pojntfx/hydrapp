@@ -564,11 +564,9 @@ func init() {
 		panic(err)
 	}
 
-	buildCmd.PersistentFlags().Bool(noNetworkFlag, false, "Disable all network interaction")
-
 	buildCmd.PersistentFlags().String(configFlag, "hydrapp.yaml", "Config file to use")
 
-	buildCmd.PersistentFlags().Bool(pullFlag, false, "Whether to pull the images or not")
+	buildCmd.PersistentFlags().Bool(pullFlag, false, "Whether to (re-)pull the images or not")
 	buildCmd.PersistentFlags().String(tagFlag, "latest", "Image tag to use")
 	buildCmd.PersistentFlags().Int(concurrencyFlag, 1, "Maximum amount of concurrent builders to run at once")
 	buildCmd.PersistentFlags().Bool(ejectFlag, false, "Write platform-specific config files (AndroidManifest.xml, .spec etc.) to directory specified by --src, then exit (--exclude still applies)")
