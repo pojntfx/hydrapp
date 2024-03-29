@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -114,22 +113,32 @@ var buildCmd = &cobra.Command{
 			pgpKeyPassword = viper.GetString(pgpKeyPasswordFlag)
 			pgpKeyID = viper.GetString(pgpKeyIDFlag)
 
-			secretsFile, err := os.Open(viper.GetString(secretsFlag))
-			if err != nil {
-				return err
-			}
-			defer secretsFile.Close()
+			var scs secrets.Root
+			if strings.TrimSpace(viper.GetString(javaKeystoreFlag)) == "" &&
+				strings.TrimSpace(javaKeystorePassword) == "" &&
+				strings.TrimSpace(javaCertificatePassword) == "" &&
 
-			scs, err := secrets.Parse(secretsFile)
-			if err != nil {
-				return err
+				strings.TrimSpace(viper.GetString(pgpKeyFlag)) == "" &&
+				strings.TrimSpace(pgpKeyPassword) == "" &&
+				strings.TrimSpace(pgpKeyID) == "" {
+				secretsFile, err := os.Open(viper.GetString(secretsFlag))
+				if err != nil {
+					return err
+				}
+				defer secretsFile.Close()
+
+				s, err := secrets.Parse(secretsFile)
+				if err != nil {
+					return err
+				}
+				scs = *s
 			}
 
-			javaKeystore, err = os.ReadFile(viper.GetString(javaKeystoreFlag))
-			if err != nil {
-				if errors.Is(err, os.ErrNotExist) {
-					javaKeystore = scs.JavaSecrets.Keystore
-				} else {
+			if strings.TrimSpace(viper.GetString(javaKeystoreFlag)) == "" {
+				javaKeystore = scs.JavaSecrets.Keystore
+			} else {
+				javaKeystore, err = os.ReadFile(viper.GetString(javaKeystoreFlag))
+				if err != nil {
 					return err
 				}
 			}
@@ -142,11 +151,11 @@ var buildCmd = &cobra.Command{
 				javaCertificatePassword = base64.StdEncoding.EncodeToString([]byte(scs.JavaSecrets.CertificatePassword))
 			}
 
-			pgpKey, err = os.ReadFile(viper.GetString(pgpKeyFlag))
-			if err != nil {
-				if errors.Is(err, os.ErrNotExist) {
-					pgpKey = []byte(scs.PGPSecrets.Key)
-				} else {
+			if strings.TrimSpace(viper.GetString(pgpKeyFlag)) == "" {
+				pgpKey = []byte(scs.PGPSecrets.Key)
+			} else {
+				pgpKey, err = os.ReadFile(viper.GetString(pgpKeyFlag))
+				if err != nil {
 					return err
 				}
 			}
