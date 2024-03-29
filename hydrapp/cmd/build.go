@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"context"
+	"encoding/base64"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -28,6 +30,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/tests"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/secrets"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -95,16 +98,67 @@ var buildCmd = &cobra.Command{
 			return err
 		}
 
-		// secretsFile, err := os.Open(viper.GetString(secretsFlag))
-		// if err != nil {
-		// 	return err
-		// }
-		// defer secretsFile.Close()
+		var (
+			javaKeystore            []byte
+			javaKeystorePassword    string
+			javaCertificatePassword string
 
-		// scs, err := secrets.Parse(secretsFile)
-		// if err != nil {
-		// 	return err
-		// }
+			pgpKey         []byte
+			pgpKeyPassword string
+			pgpKeyID       string
+		)
+		if !viper.GetBool(ejectFlag) {
+			javaKeystorePassword = viper.GetString(javaKeystorePasswordFlag)
+			javaCertificatePassword = viper.GetString(javaCertificatePasswordFlag)
+
+			pgpKeyPassword = viper.GetString(pgpKeyPasswordFlag)
+			pgpKeyID = viper.GetString(pgpKeyIDFlag)
+
+			secretsFile, err := os.Open(viper.GetString(secretsFlag))
+			if err != nil {
+				return err
+			}
+			defer secretsFile.Close()
+
+			scs, err := secrets.Parse(secretsFile)
+			if err != nil {
+				return err
+			}
+
+			javaKeystore, err = os.ReadFile(viper.GetString(javaKeystoreFlag))
+			if err != nil {
+				if errors.Is(err, os.ErrNotExist) {
+					javaKeystore = scs.JavaSecrets.Keystore
+				} else {
+					return err
+				}
+			}
+
+			if strings.TrimSpace(javaKeystorePassword) == "" {
+				javaKeystorePassword = base64.StdEncoding.EncodeToString([]byte(scs.JavaSecrets.KeystorePassword))
+			}
+
+			if strings.TrimSpace(javaCertificatePassword) == "" {
+				javaCertificatePassword = base64.StdEncoding.EncodeToString([]byte(scs.JavaSecrets.CertificatePassword))
+			}
+
+			pgpKey, err = os.ReadFile(viper.GetString(pgpKeyFlag))
+			if err != nil {
+				if errors.Is(err, os.ErrNotExist) {
+					pgpKey = []byte(scs.PGPSecrets.Key)
+				} else {
+					return err
+				}
+			}
+
+			if strings.TrimSpace(pgpKeyPassword) == "" {
+				pgpKeyPassword = base64.StdEncoding.EncodeToString([]byte(scs.PGPSecrets.KeyPassword))
+			}
+
+			if strings.TrimSpace(pgpKeyID) == "" {
+				pgpKeyID = base64.StdEncoding.EncodeToString([]byte(scs.PGPSecrets.KeyID))
+			}
+		}
 
 		licenseText, err := os.ReadFile(filepath.Join(filepath.Dir(viper.GetString(configFlag)), "LICENSE"))
 		if err != nil {
@@ -119,22 +173,6 @@ var buildCmd = &cobra.Command{
 
 		// See https://github.com/rancher/rke/issues/1711#issuecomment-578382159
 		cli.NegotiateAPIVersion(ctx)
-
-		var javaKeystore []byte
-		if !viper.GetBool(ejectFlag) {
-			javaKeystore, err = os.ReadFile(viper.GetString(javaKeystoreFlag))
-			if err != nil {
-				return err
-			}
-		}
-
-		var pgpKey []byte
-		if !viper.GetBool(ejectFlag) {
-			pgpKey, err = os.ReadFile(viper.GetString(pgpKeyFlag))
-			if err != nil {
-				return err
-			}
-		}
 
 		handleID := func(id string) {
 			s := make(chan os.Signal, 1)
@@ -214,8 +252,8 @@ var buildCmd = &cobra.Command{
 					handleOutput,
 					cfg.App.ID,
 					pgpKey,
-					viper.GetString(pgpKeyPasswordFlag),
-					viper.GetString(pgpKeyIDFlag),
+					pgpKeyPassword,
+					pgpKeyID,
 					cfg.App.BaseURL+"/"+c.Path,
 					c.OS,
 					c.Distro,
@@ -264,7 +302,7 @@ var buildCmd = &cobra.Command{
 						cfg.App.ID,
 						cfg.App.Name,
 						pgpKey,
-						viper.GetString(pgpKeyPasswordFlag),
+						pgpKeyPassword,
 						cfg.DMG.Packages,
 						cfg.Releases,
 						viper.GetBool(overwriteFlag),
@@ -302,8 +340,8 @@ var buildCmd = &cobra.Command{
 					handleOutput,
 					cfg.App.ID,
 					pgpKey,
-					viper.GetString(pgpKeyPasswordFlag),
-					viper.GetString(pgpKeyIDFlag),
+					pgpKeyPassword,
+					pgpKeyID,
 					cfg.App.BaseURL+"/"+c.Path,
 					c.Architecture,
 					cfg.App.Name,
@@ -347,7 +385,7 @@ var buildCmd = &cobra.Command{
 					cfg.App.ID,
 					cfg.App.Name,
 					pgpKey,
-					viper.GetString(pgpKeyPasswordFlag),
+					pgpKeyPassword,
 					c.Architecture,
 					c.Packages,
 					cfg.Releases,
@@ -386,8 +424,8 @@ var buildCmd = &cobra.Command{
 					handleOutput,
 					cfg.App.ID,
 					pgpKey,
-					viper.GetString(pgpKeyPasswordFlag),
-					viper.GetString(pgpKeyIDFlag),
+					pgpKeyPassword,
+					pgpKeyID,
 					cfg.App.BaseURL+"/"+c.Path,
 					c.Distro,
 					c.Architecture,
@@ -430,10 +468,10 @@ var buildCmd = &cobra.Command{
 						handleOutput,
 						cfg.App.ID,
 						javaKeystore,
-						viper.GetString(javaKeystorePasswordFlag),
-						viper.GetString(javaCertificatePasswordFlag),
+						javaKeystorePassword,
+						javaCertificatePassword,
 						pgpKey,
-						viper.GetString(pgpKeyPasswordFlag),
+						pgpKeyPassword,
 						cfg.App.BaseURL+"/"+cfg.APK.Path,
 						cfg.App.Name,
 						viper.GetBool(overwriteFlag),
@@ -468,7 +506,7 @@ var buildCmd = &cobra.Command{
 						handleOutput,
 						cfg.App.ID,
 						pgpKey,
-						viper.GetString(pgpKeyPasswordFlag),
+						pgpKeyPassword,
 						cfg.App.Name,
 						viper.GetString(branchIDFlag),
 						viper.GetString(branchNameFlag),
