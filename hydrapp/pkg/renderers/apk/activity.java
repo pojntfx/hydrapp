@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
     }
   }
 
-  private native String LaunchBackend();
+  private native String LaunchBackend(String filesDir);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
   
     super.onCreate(savedInstanceState);
 
-    Uri home = Uri.parse(LaunchBackend());
+    Uri home = Uri.parse(LaunchBackend(getFilesDir().getAbsolutePath()));
 
     WebView view = new WebView(this);
     view.setLayoutParams(
