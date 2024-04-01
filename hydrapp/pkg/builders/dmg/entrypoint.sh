@@ -65,25 +65,22 @@ for ARCH in ${ARCHITECTURES}; do
   fi
 
   go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID}" -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
-  rcodesign sign "/tmp/${APP_ID}.${GOOS}-${DEBARCH}"
 
   export BINARIES="${BINARIES} /tmp/${APP_ID}.${GOOS}-${DEBARCH}"
 done
 
 lipo -create -output "/tmp/out/${APP_ID}.${GOOS}" ${BINARIES}
-rcodesign sign "/tmp/out/${APP_ID}.${GOOS}"
-gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}"
 
 cp "${BASEDIR}/Info.plist" '/tmp/out/'
 
 mkdir -p "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/"{MacOS,Resources}
 cp "/tmp/out/${APP_ID}.${GOOS}" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/MacOS/${APP_ID}"
-cp "/tmp/out/${APP_ID}.${GOOS}.asc" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/MacOS/${APP_ID}.asc"
 cp '/tmp/out/Info.plist' "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents"
 cp '/tmp/out/icon.icns' "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app/Contents/Resources"
 rcodesign sign "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt/${APP_NAME}.app"
 
-genisoimage -V "Install $(echo ${APP_NAME} | cut -c -24)" -D -R -apple -no-pad -o "/tmp/out/${APP_ID}.${GOOS}.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt"
+genisoimage -V "Install $(echo ${APP_NAME} | cut -c -24)" -D -R -apple -no-pad -o "/tmp/out/${APP_ID}.${GOOS}-uncompressed.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.mnt"
+dmg "/tmp/out/${APP_ID}.${GOOS}-uncompressed.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg"
 rcodesign sign "/tmp/out/${APP_ID}.${GOOS}.dmg"
 gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}.dmg"
 

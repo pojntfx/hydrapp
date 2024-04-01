@@ -9,7 +9,7 @@ RUN ln -s /osxcross/macports/pkgs/opt/ /opt
 
 # Install native dependencies
 RUN apt update
-RUN apt install -y genisoimage make imagemagick clang lld libc6-dev bzip2 curl npm tree jq
+RUN apt install -y genisoimage make imagemagick clang lld libc6-dev bzip2 curl npm tree jq zlib1g-dev cmake
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
@@ -25,6 +25,13 @@ ENV CGO_ENABLED=1
 RUN yes 1 | osxcross-macports select-mirror || true
 
 RUN cargo install apple-codesign
+
+RUN git clone --branch only_what_core_needs https://github.com/fanquake/libdmg-hfsplus.git /tmp/libdmg-hfsplus
+WORKDIR /tmp/libdmg-hfsplus
+RUN cmake . -B build
+RUN make -C build/dmg -j "$(nproc)"
+RUN install build/dmg/dmg /usr/local/bin
+RUN rm -rf /tmp/libdmg-hfsplus
 
 RUN git config --global --add safe.directory '*'
 
