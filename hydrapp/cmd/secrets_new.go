@@ -24,6 +24,11 @@ const (
 	pgpKeyFullNameFlag = "pgp-key-full-name"
 	pgpKeyEmailFlag    = "pgp-key-email"
 	pgpKeyPasswordFlag = "pgp-key-password"
+
+	fullNameDefault            = "Anonymous Hydrapp Developer"
+	emailDefault               = "test@example.com"
+	certificateValidityDefault = time.Hour * 24 * 365
+	javaRSABitsDefault         = 2048
 )
 
 var secretsNewCmd = &cobra.Command{
@@ -39,7 +44,7 @@ var secretsNewCmd = &cobra.Command{
 		if strings.TrimSpace(keystorePassword) == "" {
 			v, err := secrets.GeneratePassword(32)
 			if err != nil {
-				panic(err)
+				return err
 			}
 
 			keystorePassword = v
@@ -49,7 +54,7 @@ var secretsNewCmd = &cobra.Command{
 		if strings.TrimSpace(certificatePassword) == "" {
 			v, err := secrets.GeneratePassword(32)
 			if err != nil {
-				panic(err)
+				return err
 			}
 
 			certificatePassword = v
@@ -65,14 +70,14 @@ var secretsNewCmd = &cobra.Command{
 			viper.GetUint32(javaRSABitsFlag),
 			keystoreBuf,
 		); err != nil {
-			panic(err)
+			return err
 		}
 
 		pgpPassword := viper.GetString(pgpKeyPasswordFlag)
 		if strings.TrimSpace(pgpPassword) == "" {
 			v, err := secrets.GeneratePassword(32)
 			if err != nil {
-				panic(err)
+				return err
 			}
 
 			pgpPassword = v
@@ -84,7 +89,7 @@ var secretsNewCmd = &cobra.Command{
 			pgpPassword,
 		)
 		if err != nil {
-			panic(err)
+			return err
 		}
 
 		output := &secrets.Root{
@@ -104,7 +109,7 @@ var secretsNewCmd = &cobra.Command{
 			return err
 		}
 
-		out, err := os.OpenFile(viper.GetString(secretsFlag), os.O_CREATE|os.O_RDWR|os.O_TRUNC, os.ModePerm)
+		out, err := os.OpenFile(viper.GetString(secretsFlag), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -117,13 +122,13 @@ var secretsNewCmd = &cobra.Command{
 func init() {
 	secretsNewCmd.PersistentFlags().String(javaKeystorePasswordFlag, "", "Java/APK keystore password (auto-generated if not specified)")
 	secretsNewCmd.PersistentFlags().String(javaCertificatePasswordFlag, "", "Java/APK certificate password (auto-generated if not specified)")
-	secretsNewCmd.PersistentFlags().String(javaCertificateAliasFlag, "Anonymous Hydrapp Developer", "Java/APK certificate alias")
-	secretsNewCmd.PersistentFlags().String(javaCertificateCNAMEFlag, "Anonymous Hydrapp Developer", "Java/APK certificate CNAME")
-	secretsNewCmd.PersistentFlags().Duration(javaCertificateValidityFlag, time.Hour*24*365, "Java/APK certificate validty")
-	secretsNewCmd.PersistentFlags().Uint32(javaRSABitsFlag, 2048, "Java/APK RSA bits")
+	secretsNewCmd.PersistentFlags().String(javaCertificateAliasFlag, fullNameDefault, "Java/APK certificate alias")
+	secretsNewCmd.PersistentFlags().String(javaCertificateCNAMEFlag, fullNameDefault, "Java/APK certificate CNAME")
+	secretsNewCmd.PersistentFlags().Duration(javaCertificateValidityFlag, certificateValidityDefault, "Java/APK certificate validty")
+	secretsNewCmd.PersistentFlags().Uint32(javaRSABitsFlag, javaRSABitsDefault, "Java/APK RSA bits")
 
-	secretsNewCmd.PersistentFlags().String(pgpKeyFullNameFlag, "Anonymous Hydrapp Developer", "PGP key full name")
-	secretsNewCmd.PersistentFlags().String(pgpKeyEmailFlag, "test@example.com", "PGP key E-Mail")
+	secretsNewCmd.PersistentFlags().String(pgpKeyFullNameFlag, fullNameDefault, "PGP key full name")
+	secretsNewCmd.PersistentFlags().String(pgpKeyEmailFlag, emailDefault, "PGP key E-Mail")
 	secretsNewCmd.PersistentFlags().String(pgpKeyPasswordFlag, "", "PGP key password (auto-generated if not specified)")
 
 	viper.AutomaticEnv()

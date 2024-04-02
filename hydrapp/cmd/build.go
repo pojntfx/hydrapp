@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -33,6 +35,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -122,16 +125,83 @@ var buildCmd = &cobra.Command{
 				strings.TrimSpace(pgpKeyPassword) == "" &&
 				strings.TrimSpace(pgpKeyID) == "" {
 				secretsFile, err := os.Open(viper.GetString(secretsFlag))
-				if err != nil {
-					return err
-				}
-				defer secretsFile.Close()
+				if err == nil {
+					defer secretsFile.Close()
 
-				s, err := secrets.Parse(secretsFile)
-				if err != nil {
-					return err
+					s, err := secrets.Parse(secretsFile)
+					if err != nil {
+						return err
+					}
+					scs = *s
+				} else {
+					if !errors.Is(err, os.ErrNotExist) {
+						return err
+					}
+
+					keystorePassword, err := secrets.GeneratePassword(32)
+					if err != nil {
+						return err
+					}
+
+					certificatePassword, err := secrets.GeneratePassword(32)
+					if err != nil {
+						return err
+					}
+
+					keystoreBuf := &bytes.Buffer{}
+					if err := secrets.GenerateKeystore(
+						keystorePassword,
+						certificatePassword,
+						fullNameDefault,
+						fullNameDefault,
+						certificateValidityDefault,
+						javaRSABitsDefault,
+						keystoreBuf,
+					); err != nil {
+						return err
+					}
+
+					pgpPassword, err := secrets.GeneratePassword(32)
+					if err != nil {
+						return err
+					}
+
+					pgpKey, pgpKeyID, err := secrets.GeneratePGPKey(
+						fullNameDefault,
+						emailDefault,
+						pgpPassword,
+					)
+					if err != nil {
+						return err
+					}
+
+					scs = secrets.Root{
+						JavaSecrets: secrets.JavaSecrets{
+							Keystore:            keystoreBuf.Bytes(),
+							KeystorePassword:    keystorePassword,
+							CertificatePassword: certificatePassword,
+						},
+						PGPSecrets: secrets.PGPSecrets{
+							Key:         pgpKey,
+							KeyID:       pgpKeyID,
+							KeyPassword: pgpPassword,
+						},
+					}
+
+					if err := os.MkdirAll(filepath.Dir(viper.GetString(secretsFlag)), os.ModePerm); err != nil {
+						return err
+					}
+
+					out, err := os.OpenFile(viper.GetString(secretsFlag), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
+					if err != nil {
+						return err
+					}
+					defer out.Close()
+
+					if err := yaml.NewEncoder(out).Encode(scs); err != nil {
+						return err
+					}
 				}
-				scs = *s
 			}
 
 			if strings.TrimSpace(viper.GetString(javaKeystoreFlag)) == "" {
