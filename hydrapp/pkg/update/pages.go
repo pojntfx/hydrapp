@@ -29,16 +29,12 @@ type BrowserState struct {
 	Cmd *exec.Cmd
 }
 
-const (
-	goosMacOS   = "darwin"
-	goosWindows = "windows"
-)
-
 var (
 	ErrNoEscalationMethodFound = errors.New("no escalation method could be found")
 
 	CommitTimeRFC3339 = ""
 	BranchID          = ""
+	PackageType       = ""
 )
 
 type File struct {
@@ -84,25 +80,30 @@ func Update(
 
 		return
 	}
-	baseURL.Path = path.Join(baseURL.Path, cfg.Binaries.Path, BranchID, "index.json")
 
-	switch runtime.GOOS {
-	case goosWindows:
-		msiPath := ""
-		for _, c := range cfg.MSI {
-			if c.Architecture == runtime.GOOS {
-				msiPath = c.Path
+	switch PackageType {
+	case "dmg":
+		baseURL.Path = path.Join(baseURL.Path, cfg.DMG.Path, BranchID)
+
+	case "msi":
+		for _, msiCfg := range cfg.MSI {
+			if msiCfg.Architecture == runtime.GOARCH {
+				baseURL.Path = path.Join(baseURL.Path, msiCfg.Path, BranchID)
 
 				break
 			}
 		}
 
-		baseURL.Path = path.Join(baseURL.Path, msiPath, BranchID, "index.json")
-	case goosMacOS:
-		baseURL.Path = path.Join(baseURL.Path, cfg.DMG.Path, BranchID, "index.json")
+	default:
+		baseURL.Path = path.Join(baseURL.Path, cfg.Binaries.Path, BranchID)
 	}
 
-	res, err := http.DefaultClient.Get(baseURL.String())
+	indexURL, err := url.JoinPath(baseURL.String(), "index.json")
+	if err != nil {
+		panic(err)
+	}
+
+	res, err := http.DefaultClient.Get(indexURL)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 
@@ -123,16 +124,22 @@ func Update(
 		return
 	}
 
-	binary := builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
-	switch runtime.GOOS {
-	case goosWindows:
-		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + ".msi"
-	case goosMacOS:
+	binary := ""
+	switch PackageType {
+	case "dmg":
 		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + ".dmg"
+
+	case "msi":
+		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + ".msi"
+
+	default:
+		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
 	}
 
-	var downloadURL *url.URL
-	var releasetime time.Time
+	var (
+		downloadURL = ""
+		releasetime time.Time
+	)
 	for _, file := range index {
 		if file.Name == binary {
 			releasetime, err = time.Parse(time.RFC3339, file.Time)
@@ -143,20 +150,19 @@ func Update(
 			}
 
 			if buildtime.Before(releasetime) {
-				downloadURL, err = url.Parse(cfg.App.BaseURL)
+				downloadURL, err = url.JoinPath(baseURL.String(), binary)
 				if err != nil {
 					handlePanic(cfg.App.Name, err.Error(), err)
 
 					return
 				}
-				downloadURL.Path = path.Join(downloadURL.Path, cfg.Binaries.Path, BranchID, file.Name)
 			}
 
 			break
 		}
 	}
 
-	if downloadURL == nil {
+	if strings.TrimSpace(downloadURL) == "" {
 		return
 	}
 
@@ -184,7 +190,7 @@ func Update(
 	defer os.Remove(updatedExecutable.Name())
 
 	{
-		res, err := http.Get(downloadURL.String())
+		res, err := http.Get(downloadURL)
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
 
@@ -275,8 +281,8 @@ func Update(
 		return
 	}
 
-	switch runtime.GOOS {
-	case "windows":
+	switch PackageType {
+	case "msi":
 		if output, err := exec.Command("cmd.exe", "/C", "start", "/b", updatedExecutable.Name()).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not start update installer with output: %s: %v", output, err)
 
@@ -284,7 +290,8 @@ func Update(
 
 			return
 		}
-	case "darwin":
+
+	case "dmg":
 		mountpoint, err := os.MkdirTemp(os.TempDir(), "update-mountpoint")
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -339,36 +346,30 @@ func Update(
 
 			return
 		}
+
 	default:
-		if err := os.Chmod(updatedExecutable.Name(), 0755); err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
+		switch runtime.GOOS {
+		// TODO: Implement "windows" and "darwin" updaters
 
-			return
-		}
-
-		// Escalate using Polkit
-		if pkexec, err := exec.LookPath("pkexec"); err == nil {
-			if output, err := exec.Command(pkexec, "cp", "-f", updatedExecutable.Name(), oldExecutable).CombinedOutput(); err != nil {
-				err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
-
-				handlePanic(cfg.App.Name, err.Error(), err)
-
-				return
-			}
-		} else {
-			// Escalate using using terminal emulator
-			xterm, err := exec.LookPath("xterm")
-			if err != nil {
-				err := fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
-
+		default:
+			if err := os.Chmod(updatedExecutable.Name(), 0755); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
 
 				return
 			}
 
-			suid, err := exec.LookPath("sudo")
-			if err != nil {
-				suid, err = exec.LookPath("doas")
+			// Escalate using Polkit
+			if pkexec, err := exec.LookPath("pkexec"); err == nil {
+				if output, err := exec.Command(pkexec, "cp", "-f", updatedExecutable.Name(), oldExecutable).CombinedOutput(); err != nil {
+					err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
+
+					handlePanic(cfg.App.Name, err.Error(), err)
+
+					return
+				}
+			} else {
+				// Escalate using using terminal emulator
+				xterm, err := exec.LookPath("xterm")
 				if err != nil {
 					err := fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
 
@@ -376,26 +377,38 @@ func Update(
 
 					return
 				}
+
+				suid, err := exec.LookPath("sudo")
+				if err != nil {
+					suid, err = exec.LookPath("doas")
+					if err != nil {
+						err := fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
+
+						handlePanic(cfg.App.Name, err.Error(), err)
+
+						return
+					}
+				}
+
+				if output, err := exec.Command(
+					xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedExecutable.Name(), oldExecutable),
+				).CombinedOutput(); err != nil {
+					err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
+
+					handlePanic(cfg.App.Name, err.Error(), err)
+
+					return
+				}
 			}
 
-			if output, err := exec.Command(
-				xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedExecutable.Name(), oldExecutable),
-			).CombinedOutput(); err != nil {
-				err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
-
+			if err := utils.ForkExec(
+				oldExecutable,
+				os.Args,
+			); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
 
 				return
 			}
-		}
-
-		if err := utils.ForkExec(
-			oldExecutable,
-			os.Args,
-		); err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 	}
 

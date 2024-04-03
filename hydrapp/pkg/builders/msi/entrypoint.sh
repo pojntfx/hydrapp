@@ -66,14 +66,14 @@ if [ "${ARCHITECTURE}" = "amd64" ]; then
   cp -r . '/root/.wine/drive_c/users/root/Documents/go-workspace'
   rm -rf '/root/.wine/drive_c/users/root/Documents/go-workspace/out'
 
-  wine64 bash.exe -c "export PATH=$PATH:/ucrt64/bin:/msys64/usr/bin GOPATH=/c/go GOROOT=/ucrt64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 GOPROXY='https://proxy.golang.org,direct' GOFLAGS=${GOFLAGS} && cd /c/users/root/Documents/go-workspace && git config --add safe.directory '*' && go build -ldflags='-linkmode=external -H=windowsgui -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID}' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ${GOMAIN}"
+  wine64 bash.exe -c "export PATH=$PATH:/ucrt64/bin:/msys64/usr/bin GOPATH=/c/go GOROOT=/ucrt64/lib/go TMP=/c/tmp TEMP=/c/tmp GOARCH=amd64 CGO_ENABLED=1 GOPROXY='https://proxy.golang.org,direct' GOFLAGS=${GOFLAGS} && cd /c/users/root/Documents/go-workspace && git config --add safe.directory '*' && go build -ldflags='-linkmode=external -H=windowsgui -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.PackageType=msi' -x -v -o out/${APP_ID}.${GOOS}-${DEBARCH}.exe ${GOMAIN}"
 
   # Copy binaries to staging directory
   yes | cp -rf /root/.wine/drive_c/users/root/Documents/go-workspace/out/* '/tmp/out'
 
   find /root/.wine/drive_c/msys64/ucrt64/ -regex "${MSYS2INCLUDE}" -print0 | tar -c --null --files-from - | tar -C '/tmp/out' -x --strip-components=5
 else
-  go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID}" -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" "${GOMAIN}"
+  go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.PackageType=msi" -o "/tmp/out/${APP_ID}.${GOOS}-${DEBARCH}.exe" "${GOMAIN}"
 fi
 
 cd '/tmp/out'
