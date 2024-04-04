@@ -16,6 +16,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -43,6 +44,12 @@ type File struct {
 	Time string `json:"time"`
 }
 
+type downloadConfiguration struct {
+	description string
+	url         string
+	dst         *os.File
+}
+
 // See https://github.com/pojntfx/bagop/blob/main/main.go#L33
 func getBinIdentifier(goOS, goArch string) string {
 	if goOS == "windows" {
@@ -67,7 +74,7 @@ func Update(
 		return
 	}
 
-	buildtime, err := time.Parse(time.RFC3339, CommitTimeRFC3339)
+	currentBinaryBuildTime, err := time.Parse(time.RFC3339, CommitTimeRFC3339)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 
@@ -124,33 +131,51 @@ func Update(
 		return
 	}
 
-	binary := ""
+	updatedBinaryName := ""
 	switch PackageType {
 	case "dmg":
-		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + ".dmg"
+		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + ".dmg"
 
 	case "msi":
-		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + ".msi"
+		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + ".msi"
 
 	default:
-		binary = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
+		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
 	}
 
 	var (
-		downloadURL = ""
-		releasetime time.Time
+		updatedBinaryURL         = ""
+		updatedBinaryReleaseTime time.Time
+
+		updatedRepoKeyURL = ""
+
+		updatedSignatureURL = ""
 	)
 	for _, file := range index {
-		if file.Name == binary {
-			releasetime, err = time.Parse(time.RFC3339, file.Time)
+		if file.Name == updatedBinaryName {
+			updatedBinaryReleaseTime, err = time.Parse(time.RFC3339, file.Time)
 			if err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
 
 				return
 			}
 
-			if buildtime.Before(releasetime) {
-				downloadURL, err = url.JoinPath(baseURL.String(), binary)
+			if currentBinaryBuildTime.Before(updatedBinaryReleaseTime) {
+				updatedBinaryURL, err = url.JoinPath(baseURL.String(), updatedBinaryName)
+				if err != nil {
+					handlePanic(cfg.App.Name, err.Error(), err)
+
+					return
+				}
+
+				updatedRepoKeyURL, err = url.JoinPath(baseURL.String(), updatedBinaryName+".asc")
+				if err != nil {
+					handlePanic(cfg.App.Name, err.Error(), err)
+
+					return
+				}
+
+				updatedSignatureURL, err = url.JoinPath(baseURL.String(), "repo.asc")
 				if err != nil {
 					handlePanic(cfg.App.Name, err.Error(), err)
 
@@ -162,12 +187,12 @@ func Update(
 		}
 	}
 
-	if strings.TrimSpace(downloadURL) == "" {
+	if strings.TrimSpace(updatedBinaryURL) == "" {
 		return
 	}
 
 	if err := zenity.Question(
-		fmt.Sprintf("Do you want to upgrade from version %v to %v now?", buildtime, releasetime),
+		fmt.Sprintf("Do you want to upgrade from version %v to %v now?", currentBinaryBuildTime, updatedBinaryReleaseTime),
 		zenity.Title("Update available"),
 		zenity.OKLabel("Update now"),
 		zenity.CancelLabel("Ask me next time"),
@@ -181,16 +206,50 @@ func Update(
 		return
 	}
 
-	updatedExecutable, err := ioutil.TempFile(os.TempDir(), binary)
+	updatedBinaryFile, err := os.CreateTemp(os.TempDir(), updatedBinaryName)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 
 		return
 	}
-	defer os.Remove(updatedExecutable.Name())
+	defer os.Remove(updatedBinaryFile.Name())
 
-	{
-		res, err := http.Get(downloadURL)
+	updatedSignatureFile, err := os.CreateTemp(os.TempDir(), updatedBinaryName+".asc")
+	if err != nil {
+		handlePanic(cfg.App.Name, err.Error(), err)
+
+		return
+	}
+	defer os.Remove(updatedSignatureFile.Name())
+
+	updatedRepoKeyFile, err := os.CreateTemp(os.TempDir(), "repo.asc")
+	if err != nil {
+		handlePanic(cfg.App.Name, err.Error(), err)
+
+		return
+	}
+	defer os.Remove(updatedRepoKeyFile.Name())
+
+	downloadConfigurations := []downloadConfiguration{
+		{
+			description: "Downloading binary",
+			url:         updatedBinaryURL,
+			dst:         updatedBinaryFile,
+		},
+		{
+			description: "Downloading signature",
+			url:         updatedSignatureURL,
+			dst:         updatedSignatureFile,
+		},
+		{
+			description: "Downloading repo key",
+			url:         updatedRepoKeyURL,
+			dst:         updatedRepoKeyFile,
+		},
+	}
+
+	for _, downloadConfiguration := range downloadConfigurations {
+		res, err := http.Get(downloadConfiguration.url)
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
 
@@ -212,7 +271,7 @@ func Update(
 		}
 
 		dialog, err := zenity.Progress(
-			zenity.Title("Downloading update"),
+			zenity.Title(downloadConfiguration.description),
 		)
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -220,17 +279,21 @@ func Update(
 			return
 		}
 
+		var dialogWg sync.WaitGroup
+		dialogWg.Add(1)
 		go func() {
 			ticker := time.NewTicker(time.Millisecond * 50)
 			defer func() {
+				defer dialogWg.Done()
+
 				ticker.Stop()
 
 				if err := dialog.Complete(); err != nil {
-					handlePanic(cfg.App.Name, "could not open progress dialog", err)
+					handlePanic(cfg.App.Name, "could not open download progress dialog", err)
 				}
 
 				if err := dialog.Close(); err != nil {
-					handlePanic(cfg.App.Name, "could not close progress dialog", err)
+					handlePanic(cfg.App.Name, "could not close download progress dialog", err)
 				}
 			}()
 
@@ -240,7 +303,7 @@ func Update(
 
 					return
 				case <-ticker.C:
-					stat, err := updatedExecutable.Stat()
+					stat, err := downloadConfiguration.dst.Stat()
 					if err != nil {
 						handlePanic(cfg.App.Name, "could not get info on updated executable", err)
 					}
@@ -253,11 +316,11 @@ func Update(
 					percentage := int((float64(downloadedSize) / float64(totalSize)) * 100)
 
 					if err := dialog.Value(percentage); err != nil {
-						handlePanic(cfg.App.Name, "could not set update progress percentage", err)
+						handlePanic(cfg.App.Name, "could not set update download progress percentage", err)
 					}
 
 					if err := dialog.Text(fmt.Sprintf("%v%% (%v MB/%v MB)", percentage, downloadedSize/(1024*1024), totalSize/(1024*1024))); err != nil {
-						handlePanic(cfg.App.Name, "could not set update progress description", err)
+						handlePanic(cfg.App.Name, "could not set update download progress description", err)
 					}
 
 					if percentage == 100 {
@@ -267,11 +330,43 @@ func Update(
 			}
 		}()
 
-		if _, err := io.Copy(updatedExecutable, res.Body); err != nil {
+		if _, err := io.Copy(downloadConfiguration.dst, res.Body); err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
 
 			return
 		}
+
+		dialogWg.Wait()
+	}
+
+	dialog, err := zenity.Progress(
+		zenity.Title("Validating update"),
+		zenity.Pulsate(),
+	)
+	if err != nil {
+		handlePanic(cfg.App.Name, err.Error(), err)
+
+		return
+	}
+
+	if err := dialog.Text("Reading repo key"); err != nil {
+		handlePanic(cfg.App.Name, "could not set update validation progress description", err)
+	}
+
+	// TODO: Read repo public key
+
+	if err := dialog.Text("Validating binary with signature and key"); err != nil {
+		handlePanic(cfg.App.Name, "could not set update validation progress description", err)
+	}
+
+	// TODO: Validate binary with signature and key
+
+	if err := dialog.Complete(); err != nil {
+		handlePanic(cfg.App.Name, "could not open validation progress dialog", err)
+	}
+
+	if err := dialog.Close(); err != nil {
+		handlePanic(cfg.App.Name, "could not close validation progress dialog", err)
 	}
 
 	oldExecutable, err := os.Executable()
@@ -283,7 +378,7 @@ func Update(
 
 	switch PackageType {
 	case "msi":
-		if output, err := exec.Command("cmd.exe", "/C", "start", "/b", updatedExecutable.Name()).CombinedOutput(); err != nil {
+		if output, err := exec.Command("cmd.exe", "/C", "start", "/b", updatedBinaryFile.Name()).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not start update installer with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -300,7 +395,7 @@ func Update(
 		}
 		defer os.RemoveAll(mountpoint)
 
-		if output, err := exec.Command("hdiutil", "attach", "-mountpoint", mountpoint, updatedExecutable.Name()).CombinedOutput(); err != nil {
+		if output, err := exec.Command("hdiutil", "attach", "-mountpoint", mountpoint, updatedBinaryFile.Name()).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not attach DMG with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -352,7 +447,7 @@ func Update(
 		// TODO: Implement "windows" and "darwin" updaters
 
 		default:
-			if err := os.Chmod(updatedExecutable.Name(), 0755); err != nil {
+			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
 
 				return
@@ -360,7 +455,7 @@ func Update(
 
 			// Escalate using Polkit
 			if pkexec, err := exec.LookPath("pkexec"); err == nil {
-				if output, err := exec.Command(pkexec, "cp", "-f", updatedExecutable.Name(), oldExecutable).CombinedOutput(); err != nil {
+				if output, err := exec.Command(pkexec, "cp", "-f", updatedBinaryFile.Name(), oldExecutable).CombinedOutput(); err != nil {
 					err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
 
 					handlePanic(cfg.App.Name, err.Error(), err)
@@ -391,7 +486,7 @@ func Update(
 				}
 
 				if output, err := exec.Command(
-					xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedExecutable.Name(), oldExecutable),
+					xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedBinaryFile.Name(), oldExecutable),
 				).CombinedOutput(); err != nil {
 					err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
 
