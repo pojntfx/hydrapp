@@ -20,6 +20,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/ProtonMail/gopenpgp/v2/crypto"
 	"github.com/ncruces/zenity"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
@@ -77,15 +78,11 @@ func Update(
 	currentBinaryBuildTime, err := time.Parse(time.RFC3339, CommitTimeRFC3339)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 
 	baseURL, err := url.Parse(cfg.App.BaseURL)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 
 	switch PackageType {
@@ -107,28 +104,22 @@ func Update(
 
 	indexURL, err := url.JoinPath(baseURL.String(), "index.json")
 	if err != nil {
-		panic(err)
+		handlePanic(cfg.App.Name, err.Error(), err)
 	}
 
 	res, err := http.DefaultClient.Get(indexURL)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 
 	var index []File
 	if err := json.Unmarshal(body, &index); err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 
 	updatedBinaryName := ""
@@ -156,30 +147,22 @@ func Update(
 			updatedBinaryReleaseTime, err = time.Parse(time.RFC3339, file.Time)
 			if err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
-
-				return
 			}
 
 			if currentBinaryBuildTime.Before(updatedBinaryReleaseTime) {
 				updatedBinaryURL, err = url.JoinPath(baseURL.String(), updatedBinaryName)
 				if err != nil {
 					handlePanic(cfg.App.Name, err.Error(), err)
-
-					return
 				}
 
-				updatedRepoKeyURL, err = url.JoinPath(baseURL.String(), updatedBinaryName+".asc")
+				updatedRepoKeyURL, err = url.JoinPath(baseURL.String(), "repo.asc")
 				if err != nil {
 					handlePanic(cfg.App.Name, err.Error(), err)
-
-					return
 				}
 
-				updatedSignatureURL, err = url.JoinPath(baseURL.String(), "repo.asc")
+				updatedSignatureURL, err = url.JoinPath(baseURL.String(), updatedBinaryName+".asc")
 				if err != nil {
 					handlePanic(cfg.App.Name, err.Error(), err)
-
-					return
 				}
 			}
 
@@ -202,31 +185,23 @@ func Update(
 		}
 
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 
 	updatedBinaryFile, err := os.CreateTemp(os.TempDir(), updatedBinaryName)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 	defer os.Remove(updatedBinaryFile.Name())
 
 	updatedSignatureFile, err := os.CreateTemp(os.TempDir(), updatedBinaryName+".asc")
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 	defer os.Remove(updatedSignatureFile.Name())
 
 	updatedRepoKeyFile, err := os.CreateTemp(os.TempDir(), "repo.asc")
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 	defer os.Remove(updatedRepoKeyFile.Name())
 
@@ -252,22 +227,16 @@ func Update(
 		res, err := http.Get(downloadConfiguration.url)
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 		if res.StatusCode != http.StatusOK {
 			err := fmt.Errorf("%v", res.Status)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		totalSize, err := strconv.Atoi(res.Header.Get("Content-Length"))
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		dialog, err := zenity.Progress(
@@ -275,8 +244,6 @@ func Update(
 		)
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		var dialogWg sync.WaitGroup
@@ -332,8 +299,6 @@ func Update(
 
 		if _, err := io.Copy(downloadConfiguration.dst, res.Body); err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		dialogWg.Wait()
@@ -345,21 +310,51 @@ func Update(
 	)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 
-	if err := dialog.Text("Reading repo key"); err != nil {
+	if err := dialog.Text("Reading repo key and signature"); err != nil {
 		handlePanic(cfg.App.Name, "could not set update validation progress description", err)
 	}
 
-	// TODO: Read repo public key
+	if _, err := updatedRepoKeyFile.Seek(0, io.SeekStart); err != nil {
+		handlePanic(cfg.App.Name, "could not read repo key", err)
+	}
+
+	updatedRepoKey, err := crypto.NewKeyFromArmoredReader(updatedRepoKeyFile)
+	if err != nil {
+		handlePanic(cfg.App.Name, "could not parse repo key", err)
+	}
+
+	updatedKeyRing, err := crypto.NewKeyRing(updatedRepoKey)
+	if err != nil {
+		handlePanic(cfg.App.Name, "could not create key ring", err)
+	}
+
+	if _, err := updatedSignatureFile.Seek(0, io.SeekStart); err != nil {
+		handlePanic(cfg.App.Name, "could not read signature", err)
+	}
+
+	rawUpdatedSignature, err := io.ReadAll(updatedSignatureFile)
+	if err != nil {
+		handlePanic(cfg.App.Name, "could not read signature", err)
+	}
+
+	updatedSignature, err := crypto.NewPGPSignatureFromArmored(string(rawUpdatedSignature))
+	if err != nil {
+		handlePanic(cfg.App.Name, "could not parse signature", err)
+	}
 
 	if err := dialog.Text("Validating binary with signature and key"); err != nil {
 		handlePanic(cfg.App.Name, "could not set update validation progress description", err)
 	}
 
-	// TODO: Validate binary with signature and key
+	if _, err := updatedBinaryFile.Seek(0, io.SeekStart); err != nil {
+		handlePanic(cfg.App.Name, "could not read binary", err)
+	}
+
+	if err := updatedKeyRing.VerifyDetachedStream(updatedBinaryFile, updatedSignature, crypto.GetUnixTime()); err != nil {
+		handlePanic(cfg.App.Name, "could not validate binary", err)
+	}
 
 	if err := dialog.Complete(); err != nil {
 		handlePanic(cfg.App.Name, "could not open validation progress dialog", err)
@@ -372,8 +367,6 @@ func Update(
 	oldExecutable, err := os.Executable()
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
-
-		return
 	}
 
 	switch PackageType {
@@ -382,16 +375,12 @@ func Update(
 			err := fmt.Errorf("could not start update installer with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 	case "dmg":
 		mountpoint, err := os.MkdirTemp(os.TempDir(), "update-mountpoint")
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 		defer os.RemoveAll(mountpoint)
 
@@ -399,38 +388,28 @@ func Update(
 			err := fmt.Errorf("could not attach DMG with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		appPath, err := filepath.Abs(filepath.Join(oldExecutable, "..", ".."))
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		appsPath, err := filepath.Abs(filepath.Join(appPath, ".."))
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		if output, err := exec.Command("osascript", "-e", fmt.Sprintf(`do shell script "rm -rf \"%v\" && cp -r \"%v\"/* \"%v\"" with administrator privileges`, appPath, mountpoint, appsPath)).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not replace old app with new app with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		if output, err := exec.Command("hdiutil", "unmount", mountpoint).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not detach DMG with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 		if err := utils.ForkExec(
@@ -438,8 +417,6 @@ func Update(
 			os.Args,
 		); err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
-
-			return
 		}
 
 	default:
@@ -449,8 +426,6 @@ func Update(
 		default:
 			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
-
-				return
 			}
 
 			// Escalate using Polkit
@@ -459,8 +434,6 @@ func Update(
 					err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
 
 					handlePanic(cfg.App.Name, err.Error(), err)
-
-					return
 				}
 			} else {
 				// Escalate using using terminal emulator
@@ -469,8 +442,6 @@ func Update(
 					err := fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
 
 					handlePanic(cfg.App.Name, err.Error(), err)
-
-					return
 				}
 
 				suid, err := exec.LookPath("sudo")
@@ -480,8 +451,6 @@ func Update(
 						err := fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
 
 						handlePanic(cfg.App.Name, err.Error(), err)
-
-						return
 					}
 				}
 
@@ -491,8 +460,6 @@ func Update(
 					err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
 
 					handlePanic(cfg.App.Name, err.Error(), err)
-
-					return
 				}
 			}
 
@@ -501,8 +468,6 @@ func Update(
 				os.Args,
 			); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
-
-				return
 			}
 		}
 	}
@@ -514,8 +479,6 @@ func Update(
 				err := fmt.Errorf("could not close old version: %v: %v", string(output), err)
 
 				handlePanic(cfg.App.Name, err.Error(), err)
-
-				return
 			}
 		} else {
 			// We ignore errors here as the old process might already have finished etc.
