@@ -400,7 +400,11 @@ func Update(
 			handlePanic(cfg.App.Name, err.Error(), err)
 		}
 
-		if output, err := exec.Command("osascript", "-e", fmt.Sprintf(`do shell script "rm -rf '%v' && cp -r '%v'/* '%v'" with administrator privileges`, appPath, mountpoint, appsPath)).CombinedOutput(); err != nil {
+		if output, err := exec.Command(
+			"osascript",
+			"-e",
+			fmt.Sprintf(`do shell script "rm -rf '%v' && cp -r '%v'/* '%v'" with administrator privileges with prompt "Authentication Required: Authentication is needed to apply the update."`, appPath, mountpoint, appsPath),
+		).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not replace old app with new app with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -448,7 +452,11 @@ func Update(
 				handlePanic(cfg.App.Name, err.Error(), err)
 			}
 
-			if output, err := exec.Command("osascript", "-e", fmt.Sprintf(`do shell script "cp -f '%v' '%v' with administrator privileges with prompt "Authentication Required: Authentication is needed to apply the update.`, updatedBinaryFile.Name(), oldExecutable)).CombinedOutput(); err != nil {
+			if output, err := exec.Command(
+				"osascript",
+				"-e",
+				fmt.Sprintf(`do shell script "cp -f '%v' '%v'" with administrator privileges with prompt "Authentication Required: Authentication is needed to apply the update."`, updatedBinaryFile.Name(), oldExecutable),
+			).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
 				handlePanic(cfg.App.Name, err.Error(), err)
