@@ -272,7 +272,7 @@ func Update(
 				case <-ticker.C:
 					stat, err := downloadConfiguration.dst.Stat()
 					if err != nil {
-						handlePanic(cfg.App.Name, "could not get info on updated executable", err)
+						handlePanic(cfg.App.Name, "could not get info on updated binary", err)
 					}
 
 					downloadedSize := stat.Size()
@@ -400,7 +400,7 @@ func Update(
 			handlePanic(cfg.App.Name, err.Error(), err)
 		}
 
-		if output, err := exec.Command("osascript", "-e", fmt.Sprintf(`do shell script "rm -rf \"%v\" && cp -r \"%v\"/* \"%v\"" with administrator privileges`, appPath, mountpoint, appsPath)).CombinedOutput(); err != nil {
+		if output, err := exec.Command("osascript", "-e", fmt.Sprintf(`do shell script "rm -rf '%v' && cp -r '%v'/* '%v'" with administrator privileges`, appPath, mountpoint, appsPath)).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not replace old app with new app with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -421,7 +421,45 @@ func Update(
 
 	default:
 		switch runtime.GOOS {
-		// TODO: Implement "windows" and "darwin" updaters
+		case "windows":
+			if err := utils.ForkExec(
+				oldExecutable,
+				os.Args,
+			); err != nil {
+				handlePanic(cfg.App.Name, err.Error(), err)
+			}
+
+			// TODO: Run as admin
+			if output, err := exec.Command("cmd.exe", "/C", "move", oldExecutable, "%TEMP%").CombinedOutput(); err != nil {
+				err := fmt.Errorf("could not move away old binary with output: %s: %v", output, err)
+
+				handlePanic(cfg.App.Name, err.Error(), err)
+			}
+
+			// TODO: Run as admin
+			if output, err := exec.Command("cmd.exe", "/C", "copy", updatedBinaryFile.Name(), oldExecutable).CombinedOutput(); err != nil {
+				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
+
+				handlePanic(cfg.App.Name, err.Error(), err)
+			}
+
+		case "darwin":
+			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
+				handlePanic(cfg.App.Name, err.Error(), err)
+			}
+
+			if output, err := exec.Command("osascript", "-e", fmt.Sprintf(`do shell script "cp -f '%v' '%v' with administrator privileges with prompt "Authentication Required: Authentication is needed to apply the update.`, updatedBinaryFile.Name(), oldExecutable)).CombinedOutput(); err != nil {
+				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
+
+				handlePanic(cfg.App.Name, err.Error(), err)
+			}
+
+			if err := utils.ForkExec(
+				oldExecutable,
+				os.Args,
+			); err != nil {
+				handlePanic(cfg.App.Name, err.Error(), err)
+			}
 
 		default:
 			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
@@ -431,7 +469,7 @@ func Update(
 			// Escalate using Polkit
 			if pkexec, err := exec.LookPath("pkexec"); err == nil {
 				if output, err := exec.Command(pkexec, "cp", "-f", updatedBinaryFile.Name(), oldExecutable).CombinedOutput(); err != nil {
-					err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
+					err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
 					handlePanic(cfg.App.Name, err.Error(), err)
 				}
@@ -457,7 +495,7 @@ func Update(
 				if output, err := exec.Command(
 					xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedBinaryFile.Name(), oldExecutable),
 				).CombinedOutput(); err != nil {
-					err := fmt.Errorf("could not install updated executable with output: %s: %v", output, err)
+					err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
 					handlePanic(cfg.App.Name, err.Error(), err)
 				}
