@@ -364,14 +364,14 @@ func Update(
 		handlePanic(cfg.App.Name, "could not close validation progress dialog", err)
 	}
 
-	oldExecutable, err := os.Executable()
+	oldBinary, err := os.Executable()
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 	}
 
 	switch PackageType {
 	case "msi":
-		if output, err := exec.Command("cmd.exe", "/C", "start", "/b", updatedBinaryFile.Name()).CombinedOutput(); err != nil {
+		if output, err := exec.Command("msiexec.exe", "/i", updatedBinaryFile.Name()).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not start update installer with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -390,7 +390,7 @@ func Update(
 			handlePanic(cfg.App.Name, err.Error(), err)
 		}
 
-		appPath, err := filepath.Abs(filepath.Join(oldExecutable, "..", ".."))
+		appPath, err := filepath.Abs(filepath.Join(oldBinary, "..", ".."))
 		if err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
 		}
@@ -417,7 +417,7 @@ func Update(
 		}
 
 		if err := utils.ForkExec(
-			oldExecutable,
+			oldBinary,
 			os.Args,
 		); err != nil {
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -427,22 +427,14 @@ func Update(
 		switch runtime.GOOS {
 		case "windows":
 			if err := utils.ForkExec(
-				oldExecutable,
+				oldBinary,
 				os.Args,
 			); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
 			}
 
-			// TODO: Run as admin
-			if output, err := exec.Command("cmd.exe", "/C", "move", oldExecutable, "%TEMP%").CombinedOutput(); err != nil {
+			if output, err := exec.Command("powershell.exe", "-Command", fmt.Sprintf(`Start-Process powershell.exe -ArgumentList 'Move-Item -Path "%v" -Destination $env:TEMP; Copy-Item "%v" "%v"' -Verb RunAs`, oldBinary, updatedBinaryFile.Name(), oldBinary)).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not move away old binary with output: %s: %v", output, err)
-
-				handlePanic(cfg.App.Name, err.Error(), err)
-			}
-
-			// TODO: Run as admin
-			if output, err := exec.Command("cmd.exe", "/C", "copy", updatedBinaryFile.Name(), oldExecutable).CombinedOutput(); err != nil {
-				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
 				handlePanic(cfg.App.Name, err.Error(), err)
 			}
@@ -455,7 +447,7 @@ func Update(
 			if output, err := exec.Command(
 				"osascript",
 				"-e",
-				fmt.Sprintf(`do shell script "cp -f '%v' '%v'" with administrator privileges with prompt "Authentication Required: Authentication is needed to apply the update."`, updatedBinaryFile.Name(), oldExecutable),
+				fmt.Sprintf(`do shell script "cp -f '%v' '%v'" with administrator privileges with prompt "Authentication Required: Authentication is needed to apply the update."`, updatedBinaryFile.Name(), oldBinary),
 			).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
@@ -463,7 +455,7 @@ func Update(
 			}
 
 			if err := utils.ForkExec(
-				oldExecutable,
+				oldBinary,
 				os.Args,
 			); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
@@ -476,7 +468,7 @@ func Update(
 
 			// Escalate using Polkit
 			if pkexec, err := exec.LookPath("pkexec"); err == nil {
-				if output, err := exec.Command(pkexec, "cp", "-f", updatedBinaryFile.Name(), oldExecutable).CombinedOutput(); err != nil {
+				if output, err := exec.Command(pkexec, "cp", "-f", updatedBinaryFile.Name(), oldBinary).CombinedOutput(); err != nil {
 					err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
 					handlePanic(cfg.App.Name, err.Error(), err)
@@ -501,7 +493,7 @@ func Update(
 				}
 
 				if output, err := exec.Command(
-					xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedBinaryFile.Name(), oldExecutable),
+					xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedBinaryFile.Name(), oldBinary),
 				).CombinedOutput(); err != nil {
 					err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
@@ -510,7 +502,7 @@ func Update(
 			}
 
 			if err := utils.ForkExec(
-				oldExecutable,
+				oldBinary,
 				os.Args,
 			); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
