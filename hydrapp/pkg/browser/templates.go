@@ -6,30 +6,43 @@ user_pref("browser.link.open_newwindow.restriction", 0);
 user_pref("browser.tabs.firefox-view", false);
 user_pref("datareporting.policy.firstRunURL", "");
 user_pref("browser.tabs.tabmanager.enabled", false);
+user_pref("browser.shell.checkDefaultBrowser", false);
+user_pref("datareporting.policy.dataSubmissionPolicyBypassNotification", true);
+user_pref("browser.tabs.warnOnClose", false);
+user_pref("browser.tabs.warnOnCloseOtherTabs", false);
+user_pref("browser.warnOnQuit", false);
+user_pref("browser.warnOnQuitShortcut", false);
 user_pref("browser.link.open_newwindow", 1);`
 	userChromeCSSContent = `@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-#tabbrowser-tabs {
+#nav-bar,
+#urlbar-container,
+#searchbar,
+#PersonalToolbar,
+#tabbrowser-tabs,
+#TabsToolbar #firefox-view-button {
   visibility: collapse !important;
 }
 
-browser {
-  margin-right: 0px;
-  margin-bottom: 0px;
+#navigator-toolbox[inFullscreen] {
+    position: relative;
+    z-index: 1;
+    height: 3px;
+    margin-bottom: -3px;
+    opacity: 0;
+    overflow: hidden;
 }
 
-#main-window[chromehidden*="toolbar"] #nav-bar {
-  visibility: collapse !important;
+#navigator-toolbox[inFullscreen]:hover {
+    height: auto;
+    margin-bottom: 0px;
+    opacity: 1;
+    overflow: show;
 }
 
-#nav-bar {
-  margin-top: 0;
-  margin-bottom: -42px;
-  z-index: -100;
-}
-
-#PersonalToolbar {
-  display: none;
+#content-deck[inFullscreen]{
+    position:relative;
+    z-index: 0;
 }
 `
 
