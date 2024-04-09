@@ -426,16 +426,16 @@ func Update(
 	default:
 		switch runtime.GOOS {
 		case "windows":
+			if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "Move-Item -Path '%v' -Destination $env:TEMP; Copy-Item '%v' '%v'"`, oldBinary, updatedBinaryFile.Name(), oldBinary)).CombinedOutput(); err != nil {
+				err := fmt.Errorf("could not move away old binary with output: %s: %v", output, err)
+
+				handlePanic(cfg.App.Name, err.Error(), err)
+			}
+
 			if err := utils.ForkExec(
 				oldBinary,
 				os.Args,
 			); err != nil {
-				handlePanic(cfg.App.Name, err.Error(), err)
-			}
-
-			if output, err := exec.Command("powershell.exe", "-Command", fmt.Sprintf(`Start-Process powershell.exe -ArgumentList 'Move-Item -Path "%v" -Destination $env:TEMP; Copy-Item "%v" "%v"' -Verb RunAs`, oldBinary, updatedBinaryFile.Name(), oldBinary)).CombinedOutput(); err != nil {
-				err := fmt.Errorf("could not move away old binary with output: %s: %v", output, err)
-
 				handlePanic(cfg.App.Name, err.Error(), err)
 			}
 
@@ -513,7 +513,7 @@ func Update(
 	if state != nil && state.Cmd != nil && state.Cmd.Process != nil {
 		// Windows does not support the `SIGTERM` signal
 		if runtime.GOOS == "windows" {
-			if output, err := exec.Command("taskkill", "/pid", strconv.Itoa(state.Cmd.Process.Pid)).CombinedOutput(); err != nil {
+			if output, err := exec.Command("taskkill.exe", "/pid", strconv.Itoa(state.Cmd.Process.Pid)).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not close old version: %v: %v", string(output), err)
 
 				handlePanic(cfg.App.Name, err.Error(), err)
