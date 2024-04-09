@@ -426,7 +426,7 @@ func Update(
 	default:
 		switch runtime.GOOS {
 		case "windows":
-			if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "Move-Item -Path '%v' -Destination $env:TEMP; Copy-Item '%v' '%v'"`, oldBinary, updatedBinaryFile.Name(), oldBinary)).CombinedOutput(); err != nil {
+			if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "Move-Item -Force -Path '%v' -Destination $env:TEMP; Copy-Item '%v' '%v'"`, oldBinary, updatedBinaryFile.Name(), oldBinary)).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not move away old binary with output: %s: %v", output, err)
 
 				handlePanic(cfg.App.Name, err.Error(), err)
