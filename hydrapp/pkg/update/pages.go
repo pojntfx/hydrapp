@@ -371,11 +371,19 @@ func Update(
 
 	switch PackageType {
 	case "msi":
-		if output, err := exec.Command("msiexec.exe", "/i", updatedBinaryFile.Name()).CombinedOutput(); err != nil {
+		stopCmds := fmt.Sprintf(`(Stop-Process -PassThru -Id %v).WaitForExit();`, os.Getpid())
+		if state != nil && state.Cmd != nil && state.Cmd.Process != nil {
+			stopCmds = fmt.Sprintf(`(Stop-Process -PassThru -Id %v).WaitForExit();`, state.Cmd.Process.Pid) + stopCmds
+		}
+
+		if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "%v; Start-Process msiexec.exe /i %v`, stopCmds, updatedBinaryFile.Name())).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not start update installer with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
 		}
+
+		// We'll never reach this since we kill this process in the elevated shell
+		return
 
 	case "dmg":
 		mountpoint, err := os.MkdirTemp(os.TempDir(), "update-mountpoint")
@@ -426,18 +434,19 @@ func Update(
 	default:
 		switch runtime.GOOS {
 		case "windows":
-			if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "Move-Item -Force -Path '%v' -Destination $env:TEMP; Copy-Item '%v' '%v'"`, oldBinary, updatedBinaryFile.Name(), oldBinary)).CombinedOutput(); err != nil {
-				err := fmt.Errorf("could not move away old binary with output: %s: %v", output, err)
+			stopCmds := fmt.Sprintf(`(Stop-Process -PassThru -Id %v).WaitForExit();`, os.Getpid())
+			if state != nil && state.Cmd != nil && state.Cmd.Process != nil {
+				stopCmds = fmt.Sprintf(`(Stop-Process -PassThru -Id %v).WaitForExit();`, state.Cmd.Process.Pid) + stopCmds
+			}
+
+			if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "%v; Move-Item -Force '%v' '%v'"; Start-Process %v`, stopCmds, updatedBinaryFile.Name(), oldBinary, strings.Join(os.Args, " "))).CombinedOutput(); err != nil {
+				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
 				handlePanic(cfg.App.Name, err.Error(), err)
 			}
 
-			if err := utils.ForkExec(
-				oldBinary,
-				os.Args,
-			); err != nil {
-				handlePanic(cfg.App.Name, err.Error(), err)
-			}
+			// We'll never reach this since we kill this process in the elevated shell
+			return
 
 		case "darwin":
 			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
