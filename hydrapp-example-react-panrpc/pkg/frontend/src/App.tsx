@@ -59,6 +59,7 @@ const App = () => {
   const [clients, setClients] = useState(0);
   useEffect(() => console.log(clients, "clients connected"), [clients]);
 
+  const [reconnect, setReconnect] = useState(false);
   const [registry] = useState(
     new Registry(
       new Local(),
@@ -78,7 +79,6 @@ const App = () => {
     )
   );
 
-  const [reconnect, setReconnect] = useState(false);
   useAsyncEffect(async () => {
     if (reconnect) {
       await new Promise((r) => {

@@ -59,6 +59,7 @@ const App = () => {
   const [clients, setClients] = useState(0);
   useEffect(() => console.log(clients, "clients connected"), [clients]);
 
+  const [reconnect, setReconnect] = useState(false);
   const [registry] = useState(
     new Registry(
       new Local(),
@@ -66,12 +67,29 @@ const App = () => {
 
       {
         onClientConnect: () => setClients((v) => v + 1),
-        onClientDisconnect: () => setClients((v) => v - 1),
+        onClientDisconnect: () =>
+          setClients((v) => {
+            if (v === 1) {
+              setReconnect(true);
+            }
+
+            return v - 1;
+          }),
       }
     )
   );
 
   useAsyncEffect(async () => {
+    if (reconnect) {
+      await new Promise((r) => {
+        setTimeout(r, 100);
+      });
+
+      setReconnect(false);
+
+      return () => {};
+    }
+
     const addr =
       new URLSearchParams(window.location.search).get("socketURL") ||
       "ws://localhost:1337";
@@ -79,7 +97,9 @@ const App = () => {
     const socket = new WebSocket(addr);
 
     socket.addEventListener("error", (e) => {
-      console.error("Disconnected with error:", e);
+      console.error("Disconnected with error, reconnecting:", e);
+
+      setReconnect(true);
     });
 
     await new Promise<void>((res, rej) => {
@@ -139,7 +159,7 @@ const App = () => {
     console.log("Connected to", addr);
 
     return () => socket.close();
-  }, []);
+  }, [reconnect]);
 
   return clients > 0 ? (
     <main>
