@@ -382,7 +382,7 @@ func Update(
 			handlePanic(cfg.App.Name, err.Error(), err)
 		}
 
-		// We'll never reach this since we kill this process in the elevated shell
+		// We'll never reach this since we kill this process in the elevated shell and start the updated version
 		return
 
 	case "dmg":
@@ -424,13 +424,6 @@ func Update(
 			handlePanic(cfg.App.Name, err.Error(), err)
 		}
 
-		if err := utils.ForkExec(
-			oldBinary,
-			os.Args,
-		); err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
-		}
-
 	default:
 		switch runtime.GOOS {
 		case "windows":
@@ -445,7 +438,7 @@ func Update(
 				handlePanic(cfg.App.Name, err.Error(), err)
 			}
 
-			// We'll never reach this since we kill this process in the elevated shell
+			// We'll never reach this since we kill this process in the elevated shell and start the updated version
 			return
 
 		case "darwin":
@@ -460,13 +453,6 @@ func Update(
 			).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-				handlePanic(cfg.App.Name, err.Error(), err)
-			}
-
-			if err := utils.ForkExec(
-				oldBinary,
-				os.Args,
-			); err != nil {
 				handlePanic(cfg.App.Name, err.Error(), err)
 			}
 
@@ -509,28 +495,20 @@ func Update(
 					handlePanic(cfg.App.Name, err.Error(), err)
 				}
 			}
-
-			if err := utils.ForkExec(
-				oldBinary,
-				os.Args,
-			); err != nil {
-				handlePanic(cfg.App.Name, err.Error(), err)
-			}
 		}
 	}
 
-	if state != nil && state.Cmd != nil && state.Cmd.Process != nil {
-		// Windows does not support the `SIGTERM` signal
-		if runtime.GOOS == "windows" {
-			if output, err := exec.Command("taskkill.exe", "/pid", strconv.Itoa(state.Cmd.Process.Pid)).CombinedOutput(); err != nil {
-				err := fmt.Errorf("could not close old version: %v: %v", string(output), err)
+	// No need for Windows support since Windows kills & starts the new process earlier with an elevated shell
+	if runtime.GOOS != "windows" && state != nil && state.Cmd != nil && state.Cmd.Process != nil {
+		// We ignore errors here as the old process might already have finished etc.
+		_ = state.Cmd.Process.Signal(syscall.SIGTERM)
+	}
 
-				handlePanic(cfg.App.Name, err.Error(), err)
-			}
-		} else {
-			// We ignore errors here as the old process might already have finished etc.
-			_ = state.Cmd.Process.Signal(syscall.SIGTERM)
-		}
+	if err := utils.ForkExec(
+		oldBinary,
+		os.Args,
+	); err != nil {
+		handlePanic(cfg.App.Name, err.Error(), err)
 	}
 
 	os.Exit(0)
