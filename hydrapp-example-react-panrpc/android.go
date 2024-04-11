@@ -25,14 +25,14 @@ func Java_com_pojtinger_felicitas_hydrapp_example_react_panrpc_MainActivity_Laun
 		log.Fatalln("could not polyfill environment:", err)
 	}
 
-	backendURL, _, err := backend.StartServer(context.Background(), "", time.Second*10, false)
+	backendURL, _, err := backend.StartServer(context.Background(), "", time.Second*10, true)
 	if err != nil {
 		log.Fatalln("could not start backend:", err)
 	}
 
 	log.Println("Backend URL:", backendURL)
 
-	frontendURL, _, err := frontend.StartServer(context.Background(), "", backendURL, false)
+	frontendURL, _, err := frontend.StartServer(context.Background(), "", backendURL, true)
 	if err != nil {
 		log.Fatalln("could not start frontend:", err)
 	}
