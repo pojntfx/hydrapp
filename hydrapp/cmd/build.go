@@ -704,7 +704,7 @@ func init() {
 	buildCmd.PersistentFlags().String(srcFlag, pwd, "Source directory (must be absolute path)")
 	buildCmd.PersistentFlags().String(dstFlag, filepath.Join(pwd, "out"), "Output directory (must be absolute path)")
 
-	buildCmd.PersistentFlags().String(excludeFlag, "", "Regex of platforms and architectures not to build for, i.e. (apk|dmg|msi/386|flatpak/amd64)")
+	buildCmd.PersistentFlags().String(excludeFlag, "", "Regex of platforms and architectures not to build for, i.e. (binaries|deb|rpm|flatpak/amd64|msi/386|dmg|docs|tests)")
 
 	buildCmd.PersistentFlags().String(javaKeystoreFlag, "", "Path to Java/APK keystore (neither path nor content should be not base64-encoded)")
 	buildCmd.PersistentFlags().String(javaKeystorePasswordFlag, "", "Java/APK keystore password (base64-encoded)")

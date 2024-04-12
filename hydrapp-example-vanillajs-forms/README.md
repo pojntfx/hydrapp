@@ -40,12 +40,25 @@ To build and start a development version of Hydrapp Vanilla JS and Forms locally
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
-$ cd hydrapp-example-vanillajs-forms
-$ go generate ./...
-$ go run .
+$ cd hydrapp
+$ go generate ./hydrapp-example-vanillajs-forms/...
+$ go run ./hydrapp-example-vanillajs-forms
 ```
 
-Note that you can also set `HYDRAPP_BACKEND_LADDR` to a fixed value, `HYDRAPP_TYPE` to `dummy` and serve the frontend yourself to develop in your browser of choice directly.
+To build the DEB, RPM, Flatpak, MSI, EXE, DMG, APK, and static binaries for all other platforms, run the following:
+
+```shell
+$ go run ./hydrapp build --config ./hydrapp-example-vanillajs-forms/hydrapp.yaml
+# You can find the built packages in the out/ directory
+```
+
+If you only want to build certain packages or for certain architectures, for example to only build the APKs, pass `--exclude` like in the following:
+
+```shell
+$ go run ./hydrapp build --exclude '(binaries|deb|rpm|flatpak|msi|dmg|docs|tests)' --config ./hydrapp-example-vanillajs-forms/hydrapp.yaml
+```
+
+For more information, see the [hydrapp documentation](../README.md).
 
 ## License
 
