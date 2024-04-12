@@ -411,7 +411,7 @@ func Update(
 		if output, err := exec.Command(
 			"osascript",
 			"-e",
-			fmt.Sprintf(`do shell script "rm -rf '%v' && cp -r '%v'/* '%v'" with administrator privileges with prompt "Authentication Required: Authentication is needed to apply the update."`, appPath, mountpoint, appsPath),
+			fmt.Sprintf(`do shell script "rm -rf '%v'/* && cp -r '%v'/*/ '%v'" with administrator privileges with prompt "Authentication Required: Authentication is needed to apply the update."`, appPath, mountpoint, appsPath),
 		).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not replace old app with new app with output: %s: %v", output, err)
 
