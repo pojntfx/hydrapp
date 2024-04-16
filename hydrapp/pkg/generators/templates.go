@@ -77,6 +77,9 @@ var (
 	//go:embed CODE_OF_CONDUCT.md.tpl
 	CodeOfConductMDTpl string
 
-	//go:embed README.md.tpl
-	ReadmeMDTpl string
+	//go:embed README_react_panrpc.md.tpl
+	ReadmeMDReactPanrpcTpl string
+
+	//go:embed README_vanillajs_rest.md.tpl
+	ReadmeMDVanillaJSRESTTpl string
 )

@@ -45,7 +45,31 @@ $ go generate ./...
 $ go run .
 ```
 
-Note that you can also set `HYDRAPP_BACKEND_LADDR` to a fixed value, `HYDRAPP_TYPE` to `dummy` and serve the frontend yourself to develop in your browser of choice directly.
+To start the backend and open the frontend in a browser instead of an application window during development, run the following:
+
+```shell
+# Start the backend in the first terminal
+$ HYDRAPP_BACKEND_LADDR=localhost:1337 HYDRAPP_TYPE=dummy go run .
+# Start the frontend in a second terminal
+$ cd pkg/frontend
+$ npm run dev
+# Now open http://localhost:1234 in your browser
+```
+
+To build the DEB, RPM, Flatpak, MSI, EXE, DMG, APK, and static binaries for all other platforms, run the following:
+
+```shell
+$ hydrapp build
+# You can find the built packages in the out/ directory
+```
+
+If you only want to build certain packages or for certain architectures, for example to only build the APKs, pass `--exclude` like in the following:
+
+```shell
+$ hydrapp build --exclude '(binaries|deb|rpm|flatpak|msi|dmg|docs|tests)'
+```
+
+For more information, see the [hydrapp documentation](https://github.com/pojntfx/hydrapp).
 
 ## License
 

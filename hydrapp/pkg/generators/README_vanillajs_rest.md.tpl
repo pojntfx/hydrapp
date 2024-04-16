@@ -1,16 +1,16 @@
-## Hydrapp React and panrpc Example
+## {{ .AppName }}
 
-Hydrapp React and panrpc example app.
+{{ .AppSummary }}.
 
-[![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
+[![hydrapp CI]({{ .AppGitWeb }}/actions/workflows/hydrapp.yaml/badge.svg)]({{ .AppGitWeb }}/actions/workflows/hydrapp.yaml)
 
 ## Overview
 
-A simple Hydrapp React and panrpc example app.
+{{ .AppDescription }}
 
 ## Installation
 
-See [INSTALLATION.html](https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//docs/main/INSTALLATION.html).
+See [INSTALLATION.html]({{ .AppBaseURL }}/docs/main/INSTALLATION.html).
 
 ## Reference
 
@@ -36,43 +36,32 @@ All arguments passed to the binary will be forwarded to the browser used to disp
 
 To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-To build and start a development version of Hydrapp React and panrpc Example locally, run the following:
+To build and start a development version of {{ .AppName }} locally, run the following:
 
 ```shell
-$ git clone https://github.com/pojntfx/hydrapp.git
-$ cd hydrapp
-$ go generate ./hydrapp-example-react-panrpc/...
-$ go run ./hydrapp-example-react-panrpc
-```
-
-To start the backend and open the frontend in a browser instead of an application window during development, run the following:
-
-```shell
-# Start the backend in the first terminal
-$ HYDRAPP_BACKEND_LADDR=localhost:1337 HYDRAPP_TYPE=dummy go run ./hydrapp-example-react-panrpc
-# Start the frontend in a second terminal
-$ cd hydrapp-example-react-panrpc/pkg/frontend
-$ npm run dev
-# Now open http://localhost:1234 in your browser
+$ git clone {{ .AppGit }}
+$ cd {{ .Dir }}
+$ go generate ./...
+$ go run .
 ```
 
 To build the DEB, RPM, Flatpak, MSI, EXE, DMG, APK, and static binaries for all other platforms, run the following:
 
 ```shell
-$ go run ./hydrapp build --config ./hydrapp-example-react-panrpc/hydrapp.yaml
+$ hydrapp build
 # You can find the built packages in the out/ directory
 ```
 
 If you only want to build certain packages or for certain architectures, for example to only build the APKs, pass `--exclude` like in the following:
 
 ```shell
-$ go run ./hydrapp build --exclude '(binaries|deb|rpm|flatpak|msi|dmg|docs|tests)' --config ./hydrapp-example-react-panrpc/hydrapp.yaml
+$ hydrapp build --exclude '(binaries|deb|rpm|flatpak|msi|dmg|docs|tests)'
 ```
 
-For more information, see the [hydrapp documentation](../README.md).
+For more information, see the [hydrapp documentation](https://github.com/pojntfx/hydrapp).
 
 ## License
 
-Hydrapp React and panrpc Example (c) 2024 Felicitas Pojtinger and contributors
+{{ .AppName }} (c) {{ .CurrentYear }} {{ .ReleaseAuthor }} and contributors
 
-SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: {{ .LicenseSPDX }}

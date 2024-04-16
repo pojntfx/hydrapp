@@ -476,6 +476,25 @@ var newCmd = &cobra.Command{
 			); err != nil {
 				return err
 			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "README.md"),
+				generators.ReadmeMDVanillaJSRESTTpl,
+				generators.ReadmeMDData{
+					AppName:        appName,
+					AppSummary:     appSummary,
+					AppGitWeb:      strings.TrimSuffix(appGit, ".git"),
+					AppDescription: appDescription,
+					AppBaseURL:     appBaseurl,
+					AppGit:         appGit,
+					CurrentYear:    time.Now().Format("2006"),
+					ReleaseAuthor:  releaseAuthor,
+					LicenseSPDX:    licenseSPDX,
+					Dir:            dir,
+				},
+			); err != nil {
+				return err
+			}
 		case vanillaJSFormsKey:
 			if err := generators.RenderTemplate(
 				filepath.Join(dir, "main.go"),
@@ -511,6 +530,25 @@ var newCmd = &cobra.Command{
 				generators.IndexHTMLVanillaJSFormsTpl,
 				generators.IndexHTMLData{
 					AppName: appName,
+				},
+			); err != nil {
+				return err
+			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "README.md"),
+				generators.ReadmeMDVanillaJSRESTTpl,
+				generators.ReadmeMDData{
+					AppName:        appName,
+					AppSummary:     appSummary,
+					AppGitWeb:      strings.TrimSuffix(appGit, ".git"),
+					AppDescription: appDescription,
+					AppBaseURL:     appBaseurl,
+					AppGit:         appGit,
+					CurrentYear:    time.Now().Format("2006"),
+					ReleaseAuthor:  releaseAuthor,
+					LicenseSPDX:    licenseSPDX,
+					Dir:            dir,
 				},
 			); err != nil {
 				return err
@@ -610,6 +648,25 @@ var newCmd = &cobra.Command{
 			); err != nil {
 				return err
 			}
+
+			if err := generators.RenderTemplate(
+				filepath.Join(dir, "README.md"),
+				generators.ReadmeMDReactPanrpcTpl,
+				generators.ReadmeMDData{
+					AppName:        appName,
+					AppSummary:     appSummary,
+					AppGitWeb:      strings.TrimSuffix(appGit, ".git"),
+					AppDescription: appDescription,
+					AppBaseURL:     appBaseurl,
+					AppGit:         appGit,
+					CurrentYear:    time.Now().Format("2006"),
+					ReleaseAuthor:  releaseAuthor,
+					LicenseSPDX:    licenseSPDX,
+					Dir:            dir,
+				},
+			); err != nil {
+				return err
+			}
 		default:
 			panic(errUnknownProjectType)
 		}
@@ -627,25 +684,6 @@ var newCmd = &cobra.Command{
 			generators.CodeOfConductMDTpl,
 			generators.CodeOfConductMDData{
 				ReleaseEmail: releaseEmail,
-			},
-		); err != nil {
-			return err
-		}
-
-		if err := generators.RenderTemplate(
-			filepath.Join(dir, "README.md"),
-			generators.ReadmeMDTpl,
-			generators.ReadmeMDData{
-				AppName:        appName,
-				AppSummary:     appSummary,
-				AppGitWeb:      strings.TrimSuffix(appGit, ".git"),
-				AppDescription: appDescription,
-				AppBaseURL:     appBaseurl,
-				AppGit:         appGit,
-				CurrentYear:    time.Now().Format("2006"),
-				ReleaseAuthor:  releaseAuthor,
-				LicenseSPDX:    licenseSPDX,
-				Dir:            dir,
 			},
 		); err != nil {
 			return err
