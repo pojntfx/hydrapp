@@ -376,7 +376,7 @@ func Update(
 			stopCmds = fmt.Sprintf(`(Stop-Process -PassThru -Id %v).WaitForExit();`, state.Cmd.Process.Pid) + stopCmds
 		}
 
-		if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "%v; Start-Process msiexec.exe /i %v`, stopCmds, updatedBinaryFile.Name())).CombinedOutput(); err != nil {
+		if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "%v; Start-Process msiexec.exe '/i %v'"`, stopCmds, updatedBinaryFile.Name())).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not start update installer with output: %s: %v", output, err)
 
 			handlePanic(cfg.App.Name, err.Error(), err)
@@ -432,7 +432,7 @@ func Update(
 				stopCmds = fmt.Sprintf(`(Stop-Process -PassThru -Id %v).WaitForExit();`, state.Cmd.Process.Pid) + stopCmds
 			}
 
-			if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "%v; Move-Item -Force '%v' '%v'"; Start-Process %v`, stopCmds, updatedBinaryFile.Name(), oldBinary, strings.Join(os.Args, " "))).CombinedOutput(); err != nil {
+			if output, err := exec.Command(`powershell.exe`, `-Command`, fmt.Sprintf(`Start-Process powershell.exe -Verb RunAs -Wait -ArgumentList "%v; Move-Item -Force '%v' '%v'; Start-Process '%v'"`, stopCmds, updatedBinaryFile.Name(), oldBinary, strings.Join(os.Args, " "))).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
 				handlePanic(cfg.App.Name, err.Error(), err)
