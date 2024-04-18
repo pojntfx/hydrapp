@@ -9,6 +9,8 @@ on:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     strategy:
       matrix:
         target:
@@ -119,6 +121,9 @@ jobs:
 
   publish-linux:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
     needs: build-linux
 
     steps:
