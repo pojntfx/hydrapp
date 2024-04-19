@@ -3,6 +3,7 @@ package tests
 import (
 	"context"
 	"fmt"
+	"io"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/executors"
@@ -21,7 +22,7 @@ func NewBuilder(
 	src, // Input directory
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
-	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
+	stdout io.Writer, // Writer to handle container output
 	goFlags, // Flags to pass to the Go command
 	goGenerate, // Command to execute go generate with
 	goTests string, // Command to run tests with
@@ -35,7 +36,7 @@ func NewBuilder(
 		src,
 		dst,
 		onID,
-		onOutput,
+		stdout,
 		goFlags,
 		goGenerate,
 		goTests,
@@ -50,8 +51,8 @@ type Builder struct {
 	pull  bool
 	src,
 	dst string
-	onID     func(id string)
-	onOutput func(shortID string, color string, timestamp int64, message string)
+	onID   func(id string)
+	stdout io.Writer
 	goFlags,
 	goGenerate,
 	goTests string
@@ -71,7 +72,7 @@ func (b *Builder) Build() error {
 		b.src,
 		"",
 		b.onID,
-		b.onOutput,
+		b.stdout,
 		map[string]string{
 			"GOFLAGS": b.goFlags,
 		},

@@ -3,6 +3,7 @@ package apk
 import (
 	"context"
 	"encoding/base64"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -29,7 +30,7 @@ func NewBuilder(
 	src, // Input directory
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
-	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
+	stdout io.Writer, // Writer to handle container output
 	appID string, // Android app ID to use
 	javaKeystore []byte, // Android cert contents
 	javaKeystorePassword string, // Password for the Android keystore
@@ -54,7 +55,7 @@ func NewBuilder(
 		src,
 		dst,
 		onID,
-		onOutput,
+		stdout,
 		appID,
 		base64.StdEncoding.EncodeToString(javaKeystore),
 		javaKeystorePassword,
@@ -80,8 +81,8 @@ type Builder struct {
 	pull  bool
 	src,
 	dst string
-	onID     func(id string)
-	onOutput func(shortID string, color string, timestamp int64, message string)
+	onID   func(id string)
+	stdout io.Writer
 	appID,
 	javaKeystore,
 	javaKeystorePassword,
@@ -155,7 +156,7 @@ func (b *Builder) Build() error {
 		b.src,
 		dst,
 		b.onID,
-		b.onOutput,
+		b.stdout,
 		map[string]string{
 			"APP_ID":                    appID,
 			"JAVA_KEYSTORE":             b.javaKeystore,

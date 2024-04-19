@@ -3,6 +3,7 @@ package dmg
 import (
 	"context"
 	"encoding/base64"
+	"io"
 	"path/filepath"
 	"strings"
 
@@ -27,7 +28,7 @@ func NewBuilder(
 	src, // Input directory
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
-	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
+	stdout io.Writer, // Writer to handle container output
 	appID, // macOS app ID to use
 	appName string, // Human-readable name for the app
 	pgpKey []byte, // PGP key contents
@@ -50,7 +51,7 @@ func NewBuilder(
 		src,
 		dst,
 		onID,
-		onOutput,
+		stdout,
 		appID,
 		appName,
 		base64.StdEncoding.EncodeToString(pgpKey),
@@ -74,8 +75,8 @@ type Builder struct {
 	pull  bool
 	src,
 	dst string
-	onID     func(id string)
-	onOutput func(shortID string, color string, timestamp int64, message string)
+	onID   func(id string)
+	stdout io.Writer
 	appID,
 	appName,
 	pgpKey,
@@ -122,7 +123,7 @@ func (b *Builder) Build() error {
 		b.src,
 		dst,
 		b.onID,
-		b.onOutput,
+		b.stdout,
 		map[string]string{
 			"APP_ID":           appID,
 			"APP_NAME":         appName,

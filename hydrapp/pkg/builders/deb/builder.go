@@ -3,6 +3,7 @@ package deb
 import (
 	"context"
 	"encoding/base64"
+	"io"
 	"path/filepath"
 	"strings"
 
@@ -29,7 +30,7 @@ func NewBuilder(
 	src, // Input directory
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
-	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
+	stdout io.Writer, // Writer to handle container output
 	appID string, // DEB app ID to use
 	pgpKey []byte, // PGP key contents
 	pgpKeyPassword, // password for the PGP key
@@ -66,7 +67,7 @@ func NewBuilder(
 		src,
 		dst,
 		onID,
-		onOutput,
+		stdout,
 		appID,
 		base64.StdEncoding.EncodeToString(pgpKey),
 		pgpKeyPassword,
@@ -104,8 +105,8 @@ type Builder struct {
 	pull  bool
 	src,
 	dst string
-	onID     func(id string)
-	onOutput func(shortID string, color string, timestamp int64, message string)
+	onID   func(id string)
+	stdout io.Writer
 	appID,
 	pgpKey,
 	pgpKeyPassword,
@@ -206,7 +207,7 @@ func (b *Builder) Build() error {
 		b.src,
 		dst,
 		b.onID,
-		b.onOutput,
+		b.stdout,
 		map[string]string{
 			"APP_ID":           appID,
 			"PGP_KEY":          b.pgpKey,

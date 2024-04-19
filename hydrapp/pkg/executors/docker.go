@@ -1,22 +1,17 @@
 package executors
 
 import (
-	"bufio"
 	"context"
 	"fmt"
 	"io"
 	"os"
 	"os/user"
 	"runtime"
-	"strings"
-	"time"
-	"unicode"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	cp "github.com/otiai10/copy"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
 func DockerRunImage(
@@ -28,7 +23,7 @@ func DockerRunImage(
 	src string,
 	dst string,
 	onID func(id string),
-	onOutput func(shortID string, color string, timestamp int64, message string),
+	stdout io.Writer,
 	env map[string]string,
 	renderTemplates func(workdir string, ejecting bool) error,
 	cmds []string,
@@ -66,7 +61,7 @@ o:
 			return err
 		}
 
-		if _, err := io.Copy(os.Stderr, reader); err != nil {
+		if _, err := io.Copy(stdout, reader); err != nil {
 			return err
 		}
 	}
@@ -122,7 +117,7 @@ o:
 
 	onID(resp.ID)
 
-	waiter, err := cli.ContainerAttach(ctx, resp.ID, types.ContainerAttachOptions{
+	waiter, err := cli.ContainerAttach(ctx, resp.ID, container.AttachOptions{
 		Stdin:  false,
 		Stdout: true,
 		Stderr: true,
@@ -131,25 +126,11 @@ o:
 	if err != nil {
 		return err
 	}
+	defer waiter.Close()
 
-	scanner := bufio.NewScanner(waiter.Reader)
-	go func() {
-		color := utils.GetRandomANSIColor()
+	go io.Copy(stdout, waiter.Reader) // We intentionally ignore errors here since we can't handle them
 
-		for scanner.Scan() {
-			onOutput(resp.ID[:4], color, time.Now().Unix(), strings.TrimFunc(scanner.Text(), func(r rune) bool {
-				return !unicode.IsGraphic(r)
-			}))
-		}
-
-		if scanner.Err() != nil {
-			return
-		}
-
-		fmt.Printf("%v", utils.ColorReset)
-	}()
-
-	if err := cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{}); err != nil {
+	if err := cli.ContainerStart(ctx, resp.ID, container.StartOptions{}); err != nil {
 		return err
 	}
 

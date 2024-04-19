@@ -3,6 +3,7 @@ package docs
 import (
 	"context"
 	"errors"
+	"io"
 	"path/filepath"
 	"strings"
 
@@ -33,7 +34,7 @@ func NewBuilder(
 	src, // Input directory
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
-	onOutput func(shortID string, color string, timestamp int64, message string), // Callback to handle container output
+	stdout io.Writer, // Writer to handle container output
 	branchID, // Branch ID
 	branchName, // Branch Name
 	goMain string, // Directory with the main package to build
@@ -49,7 +50,7 @@ func NewBuilder(
 		src,
 		dst,
 		onID,
-		onOutput,
+		stdout,
 		branchID,
 		branchName,
 		goMain,
@@ -66,8 +67,8 @@ type Builder struct {
 	pull  bool
 	src,
 	dst string
-	onID     func(id string)
-	onOutput func(shortID string, color string, timestamp int64, message string)
+	onID   func(id string)
+	stdout io.Writer
 	branchID,
 	branchName,
 	goMain string
@@ -161,7 +162,7 @@ func (b *Builder) Build() error {
 		b.src,
 		dst,
 		b.onID,
-		b.onOutput,
+		b.stdout,
 		map[string]string{
 			"GOMAIN": b.goMain,
 		},

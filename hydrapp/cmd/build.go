@@ -5,18 +5,14 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"path/filepath"
 	"regexp"
-	"runtime"
 	"strings"
 	"sync"
 	"syscall"
-	"time"
-	"unicode"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -32,7 +28,6 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/tests"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/secrets"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -278,33 +273,6 @@ var buildCmd = &cobra.Command{
 			}()
 		}
 
-		handleOutput := func(shortID string, color string, timestamp int64, message string) {
-			if runtime.GOOS == "windows" {
-				fmt.Printf(
-					"%v@%v %v\n",
-					shortID,
-					time.Now().Unix(),
-					strings.TrimFunc(message, func(r rune) bool {
-						return !unicode.IsGraphic(r)
-					}),
-				)
-			} else {
-				fmt.Printf(
-					"%v%v%v@%v%v %v%v%v\n",
-					utils.ColorBackgroundBlack,
-					color,
-					shortID,
-					time.Now().Unix(),
-					utils.ColorReset,
-					color,
-					strings.TrimFunc(message, func(r rune) bool {
-						return !unicode.IsGraphic(r)
-					}),
-					utils.ColorReset,
-				)
-			}
-		}
-
 		bdrs := []builders.Builder{}
 
 		for _, c := range cfg.DEB {
@@ -328,7 +296,7 @@ var buildCmd = &cobra.Command{
 					viper.GetString(srcFlag),
 					filepath.Join(viper.GetString(dstFlag), c.Path),
 					handleID,
-					handleOutput,
+					os.Stdout,
 					cfg.App.ID,
 					pgpKey,
 					pgpKeyPassword,
@@ -377,7 +345,7 @@ var buildCmd = &cobra.Command{
 						viper.GetString(srcFlag),
 						filepath.Join(viper.GetString(dstFlag), cfg.DMG.Path),
 						handleID,
-						handleOutput,
+						os.Stdout,
 						cfg.App.ID,
 						cfg.App.Name,
 						pgpKey,
@@ -416,7 +384,7 @@ var buildCmd = &cobra.Command{
 					viper.GetString(srcFlag),
 					filepath.Join(viper.GetString(dstFlag), c.Path),
 					handleID,
-					handleOutput,
+					os.Stdout,
 					cfg.App.ID,
 					pgpKey,
 					pgpKeyPassword,
@@ -460,7 +428,7 @@ var buildCmd = &cobra.Command{
 					viper.GetString(srcFlag),
 					filepath.Join(viper.GetString(dstFlag), c.Path),
 					handleID,
-					handleOutput,
+					os.Stdout,
 					cfg.App.ID,
 					cfg.App.Name,
 					pgpKey,
@@ -500,7 +468,7 @@ var buildCmd = &cobra.Command{
 					viper.GetString(srcFlag),
 					filepath.Join(viper.GetString(dstFlag), c.Path),
 					handleID,
-					handleOutput,
+					os.Stdout,
 					cfg.App.ID,
 					pgpKey,
 					pgpKeyPassword,
@@ -544,7 +512,7 @@ var buildCmd = &cobra.Command{
 						viper.GetString(srcFlag),
 						filepath.Join(viper.GetString(dstFlag), cfg.APK.Path),
 						handleID,
-						handleOutput,
+						os.Stdout,
 						cfg.App.ID,
 						javaKeystore,
 						javaKeystorePassword,
@@ -582,7 +550,7 @@ var buildCmd = &cobra.Command{
 						viper.GetString(srcFlag),
 						filepath.Join(viper.GetString(dstFlag), cfg.Binaries.Path),
 						handleID,
-						handleOutput,
+						os.Stdout,
 						cfg.App.ID,
 						pgpKey,
 						pgpKeyPassword,
@@ -617,7 +585,7 @@ var buildCmd = &cobra.Command{
 						viper.GetString(srcFlag),
 						"",
 						handleID,
-						handleOutput,
+						os.Stdout,
 						cfg.Go.Flags,
 						cfg.Go.Generate,
 						cfg.Go.Tests,
@@ -644,7 +612,7 @@ var buildCmd = &cobra.Command{
 						viper.GetString(srcFlag),
 						filepath.Join(viper.GetString(dstFlag), cfg.Docs.Path),
 						handleID,
-						handleOutput,
+						os.Stdout,
 						viper.GetString(branchIDFlag),
 						viper.GetString(branchNameFlag),
 						cfg.Go.Main,
