@@ -55,6 +55,98 @@ You can find binaries for more operating systems and architectures on [GitHub re
 
 ## Tutorial
 
+### Creating a New Project
+
+First, generate a new project by running `hydrapp new`, which will ask you some questions interactively. First, let's select the project type we want to start from; see [examples](#examples) for more information on the individual project types:
+
+```shell
+$ hydrapp new
+? Which project type do you want to generate?:
+    vanillajs-rest: Simple starter project with a REST API to connect the Vanilla JS frontend and backend
+    vanillajs-forms: Traditional starter project with Web 1.0-style forms to connect the Vanilla JS frontend and backend
+  ▸ react-panrpc: Complete starter project with panrpc RPCs to connect the React frontend and backend
+```
+
+Next, let's select the app ID in reverse domain notation; for this example we'll assume that the project will be hosted on GitHub:
+
+```shell
+✔ App ID in reverse domain notation: com.github.myusername.myapp
+```
+
+The app name, summary, description, homepage and Git repository follow the same schema:
+
+```shell
+App name: My App
+✔ App summary: My first app
+✔ App description: My first application, built with hydrapp.
+✔ App description: My first application, built with hydrapp.
+App homepage: https://github.com/myusername/myapp
+✔ App git repo: https://github.com/myusername/myapp.git
+```
+
+Next up we'll set the base URL, which is the URL that the generated builds will be hosted on; for this example we'll assume that they will be hosted on GitHub pages:
+
+```shell
+✔ App base URL to expect the built assets to be published to: https://myusername.github.io/myapp/
+```
+
+For the Go module name, we'll use the GitHub repo:
+
+```shell
+✔ Go module name: github.com/myusername/myapp
+```
+
+Now we can set a license by choosing a SPDX identifier; note that this **has** to be a valid [SPDX identifier](https://spdx.org/licenses/) as it downloads the license text:
+
+```shell
+License SPDX identifier (see https://spdx.org/licenses/): Apache-2.0
+```
+
+Next up we enter the author name and email for release information:
+
+```shell
+Release author name: Jean Doe
+Release author email: jean.doe@example.com
+```
+
+And finally we select a directory to create app in and skip advanced configuration:
+
+```shell
+Directory to write the app to: .
+? Do you want to do any advanced configuration?:
+  ▸ no
+    yes
+```
+
+The release author name, author email and directory are self-explanatory:
+
+```plaintext
+Release author name: Jean Doe
+Release author email: jean.doe@example.com
+Directory to write the app to: .
+```
+
+Finally, you can choose to do advanced configuration; in this basic introduction, we won't be doing that:
+
+```plaintext
+? Do you want to do any advanced configuration?:
+  ▸ no
+    yes
+```
+
+After pressing <kbd>Enter</kbd>, the project will be generated, dependencies will be installed and the instructions for continuing will be displayed:
+
+```shell
+2024/04/22 22:43:39 Fetching full license text from SPDX ...
+2024/04/22 22:43:39 Success!
+Succesfully generated application. To start it, run the following:
+
+cd myapp
+go run .
+
+You can find more information in the generated README.
+```
+
 🚧 This project is a work-in-progress! Instructions will be added as soon as it is usable. 🚧
 
 ## Reference
