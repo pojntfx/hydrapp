@@ -91,7 +91,7 @@ jobs:
           PGP_KEY: {{"${{"}} secrets.PGP_KEY {{"}}"}}
         run: echo "${PGP_KEY}" | base64 -d >'/tmp/pgp.asc'
       - name: Build with hydrapp
-        working-directory: ${{ matrix.target.src }}
+        working-directory: {{"${{"}} matrix.target.src {{"}}"}}
         env:
           HYDRAPP_JAVA_KEYSTORE: /tmp/keystore.jks
           HYDRAPP_JAVA_KEYSTORE_PASSWORD: {{"${{"}} secrets.JAVA_KEYSTORE_PASSWORD {{"}}"}}
