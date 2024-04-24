@@ -158,9 +158,9 @@ cd myapp
 go run .
 ```
 
-After starting the app, you should see the generated app open like so:
+Alternatively, you can also see the instructions in the generated `README.md` file. After starting the app, you should see it open like so:
 
-![Screenshot of the app once first launched](./docs/screenshot-first-launch.png)
+![Screenshot of the app after first launching it](./docs/screenshot-first-launch.png)
 
 **Cheers!** You've started your first hydrapp app. Next, let's find out how we can iterate efficiently on it!
 
