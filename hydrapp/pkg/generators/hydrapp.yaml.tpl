@@ -124,7 +124,11 @@ jobs:
     permissions:
       contents: write
       pages: write
+      id-token: write
     needs: build-linux
+    environment:
+      name: github-pages
+      url: {{"${{"}} steps.publish.outputs.page_url {{"}}"}}
 
     steps:
       - name: Checkout
@@ -139,6 +143,8 @@ jobs:
           for dir in /tmp/out/*/; do
             rsync -a "${dir}"/ /tmp/github-pages/
           done
+
+          touch /tmp/github-pages/.nojekyll
       - name: Add index for repositories
         run: |
           sudo apt update
@@ -146,11 +152,13 @@ jobs:
 
           cd /tmp/github-pages/
           tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -T 'hydrapp Repositories' --du -h -D -H . -o 'index.html'
-      - name: Publish to GitHub pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: {{"${{"}} secrets.GITHUB_TOKEN {{"}}"}}
-          publish_dir: /tmp/github-pages/
-          keep_files: true
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
+          path: /tmp/github-pages/
+      - name: Publish to GitHub pages
+        id: publish
+        uses: actions/deploy-pages@v4
+
