@@ -55,9 +55,9 @@ You can find binaries for more operating systems and architectures on [GitHub re
 
 ## Tutorial
 
-### Creating a New Project
+### 1. Creating a New Project
 
-First, generate a new project by running `hydrapp new`, which will ask you some questions interactively. First, let's select the project type we want to start from; see [examples](#examples) for more information on the individual project types:
+First, generate a new project by running `hydrapp new`, which will ask you some questions interactively. First, let's select the project type we want to start from; see [examples](#examples) for more information on the individual project types - for this example we'll use the `react-panrpc` template, which is the most full-featured one:
 
 ```shell
 $ hydrapp new
@@ -146,6 +146,23 @@ go run .
 
 You can find more information in the generated README.
 ```
+
+**Congratulations!** You've created your first hydrapp app. Next, let's start it!
+
+### 2. Starting the New Project
+
+Now that we've created the app, we can start it. To do so, simply follow the instructions that were printed in the last command, which should look something like this:
+
+```shell
+cd myapp
+go run .
+```
+
+After starting the app, you should see the generated app open like so:
+
+![Screenshot of the app once first launched](./docs/screenshot-first-launch.png)
+
+**Cheers!** You've started your first hydrapp app. Next, let's find out how we can iterate efficiently on it!
 
 🚧 This project is a work-in-progress! Instructions will be added as soon as it is usable. 🚧
 
