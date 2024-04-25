@@ -160,11 +160,33 @@ go run .
 
 Alternatively, you can also see the instructions in the generated `README.md` file. After starting the app, you should see it open like so:
 
-![Screenshot of the app after first launching it](./docs/screenshot-first-launch.png)
+![Screenshot of the app after first launching it](./docs/screenshot-first-launch-app-window.png)
 
 **Cheers!** You've started your first hydrapp app. Next, let's find out how we can iterate efficiently on it!
 
-🚧 This project is a work-in-progress! Instructions will be added as soon as it is usable. 🚧
+### 3. Iterating on The Project
+
+Now that we've started the app in its own window, let's make some changes to it. While it's possible to iterate on the app window as well, it's usually easier to do so using your browser instead - this way, you have access to familiar tools such as hot-reloading, your debugging extensions and so on. How to do so depends on the project type you've chosen (see the generated `README.md` file), but for this example they will look something like this:
+
+```shell
+$ cd myapp
+# Start the backend in the first terminal
+$ HYDRAPP_BACKEND_LADDR=localhost:1337 HYDRAPP_TYPE=dummy go run .
+# Start the frontend in a second terminal
+$ cd myapp/pkg/frontend
+$ npm run dev
+# Now open http://localhost:1234 in your browser
+```
+
+After opening [http://localhost:1234](http://localhost:1234) or the URL that is described in your generated `README.md`, you should be able to debug your frontend and backend just like you would with any web app:
+
+![Screenshot of the app in a browser after first launching it](./docs/screenshot-first-launch-browser-window.png)
+
+If you make changes to the frontend, they will be reloaded automatically, and if you make changes to the backend, they'll be visible after restarting the server; for example, you can edit `myapp/pkg/frontend/src/App.tsx` to change the title of the app, and this change will be immediately visible without needing to reload:
+
+![Screenshot of the app in a browser after changing the title](./docs/screenshot-first-launch-browser-window-edited.png)
+
+**Enjoy your development environment!** Feel free to change more things or even add new functionality. Next, let's find out how we can package our app!
 
 ## Reference
 
