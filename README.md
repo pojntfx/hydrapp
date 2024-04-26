@@ -55,9 +55,9 @@ You can find binaries for more operating systems and architectures on [GitHub re
 
 ## Tutorial
 
-### 1. Creating a New Project
+### 1. Creating a New App
 
-First, generate a new project by running `hydrapp new`, which will ask you some questions interactively. First, let's select the project type we want to start from; see [examples](#examples) for more information on the individual project types - for this example we'll use the `react-panrpc` template, which is the most full-featured one:
+First, generate a new app by running `hydrapp new`, which will ask you some questions interactively. First, let's select the project type we want to start from; see [examples](#examples) for more information on the individual project types - for this example we'll use the `react-panrpc` template, which is the most full-featured one:
 
 ```shell
 $ hydrapp new
@@ -149,7 +149,7 @@ You can find more information in the generated README.
 
 **Congratulations!** You've created your first hydrapp app. Next, let's start it!
 
-### 2. Starting the New Project
+### 2. Starting the New App
 
 Now that we've created the app, we can start it. To do so, simply follow the instructions that were printed in the last command, which should look something like this:
 
@@ -164,7 +164,7 @@ Alternatively, you can also see the instructions in the generated `README.md` fi
 
 **Cheers!** You've started your first hydrapp app. Next, let's find out how we can iterate efficiently on it!
 
-### 3. Iterating on The Project
+### 3. Iterating on The App
 
 Now that we've started the app in its own window, let's make some changes to it. While it's possible to iterate on the app window as well, it's usually easier to do so using your browser instead - this way, you have access to familiar tools such as hot-reloading, your debugging extensions and so on. How to do so depends on the project type you've chosen (see the generated `README.md` file), but for this example they will look something like this:
 
@@ -187,6 +187,38 @@ If you make changes to the frontend, they will be reloaded automatically, and if
 ![Screenshot of the app in a browser after changing the title](./docs/screenshot-first-launch-browser-window-edited.png)
 
 **Enjoy your development environment!** Feel free to change more things or even add new functionality. Next, let's find out how we can package our app!
+
+### 4. Packaging The App
+
+While we can of course package our app using the standard `go build` command, distributing our app this way means that things such as getting updates for the app, adding a launcher to the system or shipping it to mobile devices can be quite challenging. To make this process easier, hydrapp includes a way to easily package your app using each system's individual package format (DEB, RPM, Flatpak, MSI, EXE, DMG, APK, and static binaries for all other platforms) through `hydrapp build`, all without having to install any dependencies and full support for CGo. The generated `README.md` file should also include these instructions, but for this example they will look something like this:
+
+```shell
+$ hydrapp build
+# You can find the built packages in the out/ directory
+```
+
+If you only want to build certain packages or for certain architectures, for example to only build the APKs, pass `--exclude` like in the following:
+
+```shell
+$ hydrapp build --exclude '(binaries|deb|rpm|flatpak|msi|dmg|docs|tests)'
+```
+
+The output directory should now contain the built packages. For example, if you chose to only build the APKs, it should look something like this:
+
+```shell
+$ tree out/
+out/
+└── apk
+    └── main
+        # ...
+        ├── repo
+        # ...
+        │   ├── com.github.example.myapp.main.apk
+        │   ├── com.github.example.myapp.main.apk.asc
+        # ...
+```
+
+**Well done!** You've successfully built a native system package for your app. Next, let's find out how you can distribute it to your users!
 
 ## Reference
 
