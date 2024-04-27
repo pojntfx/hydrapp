@@ -242,7 +242,7 @@ export PGP_KEY_ID="..."
 export PGP_KEY_PASSWORD="..."
 ```
 
-These secrets can now be added to the GitHub repository by heading to `Settings → Secrets and variables` in the repository, clicking on "New repository secret" and entering the value from `hydrapp secrets show` for each of them (there is no need to include the `"` characters or `export`):
+These secrets can now be added to the GitHub repository by heading to `Settings → Secrets and variables → Actions` in the repository, clicking on "New repository secret" and entering the value from `hydrapp secrets show` for each of them (there is no need to include the `"` characters or `export`):
 
 <p align="center">
   <img src="./docs/screenshot-add-actions-secret.png" width="450px" alt="Screenshot of the GitHub actions secret add wizard" title="Screenshot of the GitHub actions secret add wizard">
