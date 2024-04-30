@@ -254,6 +254,26 @@ Once you've added all of them, they should look like this:
   <img src="./docs/screenshot-show-actions-secrets.png" width="450px" alt="Screenshot of the GitHub actions secret list" title="Screenshot of the GitHub actions secret list">
 </p>
 
+Now that you've added the secrets to the repository, you can push the app to it like so (be sure to adjust `git@github.com:myusername/myapp.git` to the repository URL we've specified in [1. Creating a New App](#1-creating-a-new-app) earlier):
+
+```shell
+$ git init
+$ git add .
+$ git commit -m "Initial commit"
+$ git remote add origin git@github.com:myusername/myapp.git
+$ git push -u origin main
+```
+
+After pushing the app to the repository, the GitHub action should automatically start building the app. You should be able to follow along by heading to `Actions → hydrapp CI` in the repository; after it has finished the output should look something like this:
+
+<p align="center">
+  <img src="./docs/screenshot-show-actions-pipeline.png" width="650px" alt="Screenshot of the GitHub actions pipeline" title="Screenshot of the GitHub actions pipeline">
+</p>
+
+After the action has run, the generated assets and installation instructions will be published to GitHub pages. You can find the link to them in the generated `README.md`; they should look something like this:
+
+![Screenshot of the generated installation instructions](./docs/screenshot-generated-installation-instructions.png)
+
 ## Reference
 
 ### Examples
