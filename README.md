@@ -21,7 +21,7 @@ It enables you too ...
 
 - **Build apps in Go and JS:** Use the speedy and easy-to-learn Go language to create your app's backend, then use your web tech know-how to develop a top-notch, user-friendly frontend.
 - **Connect frontend and backend with ease:** With hydrapp and [panrpc](https://github.com/pojntfx/panrpc), you can easily call functions between the frontend and backend without any complicated manual setup.
-- **Compatible with all browsers:** Hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Firefox/Gecko, Epiphany/Webkit, and even Android WebView.
+- **Compatible with all browsers:** Hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit, and even Android WebView.
 - **Cross-compile easily with full CGo support:** Hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using non-Linux machines.
 - **Effortlessly build, sign, distribute, and update your app:** Hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, EXE, DMG, APK, and static binaries for all other platforms. Hydrapp can also generate APT, YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
 
@@ -270,7 +270,7 @@ After pushing the app to the repository, the GitHub action should automatically 
   <img src="./docs/screenshot-show-actions-pipeline.png" width="650px" alt="Screenshot of the GitHub actions pipeline" title="Screenshot of the GitHub actions pipeline">
 </p>
 
-After the action has run, the generated assets and installation instructions will be published to GitHub pages. You can find the link to them in the generated `README.md`; they should look something like this:
+After the action has run, the generated packages and installation instructions will be published to GitHub pages. You can find the link to them in the generated `README.md` or by heading to the URL reported by the `publish-linux` action; they should look something like this:
 
 ![Screenshot of the generated installation instructions](./docs/screenshot-generated-installation-instructions.png)
 
@@ -421,6 +421,51 @@ Global Flags:
 ### Environment Variables
 
 All command line arguments described above can also be set using environment variables; for example, to set `--eject` to `true` with an environment variable, use `HYDRAPP_EJECT=true`.
+
+## FAQ
+
+### How do I disable builds for a specific platform like Windows or Debian?
+
+To disable builds for a specific platform, simply delete their definition from the `hydrapp.yaml` file and remove the matching target from `.github/workflows/hydrapp.yaml`, after which they will neither be built by GitHub actions nor included in the generated installation instructions; also see [4. Packaging The App](#4-packaging-the-app) if you want to skip these builds locally.
+
+### How do I include native dependencies, install additional build-time packages or use CGo?
+
+The container-based system package build system allows you to cross-compile with CGo support for DEB, RPM, Flatpak, MSI, DMG and APK packages by default, and it also allows the declarative installation of build dependencies through MacPorts/MSYS2/APT/DNF etc. (like `sqlite`, `libpcap` etc.) by adding them to `hydrapp.yaml`. For example, to add `libpcap` to the build dependencies, the configuration might look like so:
+
+```yaml
+deb:
+- path: deb/debian/sid/x86_64
+  os: debian
+  distro: sid
+  mirrorsite: http://http.us.debian.org/debian
+  components:
+  - main
+  - contrib
+  debootstrapopts: ""
+  architecture: amd64
+    - name: libpcap-dev
+      version: "1.10.1"
+dmg:
+  path: dmg
+  packages:
+    - libpcap
+msi:
+- path: msi/x86_64
+  architecture: amd64
+  include: ^\\b$
+  packages:
+    - libpcap
+rpm:
+- path: rpm/fedora/39/x86_64
+  trailer: 1.fc39
+  distro: fedora-39
+  architecture: amd64
+  packages:
+    - name: libpcap-devel
+      version: "1.10.1"
+```
+
+Note that while the DEB and RPM builds automatically include these packages as dependencies, for DMG and MSI builds, you must still ensure that the necessary runtime libraries are installed on your users' systems unless you manually set up static linking.
 
 ## Acknowledgements
 
