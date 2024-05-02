@@ -70,9 +70,9 @@ cat >'config.yml' <<EOT
 ---
 sdk_path: "${ANDROID_HOME}"
 repo_url: "${BASE_URL}"
-repo_name: Hydrapp F-Droid Repo
+repo_name: hydrapp F-Droid Repo
 repo_description: >-
-  Android apps for Hydrapp.
+  Android apps for hydrapp.
 repo_icon: icon.png
 repo_keyalias: ${ANDROID_CERT_ALIAS}
 keystore: keystore.p12

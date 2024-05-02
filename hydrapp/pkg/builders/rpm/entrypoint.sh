@@ -65,7 +65,7 @@ gpg --output "/dst/repodata/repo.asc" --armor --export
 
 # Add repo file
 echo "[hydrapp-repo]
-name=Hydrapp YUM repo
+name=hydrapp YUM repo
 baseurl=${BASE_URL}
 enabled=1
 gpgcheck=1

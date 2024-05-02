@@ -1,7 +1,7 @@
 {
   "name": "com.pojtinger.felicitas.hydrapp.example.react.panrpc",
   "version": "0.0.1",
-  "description": "A simple Hydrapp React and panrpc example app.",
+  "description": "A simple hydrapp React and panrpc example app.",
   "type": "module",
   "scripts": {
     "dev": "parcel index.html --dist-dir out",

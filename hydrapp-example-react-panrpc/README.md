@@ -1,12 +1,12 @@
-## Hydrapp React and panrpc Example
+## hydrapp React and panrpc Example
 
-Hydrapp React and panrpc example app.
+hydrapp React and panrpc example app.
 
 [![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
 
 ## Overview
 
-A simple Hydrapp React and panrpc example app.
+A simple hydrapp React and panrpc example app.
 
 ## Installation
 
@@ -36,7 +36,7 @@ All arguments passed to the binary will be forwarded to the browser used to disp
 
 To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-To build and start a development version of Hydrapp React and panrpc Example locally, run the following:
+To build and start a development version of hydrapp React and panrpc Example locally, run the following:
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
@@ -73,6 +73,6 @@ For more information, see the [hydrapp documentation](../README.md).
 
 ## License
 
-Hydrapp React and panrpc Example (c) 2024 Felicitas Pojtinger and contributors
+hydrapp React and panrpc Example (c) 2024 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: Apache-2.0

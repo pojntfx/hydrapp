@@ -1,12 +1,12 @@
-## Hydrapp Vanilla JS and Forms
+## hydrapp Vanilla JS and Forms
 
-Hydrapp Vanilla JS and forms app.
+hydrapp Vanilla JS and forms app.
 
 [![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
 
 ## Overview
 
-A simple Hydrapp Vanilla JS and forms app.
+A simple hydrapp Vanilla JS and forms app.
 
 ## Installation
 
@@ -36,7 +36,7 @@ All arguments passed to the binary will be forwarded to the browser used to disp
 
 To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-To build and start a development version of Hydrapp Vanilla JS and Forms locally, run the following:
+To build and start a development version of hydrapp Vanilla JS and Forms locally, run the following:
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git
@@ -62,6 +62,6 @@ For more information, see the [hydrapp documentation](../README.md).
 
 ## License
 
-Hydrapp Vanilla JS and Forms (c) 2024 Felicitas Pojtinger and contributors
+hydrapp Vanilla JS and Forms (c) 2024 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: Apache-2.0

@@ -72,7 +72,7 @@ var (
 	TsconfigJSONTpl string
 
 	//go:embed hydrapp.yaml.tpl
-	HydrappYAMLTpl string
+	hydrappYAMLTpl string
 
 	//go:embed CODE_OF_CONDUCT.md.tpl
 	CodeOfConductMDTpl string

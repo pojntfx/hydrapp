@@ -43,10 +43,10 @@
             </Directory>
         </Directory>
 
-        <HydrappDirectories />
+        <hydrappDirectories />
 
         <Feature Id="Complete" Level="1">
-            <HydrappComponentRefs />
+            <hydrappComponentRefs />
             <ComponentRef Id="StartMenuShortcut" />
             <ComponentRef Id="DesktopShortcut" />
         </Feature>

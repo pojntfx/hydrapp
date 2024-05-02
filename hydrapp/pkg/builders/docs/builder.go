@@ -38,7 +38,7 @@ func NewBuilder(
 	branchID, // Branch ID
 	branchName, // Branch Name
 	goMain string, // Directory with the main package to build
-	cfg *cconfig.Root, // Hydrapp config file
+	cfg *cconfig.Root, // hydrapp config file
 	overwrite bool, // Overwrite files even if they exist
 ) *Builder {
 	return &Builder{

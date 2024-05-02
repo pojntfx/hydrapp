@@ -21,9 +21,9 @@ It enables you too ...
 
 - **Build apps in Go and JS:** Use the speedy and easy-to-learn Go language to create your app's backend, then use your web tech know-how to develop a top-notch, user-friendly frontend.
 - **Connect frontend and backend with ease:** With hydrapp and [panrpc](https://github.com/pojntfx/panrpc), you can easily call functions between the frontend and backend without any complicated manual setup.
-- **Compatible with all browsers:** Hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit, and even Android WebView.
-- **Cross-compile easily with full CGo support:** Hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using non-Linux machines.
-- **Effortlessly build, sign, distribute, and update your app:** Hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, DMG, APK, and static binaries for all other platforms. Hydrapp can also generate APT, YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
+- **Compatible with all browsers:** hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit, and even Android WebView.
+- **Cross-compile easily with full CGo support:** hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using non-Linux machines.
+- **Effortlessly build, sign, distribute, and update your app:** hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, DMG, APK, and static binaries for all other platforms. hydrapp can also generate APT, YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
 
 ## Installation
 
@@ -387,14 +387,14 @@ Aliases:
 
 Flags:
   -h, --help                                 help for new
-      --java-certificate-alias string        Java/APK certificate alias (default "Anonymous Hydrapp Developer")
-      --java-certificate-cname string        Java/APK certificate CNAME (default "Anonymous Hydrapp Developer")
+      --java-certificate-alias string        Java/APK certificate alias (default "Anonymous hydrapp Developer")
+      --java-certificate-cname string        Java/APK certificate CNAME (default "Anonymous hydrapp Developer")
       --java-certificate-password string     Java/APK certificate password (auto-generated if not specified)
       --java-certificate-validity duration   Java/APK certificate validty (default 8760h0m0s)
       --java-keystore-password string        Java/APK keystore password (auto-generated if not specified)
       --java-rsa-bits uint32                 Java/APK RSA bits (default 2048)
       --pgp-key-email string                 PGP key E-Mail (default "test@example.com")
-      --pgp-key-full-name string             PGP key full name (default "Anonymous Hydrapp Developer")
+      --pgp-key-full-name string             PGP key full name (default "Anonymous hydrapp Developer")
       --pgp-key-password string              PGP key password (auto-generated if not specified)
 
 Global Flags:

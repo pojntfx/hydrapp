@@ -25,7 +25,7 @@ const (
 	pgpKeyEmailFlag    = "pgp-key-email"
 	pgpKeyPasswordFlag = "pgp-key-password"
 
-	fullNameDefault            = "Anonymous Hydrapp Developer"
+	fullNameDefault            = "Anonymous hydrapp Developer"
 	emailDefault               = "test@example.com"
 	certificateValidityDefault = time.Hour * 24 * 365
 	javaRSABitsDefault         = 2048

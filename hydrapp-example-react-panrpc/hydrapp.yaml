@@ -1,8 +1,8 @@
 app:
   id: com.pojtinger.felicitas.hydrapp.example.react.panrpc
-  name: Hydrapp React and panrpc Example
-  summary: Hydrapp React and panrpc example app
-  description: A simple Hydrapp React and panrpc example app.
+  name: hydrapp React and panrpc Example
+  summary: hydrapp React and panrpc example app
+  description: A simple hydrapp React and panrpc example app.
   license: Apache-2.0
   homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-react-panrpc
   git: https://github.com/pojntfx/hydrapp.git

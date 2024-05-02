@@ -47,10 +47,10 @@ flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64
 flatpak --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" build-bundle '/dst' "/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"
 
 echo "[Flatpak Repo]
-Title=Hydrapp Flatpak repo
+Title=hydrapp Flatpak repo
 Url=${BASE_URL}
 Homepage=${BASE_URL}
-Description=Flatpaks for Hydrapp
+Description=Flatpaks for hydrapp
 GPGKey=$(base64 -w 0 /tmp/repo.asc)
 " >/dst/hydrapp.flatpakrepo
 

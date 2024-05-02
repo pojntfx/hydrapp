@@ -1,8 +1,8 @@
 app:
   id: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest
-  name: Hydrapp Vanilla JS and REST
-  summary: Hydrapp Vanilla JS and REST app
-  description: A simple Hydrapp Vanilla JS and REST app.
+  name: hydrapp Vanilla JS and REST
+  summary: hydrapp Vanilla JS and REST app
+  description: A simple hydrapp Vanilla JS and REST app.
   license: Apache-2.0
   homepage: https://github.com/pojntfx/hydrapp/tree/main/hydrapp-example-vanillajs-rest
   git: https://github.com/pojntfx/hydrapp.git

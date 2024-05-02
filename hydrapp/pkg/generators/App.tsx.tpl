@@ -163,7 +163,7 @@ const App = () => {
 
   return clients > 0 ? (
     <main>
-      <h1>Hydrapp React and panrpc Example</h1>
+      <h1>hydrapp React and panrpc Example</h1>
 
       <div>
         <button
