@@ -471,6 +471,10 @@ rpm:
 
 Note that while the DEB and RPM builds automatically include these packages as dependencies, for DMG and MSI builds, you must still ensure that the necessary runtime libraries are installed on your users' systems unless you manually set up static linking.
 
+### How can I provide an alpha, beta, insider etc. channel/edition/version of my app?
+
+hydrapp supports publishing different branches of your app by default through Git. The default branch is `main`, which is the latest release version; if you want to publish a beta version, it's as easy as creating a branch named `beta` and pushing to it, and the same goes for an `alpha` or `insider` edition. Installation instructions for these branches will be generated and published just like for the `main` branch, and the branches are integrated with the update system; you can find them by swapping out `main` in the URL with your branch name (e.g. `beta`).
+
 ## Acknowledgements
 
 - [zserge/lorca](https://github.com/zserge/lorca) provided the initial inspiration for this project.
