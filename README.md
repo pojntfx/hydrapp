@@ -23,7 +23,7 @@ It enables you too ...
 - **Connect frontend and backend with ease:** With hydrapp and [panrpc](https://github.com/pojntfx/panrpc), you can easily call functions between the frontend and backend without any complicated manual setup.
 - **Compatible with all browsers:** Hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit, and even Android WebView.
 - **Cross-compile easily with full CGo support:** Hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using non-Linux machines.
-- **Effortlessly build, sign, distribute, and update your app:** Hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, EXE, DMG, APK, and static binaries for all other platforms. Hydrapp can also generate APT, YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
+- **Effortlessly build, sign, distribute, and update your app:** Hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, DMG, APK, and static binaries for all other platforms. Hydrapp can also generate APT, YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
 
 ## Installation
 
@@ -149,7 +149,7 @@ You can find more information in the generated README.
 
 **Congratulations!** You've created your first hydrapp app. Next, let's start it!
 
-### 2. Starting the New App
+### 2. Starting The App
 
 Now that we've created the app, we can start it. To do so, simply follow the instructions that were printed in the last command, which should look something like this:
 
@@ -190,7 +190,7 @@ If you make changes to the frontend, they will be reloaded automatically, and if
 
 ### 4. Packaging The App
 
-While we can of course package our app using the standard `go build` command, distributing our app this way means that things such as getting updates for the app, adding a launcher to the system or shipping it to mobile devices can be quite challenging. To make this process easier, hydrapp includes a way to easily package your app using each system's individual package format (DEB, RPM, Flatpak, MSI, EXE, DMG, APK, and static binaries for all other platforms) through `hydrapp build`, all without having to install any dependencies and full support for CGo. The generated `README.md` file should also include these instructions, but for this example they will look something like this:
+While we can of course package our app using the standard `go build` command, distributing our app this way means that things such as getting updates for the app, adding a launcher to the system or shipping it to mobile devices can be quite challenging. To make this process easier, hydrapp includes a way to easily package your app using each system's individual package format (DEB, RPM, Flatpak, MSI, DMG, APK, and static binaries for all other platforms) through `hydrapp build`, all without having to install any dependencies and full support for CGo. The generated `README.md` file should also include these instructions, but for this example they will look something like this:
 
 ```shell
 $ hydrapp build
@@ -273,6 +273,10 @@ After pushing the app to the repository, the GitHub action should automatically 
 After the action has run, the generated packages and installation instructions will be published to GitHub pages. You can find the link to them in the generated `README.md` or by heading to the URL reported by the `publish-linux` action; they should look something like this:
 
 ![Screenshot of the generated installation instructions](./docs/screenshot-generated-installation-instructions.png)
+
+Once your users install the app using these instructions, they'll receive updates automatically, either through their system's native package manager (for DEBs, RPMs, Flatpaks and APKs) or hydrapp's own self-updater (for MSIs, DMGs and static binaries for all other platforms).
+
+**🚀 That's it!** You've successfully created, started, iterated on, packaged and published your first hydrapp app. We can't wait to see what you're going to build next with hydrapp! Be sure to take a look at the [reference](#reference), [examples](#examples) and [frequently asked questions](#faq) for more information.
 
 ## Reference
 
