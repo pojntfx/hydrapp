@@ -71,7 +71,7 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -114,7 +114,7 @@ jobs:
             --concurrency="$(nproc)" \
             --branch-id="${BRANCH_ID}" --branch-name="${BRANCH_NAME}"
       - name: Upload output
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: {{"${{"}} matrix.target.id {{"}}"}}
           path: {{"${{"}} matrix.target.dst {{"}}"}}
@@ -132,9 +132,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Download output
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           path: /tmp/out
       - name: Isolate the repositories
