@@ -50,7 +50,7 @@ jobs:
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -68,7 +68,7 @@ jobs:
           images: ${{ matrix.target.image }}
           tags: type=semver,pattern={{version}}
       - name: Build image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.target.src }}
           file: ${{ matrix.target.src }}/Dockerfile
@@ -80,7 +80,7 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Push pre-release image to registry
         if: ${{ github.ref == 'refs/heads/main' }}
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.target.src }}
           file: ${{ matrix.target.src }}/Dockerfile
@@ -92,7 +92,7 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Push release image to registry
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.target.src }}
           file: ${{ matrix.target.src }}/Dockerfile
