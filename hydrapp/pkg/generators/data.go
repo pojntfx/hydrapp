@@ -29,7 +29,7 @@ type PackageJSONData struct {
 	LicenseSPDX    string
 }
 
-type hydrappYAMLData struct {
+type HydrappYAMLData struct {
 	AppID string
 }
 
