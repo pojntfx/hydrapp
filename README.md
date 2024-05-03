@@ -475,6 +475,35 @@ Note that while the DEB and RPM builds automatically include these packages as d
 
 hydrapp supports publishing different branches of your app by default through Git. The default branch is `main`, which is the latest release version; if you want to publish a beta version, it's as easy as creating a branch named `beta` and pushing to it, and the same goes for an `alpha` or `insider` edition. Installation instructions for these branches will be generated and published just like for the `main` branch, and the branches are integrated with the update system; you can find them by swapping out `main` in the URL with your branch name (e.g. `beta`).
 
+To enable support for hydrapp branches on GitHub pages, due to [a limitation](https://github.com/actions/upload-pages-artifact/issues/57), you need to change your `.github/workflows/hydrapp.yaml` like so:
+
+```diff
+# ...
+     needs: build-linux
+     environment:
+       name: github-pages
+-      url: ${{ steps.publish.outputs.page_url }}
+# ...
+-      - name: Setup GitHub Pages
+-        uses: actions/configure-pages@v5
+-      - name: Upload GitHub Pages artifact
+-        uses: actions/upload-pages-artifact@v3
+-        with:
+-          path: /tmp/github-pages/
+       - name: Publish to GitHub pages
+-        id: publish
+-        uses: actions/deploy-pages@v4
++        uses: peaceiris/actions-gh-pages@v4
++        with:
++          github_token: ${{ secrets.GITHUB_TOKEN }}
++          publish_dir: /tmp/github-pages/
++          keep_files: true
++          user_name: github-actions[bot]
++          user_email: github-actions[bot]@users.noreply.github.com
+```
+
+This changes the action to publish to the `gh-pages` branch instead of using the newer artifact-based system. You'll also need to [enable publishing from a branch](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-from-a-branch) to use this new GitHub pages source.
+
 ### How can I customize the MSI/WIX installer files, Android permissions, Flatpak configuration, RPM spec file etc.?
 
 While the default configuration files should be usable for most applications, some apps might have different requirements (such as additional permissions, different metadata or deeper native integration). To allow for this, hydrapp can "eject" it's internal configuration files by passing `--eject` to `hydrapp build` like so:
