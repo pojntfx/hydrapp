@@ -447,26 +447,39 @@ deb:
   - contrib
   debootstrapopts: ""
   architecture: amd64
-    - name: libpcap-dev
-      version: "1.10.1"
+  packages:
+  - name: libpcap-dev
+    version: "1.10.4"
 dmg:
   path: dmg
   packages:
-    - libpcap
+  - libpcap
+# Disable due to `libpcap` dependency
+# flatpak:
+# - path: flatpak/x86_64
+#   architecture: amd64
 msi:
 - path: msi/x86_64
   architecture: amd64
   include: ^\\b$
   packages:
-    - libpcap
+  - libpcap
 rpm:
 - path: rpm/fedora/40/x86_64
   trailer: 1.fc40
   distro: fedora-40
   architecture: amd64
   packages:
-    - name: libpcap-devel
-      version: "1.10.1"
+  - name: libpcap-devel
+    version: "1.10.4"
+# Disable due to `libpcap` dependency
+# apk:
+#   path: apk
+# Disable due to `libpcap` dependency
+# binaries:
+#   path: binaries
+#   exclude: (android/*|ios/*|plan9/*|aix/*|linux/loong64|freebsd/riscv64|wasip1/wasm|js/wasm|openbsd/mips64)
+#   packages: []
 ```
 
 Note that while the DEB and RPM builds automatically include these packages as dependencies, for DMG and MSI builds, you must still ensure that the necessary runtime libraries are installed on your users' systems unless you manually set up static linking.
