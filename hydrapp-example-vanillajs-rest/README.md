@@ -1,4 +1,4 @@
-## hydrapp Vanilla JS and REST
+# hydrapp Vanilla JS and REST
 
 hydrapp Vanilla JS and REST app.
 

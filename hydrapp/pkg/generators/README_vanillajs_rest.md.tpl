@@ -1,4 +1,4 @@
-## {{ .AppName }}
+# {{ .AppName }}
 
 {{ .AppSummary }}.
 

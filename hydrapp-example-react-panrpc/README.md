@@ -1,4 +1,4 @@
-## hydrapp React and panrpc Example
+# hydrapp React and panrpc Example
 
 hydrapp React and panrpc example app.
 

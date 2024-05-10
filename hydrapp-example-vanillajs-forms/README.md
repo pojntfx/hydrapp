@@ -1,4 +1,4 @@
-## hydrapp Vanilla JS and Forms
+# hydrapp Vanilla JS and Forms
 
 hydrapp Vanilla JS and forms app.
 
