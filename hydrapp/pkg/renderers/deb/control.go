@@ -29,7 +29,7 @@ func NewControlRenderer(
 	appGit string,
 	appReleases []renderers.Release,
 	extraPackages []rpm.Package,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		filepath.Join("debian", "control"),
 		controlTemplate,

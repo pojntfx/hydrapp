@@ -40,7 +40,7 @@ func NewSpecRenderer(
 	goMain string,
 	goFlags string,
 	goGenerate string,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".spec",
 		specTemplate,

@@ -27,7 +27,7 @@ func NewMetainfoRenderer(
 	appSPDX string,
 	appURL string,
 	appReleases []renderers.Release,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".metainfo.xml",
 		metainfoTemplate,

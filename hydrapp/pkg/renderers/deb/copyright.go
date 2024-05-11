@@ -24,7 +24,7 @@ func NewCopyrightRenderer(
 	appSPDX string,
 	appLicenseText string,
 	appReleases []renderers.Release,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		filepath.Join("debian", "copyright"),
 		copyrightTemplate,

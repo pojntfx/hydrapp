@@ -17,6 +17,6 @@ type manifestData struct {
 func NewManifestRenderer(
 	appID string,
 	appName string,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer("AndroidManifest.xml", manifestTemplate, manifestData{appID, appName})
 }

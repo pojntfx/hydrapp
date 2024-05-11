@@ -19,6 +19,6 @@ func NewDesktopRenderer(
 	appID string,
 	appName string,
 	appDescription string,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(appID+".desktop", desktopTemplate, desktopData{appID, appName, appDescription})
 }

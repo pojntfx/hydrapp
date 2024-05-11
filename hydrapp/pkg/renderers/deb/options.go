@@ -16,6 +16,6 @@ type optionsData struct {
 
 func NewOptionsRenderer(
 	goMain string,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(filepath.Join("debian", "source", "options"), optionsTemplate, optionsData{goMain})
 }

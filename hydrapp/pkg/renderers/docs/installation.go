@@ -50,7 +50,7 @@ func NewInstallationRenderer(
 	renderDMG,
 	renderAPK,
 	renderBinaries bool,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		"INSTALLATION.md",
 		installationTemplate,

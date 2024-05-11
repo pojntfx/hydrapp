@@ -11,6 +11,6 @@ var implementationTemplate string
 
 type implementationData struct{}
 
-func NewImplementationRenderer() *renderers.Renderer {
+func NewImplementationRenderer() renderers.Renderer {
 	return renderers.NewRenderer("hydrapp_android.c", implementationTemplate, implementationData{})
 }

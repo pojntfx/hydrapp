@@ -18,7 +18,11 @@ type Release struct {
 	Email       string    `json:"email" yaml:"email"`
 }
 
-type Renderer struct {
+type Renderer interface {
+	Render(templateOverride string) (filePath string, fileContent []byte, err error)
+}
+
+type renderer struct {
 	filePath string
 	template string
 	data     interface{}
@@ -28,15 +32,15 @@ func NewRenderer(
 	filePath string,
 	template string,
 	data interface{},
-) *Renderer {
-	return &Renderer{
+) Renderer {
+	return &renderer{
 		filePath,
 		template,
 		data,
 	}
 }
 
-func (r *Renderer) Render(templateOverride string) (filePath string, fileContent string, err error) {
+func (r *renderer) Render(templateOverride string) (filePath string, fileContent []byte, err error) {
 	titler := cases.Title(language.English)
 
 	t, err := template.
@@ -57,13 +61,13 @@ func (r *Renderer) Render(templateOverride string) (filePath string, fileContent
 			return r.template
 		}())
 	if err != nil {
-		return "", "", err
+		return "", []byte{}, err
 	}
 
 	buf := bytes.NewBuffer([]byte{})
 	if err := t.Execute(buf, r.data); err != nil {
-		return "", "", err
+		return "", []byte{}, err
 	}
 
-	return r.filePath, buf.String(), err
+	return r.filePath, buf.Bytes(), err
 }

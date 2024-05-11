@@ -19,7 +19,7 @@ func NewInfoRenderer(
 	appID string,
 	appName string,
 	appReleases []renderers.Release,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		"Info.plist",
 		infoTemplate,

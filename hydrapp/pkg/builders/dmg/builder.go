@@ -97,7 +97,8 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 
 	return utils.WriteRenders(
 		filepath.Join(workdir, b.goMain),
-		[]*renderers.Renderer{
+		[]renderers.Renderer{
+			xdg.NewIconRenderer(
 			dmg.NewInfoRenderer(
 				appID,
 				appName,

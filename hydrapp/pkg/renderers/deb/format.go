@@ -12,6 +12,6 @@ var formatTemplate string
 
 type formatData struct{}
 
-func NewFormatRenderer() *renderers.Renderer {
+func NewFormatRenderer() renderers.Renderer {
 	return renderers.NewRenderer(filepath.Join("debian", "source", "format"), formatTemplate, formatData{})
 }

@@ -18,7 +18,7 @@ type changelogData struct {
 func NewChangelogRenderer(
 	appID string,
 	appReleases []renderers.Release,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		filepath.Join("debian", "changelog"),
 		changelogTemplate,

@@ -21,7 +21,7 @@ func NewManifestRenderer(
 	goMain string,
 	goFlags string,
 	goGenerate string,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".yaml",
 		manifestTemplate,

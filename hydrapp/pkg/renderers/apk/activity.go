@@ -15,6 +15,6 @@ type activityData struct {
 
 func NewActivityRenderer(
 	appID string,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer("MainActivity.java", activityTemplate, activityData{appID})
 }

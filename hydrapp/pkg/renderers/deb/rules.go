@@ -22,7 +22,7 @@ func NewRulesRenderer(
 	goMain string,
 	goFlags string,
 	goGenerate string,
-) *renderers.Renderer {
+) renderers.Renderer {
 	return renderers.NewRenderer(
 		filepath.Join("debian", "rules"),
 		rulesTemplate,
