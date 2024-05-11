@@ -1,7 +1,6 @@
 package xdg
 
 import (
-	"bufio"
 	"bytes"
 	_ "embed"
 	"os"
@@ -47,10 +46,10 @@ func (r *iconRenderer) Render(templateOverride string) (filePath string, fileCon
 	}
 	defer inputFile.Close()
 
-	var outputFile bytes.Buffer
+	outputFile := &bytes.Buffer{}
 	if err := utils.ConvertPNG(
 		inputFile,
-		bufio.NewWriter(&outputFile),
+		outputFile,
 
 		r.imageType,
 
