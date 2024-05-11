@@ -7,6 +7,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y dpkg-dev apt-utils ubuntu-keyr
 COPY .pbuilderrc /root/.pbuilderrc
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /work
+WORKDIR /hydrapp/work
 
 CMD /entrypoint.sh

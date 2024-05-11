@@ -62,8 +62,8 @@ export ANDROID_CERT_ALIAS="$(keytool -noprompt -storepass $(echo ${JAVA_KEYSTORE
 gpg --detach-sign --armor "${APP_ID}.apk"
 
 # Setup repository
-rm -rf "/dst/"*
-cd "/dst" || exit 1
+rm -rf "/hydrapp/dst/"*
+cd "/hydrapp/dst" || exit 1
 
 fdroid init
 cat >'config.yml' <<EOT
@@ -99,5 +99,5 @@ tmp
 EOT
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
-  chown -R "${DST_UID}:${DST_GID}" /dst
+  chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst
 fi

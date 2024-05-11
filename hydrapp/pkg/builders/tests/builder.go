@@ -80,7 +80,7 @@ func (b *Builder) Build() error {
 		[]string{
 			"sh",
 			"-c",
-			fmt.Sprintf(`export GOPROXY='https://proxy.golang.org,direct' GOFLAGS="${GOFLAGS}" && cd /work && %v && cd /work && %v`, b.goGenerate, b.goTests),
+			fmt.Sprintf(`export GOPROXY='https://proxy.golang.org,direct' GOFLAGS="${GOFLAGS}" && cd /hydrapp/work && %v && cd /hydrapp/work && %v`, b.goGenerate, b.goTests),
 		},
 	)
 }

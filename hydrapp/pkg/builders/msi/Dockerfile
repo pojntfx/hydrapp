@@ -45,6 +45,6 @@ RUN mv /root/.wine/drive_c/msys64 /tmp/msys64
 
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /work
+WORKDIR /hydrapp/work
 
 CMD /entrypoint.sh

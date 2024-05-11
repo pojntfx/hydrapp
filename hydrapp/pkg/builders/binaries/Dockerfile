@@ -11,6 +11,6 @@ RUN git config --global --add safe.directory '*'
 
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /work
+WORKDIR /hydrapp/work
 
 CMD /entrypoint.sh

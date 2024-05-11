@@ -6,6 +6,6 @@ RUN apt install -y pandoc
 
 COPY entrypoint.sh /entrypoint.sh
 
-WORKDIR /work
+WORKDIR /hydrapp/work
 
 CMD /entrypoint.sh
