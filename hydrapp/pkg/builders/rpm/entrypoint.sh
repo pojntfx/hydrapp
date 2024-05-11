@@ -52,16 +52,16 @@ mock -r "${DISTRO}-${DEBARCH}" "${DSC}" --enable-network
 
 rpmlint "/var/lib/mock/${DISTRO}-${DEBARCH}/result/*.rpm"
 
-mkdir -p '/hydrapp/dst'
-cp "/var/lib/mock/${DISTRO}-${DEBARCH}/result/"*.rpm '/hydrapp/dst'
+mkdir -p '/dst'
+cp "/var/lib/mock/${DISTRO}-${DEBARCH}/result/"*.rpm '/dst'
 
-rpm --addsign '/hydrapp/dst'/*.rpm
+rpm --addsign '/dst'/*.rpm
 
-createrepo '/hydrapp/dst'
+createrepo '/dst'
 
-gpg --detach-sign --armor "/hydrapp/dst/repodata/repomd.xml"
+gpg --detach-sign --armor "/dst/repodata/repomd.xml"
 
-gpg --output "/hydrapp/dst/repodata/repo.asc" --armor --export
+gpg --output "/dst/repodata/repo.asc" --armor --export
 
 # Add repo file
 echo "[hydrapp-repo]
@@ -69,8 +69,8 @@ name=hydrapp YUM repo
 baseurl=${BASE_URL}
 enabled=1
 gpgcheck=1
-gpgkey=${BASE_URL}/repodata/repo.asc" >"/hydrapp/dst/repodata/hydrapp.repo"
+gpgkey=${BASE_URL}/repodata/repo.asc" >"/dst/repodata/hydrapp.repo"
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
-    chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst
+    chown -R "${DST_UID}:${DST_GID}" /dst
 fi

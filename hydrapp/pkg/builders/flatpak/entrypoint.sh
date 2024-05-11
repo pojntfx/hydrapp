@@ -38,10 +38,10 @@ fi
 flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//23.08" "org.freedesktop.Sdk//23.08" "org.freedesktop.Sdk.Extension.golang//23.08" "org.freedesktop.Sdk.Extension.node18//23.08"
 
 # Build app and export to repo
-flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" --repo='/hydrapp/dst' --force-clean "build-dir" "${GOMAIN}/${APP_ID}.yaml"
+flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" --repo='/dst' --force-clean "build-dir" "${GOMAIN}/${APP_ID}.yaml"
 
 # Export `.flatpak` to out dir
-flatpak --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" build-bundle '/hydrapp/dst' "/hydrapp/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"
+flatpak --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" build-bundle '/dst' "/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"
 
 echo "[Flatpak Repo]
 Title=hydrapp Flatpak repo
@@ -49,8 +49,8 @@ Url=${BASE_URL}
 Homepage=${BASE_URL}
 Description=Flatpaks for hydrapp
 GPGKey=$(base64 -w 0 /tmp/repo.asc)
-" >/hydrapp/dst/hydrapp.flatpakrepo
+" >/dst/hydrapp.flatpakrepo
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
-    chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst
+    chown -R "${DST_UID}:${DST_GID}" /dst
 fi

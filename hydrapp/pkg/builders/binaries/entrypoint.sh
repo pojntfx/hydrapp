@@ -36,18 +36,18 @@ if [ "$(git tag --points-at HEAD)" = "" ]; then
     export BRANCH_ID="$(git symbolic-ref --short HEAD)"
 fi
 
-CGO_ENABLED=0 bagop -j "$(nproc)" -b "${APP_ID}" -x "${GOEXCLUDE}" -d /hydrapp/dst -p "go build -o \$DST -ldflags='-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID}' ${GOMAIN}"
+CGO_ENABLED=0 bagop -j "$(nproc)" -b "${APP_ID}" -x "${GOEXCLUDE}" -d /dst -p "go build -o \$DST -ldflags='-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID}' ${GOMAIN}"
 
-for FILE in /hydrapp/dst/*; do
+for FILE in /dst/*; do
     gpg --detach-sign --armor "${FILE}"
 done
 
-cd /hydrapp/dst
+cd /dst
 
 gpg --output "repo.asc" --armor --export
 tree -T "${APP_NAME}" --du -h -D -H . -I 'index.html|index.json' -o 'index.html'
 tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ". |= map( . + {time: \"${COMMIT_TIME_RFC3339}\"} )" | tee 'index.json'
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
-    chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst
+    chown -R "${DST_UID}:${DST_GID}" /dst
 fi

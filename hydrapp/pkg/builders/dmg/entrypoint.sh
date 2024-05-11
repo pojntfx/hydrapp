@@ -84,13 +84,13 @@ dmg "/tmp/out/${APP_ID}.${GOOS}-uncompressed.dmg" "/tmp/out/${APP_ID}.${GOOS}.dm
 rcodesign sign "/tmp/out/${APP_ID}.${GOOS}.dmg"
 gpg --detach-sign --armor "/tmp/out/${APP_ID}.${GOOS}.dmg"
 
-cp "/tmp/out/${APP_ID}.${GOOS}.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.asc" "/hydrapp/dst"
+cp "/tmp/out/${APP_ID}.${GOOS}.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.asc" "/dst"
 
-cd /hydrapp/dst
+cd /dst
 
 gpg --output "repo.asc" --armor --export
 tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ". |= map( . + {time: \"${COMMIT_TIME_RFC3339}\"} )" | tee 'index.json'
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
-  chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst
+  chown -R "${DST_UID}:${DST_GID}" /dst
 fi
