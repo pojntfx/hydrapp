@@ -229,7 +229,6 @@ jobs:
         with:
           name: ${{ matrix.target.id }}
           path: ${{ matrix.target.dst }}
-          overwrite: true
 
   publish-linux:
     runs-on: ubuntu-latest
