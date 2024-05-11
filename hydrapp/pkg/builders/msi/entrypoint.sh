@@ -87,15 +87,15 @@ xmllint --xpath "//*[local-name()='ComponentRef']" /tmp/hydrapp.wxi >/tmp/hydrap
 export STARTID="$(cat /tmp/hydrapp.wxi | grep ${APP_ID}.${GOOS}-${DEBARCH}.exe | xmllint --xpath 'string(//File/@Id)' -)"
 
 # Build WiX installer
-wixl -v -D SourceDir="." -v -o "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-directories.xml"); s+<hydrappDirectories />+$text+g' | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-component-refs.xml"); s+<hydrappComponentRefs />+$text+g' | perl -p -e 's+{ StartID }+$ENV{STARTID}+g')
+wixl -v -D SourceDir="." -v -o "/hydrapp/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi" <(cat "${BASEDIR}/${APP_ID}.wxl" | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-directories.xml"); s+<hydrappDirectories />+$text+g' | perl -p -e 'use File::Slurp; my $text = read_file("/tmp/hydrapp-component-refs.xml"); s+<hydrappComponentRefs />+$text+g' | perl -p -e 's+{ StartID }+$ENV{STARTID}+g')
 
-gpg --detach-sign --armor "/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
+gpg --detach-sign --armor "/hydrapp/dst/${APP_ID}.${GOOS}-${DEBARCH}.msi"
 
-cd /dst
+cd /hydrapp/dst
 
 gpg --output "repo.asc" --armor --export
 tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ". |= map( . + {time: \"${COMMIT_TIME_RFC3339}\"} )" | tee 'index.json'
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
-  chown -R "${DST_UID}:${DST_GID}" /dst
+  chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst
 fi

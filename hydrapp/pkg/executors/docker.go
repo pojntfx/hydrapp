@@ -88,7 +88,7 @@ o:
 	if len(cmds) > 0 {
 		cmd = cmds
 	} else {
-		binds = append(binds, dst+":/dst:z")
+		binds = append(binds, dst+":/hydrapp/dst:z")
 	}
 
 	resp, err := cli.ContainerCreate(ctx, &container.Config{

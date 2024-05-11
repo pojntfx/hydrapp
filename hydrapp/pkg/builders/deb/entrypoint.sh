@@ -33,10 +33,10 @@ for FILE in "/var/cache/pbuilder/${OS}-${DISTRO}-${ARCHITECTURE}/result/"*; do
 	mv "${FILE}" "${FILE//_${ARCHITECTURE}/_${OS}_${DISTRO}_${ARCHITECTURE}}" || :
 done
 
-mkdir -p "/dst/pool/main"
-cp "/var/cache/pbuilder/${OS}-${DISTRO}-${ARCHITECTURE}/result/"* "/dst/pool/main" || :
+mkdir -p "/hydrapp/dst/pool/main"
+cp "/var/cache/pbuilder/${OS}-${DISTRO}-${ARCHITECTURE}/result/"* "/hydrapp/dst/pool/main" || :
 
-cd '/dst' || exit 1
+cd '/hydrapp/dst' || exit 1
 
 mkdir -p "main/binary-${ARCHITECTURE}"
 
@@ -84,5 +84,5 @@ gpg --output "repo.asc" --armor --export
 gpg --output "Release.gpg" -ba "Release"
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
-	chown -R "${DST_UID}:${DST_GID}" /dst
+	chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst
 fi
