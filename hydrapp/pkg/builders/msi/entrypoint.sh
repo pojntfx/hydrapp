@@ -36,7 +36,7 @@ GOFLAGS="${GOFLAGS}" sh -c "${GOGENERATE}"
 
 # Create icons
 mkdir -p '/tmp/out'
-convert -resize 'x256' -gravity 'center' -crop '256x256+0+0' -flatten -colors '256' -background 'transparent' "${BASEDIR}/icon.png" '/tmp/out/icon.ico'
+cp "${BASEDIR}/icon.ico" '/tmp/out/icon.ico'
 
 # Build app
 export GOOS="windows"

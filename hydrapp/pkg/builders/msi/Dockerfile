@@ -1,7 +1,7 @@
 FROM golang:bookworm
 
 RUN apt update
-RUN apt install -y curl make imagemagick msitools curl uuid-runtime git cpanminus npm tree jq apt-transport-https ca-certificates cabextract git gnupg gosu gpg-agent locales p7zip pulseaudio pulseaudio-utils sudo tzdata unzip wget winbind xvfb zenity wixl libxml2-utils
+RUN apt install -y curl make msitools curl uuid-runtime git cpanminus npm tree jq apt-transport-https ca-certificates cabextract git gnupg gosu gpg-agent locales p7zip pulseaudio pulseaudio-utils sudo tzdata unzip wget winbind xvfb zenity wixl libxml2-utils
 
 # Install WINE build dependencies
 RUN sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/debian.sources

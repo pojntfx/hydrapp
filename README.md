@@ -540,8 +540,7 @@ This will render all the template configuration files using the values from `hyd
 ├── hydrapp_android.h # APK/Android/Java/JNI C headers
 ├── Info.plist # DMG/macOS launcher configuration
 ├── INSTALLATION.md # Markdown template for the auto-generated installation instructions
-├── MainActivity.java # APK/Android/Java main activity
-└── org.freedesktop.Sdk.Extension.ImageMagick.yaml # Flatpak build extension to generate different icon size variants
+└── MainActivity.java # APK/Android/Java main activity
 ```
 
 For more information on ejecting, see the [`build` command reference](#build).

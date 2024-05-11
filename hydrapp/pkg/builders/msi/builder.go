@@ -12,6 +12,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/msi"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/xdg"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
@@ -29,6 +30,7 @@ func NewBuilder(
 	dst string, // Output directory
 	onID func(id string), // Callback to handle container ID
 	stdout io.Writer, // Writer to handle container output
+	iconFilePath, // Path to icon to use
 	appID, // Android app ID to use
 	appName string, // Human-readable name for the app,
 	pgpKey []byte, // PGP key contents
@@ -54,6 +56,7 @@ func NewBuilder(
 		dst,
 		onID,
 		stdout,
+		iconFilePath,
 		appID,
 		appName,
 		base64.StdEncoding.EncodeToString(pgpKey),
@@ -81,6 +84,7 @@ type Builder struct {
 	dst string
 	onID   func(id string)
 	stdout io.Writer
+	iconFilePath,
 	appID,
 	appName,
 	pgpKey,
@@ -105,6 +109,12 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 		filepath.Join(workdir, b.goMain),
 		[]renderers.Renderer{
 			xdg.NewIconRenderer(
+				filepath.Join(workdir, b.goMain, b.iconFilePath),
+				"icon.ico",
+				utils.ImageTypeICO,
+				256,
+				256,
+			),
 			msi.NewWixRenderer(
 				appID,
 				appName,

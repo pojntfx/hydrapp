@@ -25,7 +25,7 @@ GOFLAGS="${GOFLAGS}" sh -c "${GOGENERATE}"
 
 # Create icons
 mkdir -p '/tmp/out'
-convert "${BASEDIR}/icon.png" '/tmp/out/icon.icns'
+cp "${BASEDIR}/icon.icns" '/tmp/out/icon.icns'
 
 # Build app
 export COMMIT_TIME_RFC3339="$(git log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format=%cd)"
