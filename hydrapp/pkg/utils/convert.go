@@ -7,7 +7,7 @@ import (
 	"io"
 
 	ico "github.com/Kodeworks/golang-image-ico"
-	"github.com/disintegration/gift"
+	"golang.org/x/image/draw"
 	"yrh.dev/icns"
 )
 
@@ -35,9 +35,8 @@ func ConvertPNG(
 		return err
 	}
 
-	filter := gift.New(gift.Resize(width, height, gift.LanczosResampling))
-	dst := image.NewRGBA(filter.Bounds(src.Bounds()))
-	filter.Draw(dst, src) // This does not report any errors
+	dst := image.NewRGBA(image.Rect(0, 0, width, height))
+	draw.ApproxBiLinear.Scale(dst, dst.Bounds(), src, src.Bounds(), draw.Over, nil) // This does not report any errors
 
 	switch imageType {
 	case ImageTypeICO:
