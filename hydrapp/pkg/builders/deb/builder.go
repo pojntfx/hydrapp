@@ -3,9 +3,11 @@ package deb
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
@@ -54,7 +56,8 @@ func NewBuilder(
 	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName, // Branch Name
+	branchName string, // Branch Name
+	branchTimestamp time.Time, // Branch timestamp
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
 	goGenerate string, // Command to execute go generate with
@@ -93,6 +96,7 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
+		branchTimestamp,
 		goMain,
 		goFlags,
 		goGenerate,
@@ -132,7 +136,8 @@ type Builder struct {
 	appName string
 	overwrite bool
 	branchID,
-	branchName,
+	branchName string
+	branchTimestamp time.Time
 	goMain,
 	goFlags,
 	goGenerate string
@@ -253,6 +258,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			deb.NewChangelogRenderer(
 				appID,
 				b.releases,
+				b.branchTimestamp,
 			),
 			deb.NewCompatRenderer(),
 			deb.NewFormatRenderer(),
@@ -303,19 +309,20 @@ func (b *Builder) Build() error {
 		b.onID,
 		b.stdout,
 		map[string]string{
-			"APP_ID":           appID,
-			"PGP_KEY":          b.pgpKey,
-			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
-			"PGP_KEY_ID":       b.pgpKeyID,
-			"BASE_URL":         baseURL,
-			"OS":               b.os,
-			"DISTRO":           b.distro,
-			"MIRRORSITE":       b.mirrorsite,
-			"COMPONENTS":       strings.Join(b.components, " "),
-			"DEBOOTSTRAPOPTS":  b.debootstrapopts,
-			"ARCHITECTURE":     b.architecture,
-			"PACKAGE_VERSION":  b.releases[0].Version,
-			"GOMAIN":           b.goMain,
+			"APP_ID":                appID,
+			"PGP_KEY":               b.pgpKey,
+			"PGP_KEY_PASSWORD":      b.pgpKeyPassword,
+			"PGP_KEY_ID":            b.pgpKeyID,
+			"BASE_URL":              baseURL,
+			"OS":                    b.os,
+			"DISTRO":                b.distro,
+			"MIRRORSITE":            b.mirrorsite,
+			"COMPONENTS":            strings.Join(b.components, " "),
+			"DEBOOTSTRAPOPTS":       b.debootstrapopts,
+			"ARCHITECTURE":          b.architecture,
+			"PACKAGE_VERSION":       b.releases[0].Version,
+			"GOMAIN":                b.goMain,
+			"BRANCH_TIMESTAMP_UNIX": fmt.Sprintf("%v", b.branchTimestamp.Unix()),
 		},
 		b.Render,
 		[]string{},

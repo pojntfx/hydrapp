@@ -386,6 +386,7 @@ var buildCmd = &cobra.Command{
 					viper.GetBool(overwriteFlag),
 					branchID,
 					branchName,
+					branchTimestamp,
 					cfg.Go.Main,
 					cfg.Go.Flags,
 					cfg.Go.Generate,

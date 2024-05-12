@@ -1,6 +1,6 @@
 {{ range $i, $release := .AppReleases }}{{- if $i }}
 
-{{ else }}{{- end }}{{ $.AppID }} ({{ $release.Version }}) unstable; urgency=medium
+{{ else }}{{- end }}{{ $.AppID }} ({{ $release.Version }}~{{ $.BranchTimestampUNIX }}) unstable; urgency=medium
 
   * {{ $release.Description }}
 

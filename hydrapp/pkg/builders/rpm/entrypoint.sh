@@ -22,7 +22,7 @@ echo "%_signature gpg
 
 # Build tarball and source package
 export PACKAGE="${APP_ID}-${PACKAGE_VERSION}"
-export SUFFIX="${BRANCH_TIMESTAMP}.${PACKAGE_SUFFIX}"
+export SUFFIX="${BRANCH_TIMESTAMP_UNIX}.${PACKAGE_SUFFIX}"
 export SPEC="${BASEDIR}/${APP_ID}.spec"
 
 # See https://github.com/pojntfx/bagop/blob/main/main.go#L45

@@ -18,7 +18,7 @@ gpg --import /tmp/private.pgp
 export BASEDIR="${PWD}/${GOMAIN}"
 
 # Build chroot and source package
-export PACKAGE="${APP_ID}_${PACKAGE_VERSION}"
+export PACKAGE="${APP_ID}_${PACKAGE_VERSION}~${BRANCH_TIMESTAMP_UNIX}"
 
 if [ ! -d debian ]; then
 	cp -r "${BASEDIR}/debian" debian
