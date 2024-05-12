@@ -466,7 +466,7 @@ msi:
   - libpcap
 rpm:
 - path: rpm/fedora/40/x86_64
-  trailer: 1.fc40
+  trailer: fc40
   distro: fedora-40
   architecture: amd64
   packages:

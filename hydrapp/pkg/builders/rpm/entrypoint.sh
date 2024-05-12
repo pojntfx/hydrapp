@@ -16,13 +16,15 @@ gpg --import /tmp/private.pgp
 
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"
+export COMMIT_TIME_UNIX="$(git log -1 --format=%ct)"
 
 echo "%_signature gpg
-%_gpg_name $(echo ${PGP_KEY_ID} | base64 -d)" >"${HOME}/.rpmmacros"
+%_gpg_name $(echo ${PGP_KEY_ID} | base64 -d)
+%commit_time_unix ${COMMIT_TIME_UNIX}" >"${HOME}/.rpmmacros"
 
 # Build tarball and source package
 export PACKAGE="${APP_ID}-${PACKAGE_VERSION}"
-export SUFFIX="${PACKAGE_SUFFIX}"
+export SUFFIX="${COMMIT_TIME_UNIX}.${PACKAGE_SUFFIX}"
 export SPEC="${BASEDIR}/${APP_ID}.spec"
 
 # See https://github.com/pojntfx/bagop/blob/main/main.go#L45
@@ -48,7 +50,7 @@ rpmbuild -bs "${SPEC}"
 rpmlint "${DSC}"
 
 # Build chroot
-mock -r "${DISTRO}-${DEBARCH}" "${DSC}" --enable-network
+mock --define "commit_time_unix ${COMMIT_TIME_UNIX}" -r "${DISTRO}-${DEBARCH}" "${DSC}" --enable-network
 
 rpmlint "/var/lib/mock/${DISTRO}-${DEBARCH}/result/*.rpm"
 
