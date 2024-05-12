@@ -28,12 +28,6 @@ mkdir -p '/tmp/out'
 cp "${BASEDIR}/icon.icns" '/tmp/out/icon.icns'
 
 # Build app
-export BRANCH_TIMESTAMP_RFC3339="$(git log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format=%cd)"
-export BRANCH_ID="stable"
-if [ "$(git tag --points-at HEAD)" = "" ]; then
-  export BRANCH_ID="$(git symbolic-ref --short HEAD)"
-fi
-
 export GOOS="darwin"
 export BINARIES=""
 for ARCH in ${ARCHITECTURES}; do

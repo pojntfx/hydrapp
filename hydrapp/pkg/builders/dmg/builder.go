@@ -3,9 +3,11 @@ package dmg
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
@@ -39,7 +41,8 @@ func NewBuilder(
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName, // Branch name
+	branchName string, // Branch name
+	branchTimestamp time.Time, // Branch timestamp
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
 	goGenerate string, // Command to execute go generate with
@@ -64,6 +67,7 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
+		branchTimestamp,
 		goMain,
 		goFlags,
 		goGenerate,
@@ -89,7 +93,8 @@ type Builder struct {
 	releases  []renderers.Release
 	overwrite bool
 	branchID,
-	branchName,
+	branchName string
+	branchTimestamp time.Time
 	goMain,
 	goFlags,
 	goGenerate string
@@ -136,15 +141,17 @@ func (b *Builder) Build() error {
 		b.onID,
 		b.stdout,
 		map[string]string{
-			"APP_ID":           appID,
-			"APP_NAME":         appName,
-			"PGP_KEY":          b.pgpKey,
-			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
-			"ARCHITECTURES":    "amd64 arm64",
-			"MACPORTS":         strings.Join(b.packages, " "),
-			"GOMAIN":           b.goMain,
-			"GOFLAGS":          b.goFlags,
-			"GOGENERATE":       b.goGenerate,
+			"APP_ID":                   appID,
+			"APP_NAME":                 appName,
+			"PGP_KEY":                  b.pgpKey,
+			"PGP_KEY_PASSWORD":         b.pgpKeyPassword,
+			"ARCHITECTURES":            "amd64 arm64",
+			"MACPORTS":                 strings.Join(b.packages, " "),
+			"GOMAIN":                   b.goMain,
+			"GOFLAGS":                  b.goFlags,
+			"GOGENERATE":               b.goGenerate,
+			"BRANCH_ID":                b.branchID,
+			"BRANCH_TIMESTAMP_RFC3339": fmt.Sprintf("%v", b.branchTimestamp.Format(time.RFC3339)),
 		},
 		b.Render,
 		[]string{},
