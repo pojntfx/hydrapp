@@ -105,7 +105,7 @@ var buildCmd = &cobra.Command{
 			branchName      = viper.GetString(branchNameFlag)
 			branchTimestamp = time.Unix(viper.GetInt64(branchTimestampFlag), 0)
 		)
-		if !(viper.IsSet(branchID) && viper.IsSet(branchName) && viper.IsSet(branchTimestampFlag)) {
+		if !(viper.IsSet(branchIDFlag) && viper.IsSet(branchNameFlag) && viper.IsSet(branchTimestampFlag)) {
 			repo, err := git.PlainOpen(viper.GetString(srcFlag))
 			if err != nil && !errors.Is(err, git.ErrRepositoryNotExists) { // If source directory is not a Git repository, use provided flags
 				return err
@@ -137,19 +137,19 @@ var buildCmd = &cobra.Command{
 				}
 
 				if isTag {
-					if !viper.IsSet(branchID) {
+					if !viper.IsSet(branchIDFlag) {
 						branchID = ""
 					}
 
-					if !viper.IsSet(branchName) {
+					if !viper.IsSet(branchNameFlag) {
 						branchName = ""
 					}
 				} else {
-					if !viper.IsSet(branchID) {
+					if !viper.IsSet(branchIDFlag) {
 						branchID = headRef.Name().Short()
 					}
 
-					if !viper.IsSet(branchName) {
+					if !viper.IsSet(branchNameFlag) {
 						branchName = utils.Capitalize(branchID)
 					}
 				}
