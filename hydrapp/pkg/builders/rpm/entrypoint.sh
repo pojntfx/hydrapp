@@ -16,11 +16,9 @@ gpg --import /tmp/private.pgp
 
 # Prepare build environment
 export BASEDIR="${PWD}/${GOMAIN}"
-export COMMIT_TIME_UNIX="$(git log -1 --format=%ct)"
 
 echo "%_signature gpg
-%_gpg_name $(echo ${PGP_KEY_ID} | base64 -d)
-%commit_time_unix ${COMMIT_TIME_UNIX}" >"${HOME}/.rpmmacros"
+%_gpg_name $(echo ${PGP_KEY_ID} | base64 -d)" >"${HOME}/.rpmmacros"
 
 # Build tarball and source package
 export PACKAGE="${APP_ID}-${PACKAGE_VERSION}"
@@ -50,7 +48,7 @@ rpmbuild -bs "${SPEC}"
 rpmlint "${DSC}"
 
 # Build chroot
-mock --define "commit_time_unix ${COMMIT_TIME_UNIX}" -r "${DISTRO}-${DEBARCH}" "${DSC}" --enable-network
+mock -r "${DISTRO}-${DEBARCH}" "${DSC}" --enable-network
 
 rpmlint "/var/lib/mock/${DISTRO}-${DEBARCH}/result/*.rpm"
 

@@ -3,8 +3,10 @@ package rpm
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"path/filepath"
+	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
@@ -51,6 +53,7 @@ func NewBuilder(
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
 	goGenerate string, // Command to execute go generate with
+	commitTime time.Time, // Git commit time
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -84,6 +87,7 @@ func NewBuilder(
 		goMain,
 		goFlags,
 		goGenerate,
+		commitTime,
 	}
 }
 
@@ -119,6 +123,7 @@ type Builder struct {
 	goMain,
 	goFlags,
 	goGenerate string
+	commitTime time.Time
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
@@ -245,6 +250,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.goMain,
 				b.goFlags,
 				b.goGenerate,
+				b.commitTime,
 			),
 		},
 		b.overwrite,
@@ -278,6 +284,7 @@ func (b *Builder) Build() error {
 			"PACKAGE_VERSION":  b.releases[0].Version,
 			"PACKAGE_SUFFIX":   b.packageSuffix,
 			"GOMAIN":           b.goMain,
+			"COMMIT_TIME_UNIX": fmt.Sprintf("%v", b.commitTime.Unix()),
 		},
 		b.Render,
 		[]string{},

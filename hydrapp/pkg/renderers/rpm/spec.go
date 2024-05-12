@@ -2,6 +2,7 @@ package rpm
 
 import (
 	_ "embed"
+	"time"
 
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 )
@@ -21,6 +22,7 @@ type specData struct {
 	GoMain         string
 	GoFlags        string
 	GoGenerate     string
+	CommitTimeUNIX int64
 }
 
 type Package struct {
@@ -40,10 +42,11 @@ func NewSpecRenderer(
 	goMain string,
 	goFlags string,
 	goGenerate string,
+	commitTime time.Time,
 ) renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".spec",
 		specTemplate,
-		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraPackages, goMain, goFlags, goGenerate},
+		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraPackages, goMain, goFlags, goGenerate, commitTime.Unix()},
 	)
 }

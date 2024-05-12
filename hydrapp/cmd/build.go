@@ -16,6 +16,7 @@ import (
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
+	"github.com/go-git/go-git/v5"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/apk"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/binaries"
@@ -91,6 +92,21 @@ var buildCmd = &cobra.Command{
 		defer configFile.Close()
 
 		cfg, err := config.Parse(configFile)
+		if err != nil {
+			return err
+		}
+
+		srcRepo, err := git.PlainOpen(viper.GetString(srcFlag))
+		if err != nil {
+			return err
+		}
+
+		srcHeadRef, err := srcRepo.Head()
+		if err != nil {
+			return err
+		}
+
+		srcHeadCommit, err := srcRepo.CommitObject(srcHeadRef.Hash())
 		if err != nil {
 			return err
 		}
@@ -495,6 +511,7 @@ var buildCmd = &cobra.Command{
 					cfg.Go.Main,
 					cfg.Go.Flags,
 					cfg.Go.Generate,
+					srcHeadCommit.Author.When,
 				),
 			)
 		}
