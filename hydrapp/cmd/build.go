@@ -629,6 +629,7 @@ var buildCmd = &cobra.Command{
 						cfg.App.Name,
 						branchID,
 						branchName,
+						branchTimestamp,
 						cfg.Go.Main,
 						cfg.Go.Flags,
 						cfg.Go.Generate,

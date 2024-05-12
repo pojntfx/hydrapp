@@ -34,9 +34,9 @@ type BrowserState struct {
 var (
 	ErrNoEscalationMethodFound = errors.New("no escalation method could be found")
 
-	CommitTimeRFC3339 = ""
-	BranchID          = ""
-	PackageType       = ""
+	BranchTimestampRFC3339 = ""
+	BranchID               = ""
+	PackageType            = ""
 )
 
 type File struct {
@@ -71,11 +71,11 @@ func Update(
 	state *BrowserState,
 	handlePanic func(appName, msg string, err error),
 ) {
-	if strings.TrimSpace(CommitTimeRFC3339) == "" || strings.TrimSpace(BranchID) == "" || os.Getenv(utils.EnvSelfupdate) == "false" {
+	if (strings.TrimSpace(BranchTimestampRFC3339) == "" && strings.TrimSpace(BranchID) == "") || os.Getenv(utils.EnvSelfupdate) == "false" {
 		return
 	}
 
-	currentBinaryBuildTime, err := time.Parse(time.RFC3339, CommitTimeRFC3339)
+	currentBinaryBuildTime, err := time.Parse(time.RFC3339, BranchTimestampRFC3339)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 	}
@@ -87,19 +87,19 @@ func Update(
 
 	switch PackageType {
 	case "dmg":
-		baseURL.Path = path.Join(baseURL.Path, cfg.DMG.Path, BranchID)
+		baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, cfg.DMG.Path), BranchID, "")
 
 	case "msi":
 		for _, msiCfg := range cfg.MSI {
 			if msiCfg.Architecture == runtime.GOARCH {
-				baseURL.Path = path.Join(baseURL.Path, msiCfg.Path, BranchID)
+				baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, msiCfg.Path), BranchID, "")
 
 				break
 			}
 		}
 
 	default:
-		baseURL.Path = path.Join(baseURL.Path, cfg.Binaries.Path, BranchID)
+		baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, cfg.Binaries.Path), BranchID, "")
 	}
 
 	indexURL, err := url.JoinPath(baseURL.String(), "index.json")

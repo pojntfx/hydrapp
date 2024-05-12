@@ -56,7 +56,7 @@ func NewBuilder(
 	appName string, // App name
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName string, // Branch Name
+	branchName string, // Branch name
 	branchTimestamp time.Time, // Branch timestamp
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command

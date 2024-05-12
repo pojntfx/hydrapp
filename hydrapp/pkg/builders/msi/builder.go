@@ -40,7 +40,7 @@ func NewBuilder(
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName, // Branch Name
+	branchName, // Branch name
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
 	include, // Regex of files and directories from MSYS2 to include

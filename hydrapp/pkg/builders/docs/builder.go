@@ -36,7 +36,7 @@ func NewBuilder(
 	onID func(id string), // Callback to handle container ID
 	stdout io.Writer, // Writer to handle container output
 	branchID, // Branch ID
-	branchName, // Branch Name
+	branchName, // Branch name
 	goMain string, // Directory with the main package to build
 	cfg *cconfig.Root, // hydrapp config file
 	overwrite bool, // Overwrite files even if they exist

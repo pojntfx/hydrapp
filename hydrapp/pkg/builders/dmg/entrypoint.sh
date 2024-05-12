@@ -28,7 +28,7 @@ mkdir -p '/tmp/out'
 cp "${BASEDIR}/icon.icns" '/tmp/out/icon.icns'
 
 # Build app
-export COMMIT_TIME_RFC3339="$(git log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format=%cd)"
+export BRANCH_TIMESTAMP_RFC3339="$(git log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format=%cd)"
 export BRANCH_ID="stable"
 if [ "$(git tag --points-at HEAD)" = "" ]; then
   export BRANCH_ID="$(git symbolic-ref --short HEAD)"
@@ -64,7 +64,7 @@ for ARCH in ${ARCHITECTURES}; do
     osxcross-macports install ${MACPORTS_ARGS} --static ${MACPORTS}
   fi
 
-  go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.CommitTimeRFC3339=${COMMIT_TIME_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.PackageType=dmg" -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
+  go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchTimestampRFC3339=${BRANCH_TIMESTAMP_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.PackageType=dmg" -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
 
   export BINARIES="${BINARIES} /tmp/${APP_ID}.${GOOS}-${DEBARCH}"
 done
@@ -89,7 +89,7 @@ cp "/tmp/out/${APP_ID}.${GOOS}.dmg" "/tmp/out/${APP_ID}.${GOOS}.dmg.asc" "/hydra
 cd /hydrapp/dst
 
 gpg --output "repo.asc" --armor --export
-tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ". |= map( . + {time: \"${COMMIT_TIME_RFC3339}\"} )" | tee 'index.json'
+tree -J . -I 'index.html|index.json' | jq '.[0].contents' | jq ". |= map( . + {time: \"${BRANCH_TIMESTAMP_RFC3339}\"} )" | tee 'index.json'
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
   chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst

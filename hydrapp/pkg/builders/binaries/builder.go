@@ -3,8 +3,10 @@ package binaries
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"strings"
+	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
@@ -30,7 +32,8 @@ func NewBuilder(
 	pgpKeyPassword, // password for the PGP key
 	appName string, // App name
 	branchID, // Branch ID
-	branchName, // Branch Name
+	branchName string, // Branch name
+	branchTimestamp time.Time, // Branch timestamp
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
 	goGenerate, // Command to execute go generate with
@@ -53,6 +56,7 @@ func NewBuilder(
 		appName,
 		branchID,
 		branchName,
+		branchTimestamp,
 		goMain,
 		goFlags,
 		goGenerate,
@@ -76,7 +80,8 @@ type Builder struct {
 	pgpKeyPassword,
 	appName,
 	branchID,
-	branchName,
+	branchName string
+	branchTimestamp time.Time
 	goMain,
 	goFlags,
 	goGenerate,
@@ -104,15 +109,17 @@ func (b *Builder) Build() error {
 		b.onID,
 		b.stdout,
 		map[string]string{
-			"APP_ID":           appID,
-			"PGP_KEY":          b.pgpKey,
-			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
-			"APP_NAME":         appName,
-			"GOMAIN":           b.goMain,
-			"GOFLAGS":          b.goFlags,
-			"GOGENERATE":       b.goGenerate,
-			"GOEXCLUDE":        b.goExclude,
-			"HOST_PACKAGES":    strings.Join(b.hostPackages, " "),
+			"APP_ID":                   appID,
+			"PGP_KEY":                  b.pgpKey,
+			"PGP_KEY_PASSWORD":         b.pgpKeyPassword,
+			"APP_NAME":                 appName,
+			"GOMAIN":                   b.goMain,
+			"GOFLAGS":                  b.goFlags,
+			"GOGENERATE":               b.goGenerate,
+			"GOEXCLUDE":                b.goExclude,
+			"HOST_PACKAGES":            strings.Join(b.hostPackages, " "),
+			"BRANCH_ID":                b.branchID,
+			"BRANCH_TIMESTAMP_RFC3339": fmt.Sprintf("%v", b.branchTimestamp.Format(time.RFC3339)),
 		},
 		b.Render,
 		[]string{},
