@@ -49,11 +49,11 @@ func NewBuilder(
 	extraPackages []rpm.Package, // Extra RPM packages
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName, // Branch Name
+	branchName string, // Branch Name
+	branchTimestamp time.Time, // Branch timestamp
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
 	goGenerate string, // Command to execute go generate with
-	commitTime time.Time, // Git commit time
 ) *Builder {
 	return &Builder{
 		ctx,
@@ -84,10 +84,10 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
+		branchTimestamp,
 		goMain,
 		goFlags,
 		goGenerate,
-		commitTime,
 	}
 }
 
@@ -119,11 +119,11 @@ type Builder struct {
 	extraPackages []rpm.Package
 	overwrite     bool
 	branchID,
-	branchName,
+	branchName string
+	branchTimestamp time.Time
 	goMain,
 	goFlags,
 	goGenerate string
-	commitTime time.Time
 }
 
 func (b *Builder) Render(workdir string, ejecting bool) error {
@@ -250,7 +250,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.goMain,
 				b.goFlags,
 				b.goGenerate,
-				b.commitTime,
+				b.branchTimestamp,
 			),
 		},
 		b.overwrite,
@@ -284,7 +284,7 @@ func (b *Builder) Build() error {
 			"PACKAGE_VERSION":  b.releases[0].Version,
 			"PACKAGE_SUFFIX":   b.packageSuffix,
 			"GOMAIN":           b.goMain,
-			"COMMIT_TIME_UNIX": fmt.Sprintf("%v", b.commitTime.Unix()),
+			"BRANCH_TIMESTAMP": fmt.Sprintf("%v", b.branchTimestamp.Unix()),
 		},
 		b.Render,
 		[]string{},

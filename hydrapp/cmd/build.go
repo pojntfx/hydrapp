@@ -13,10 +13,12 @@ import (
 	"strings"
 	"sync"
 	"syscall"
+	"time"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/apk"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/binaries"
@@ -29,6 +31,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders/tests"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/secrets"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -50,8 +53,9 @@ const (
 	pgpKeyFlag   = "pgp-key"
 	pgpKeyIDFlag = "pgp-key-id"
 
-	branchIDFlag   = "branch-id"
-	branchNameFlag = "branch-name"
+	branchIDFlag        = "branch-id"
+	branchNameFlag      = "branch-name"
+	branchTimestampFlag = "branch-timestamp"
 )
 
 func checkIfSkip(exclude string, platform, architecture string) (bool, error) {
@@ -96,19 +100,64 @@ var buildCmd = &cobra.Command{
 			return err
 		}
 
-		srcRepo, err := git.PlainOpen(viper.GetString(srcFlag))
-		if err != nil {
-			return err
-		}
+		var (
+			branchID        = viper.GetString(branchIDFlag)
+			branchName      = viper.GetString(branchNameFlag)
+			branchTimestamp = time.Unix(viper.GetInt64(branchTimestampFlag), 0)
+		)
+		if !(viper.IsSet(branchID) && viper.IsSet(branchName) && viper.IsSet(branchTimestampFlag)) {
+			repo, err := git.PlainOpen(viper.GetString(srcFlag))
+			if err != nil && !errors.Is(err, git.ErrRepositoryNotExists) { // If source directory is not a Git repository, use provided flags
+				return err
+			} else if err == nil {
+				headRef, err := repo.Head()
+				if err != nil {
+					return err
+				}
 
-		srcHeadRef, err := srcRepo.Head()
-		if err != nil {
-			return err
-		}
+				headCommit, err := repo.CommitObject(headRef.Hash())
+				if err != nil {
+					return err
+				}
 
-		srcHeadCommit, err := srcRepo.CommitObject(srcHeadRef.Hash())
-		if err != nil {
-			return err
+				tags, err := repo.Tags()
+				if err != nil {
+					return err
+				}
+
+				isTag := false
+				if err := tags.ForEach(func(r *plumbing.Reference) error {
+					if r.Hash() == headCommit.Hash {
+						isTag = true
+					}
+
+					return nil
+				}); err != nil {
+					return err
+				}
+
+				if isTag {
+					if !viper.IsSet(branchID) {
+						branchID = ""
+					}
+
+					if !viper.IsSet(branchName) {
+						branchName = ""
+					}
+				} else {
+					if !viper.IsSet(branchID) {
+						branchID = headRef.Name().Short()
+					}
+
+					if !viper.IsSet(branchName) {
+						branchName = utils.Capitalize(branchID)
+					}
+				}
+
+				if !viper.IsSet(branchTimestampFlag) {
+					branchTimestamp = headCommit.Author.When
+				}
+			}
 		}
 
 		var (
@@ -335,8 +384,8 @@ var buildCmd = &cobra.Command{
 					string(licenseText),
 					cfg.App.Name,
 					viper.GetBool(overwriteFlag),
-					viper.GetString(branchIDFlag),
-					viper.GetString(branchNameFlag),
+					branchID,
+					branchName,
 					cfg.Go.Main,
 					cfg.Go.Flags,
 					cfg.Go.Generate,
@@ -371,8 +420,8 @@ var buildCmd = &cobra.Command{
 						cfg.DMG.Packages,
 						cfg.Releases,
 						viper.GetBool(overwriteFlag),
-						viper.GetString(branchIDFlag),
-						viper.GetString(branchNameFlag),
+						branchID,
+						branchName,
 						cfg.Go.Main,
 						cfg.Go.Flags,
 						cfg.Go.Generate,
@@ -417,8 +466,8 @@ var buildCmd = &cobra.Command{
 					cfg.App.Homepage,
 					cfg.Releases,
 					viper.GetBool(overwriteFlag),
-					viper.GetString(branchIDFlag),
-					viper.GetString(branchNameFlag),
+					branchID,
+					branchName,
 					cfg.Go.Main,
 					cfg.Go.Flags,
 					cfg.Go.Generate,
@@ -457,8 +506,8 @@ var buildCmd = &cobra.Command{
 					c.Packages,
 					cfg.Releases,
 					viper.GetBool(overwriteFlag),
-					viper.GetString(branchIDFlag),
-					viper.GetString(branchNameFlag),
+					branchID,
+					branchName,
 					cfg.Go.Main,
 					cfg.Go.Flags,
 					c.Include,
@@ -506,12 +555,12 @@ var buildCmd = &cobra.Command{
 					cfg.Releases,
 					c.Packages,
 					viper.GetBool(overwriteFlag),
-					viper.GetString(branchIDFlag),
-					viper.GetString(branchNameFlag),
+					branchID,
+					branchName,
+					branchTimestamp,
 					cfg.Go.Main,
 					cfg.Go.Flags,
 					cfg.Go.Generate,
-					srcHeadCommit.Author.When,
 				),
 			)
 		}
@@ -544,8 +593,8 @@ var buildCmd = &cobra.Command{
 						cfg.App.BaseURL+"/"+cfg.APK.Path,
 						cfg.App.Name,
 						viper.GetBool(overwriteFlag),
-						viper.GetString(branchIDFlag),
-						viper.GetString(branchNameFlag),
+						branchID,
+						branchName,
 						cfg.Go.Main,
 						cfg.Go.Flags,
 						cfg.Go.Generate,
@@ -577,8 +626,8 @@ var buildCmd = &cobra.Command{
 						pgpKey,
 						pgpKeyPassword,
 						cfg.App.Name,
-						viper.GetString(branchIDFlag),
-						viper.GetString(branchNameFlag),
+						branchID,
+						branchName,
 						cfg.Go.Main,
 						cfg.Go.Flags,
 						cfg.Go.Generate,
@@ -635,8 +684,8 @@ var buildCmd = &cobra.Command{
 						filepath.Join(viper.GetString(dstFlag), cfg.Docs.Path),
 						handleID,
 						os.Stdout,
-						viper.GetString(branchIDFlag),
-						viper.GetString(branchNameFlag),
+						branchID,
+						branchName,
 						cfg.Go.Main,
 						cfg,
 						viper.GetBool(overwriteFlag),
@@ -704,8 +753,9 @@ func init() {
 	buildCmd.PersistentFlags().String(pgpKeyPasswordFlag, "", "PGP key password (base64-encoded)")
 	buildCmd.PersistentFlags().String(pgpKeyIDFlag, "", "PGP key ID (base64-encoded)")
 
-	buildCmd.PersistentFlags().String(branchIDFlag, "main", `Branch ID to build the app as, i.e. main (for an app ID like "myappid.main" and baseURL like "mybaseurl/main"`)
-	buildCmd.PersistentFlags().String(branchNameFlag, "Main", `Branch name to build the app as, i.e. Main (for an app name like "myappname (Main)"`)
+	buildCmd.PersistentFlags().String(branchIDFlag, "", `Branch ID to build the app as, i.e. main (for an app ID like "myappid.main" and baseURL like "mybaseurl/main") (fetched from Git unless set)`)
+	buildCmd.PersistentFlags().String(branchNameFlag, "", `Branch name to build the app as, i.e. Main (for an app name like "myappname (Main)") (fetched from Git unless set)`)
+	buildCmd.PersistentFlags().Int64(branchTimestampFlag, 0, `Branch UNIX timestamp to build the app with, i.e. 1715484587 (fetched from Git unless set)`)
 
 	viper.AutomaticEnv()
 

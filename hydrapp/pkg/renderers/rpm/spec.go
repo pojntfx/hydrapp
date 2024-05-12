@@ -11,18 +11,18 @@ import (
 var specTemplate string
 
 type specData struct {
-	AppID          string
-	AppName        string
-	AppDescription string
-	AppSummary     string
-	AppSPDX        string
-	AppURL         string
-	AppReleases    []renderers.Release
-	ExtraPackages  []Package
-	GoMain         string
-	GoFlags        string
-	GoGenerate     string
-	CommitTimeUNIX int64
+	AppID               string
+	AppName             string
+	AppDescription      string
+	AppSummary          string
+	AppSPDX             string
+	AppURL              string
+	AppReleases         []renderers.Release
+	ExtraPackages       []Package
+	GoMain              string
+	GoFlags             string
+	GoGenerate          string
+	BranchTimestampUNIX int64
 }
 
 type Package struct {
@@ -42,11 +42,11 @@ func NewSpecRenderer(
 	goMain string,
 	goFlags string,
 	goGenerate string,
-	commitTime time.Time,
+	branchTimestamp time.Time,
 ) renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".spec",
 		specTemplate,
-		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraPackages, goMain, goFlags, goGenerate, commitTime.Unix()},
+		specData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases, extraPackages, goMain, goFlags, goGenerate, branchTimestamp.Unix()},
 	)
 }
