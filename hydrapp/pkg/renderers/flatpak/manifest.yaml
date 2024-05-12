@@ -31,4 +31,4 @@ modules:
         - "--share=network"
     sources:
       - type: dir
-        path: ..
+        path: {{ .SrcDir }}
