@@ -5,10 +5,10 @@ RUN apt update
 RUN apt install -y curl unzip default-jdk-headless make zip fdroidserver npm
 
 # Install the Android SDK and NDK
-ENV ANDROID_BUILD_TOOLS_VERSION='31.0.0'
-ENV ANDROID_API_VERSION='33'
+ENV ANDROID_BUILD_TOOLS_VERSION='34.0.0'
+ENV ANDROID_API_VERSION='34'
 
-RUN curl -L -o '/tmp/commandlinetools.zip' 'https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip'
+RUN curl -L -o '/tmp/commandlinetools.zip' 'https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip'
 RUN rm -rf '/tmp/cmdline-tools'
 RUN unzip -d '/tmp/' '/tmp/commandlinetools.zip'
 

@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
@@ -39,9 +40,11 @@ func NewBuilder(
 	pgpKeyPassword string, // Password for the PGP key
 	baseURL, // Base URL where the repo is to be hosted
 	appName string, // App name
+	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName, // Branch name
+	branchName string, // Branch name
+	branchTimestamp time.Time, // Branch timestamp
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
 	goGenerate string, // Command to execute go generate with
@@ -64,9 +67,11 @@ func NewBuilder(
 		pgpKeyPassword,
 		baseURL,
 		appName,
+		releases,
 		overwrite,
 		branchID,
 		branchName,
+		branchTimestamp,
 		goMain,
 		goFlags,
 		goGenerate,
@@ -91,9 +96,11 @@ type Builder struct {
 	pgpKeyPassword,
 	baseURL,
 	appName string
+	releases  []renderers.Release
 	overwrite bool
 	branchID,
-	branchName,
+	branchName string
+	branchTimestamp time.Time
 	goMain,
 	goFlags,
 	goGenerate string
@@ -129,6 +136,8 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			apk.NewManifestRenderer(
 				appID,
 				appName,
+				b.releases,
+				b.branchTimestamp,
 			),
 			apk.NewActivityRenderer(
 				appID,
