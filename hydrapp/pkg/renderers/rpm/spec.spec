@@ -1,6 +1,6 @@
 Name:           {{ .AppID }}
 Version:        {{ (LastRelease .AppReleases).Version }}
-Release:        %{?commit_time_unix}%{?dist}
+Release:        %{!?commit_time_unix:1}%{?commit_time_unix}%{?dist}
 Summary:        {{ .AppSummary }}
 
 License:        {{ .AppSPDX }}
@@ -44,6 +44,6 @@ install -D -m 0644 {{ .GoMain }}/{{ .AppID }}.metainfo.xml ${RPM_BUILD_ROOT}%{_d
 %{_datadir}/icons/hicolor/*/apps/{{ .AppID }}.png
 
 %changelog{{ range $release := .AppReleases }}
-* {{ $release.Date.Format "Mon Jan 02 2006" }} {{ $release.Author }} <{{ $release.Email }}> {{ $release.Version }}-%{?commit_time_unix}%{?dist}
+* {{ $release.Date.Format "Mon Jan 02 2006" }} {{ $release.Author }} <{{ $release.Email }}> {{ $release.Version }}-%{!?commit_time_unix:1}%{?commit_time_unix}%{?dist}
 - {{ $release.Description }}
 {{ end }}
