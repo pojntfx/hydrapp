@@ -3,9 +3,11 @@ package msi
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"io"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
@@ -40,7 +42,8 @@ func NewBuilder(
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
-	branchName, // Branch name
+	branchName string, // Branch name
+	branchTimestamp time.Time, // Branch timestamp
 	goMain, // Directory with the main package to build
 	goFlags, // Flags to pass to the Go command
 	include, // Regex of files and directories from MSYS2 to include
@@ -67,6 +70,7 @@ func NewBuilder(
 		overwrite,
 		branchID,
 		branchName,
+		branchTimestamp,
 		goMain,
 		goFlags,
 		include,
@@ -94,7 +98,8 @@ type Builder struct {
 	releases  []renderers.Release
 	overwrite bool
 	branchID,
-	branchName,
+	branchName string
+	branchTimestamp time.Time
 	goMain,
 	goFlags,
 	include,
@@ -142,16 +147,18 @@ func (b *Builder) Build() error {
 		b.onID,
 		b.stdout,
 		map[string]string{
-			"APP_ID":           appID,
-			"APP_NAME":         appName,
-			"PGP_KEY":          b.pgpKey,
-			"PGP_KEY_PASSWORD": b.pgpKeyPassword,
-			"ARCHITECTURE":     b.architecture,
-			"MSYS2PACKAGES":    strings.Join(b.packages, " "),
-			"GOMAIN":           b.goMain,
-			"GOFLAGS":          b.goFlags,
-			"GOGENERATE":       b.goGenerate,
-			"MSYS2INCLUDE":     b.include,
+			"APP_ID":                   appID,
+			"APP_NAME":                 appName,
+			"PGP_KEY":                  b.pgpKey,
+			"PGP_KEY_PASSWORD":         b.pgpKeyPassword,
+			"ARCHITECTURE":             b.architecture,
+			"MSYS2PACKAGES":            strings.Join(b.packages, " "),
+			"GOMAIN":                   b.goMain,
+			"GOFLAGS":                  b.goFlags,
+			"GOGENERATE":               b.goGenerate,
+			"MSYS2INCLUDE":             b.include,
+			"BRANCH_ID":                b.branchID,
+			"BRANCH_TIMESTAMP_RFC3339": fmt.Sprintf("%v", b.branchTimestamp.Format(time.RFC3339)),
 		},
 		b.Render,
 		[]string{},

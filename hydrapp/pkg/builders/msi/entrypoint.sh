@@ -54,12 +54,6 @@ elif [ "${ARCHITECTURE}" = "arm64" ]; then
   export DEBARCH="aarch64"
 fi
 
-export BRANCH_TIMESTAMP_RFC3339="$(git log -1 --date=format:'%Y-%m-%dT%H:%M:%SZ' --format=%cd)"
-export BRANCH_ID="stable"
-if [ "$(git tag --points-at HEAD)" = "" ]; then
-  export BRANCH_ID="$(git symbolic-ref --short HEAD)"
-fi
-
 if [ "${ARCHITECTURE}" = "amd64" ]; then
   GOPATH='/root/.wine/drive_c/go' go mod download -x
 
