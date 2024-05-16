@@ -11,17 +11,17 @@
   "author": "{{ .ReleaseAuthor }} <{{ .ReleaseEmail }}>",
   "license": "{{ .LicenseSPDX }}",
   "devDependencies": {
-    "@types/react": "^18.2.67",
-    "@types/react-dom": "^18.2.22",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
     "parcel": "^2.12.0",
     "process": "^0.11.10",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@pojntfx/panrpc": "^0.7.1",
-    "@streamparser/json-whatwg": "^0.0.20",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "@pojntfx/panrpc": "^0.7.2",
+    "@streamparser/json-whatwg": "^0.0.21",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "use-async": "^1.1.0"
   },
   "@parcel/resolver-default": {
