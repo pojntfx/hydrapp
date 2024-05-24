@@ -18,7 +18,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@pojntfx/panrpc": "^0.7.2",
+    "@pojntfx/panrpc": "^0.8.1",
     "@streamparser/json-whatwg": "^0.0.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
