@@ -35,10 +35,10 @@ elif [ "${ARCHITECTURE}" = "arm64" ]; then
 fi
 
 # Install pre-build SDKs
-flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//23.08" "org.freedesktop.Sdk//23.08" "org.freedesktop.Sdk.Extension.golang//23.08" "org.freedesktop.Sdk.Extension.node18//23.08"
+flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//23.08" "org.freedesktop.Sdk//23.08" "org.freedesktop.Sdk.Extension.golang//23.08" "org.freedesktop.Sdk.Extension.node20//23.08"
 
 # Build app and export to repo
-flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" --repo='/hydrapp/dst' --force-clean "build-dir" "${GOMAIN}/${APP_ID}.yaml"
+flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" --repo='/hydrapp/dst' --force-clean "build-dir" "${GOMAIN}/${APP_ID}.json"
 
 # Export `.flatpak` to out dir
 flatpak --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" build-bundle '/hydrapp/dst' "/hydrapp/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"

@@ -534,7 +534,7 @@ This will render all the template configuration files using the values from `hyd
 ├── com.github.example.myapp.main.metainfo.xml # Desktop Linux app store metadata, license, changelog and description
 ├── com.github.example.myapp.main.spec # RPM build configuration, changelog and dependencies
 ├── com.github.example.myapp.main.wxl # MSI/WIX installer/Windows metadata, file registry entries and start menu configuration
-├── com.github.example.myapp.main.yaml # Flatpak metadata, build configuration and dependencies
+├── com.github.example.myapp.main.json # Flatpak metadata, build configuration and dependencies
 ├── debian/* # DEB build configuration, changelog and dependencies
 ├── hydrapp_android.c # APK/Android/Java/JNI C functions
 ├── hydrapp_android.h # APK/Android/Java/JNI C headers

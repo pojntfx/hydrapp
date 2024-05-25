@@ -8,7 +8,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 )
 
-//go:embed manifest.yaml
+//go:embed manifest.json
 var manifestTemplate string
 
 type manifestData struct {
@@ -37,7 +37,7 @@ func NewManifestRenderer(
 	}
 
 	return renderers.NewRenderer(
-		appID+".yaml",
+		appID+".json",
 		manifestTemplate,
 		manifestData{appID, goMain, goFlags, goGenerate, srcDir},
 	)
