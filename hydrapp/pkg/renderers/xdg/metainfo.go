@@ -16,6 +16,7 @@ type metainfoData struct {
 	AppSummary     string
 	AppSPDX        string
 	AppURL         string
+	AppGit         string
 	AppReleases    []renderers.Release
 }
 
@@ -26,11 +27,12 @@ func NewMetainfoRenderer(
 	appSummary string,
 	appSPDX string,
 	appURL string,
+	appGit string,
 	appReleases []renderers.Release,
 ) renderers.Renderer {
 	return renderers.NewRenderer(
 		appID+".metainfo.xml",
 		metainfoTemplate,
-		metainfoData{appID, appName, appDescription, appSummary, appSPDX, appURL, appReleases},
+		metainfoData{appID, appName, appDescription, appSummary, appSPDX, appURL, appGit, appReleases},
 	)
 }

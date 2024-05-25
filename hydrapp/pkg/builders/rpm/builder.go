@@ -44,6 +44,7 @@ func NewBuilder(
 	appDescription, // App description
 	appSummary, // App summary
 	appURL, // App URL
+	appGit, // App Git repo URL
 	appSPDX string, // App SPDX license identifier
 	releases []renderers.Release, // App releases
 	extraPackages []rpm.Package, // Extra RPM packages
@@ -78,6 +79,7 @@ func NewBuilder(
 		appDescription,
 		appSummary,
 		appURL,
+		appGit,
 		appSPDX,
 		releases,
 		extraPackages,
@@ -114,6 +116,7 @@ type Builder struct {
 	appDescription,
 	appSummary,
 	appURL,
+	appGit,
 	appSPDX string
 	releases      []renderers.Release
 	extraPackages []rpm.Package
@@ -236,6 +239,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.appSummary,
 				b.appSPDX,
 				b.appURL,
+				b.appGit,
 				b.releases,
 			),
 			rpm.NewSpecRenderer(

@@ -253,6 +253,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.appSummary,
 				b.appSPDX,
 				b.appURL,
+				b.appGit,
 				b.releases,
 			),
 			deb.NewChangelogRenderer(

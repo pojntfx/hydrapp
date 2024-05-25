@@ -40,7 +40,8 @@ func NewBuilder(
 	appDescription, // App description
 	appSummary, // App summary
 	appSPDX, // App SPDX license identifier
-	appURL string, // App URL
+	appURL, // App URL
+	appGit string, // App Git repo URL
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
@@ -71,6 +72,7 @@ func NewBuilder(
 		appSummary,
 		appSPDX,
 		appURL,
+		appGit,
 		releases,
 		overwrite,
 		branchID,
@@ -102,7 +104,8 @@ type Builder struct {
 	appDescription,
 	appSummary,
 	appSPDX,
-	appURL string
+	appURL,
+	appGit string
 	releases  []renderers.Release
 	overwrite bool
 	branchID,
@@ -222,6 +225,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.appSummary,
 				b.appSPDX,
 				b.appURL,
+				b.appGit,
 				b.releases,
 			),
 			flatpak.NewManifestRenderer(

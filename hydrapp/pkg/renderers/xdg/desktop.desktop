@@ -5,4 +5,4 @@ Name={{ .AppName }}
 Comment={{ .AppDescription }}
 Exec={{ .AppID }}
 Icon={{ .AppID }}
-Categories=Utility;
+Categories=Utility

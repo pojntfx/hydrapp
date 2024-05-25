@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
     <id>{{ .AppID }}</id>
-    <metadata_license>{{ .AppSPDX }}</metadata_license>
-    <project_license>{{ .AppSPDX }}</project_license>
     <name>{{ .AppName }}</name>
     <summary>{{ .AppSummary }}</summary>
 
-    <description>
-        <p>{{ .AppDescription }}</p>
-    </description>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>{{ .AppSPDX }}</project_license>
 
-    <launchable type="desktop-id">{{ .AppID }}.desktop</launchable>
+    <developer id="{{ DeveloperID .AppID }}">
+        <name translatable="no">{{ (LastRelease .AppReleases).Author }}</name>
+    </developer>
+
+    <content_rating type="oars-1.1"/>
 
     <url type="homepage">{{ .AppURL }}</url>
+    <url type="vcs-browser">{{ .AppGit }}</url>
+
+    <launchable type="desktop-id">{{ .AppID }}.desktop</launchable>
 
     <provides>
         <binary>{{ .AppID }}</binary>
     </provides>
+
+    <description>
+        <p>{{ .AppDescription }}</p>
+    </description>
 
     <releases>
         {{ range $release := .AppReleases }}

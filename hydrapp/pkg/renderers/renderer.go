@@ -52,6 +52,14 @@ func (r *renderer) Render(templateOverride string) (filePath string, fileContent
 			"Titlecase": func(title string) string {
 				return titler.String(title)
 			},
+			"DeveloperID": func(appID string) string {
+				parts := strings.Split(appID, ".")
+				if len(parts) > 1 {
+					parts = parts[0 : len(parts)-2]
+				}
+
+				return strings.Join(parts, ".")
+			},
 		}).
 		Parse(func() string {
 			if strings.TrimSpace(templateOverride) != "" {
