@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-oci-images:
-    runs-on: ubicloud-standard-4
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
       packages: write
@@ -16,33 +16,81 @@ jobs:
     strategy:
       matrix:
         target:
+          # x86_64
           - src: hydrapp/pkg/builders/apk
             image: ghcr.io/pojntfx/hydrapp-build-apk
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
           - src: hydrapp/pkg/builders/deb
             image: ghcr.io/pojntfx/hydrapp-build-deb
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
           - src: hydrapp/pkg/builders/dmg
             image: ghcr.io/pojntfx/hydrapp-build-dmg
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
           - src: hydrapp/pkg/builders/flatpak
             image: ghcr.io/pojntfx/hydrapp-build-flatpak
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
           - src: hydrapp/pkg/builders/msi
             image: ghcr.io/pojntfx/hydrapp-build-msi
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
           - src: hydrapp/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
           - src: hydrapp/pkg/builders/binaries
             image: ghcr.io/pojntfx/hydrapp-build-binaries
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
           - src: hydrapp/pkg/builders/tests
             image: ghcr.io/pojntfx/hydrapp-build-tests
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
           - src: hydrapp/pkg/builders/docs
             image: ghcr.io/pojntfx/hydrapp-build-docs
-            arch: "linux/amd64" # linux/arm/v5,linux/arm/v7,linux/arm64/v8,linux/386,linux/s390x,linux/mips64le,linux/ppc64le
+            arch: "linux/amd64"
+            runner: ubicloud-standard-4
+
+          # aarch64
+          - src: hydrapp/pkg/builders/apk
+            image: ghcr.io/pojntfx/hydrapp-build-apk
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+          - src: hydrapp/pkg/builders/deb
+            image: ghcr.io/pojntfx/hydrapp-build-deb
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+          - src: hydrapp/pkg/builders/dmg
+            image: ghcr.io/pojntfx/hydrapp-build-dmg
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+          - src: hydrapp/pkg/builders/flatpak
+            image: ghcr.io/pojntfx/hydrapp-build-flatpak
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+          - src: hydrapp/pkg/builders/msi
+            image: ghcr.io/pojntfx/hydrapp-build-msi
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+          - src: hydrapp/pkg/builders/rpm
+            image: ghcr.io/pojntfx/hydrapp-build-rpm
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+          - src: hydrapp/pkg/builders/binaries
+            image: ghcr.io/pojntfx/hydrapp-build-binaries
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+          - src: hydrapp/pkg/builders/tests
+            image: ghcr.io/pojntfx/hydrapp-build-tests
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+          - src: hydrapp/pkg/builders/docs
+            image: ghcr.io/pojntfx/hydrapp-build-docs
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
 
     steps:
       - name: Maximize build space
@@ -104,9 +152,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
     needs: build-oci-images
@@ -120,48 +167,56 @@ jobs:
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-deb.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-dmg.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-flatpak.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-msi.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-rpm.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|msi|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-binaries.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-tests.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
 
           # com.pojtinger.felicitas.hydrapp.example.vanillajs.rest
           - id: hydrapp-apk.hydrapp-example-vanillajs-rest
@@ -170,48 +225,56 @@ jobs:
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-deb.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-dmg.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-flatpak.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-msi.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-rpm.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|msi|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-binaries.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-tests.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
 
           # com.pojtinger.felicitas.hydrapp.example.react.panrpc
           - id: hydrapp-apk.hydrapp-example-react-panrpc
@@ -220,48 +283,56 @@ jobs:
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-deb.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-dmg.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-flatpak.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-msi.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-rpm.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|msi|binaries|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-binaries.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
           - id: hydrapp-tests.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
+            runner: ubicloud-standard-4
 
     steps:
       - name: Maximize build space
@@ -322,7 +393,7 @@ jobs:
           path: ${{ matrix.target.dst }}
 
   publish-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubicloud-standard-4
     permissions:
       contents: write
       pages: write
