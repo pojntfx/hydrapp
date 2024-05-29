@@ -16,77 +16,84 @@ jobs:
     strategy:
       matrix:
         target:
-          # amd64
           - src: hydrapp/pkg/builders/apk
             image: ghcr.io/pojntfx/hydrapp-build-apk
             arch: "linux/amd64"
             runner: ubicloud-standard-4
+          # Disabled since `android-ndk-r10e` is not available for arm64
+          # - src: hydrapp/pkg/builders/apk
+          #   image: ghcr.io/pojntfx/hydrapp-build-apk
+          #   arch: "linux/arm64/v8"
+          #   runner: ubicloud-standard-4-arm
+
           - src: hydrapp/pkg/builders/deb
             image: ghcr.io/pojntfx/hydrapp-build-deb
             arch: "linux/amd64"
             runner: ubicloud-standard-4
+          - src: hydrapp/pkg/builders/deb
+            image: ghcr.io/pojntfx/hydrapp-build-deb
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+
           - src: hydrapp/pkg/builders/dmg
             image: ghcr.io/pojntfx/hydrapp-build-dmg
             arch: "linux/amd64"
             runner: ubicloud-standard-4
+          - src: hydrapp/pkg/builders/dmg
+            image: ghcr.io/pojntfx/hydrapp-build-dmg
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+
           - src: hydrapp/pkg/builders/flatpak
             image: ghcr.io/pojntfx/hydrapp-build-flatpak
             arch: "linux/amd64"
             runner: ubicloud-standard-4
+          - src: hydrapp/pkg/builders/flatpak
+            image: ghcr.io/pojntfx/hydrapp-build-flatpak
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+
           - src: hydrapp/pkg/builders/msi
             image: ghcr.io/pojntfx/hydrapp-build-msi
             arch: "linux/amd64"
             runner: ubicloud-standard-4
+          # Disabled since various MSYS2 packages aren't available for arm64
+          # - src: hydrapp/pkg/builders/msi
+          #   image: ghcr.io/pojntfx/hydrapp-build-msi
+          #   arch: "linux/arm64/v8"
+          #   runner: ubicloud-standard-4-arm
+
           - src: hydrapp/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
             arch: "linux/amd64"
             runner: ubicloud-standard-4
+          - src: hydrapp/pkg/builders/rpm
+            image: ghcr.io/pojntfx/hydrapp-build-rpm
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+
           - src: hydrapp/pkg/builders/binaries
             image: ghcr.io/pojntfx/hydrapp-build-binaries
             arch: "linux/amd64"
             runner: ubicloud-standard-4
+          - src: hydrapp/pkg/builders/binaries
+            image: ghcr.io/pojntfx/hydrapp-build-binaries
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+
           - src: hydrapp/pkg/builders/tests
             image: ghcr.io/pojntfx/hydrapp-build-tests
             arch: "linux/amd64"
             runner: ubicloud-standard-4
+          - src: hydrapp/pkg/builders/tests
+            image: ghcr.io/pojntfx/hydrapp-build-tests
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
+
           - src: hydrapp/pkg/builders/docs
             image: ghcr.io/pojntfx/hydrapp-build-docs
             arch: "linux/amd64"
             runner: ubicloud-standard-4
-
-          # arm64
-          - src: hydrapp/pkg/builders/apk
-            image: ghcr.io/pojntfx/hydrapp-build-apk
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
-          - src: hydrapp/pkg/builders/deb
-            image: ghcr.io/pojntfx/hydrapp-build-deb
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
-          - src: hydrapp/pkg/builders/dmg
-            image: ghcr.io/pojntfx/hydrapp-build-dmg
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
-          - src: hydrapp/pkg/builders/flatpak
-            image: ghcr.io/pojntfx/hydrapp-build-flatpak
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
-          - src: hydrapp/pkg/builders/msi
-            image: ghcr.io/pojntfx/hydrapp-build-msi
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
-          - src: hydrapp/pkg/builders/rpm
-            image: ghcr.io/pojntfx/hydrapp-build-rpm
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
-          - src: hydrapp/pkg/builders/binaries
-            image: ghcr.io/pojntfx/hydrapp-build-binaries
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
-          - src: hydrapp/pkg/builders/tests
-            image: ghcr.io/pojntfx/hydrapp-build-tests
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
           - src: hydrapp/pkg/builders/docs
             image: ghcr.io/pojntfx/hydrapp-build-docs
             arch: "linux/arm64/v8"
