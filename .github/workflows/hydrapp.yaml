@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         target:
-          # x86_64
+          # amd64
           - src: hydrapp/pkg/builders/apk
             image: ghcr.io/pojntfx/hydrapp-build-apk
             arch: "linux/amd64"
@@ -54,7 +54,7 @@ jobs:
             arch: "linux/amd64"
             runner: ubicloud-standard-4
 
-          # aarch64
+          # arm64
           - src: hydrapp/pkg/builders/apk
             image: ghcr.io/pojntfx/hydrapp-build-apk
             arch: "linux/arm64/v8"
@@ -284,13 +284,20 @@ jobs:
             tag: main
             dst: out/*
             runner: ubicloud-standard-4
-          - id: hydrapp-deb.hydrapp-example-react-panrpc
+          - id: hydrapp-deb-amd64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
-            exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
+            exclude: deb/arm64|apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
             runner: ubicloud-standard-4
+          - id: hydrapp-deb-arm64.hydrapp-example-react-panrpc
+            src: .
+            pkg: hydrapp-example-react-panrpc
+            exclude: deb/amd64|apk|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-dmg.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
@@ -298,13 +305,20 @@ jobs:
             tag: main
             dst: out/*
             runner: ubicloud-standard-4
-          - id: hydrapp-flatpak.hydrapp-example-react-panrpc
+          - id: hydrapp-flatpak-amd64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
-            exclude: apk|deb|dmg|msi|rpm|binaries|tests
+            exclude: apk|deb|flatpak/arm64|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
             runner: ubicloud-standard-4
+          - id: hydrapp-flatpak-arm64.hydrapp-example-react-panrpc
+            src: .
+            pkg: hydrapp-example-react-panrpc
+            exclude: apk|deb|flatpak/amd64|dmg|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-msi.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
@@ -312,13 +326,20 @@ jobs:
             tag: main
             dst: out/*
             runner: ubicloud-standard-4
-          - id: hydrapp-rpm.hydrapp-example-react-panrpc
+          - id: hydrapp-rpm-amd64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
-            exclude: apk|deb|flatpak|dmg|msi|binaries|tests
+            exclude: apk|deb|flatpak|dmg|rpm/arm64|msi|binaries|tests
             tag: main
             dst: out/*
             runner: ubicloud-standard-4
+          - id: hydrapp-rpm-arm64.hydrapp-example-react-panrpc
+            src: .
+            pkg: hydrapp-example-react-panrpc
+            exclude: apk|deb|flatpak|dmg|rpm/amd64|msi|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-binaries.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
