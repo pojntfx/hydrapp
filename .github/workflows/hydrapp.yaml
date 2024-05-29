@@ -19,7 +19,7 @@ jobs:
           - src: hydrapp/pkg/builders/apk
             image: ghcr.io/pojntfx/hydrapp-build-apk
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           # Disabled since `android-ndk-r10e` is not available for arm64
           # - src: hydrapp/pkg/builders/apk
           #   image: ghcr.io/pojntfx/hydrapp-build-apk
@@ -29,7 +29,7 @@ jobs:
           - src: hydrapp/pkg/builders/deb
             image: ghcr.io/pojntfx/hydrapp-build-deb
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - src: hydrapp/pkg/builders/deb
             image: ghcr.io/pojntfx/hydrapp-build-deb
             arch: "linux/arm64/v8"
@@ -38,7 +38,7 @@ jobs:
           - src: hydrapp/pkg/builders/dmg
             image: ghcr.io/pojntfx/hydrapp-build-dmg
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - src: hydrapp/pkg/builders/dmg
             image: ghcr.io/pojntfx/hydrapp-build-dmg
             arch: "linux/arm64/v8"
@@ -47,7 +47,7 @@ jobs:
           - src: hydrapp/pkg/builders/flatpak
             image: ghcr.io/pojntfx/hydrapp-build-flatpak
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - src: hydrapp/pkg/builders/flatpak
             image: ghcr.io/pojntfx/hydrapp-build-flatpak
             arch: "linux/arm64/v8"
@@ -56,17 +56,17 @@ jobs:
           - src: hydrapp/pkg/builders/msi
             image: ghcr.io/pojntfx/hydrapp-build-msi
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubicloud-standard-16
           # Disabled since various MSYS2 packages aren't available for arm64
           # - src: hydrapp/pkg/builders/msi
           #   image: ghcr.io/pojntfx/hydrapp-build-msi
           #   arch: "linux/arm64/v8"
-          #   runner: ubicloud-standard-4-arm
+          #   runner: ubicloud-standard-16-arm
 
           - src: hydrapp/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - src: hydrapp/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
             arch: "linux/arm64/v8"
@@ -75,7 +75,7 @@ jobs:
           - src: hydrapp/pkg/builders/binaries
             image: ghcr.io/pojntfx/hydrapp-build-binaries
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - src: hydrapp/pkg/builders/binaries
             image: ghcr.io/pojntfx/hydrapp-build-binaries
             arch: "linux/arm64/v8"
@@ -84,7 +84,7 @@ jobs:
           - src: hydrapp/pkg/builders/tests
             image: ghcr.io/pojntfx/hydrapp-build-tests
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - src: hydrapp/pkg/builders/tests
             image: ghcr.io/pojntfx/hydrapp-build-tests
             arch: "linux/arm64/v8"
@@ -93,7 +93,7 @@ jobs:
           - src: hydrapp/pkg/builders/docs
             image: ghcr.io/pojntfx/hydrapp-build-docs
             arch: "linux/amd64"
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - src: hydrapp/pkg/builders/docs
             image: ghcr.io/pojntfx/hydrapp-build-docs
             arch: "linux/arm64/v8"
@@ -174,56 +174,77 @@ jobs:
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
-          - id: hydrapp-deb.hydrapp-example-vanillajs-forms
+            runner: ubuntu-latest
+          - id: hydrapp-deb-amd64.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
-            exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
+            exclude: deb/arm64|apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
+          - id: hydrapp-deb-arm64.hydrapp-example-vanillajs-forms
+            src: .
+            pkg: hydrapp-example-vanillajs-forms
+            exclude: deb/amd64|apk|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-dmg.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
-          - id: hydrapp-flatpak.hydrapp-example-vanillajs-forms
+            runner: ubuntu-latest
+          - id: hydrapp-flatpak-amd64.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
-            exclude: apk|deb|dmg|msi|rpm|binaries|tests
+            exclude: apk|deb|flatpak/arm64|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
+          - id: hydrapp-flatpak-arm64.hydrapp-example-vanillajs-forms
+            src: .
+            pkg: hydrapp-example-vanillajs-forms
+            exclude: apk|deb|flatpak/amd64|dmg|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-msi.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
-          - id: hydrapp-rpm.hydrapp-example-vanillajs-forms
+            runner: ubuntu-latest
+          - id: hydrapp-rpm-amd64.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
-            exclude: apk|deb|flatpak|dmg|msi|binaries|tests
+            exclude: apk|deb|flatpak|dmg|rpm/arm64|msi|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
+          - id: hydrapp-rpm-arm64.hydrapp-example-vanillajs-forms
+            src: .
+            pkg: hydrapp-example-vanillajs-forms
+            exclude: apk|deb|flatpak|dmg|rpm/amd64|msi|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-binaries.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-tests.hydrapp-example-vanillajs-forms
             src: .
             pkg: hydrapp-example-vanillajs-forms
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
 
           # com.pojtinger.felicitas.hydrapp.example.vanillajs.rest
           - id: hydrapp-apk.hydrapp-example-vanillajs-rest
@@ -232,56 +253,77 @@ jobs:
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
-          - id: hydrapp-deb.hydrapp-example-vanillajs-rest
+            runner: ubuntu-latest
+          - id: hydrapp-deb-amd64.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
-            exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
+            exclude: deb/arm64|apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
+          - id: hydrapp-deb-arm64.hydrapp-example-vanillajs-rest
+            src: .
+            pkg: hydrapp-example-vanillajs-rest
+            exclude: deb/amd64|apk|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-dmg.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
-          - id: hydrapp-flatpak.hydrapp-example-vanillajs-rest
+            runner: ubuntu-latest
+          - id: hydrapp-flatpak-amd64.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
-            exclude: apk|deb|dmg|msi|rpm|binaries|tests
+            exclude: apk|deb|flatpak/arm64|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
+          - id: hydrapp-flatpak-arm64.hydrapp-example-vanillajs-rest
+            src: .
+            pkg: hydrapp-example-vanillajs-rest
+            exclude: apk|deb|flatpak/amd64|dmg|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-msi.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
-          - id: hydrapp-rpm.hydrapp-example-vanillajs-rest
+            runner: ubuntu-latest
+          - id: hydrapp-rpm-amd64.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
-            exclude: apk|deb|flatpak|dmg|msi|binaries|tests
+            exclude: apk|deb|flatpak|dmg|rpm/arm64|msi|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
+          - id: hydrapp-rpm-arm64.hydrapp-example-vanillajs-rest
+            src: .
+            pkg: hydrapp-example-vanillajs-rest
+            exclude: apk|deb|flatpak|dmg|rpm/amd64|msi|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubicloud-standard-4-arm
           - id: hydrapp-binaries.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-tests.hydrapp-example-vanillajs-rest
             src: .
             pkg: hydrapp-example-vanillajs-rest
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
 
           # com.pojtinger.felicitas.hydrapp.example.react.panrpc
           - id: hydrapp-apk.hydrapp-example-react-panrpc
@@ -290,14 +332,14 @@ jobs:
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-deb-amd64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: deb/arm64|apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-deb-arm64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
@@ -311,14 +353,14 @@ jobs:
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-flatpak-amd64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak/arm64|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-flatpak-arm64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
@@ -332,14 +374,14 @@ jobs:
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-rpm-amd64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|rpm/arm64|msi|binaries|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-rpm-arm64.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
@@ -353,14 +395,14 @@ jobs:
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
           - id: hydrapp-tests.hydrapp-example-react-panrpc
             src: .
             pkg: hydrapp-example-react-panrpc
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
-            runner: ubicloud-standard-4
+            runner: ubuntu-latest
 
     steps:
       - name: Maximize build space
@@ -421,7 +463,7 @@ jobs:
           path: ${{ matrix.target.dst }}
 
   publish-linux:
-    runs-on: ubicloud-standard-4
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pages: write

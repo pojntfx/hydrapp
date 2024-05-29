@@ -30,12 +30,24 @@ deb:
   debootstrapopts: ""
   architecture: amd64
   packages: []
+- path: deb/debian/sid/aarch64
+  os: debian
+  distro: sid
+  mirrorsite: http://http.us.debian.org/debian
+  components:
+  - main
+  - contrib
+  debootstrapopts: ""
+  architecture: arm64
+  packages: []
 dmg:
   path: dmg
   packages: []
 flatpak:
 - path: flatpak/x86_64
   architecture: amd64
+- path: flatpak/aarch64
+  architecture: arm64
 msi:
 - path: msi/x86_64
   architecture: amd64
@@ -46,6 +58,11 @@ rpm:
   trailer: fc40
   distro: fedora-40
   architecture: amd64
+  packages: []
+- path: rpm/fedora/40/aarch64
+  trailer: fc40
+  distro: fedora-40
+  architecture: arm64
   packages: []
 apk:
   path: apk

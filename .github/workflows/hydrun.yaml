@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-linux:
-    runs-on: ubicloud-standard-4
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     strategy:
@@ -63,7 +63,7 @@ jobs:
           path: ${{ matrix.target.dst }}
 
   publish-linux:
-    runs-on: ubicloud-standard-4
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     needs: build-linux
