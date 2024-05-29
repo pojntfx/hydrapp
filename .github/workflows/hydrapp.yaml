@@ -56,12 +56,12 @@ jobs:
           - src: hydrapp/pkg/builders/msi
             image: ghcr.io/pojntfx/hydrapp-build-msi
             arch: "linux/amd64"
-            runner: ubicloud-standard-16
+            runner: ubuntu-latest
           # Disabled since various MSYS2 packages aren't available for arm64
           # - src: hydrapp/pkg/builders/msi
           #   image: ghcr.io/pojntfx/hydrapp-build-msi
           #   arch: "linux/arm64/v8"
-          #   runner: ubicloud-standard-16-arm
+          #   runner: ubicloud-standard-4-arm
 
           - src: hydrapp/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
