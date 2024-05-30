@@ -126,7 +126,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ matrix.target.image }}
-      - name: Build and push image by digest
+      - name: Build and push image by digest to registry
         id: build
         uses: docker/build-push-action@v4
         with:
@@ -254,17 +254,22 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ matrix.target.image }}
+          tags: type=semver,pattern={{version}}
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
           pattern: digests-${{ matrix.target.idprefix }}*
           merge-multiple: true
-      - name: Create manifest list and push
+      - name: Create pre-release manifest list and push to registry
         working-directory: /tmp/digests
         run: |
-          docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ matrix.target.image }}@sha256:%s ' *)
+          docker buildx imagetools create --tag "${{ matrix.target.image }}:${{ github.ref_name }}" $(printf '${{ matrix.target.image }}@sha256:%s ' *)
+      - name: Create release manifest list and push to registry
+        if: startsWith(github.ref, 'refs/tags/v')
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create --tag "${{ steps.meta.outputs.tags }}"" $(printf '${{ matrix.target.image }}@sha256:%s ' *)
 
   # build-linux:
   #   runs-on: ${{ matrix.target.runner }}
