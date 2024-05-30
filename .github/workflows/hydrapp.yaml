@@ -26,12 +26,12 @@ jobs:
           # #   arch: "linux/arm64/v8"
           # #   runner: ubicloud-standard-4-arm
 
-          - id: hydrapp-build-deb-linux
+          - id: hydrapp-build-deb-linux-amd64
             src: hydrapp/pkg/builders/deb
             image: ghcr.io/pojntfx/hydrapp-build-deb
             arch: "linux/amd64"
             runner: ubuntu-latest
-          - id: hydrapp-build-deb-linux
+          - id: hydrapp-build-deb-linux-arm64-v8
             src: hydrapp/pkg/builders/deb
             image: ghcr.io/pojntfx/hydrapp-build-deb
             arch: "linux/arm64/v8"
@@ -65,12 +65,12 @@ jobs:
           # #   arch: "linux/arm64/v8"
           # #   runner: ubicloud-standard-4-arm
 
-          - id: hydrapp-build-rpm-linux
+          - id: hydrapp-build-rpm-linux-amd64
             src: hydrapp/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
             arch: "linux/amd64"
             runner: ubuntu-latest
-          - id: hydrapp-build-rpm-linux
+          - id: hydrapp-build-rpm-linux-arm64-v8
             src: hydrapp/pkg/builders/rpm
             image: ghcr.io/pojntfx/hydrapp-build-rpm
             arch: "linux/arm64/v8"
@@ -145,7 +145,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-${{ matrix.target.image }}-${{ matrix.target.arch }}
+          name: digests-${{ matrix.target.id }}
           path: /tmp/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -170,7 +170,7 @@ jobs:
           # #   arch: "linux/arm64/v8"
           # #   runner: ubicloud-standard-4-arm
 
-          - id: hydrapp-build-deb-linux
+          - idprefix: hydrapp-build-deb-linux-
             image: ghcr.io/pojntfx/hydrapp-build-deb
 
           # - src: hydrapp/pkg/builders/dmg
@@ -201,7 +201,7 @@ jobs:
           # #   arch: "linux/arm64/v8"
           # #   runner: ubicloud-standard-4-arm
 
-          - id: hydrapp-build-rpm-linux
+          - idprefix: hydrapp-build-rpm-linux-
             image: ghcr.io/pojntfx/hydrapp-build-rpm
 
           # - src: hydrapp/pkg/builders/binaries
@@ -258,7 +258,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: /tmp/digests
-          pattern: digests-${{ matrix.target.id }}*
+          pattern: digests-${{ matrix.target.idprefix }}*
           merge-multiple: true
       - name: Create manifest list and push
         working-directory: /tmp/digests
