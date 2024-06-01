@@ -14,7 +14,8 @@
     "--socket=fallback-x11",
     "--socket=wayland",
     "--device=dri",
-    "--filesystem=/tmp:rw"
+    "--filesystem=/tmp:rw",
+    "--filesystem=home"
   ],
   "modules": [
     {
