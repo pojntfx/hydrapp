@@ -20,19 +20,18 @@ ENV HOME='/root'
 ENV ANDROID_HOME="${HOME}/Android/Sdk"
 ENV ANDROID_SDK_ROOT="${HOME}/Android/Sdk"
 ENV ANDROID_NDK_ROOT="${HOME}/Android/Sdk/ndk-bundle"
+ENV ANDROID_NDK_VERSION='30'
 ENV PATH="${PATH}:${ANDROID_HOME}/platform-tools"
 
-# Install the legacy Android NDK
+# Install the legacy Android NDK, but only if we're on x86_64 since there are no builds available for other architectures
 ENV ANDROID_LEGACY_API_VERSION='8'
 ENV ANDROID_LEGACY_NDK_VERSION='16'
 
 ENV ANDROID_LEGACY_HOME="${ANDROID_HOME}/ndk/android-ndk-r10e"
 
-RUN curl -L -o '/tmp/sdk-legacy.zip' 'https://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip'
-RUN rm -rf "${ANDROID_LEGACY_HOME}"
-RUN unzip -d "${ANDROID_HOME}/ndk" '/tmp/sdk-legacy.zip'
-
-ENV ANDROID_NDK_VERSION='30'
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -L -o '/tmp/sdk-legacy.zip' 'https://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip'; fi
+RUN if [ "$(uname -m)" = "x86_64" ]; then rm -rf "${ANDROID_LEGACY_HOME}"; fi
+RUN if [ "$(uname -m)" = "x86_64" ]; then unzip -d "${ANDROID_HOME}/ndk" '/tmp/sdk-legacy.zip'; fi
 
 RUN git config --global --add safe.directory '*'
 

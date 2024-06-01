@@ -21,12 +21,11 @@ jobs:
             image: ghcr.io/pojntfx/hydrapp-build-apk
             arch: "linux/amd64"
             runner: ubuntu-latest
-          # Disabled since `android-ndk-r10e` is not available for arm64
-          # - id: hydrapp-build-apk-linux-arm64-v8
-          #   src: hydrapp/pkg/builders/apk
-          #   image: ghcr.io/pojntfx/hydrapp-build-apk
-          #   arch: "linux/arm64/v8"
-          #   runner: ubicloud-standard-4-arm
+          - id: hydrapp-build-apk-linux-arm64-v8
+            src: hydrapp/pkg/builders/apk
+            image: ghcr.io/pojntfx/hydrapp-build-apk
+            arch: "linux/arm64/v8"
+            runner: ubicloud-standard-4-arm
 
           - id: hydrapp-build-deb-linux-amd64
             src: hydrapp/pkg/builders/deb
@@ -501,7 +500,7 @@ jobs:
         run: sudo chown -R $USER .
       - name: Install hydrapp
         working-directory: .
-        run: sudo install -D -m 0755 out/hydrapp.linux-x86_64 /usr/local/bin/hydrapp
+        run: sudo install -D -m 0755 "out/hydrapp.linux-$(uname -m)" /usr/local/bin/hydrapp
       - name: Remove hydrapp build output
         working-directory: .
         run: rm -rf out
