@@ -30,7 +30,7 @@ Strack trace:
 	// Show error message visually using a dialog
 	if err := zenity.Error(
 		body,
-		zenity.Title("Fatal error"),
+		zenity.Title(fmt.Sprintf("Fatal error for %v", appName)),
 		zenity.Width(320),
 	); err != nil {
 		log.Println("could not display fatal error dialog:", err)

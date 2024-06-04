@@ -175,12 +175,12 @@ func Update(
 	}
 
 	if err := zenity.Question(
-		fmt.Sprintf("Do you want to upgrade from version %v to %v now?", currentBinaryBuildTime, updatedBinaryReleaseTime),
-		zenity.Title("Update available"),
+		fmt.Sprintf("Do you want to upgrade %v from version %v to %v now?", cfg.App.Name, currentBinaryBuildTime, updatedBinaryReleaseTime),
+		zenity.Title(fmt.Sprintf("%v update available", cfg.App.Name)),
 		zenity.OKLabel("Update now"),
 		zenity.CancelLabel("Ask me next time"),
 	); err != nil {
-		if err == zenity.ErrCanceled {
+		if errors.Is(err, zenity.ErrCanceled) {
 			return
 		}
 
@@ -207,17 +207,17 @@ func Update(
 
 	downloadConfigurations := []downloadConfiguration{
 		{
-			description: "Downloading binary",
+			description: fmt.Sprintf("Downloading %v binary", cfg.App.Name),
 			url:         updatedBinaryURL,
 			dst:         updatedBinaryFile,
 		},
 		{
-			description: "Downloading signature",
+			description: fmt.Sprintf("Downloading %v signature", cfg.App.Name),
 			url:         updatedSignatureURL,
 			dst:         updatedSignatureFile,
 		},
 		{
-			description: "Downloading repo key",
+			description: fmt.Sprintf("Downloading %v repo key", cfg.App.Name),
 			url:         updatedRepoKeyURL,
 			dst:         updatedRepoKeyFile,
 		},
@@ -305,14 +305,14 @@ func Update(
 	}
 
 	dialog, err := zenity.Progress(
-		zenity.Title("Validating update"),
+		zenity.Title(fmt.Sprintf("Validating %v update", cfg.App.Name)),
 		zenity.Pulsate(),
 	)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 	}
 
-	if err := dialog.Text("Reading repo key and signature"); err != nil {
+	if err := dialog.Text(fmt.Sprintf("Reading %v repo key and signature", cfg.App.Name)); err != nil {
 		handlePanic(cfg.App.Name, "could not set update validation progress description", err)
 	}
 
@@ -344,7 +344,7 @@ func Update(
 		handlePanic(cfg.App.Name, "could not parse signature", err)
 	}
 
-	if err := dialog.Text("Validating binary with signature and key"); err != nil {
+	if err := dialog.Text(fmt.Sprintf("Validating %v binary with signature and key", cfg.App.Name)); err != nil {
 		handlePanic(cfg.App.Name, "could not set update validation progress description", err)
 	}
 
