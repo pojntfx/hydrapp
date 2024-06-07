@@ -427,6 +427,105 @@ All command line arguments described above can also be set using environment var
 
 ## FAQ
 
+### Which browsers are supported?
+
+Apps built with hydrapp officially support and are pre-configured for the following browsers:
+
+<details>
+  <summary>Expand supported browser list</summary>
+
+- **Linux:**
+  - **Chromium-like browsers:**
+    - Google Chrome (with binary `google-chrome`)
+    - Google Chrome Stable (with binary `google-chrome-stable`)
+    - Google Chrome Beta (with binary `google-chrome-beta`)
+    - Google Chrome Unstable (with binary `google-chrome-unstable`)
+    - Brave Browser (with binary `brave-browser`)
+    - Brave Browser Stable (with binary `brave-browser-stable`)
+    - Brave Browser Beta (with binary `brave-browser-beta`)
+    - Brave Browser Nightly (with binary `brave-browser-nightly`)
+    - Microsoft Edge (with binary `microsoft-edge`)
+    - Microsoft Edge Beta (with binary `microsoft-edge-beta`)
+    - Microsoft Edge Dev (with binary `microsoft-edge-dev`)
+    - Microsoft Edge Canary (with binary `microsoft-edge-canary`)
+    - Ungoogled Chromium (with binary `ungoogled-chromium`)
+    - Chromium Browser (with binary `chromium-browser`)
+    - Chromium (with binary `chromium`)
+    - Google Chrome (with Flatpak `com.google.Chrome`)
+    - Google Chrome Dev (with Flatpak `com.google.ChromeDev`)
+    - Brave Browser (with Flatpak `com.brave.Browser`)
+    - Microsoft Edge (with Flatpak `com.microsoft.Edge`)
+    - Chromium (with Flatpak `org.chromium.Chromium`)
+    - Ungoogled Chromium (with Flatpak `com.github.Eloston.UngoogledChromium`)
+  - **Firefox-like browsers:**
+    - Firefox (with binary `firefox`)
+    - Firefox ESR (with binary `firefox-esr`)
+    - Firefox (with Flatpak `org.mozilla.firefox`)
+  - **Epiphany-like browsers:**
+    - Epiphany (with binary `epiphany`)
+    - Epiphany (with Flatpak `org.gnome.Epiphany`)
+  - **Lynx-like browsers:**
+    - Lynx (with binary `lynx`)
+- **Windows:**
+  - **Chromium-like browsers:**
+    - Google Chrome (with binary `Google\Chrome\Application\chrome.exe`)
+    - Google Chrome Beta (with binary `Google\Chrome Beta\Application\chrome.exe`)
+    - Google Chrome SxS (with binary `Google\Chrome SxS\Application\chrome.exe`)
+    - Brave Browser (with binary `BraveSoftware\Brave-Browser\Application\brave.exe`)
+    - Brave Browser Beta (with binary `BraveSoftware\Brave-Browser-Beta\Application\brave.exe`)
+    - Brave Browser Nightly (with binary `BraveSoftware\Brave-Browser-Nightly\Application\brave.exe`)
+    - Microsoft Edge (with binary `Microsoft\Edge\Application\msedge.exe`)
+    - Microsoft Edge Beta (with binary `Microsoft\Edge Beta\Application\msedge.exe`)
+    - Microsoft Edge Dev (with binary `Microsoft\Edge Dev\Application\msedge.exe`)
+    - Microsoft Edge Canary (with binary `Microsoft\Edge Canary\Application\msedge.exe`)
+    - Chromium (with binary `Chromium\Application\chrome.exe`)
+  - **Firefox-like browsers:**
+    - Mozilla Firefox (with binary `Mozilla Firefox\firefox.exe`)
+    - Firefox Nightly (with binary `Firefox Nightly\firefox.exe`)
+- **macOS:**
+  - **Chromium-like browsers:**
+    - Google Chrome (with binary `Google Chrome.app/Contents/MacOS/Google Chrome`)
+    - Google Chrome Beta (with binary `Google Chrome Beta.app/Contents/MacOS/Google Chrome Beta`)
+    - Google Chrome Canary (with binary `Google Chrome Canary.app/Contents/MacOS/Google Chrome Canary`)
+    - Brave Browser (with binary `Brave Browser.app/Contents/MacOS/Brave Browser`)
+    - Brave Browser Beta (with binary `Brave Browser Beta.app/Contents/MacOS/Brave Browser Beta`)
+    - Brave Browser Nightly (with binary `Brave Browser Nightly.app/Contents/MacOS/Brave Browser Nightly`)
+    - Microsoft Edge (with binary `Microsoft Edge.app/Contents/MacOS/Microsoft Edge`)
+    - Microsoft Edge Beta (with binary `Microsoft Edge Beta.app/Contents/MacOS/Microsoft Edge Beta`)
+    - Microsoft Edge Dev (with binary `Microsoft Edge Dev.app/Contents/MacOS/Microsoft Edge Dev`)
+    - Microsoft Edge Canary (with binary `Microsoft Edge Canary.app/Contents/MacOS/Microsoft Edge Canary`)
+    - Chromium (with binary `Chromium.app/Contents/MacOS/Chromium`)
+  - **Firefox-like browsers:**
+    - Firefox (with binary `Firefox.app/Contents/MacOS/firefox`)
+    - Firefox Nightly (with binary `Firefox Nightly.app/Contents/MacOS/firefox`)
+- **Android**: Android WebView
+  </details>
+
+If you don't have any of these browsers installed, you can download one from here:
+
+- Google Chrome: [https://www.google.com/chrome/](https://www.google.com/chrome/)
+- Google Chrome (Flatpak): [https://flathub.org/apps/com.google.Chrome](https://flathub.org/apps/com.google.Chrome)
+- Brave Browser: [https://brave.com/](https://brave.com/)
+- Brave Browser (Flatpak): [https://flathub.org/apps/com.brave.Browser](https://flathub.org/apps/com.brave.Browser)
+- Microsoft Edge: [https://microsoft.com/edge](https://microsoft.com/edge)
+- Microsoft Edge (Flatpak): [https://flathub.org/apps/com.microsoft.Edge](https://flathub.org/apps/com.microsoft.Edge)
+- Ungoogled Chromium: [https://github.com/ungoogled-software/ungoogled-chromium?tab=readme-ov-file#downloads](https://github.com/ungoogled-software/ungoogled-chromium?tab=readme-ov-file#downloads)
+- Ungoogled Chromium (Flatpak): [https://flathub.org/apps/io.github.ungoogled_software.ungoogled_chromium](https://flathub.org/apps/io.github.ungoogled_software.ungoogled_chromium)
+- Firefox: [https://mozilla.org/firefox](https://mozilla.org/firefox)
+- Firefox (Flatpak): [https://flathub.org/apps/org.mozilla.firefox](https://flathub.org/apps/org.mozilla.firefox)
+- Epiphany: [https://apps.gnome.org/Epiphany](https://apps.gnome.org/Epiphany)
+- Epiphany (Flatpak): [https://flathub.org/apps/org.gnome.Epiphany](https://flathub.org/apps/org.gnome.Epiphany)
+- Lynx: [https://lynx.invisible-island.net/](https://lynx.invisible-island.net/)
+
+It is also possible to use an unsupported browser (or no browser at all), use a custom browser installation location or pick from one of the installed browsers by setting environment variables. By default, the following browser-related environment variables are available to hydrapp-based apps:
+
+| Name                     | Description                                                                                                 |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `HYDRAPP_BACKEND_LADDR`  | Listen address for the backend (`localhost:0` by default)                                                   |
+| `HYDRAPP_FRONTEND_LADDR` | Listen address for the frontend (`localhost:0` by default)                                                  |
+| `HYDRAPP_BROWSER`        | Binary of browser to display the frontend with                                                              |
+| `HYDRAPP_TYPE`           | Type of browser to display the frontend with (one of `chromium`, `firefox`, `epiphany`, `lynx` and `dummy`) |
+
 ### How do I disable builds for a specific platform like Windows or Debian?
 
 To disable builds for a specific platform, simply delete their definition from the `hydrapp.yaml` file and remove the matching target from `.github/workflows/hydrapp.yaml`, after which they will neither be built by GitHub actions nor included in the generated installation instructions; also see [4. Packaging The App](#4-packaging-the-app) if you want to skip these builds locally.
@@ -437,40 +536,40 @@ The container-based system package build system allows you to cross-compile with
 
 ```yaml
 deb:
-- path: deb/debian/sid/x86_64
-  os: debian
-  distro: sid
-  mirrorsite: http://http.us.debian.org/debian
-  components:
-  - main
-  - contrib
-  debootstrapopts: ""
-  architecture: amd64
-  packages:
-  - name: libpcap-dev
-    version: "1.10.4"
+  - path: deb/debian/sid/x86_64
+    os: debian
+    distro: sid
+    mirrorsite: http://http.us.debian.org/debian
+    components:
+      - main
+      - contrib
+    debootstrapopts: ""
+    architecture: amd64
+    packages:
+      - name: libpcap-dev
+        version: "1.10.4"
 dmg:
   path: dmg
   packages:
-  - libpcap
+    - libpcap
 # Disable due to `libpcap` dependency
 # flatpak:
 # - path: flatpak/x86_64
 #   architecture: amd64
 msi:
-- path: msi/x86_64
-  architecture: amd64
-  include: ^\\b$
-  packages:
-  - libpcap
+  - path: msi/x86_64
+    architecture: amd64
+    include: ^\\b$
+    packages:
+      - libpcap
 rpm:
-- path: rpm/fedora/40/x86_64
-  trailer: fc40
-  distro: fedora-40
-  architecture: amd64
-  packages:
-  - name: libpcap-devel
-    version: "1.10.4"
+  - path: rpm/fedora/40/x86_64
+    trailer: fc40
+    distro: fedora-40
+    architecture: amd64
+    packages:
+      - name: libpcap-devel
+        version: "1.10.4"
 # Disable due to `libpcap` dependency
 # apk:
 #   path: apk
