@@ -544,6 +544,10 @@ This will render all the template configuration files using the values from `hyd
 
 For more information on ejecting, see the [`build` command reference](#build).
 
+### How can I disable automatic updates?
+
+hydrapp-based apps receive updates automatically, either through their system's native package manager (for DEBs, RPMs, Flatpaks and APKs) or hydrapp's own self-updater (for MSIs, DMGs and static binaries for all other platforms). To disable the integrated self-updater, set the `HYDRAPP_SELFUPDATE` environment variable to `false`.
+
 ## Acknowledgements
 
 - [zserge/lorca](https://github.com/zserge/lorca) provided the initial inspiration for this project.
