@@ -1,16 +1,25 @@
-package utils
+package browser
 
 import (
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"runtime"
 
 	"github.com/ncruces/zenity"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
 const (
 	browserDownloadLink = "https://github.com/pojntfx/hydrapp#which-browsers-are-supported"
+
+	browserDescriptionChromium = "Chromium-like (Chrome, Edge, Brave etc.)"
+	browserDescriptionFirefox  = "Firefox"
+	browserDescriptionEpiphany = "GNOME Web/Epiphany"
+	browserDescriptionLynx     = "Lynx"
+
+	browserDescriptionDummy = "Dummy/no browser"
 )
 
 var (
@@ -24,7 +33,7 @@ func HandleNoSupportedBrowserFound(
 	knownBinaries string,
 	err error,
 ) error {
-	if err := zenity.Question(
+	if e := zenity.Question(
 		fmt.Sprintf(`%v requires a supported browser but couldn't find one.
 
 Would you like to download a supported browser or learn more?`, appName),
@@ -32,8 +41,8 @@ Would you like to download a supported browser or learn more?`, appName),
 		zenity.OKLabel("Download"),
 		zenity.CancelLabel("Learn more"),
 		zenity.Icon(zenity.WarningIcon),
-	); err != nil {
-		if errors.Is(zenity.ErrCanceled, err) {
+	); e != nil {
+		if errors.Is(zenity.ErrCanceled, e) {
 			if err := zenity.Question(
 				fmt.Sprintf(
 					`While searching for a supported browser %v encountered this error:
@@ -56,17 +65,56 @@ without success. Would you like to manually configure a browser?`,
 				zenity.Icon(zenity.InfoIcon),
 			); err != nil {
 				if errors.Is(zenity.ErrCanceled, err) {
-					return err
-				} else {
-					return fmt.Errorf("could not display dialog: %v", err)
+					return nil
 				}
+
+				return fmt.Errorf("could not display dialog: %v", err)
 			}
 
-			// TODO: Configure browser manually, set HYDRAPP_BROWSER and HYDRAPP_TYPE and return nil, causing it to re-try
+			browserDescription, err := zenity.List(
+				"Select your browser type",
+				[]string{
+					browserDescriptionChromium,
+					browserDescriptionFirefox,
+					browserDescriptionEpiphany,
+					browserDescriptionLynx,
+
+					browserDescriptionDummy,
+				},
+				zenity.Title(fmt.Sprintf("Browser type configuration for %v", appName)),
+				zenity.OKLabel("Continue"),
+			)
+			if err != nil {
+				if errors.Is(zenity.ErrCanceled, err) {
+					return nil
+				}
+
+				return fmt.Errorf("could not display dialog: %v", err)
+			}
+
+			switch browserDescription {
+			case browserDescriptionChromium:
+				os.Setenv(utils.EnvType, browserTypeChromium)
+
+			case browserDescriptionFirefox:
+				os.Setenv(utils.EnvType, browserTypeFirefox)
+
+			case browserDescriptionEpiphany:
+				os.Setenv(utils.EnvType, browserTypeEpiphany)
+
+			case browserDescriptionLynx:
+				os.Setenv(utils.EnvType, browserTypeLynx)
+
+			// No need to check extra options here since it's a radio select and only valid options can be returned
+			default:
+				os.Setenv(utils.EnvType, browserTypeDummy)
+			}
+
+			// TODO: Configure browser location (https://github.com/ncruces/zenity/wiki/Text-entry-dialog with title "Browser location configuration for Multiplex" and description "Specify your browser's binary location or command used to start it:"), then return nil to retry
 
 			return nil
 		} else {
-			return fmt.Errorf("could not display dialog: %v", err)
+			return fmt.Errorf("could not display dialog: %v", e)
 		}
 	}
 
@@ -77,7 +125,7 @@ without success. Would you like to manually configure a browser?`,
 			powerShellBinary = "powershell.exe"
 		}
 
-		if output, err := exec.Command(powerShellBinary, `Start-Process`, browserDownloadLink).CombinedOutput(); err != nil {
+		if output, err := exec.Command(powerShellBinary, `-Command`, fmt.Sprintf(`Start-Process %v`, browserDownloadLink)).CombinedOutput(); err != nil {
 			return fmt.Errorf("could not open browser with output: %s: %v", output, err)
 		}
 
@@ -87,11 +135,6 @@ without success. Would you like to manually configure a browser?`,
 		}
 
 	default:
-		// Open link with `xdg-open`
-		if output, err := exec.Command("xdg-open", browserDownloadLink).CombinedOutput(); err != nil {
-			return fmt.Errorf("could not open browser with output: %s: %v", output, err)
-		}
-
 		// Open link with `xdg-open`
 		if xdgOpen, err := exec.LookPath("xdg-open"); err == nil {
 			if output, err := exec.Command(xdgOpen, browserDownloadLink).CombinedOutput(); err != nil {
@@ -110,7 +153,17 @@ without success. Would you like to manually configure a browser?`,
 		}
 	}
 
-	// TODO: Show "ok"-only modal asking the user to press ok once they have installed the browser, return nil causing it to re-try
+	if err := zenity.Info(
+		"Continue once you have downloaded and installed a supported ",
+		zenity.Title(fmt.Sprintf("%v is waiting for browser installation", appName)),
+		zenity.OKLabel("Continue"),
+	); err != nil {
+		if errors.Is(zenity.ErrCanceled, err) {
+			return nil
+		}
+
+		return fmt.Errorf("could not display dialog: %v", err)
+	}
 
 	return nil
 }

@@ -20,7 +20,7 @@ It enables you too ...
 
 - **Build apps in Go and JS:** Use the speedy and easy-to-learn Go language to create your app's backend, then use your web tech know-how to develop a top-notch, user-friendly frontend.
 - **Connect frontend and backend with ease:** With hydrapp and [panrpc](https://github.com/pojntfx/panrpc), you can easily call functions between the frontend and backend without any complicated manual setup.
-- **Compatible with all browsers:** hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit, and even Android WebView.
+- **Compatible with all browsers:** hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit/GNOME Web, and even Android WebView.
 - **Cross-compile easily with full CGo support:** hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using non-Linux machines.
 - **Effortlessly build, sign, distribute, and update your app:** hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, DMG, APK, and static binaries for all other platforms. hydrapp can also generate APT, YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
 
@@ -461,9 +461,9 @@ Apps built with hydrapp officially support and are pre-configured for the follow
     - Firefox (with binary `firefox`)
     - Firefox ESR (with binary `firefox-esr`)
     - Firefox (with Flatpak `org.mozilla.firefox`)
-  - **Epiphany-like browsers:**
-    - Epiphany (with binary `epiphany`)
-    - Epiphany (with Flatpak `org.gnome.Epiphany`)
+  - **GNOME Web/Epiphany-like browsers:**
+    - GNOME Web/Epiphany (with binary `epiphany`)
+    - GNOME Web/Epiphany (with Flatpak `org.gnome.Epiphany`)
   - **Lynx-like browsers:**
     - Lynx (with binary `lynx`)
 - **Windows:**
@@ -513,8 +513,8 @@ If you don't have any of these browsers installed, you can download one from her
 - Ungoogled Chromium (Flatpak): [https://flathub.org/apps/io.github.ungoogled_software.ungoogled_chromium](https://flathub.org/apps/io.github.ungoogled_software.ungoogled_chromium)
 - Firefox: [https://mozilla.org/firefox](https://mozilla.org/firefox)
 - Firefox (Flatpak): [https://flathub.org/apps/org.mozilla.firefox](https://flathub.org/apps/org.mozilla.firefox)
-- Epiphany: [https://apps.gnome.org/Epiphany](https://apps.gnome.org/Epiphany)
-- Epiphany (Flatpak): [https://flathub.org/apps/org.gnome.Epiphany](https://flathub.org/apps/org.gnome.Epiphany)
+- GNOME Web/Epiphany: [https://apps.gnome.org/Epiphany](https://apps.gnome.org/Epiphany)
+- GNOME Web/Epiphany (Flatpak): [https://flathub.org/apps/org.gnome.Epiphany](https://flathub.org/apps/org.gnome.Epiphany)
 - Lynx: [https://lynx.invisible-island.net/](https://lynx.invisible-island.net/)
 
 It is also possible to use an unsupported browser (or no browser at all), use a custom browser installation location or pick from one of the installed browsers by setting environment variables. By default, the following browser-related environment variables are available to hydrapp-based apps:
