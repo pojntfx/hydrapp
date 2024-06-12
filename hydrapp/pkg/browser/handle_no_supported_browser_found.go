@@ -1,6 +1,7 @@
 package browser
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"os"
@@ -135,10 +136,16 @@ without success. Would you like to manually configure a browser?`,
 		}
 
 	default:
-		// Open link with `xdg-open`
+		// Open link with `xdg-open` (we need to detach because `xdg-open` may block, unlike the Windows and macOS equivalents)
 		if xdgOpen, err := exec.LookPath("xdg-open"); err == nil {
-			if output, err := exec.Command(xdgOpen, browserDownloadLink).CombinedOutput(); err != nil {
-				return fmt.Errorf("could not open browser with output: %s: %v", output, err)
+			cmd := exec.Command(xdgOpen, browserDownloadLink)
+
+			var output bytes.Buffer
+			cmd.Stdout = &output
+			cmd.Stderr = &output
+
+			if err := cmd.Run(); err != nil {
+				return fmt.Errorf("could not open browser with output: %s: %v", output.String(), err)
 			}
 		} else {
 			// Open link with `open` (i.e. FreeBSD and other UNIXes)
