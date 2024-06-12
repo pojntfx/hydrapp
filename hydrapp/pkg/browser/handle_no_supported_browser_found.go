@@ -50,7 +50,7 @@ Would you like to download a supported browser or learn more?`, appName),
 
 %v
 
-It tried to find both the preferred the browser binary (set with the HYDRAPP_BROWSER env variable) "%v" and the known binaries:
+It tried to find both the preferred the browser binary (set with the HYDRAPP_BROWSER environment variable) "%v" and the known binaries:
 
 %v
 
@@ -95,23 +95,48 @@ without success. Would you like to manually configure a browser?`,
 
 			switch browserDescription {
 			case browserDescriptionChromium:
-				os.Setenv(utils.EnvType, browserTypeChromium)
+				if err := os.Setenv(utils.EnvType, browserTypeChromium); err != nil {
+					return fmt.Errorf("could not set environment variable: %v", err)
+				}
 
 			case browserDescriptionFirefox:
-				os.Setenv(utils.EnvType, browserTypeFirefox)
+				if err := os.Setenv(utils.EnvType, browserTypeFirefox); err != nil {
+					return fmt.Errorf("could not set environment variable: %v", err)
+				}
 
 			case browserDescriptionEpiphany:
-				os.Setenv(utils.EnvType, browserTypeEpiphany)
+				if err := os.Setenv(utils.EnvType, browserTypeEpiphany); err != nil {
+					return fmt.Errorf("could not set environment variable: %v", err)
+				}
 
 			case browserDescriptionLynx:
-				os.Setenv(utils.EnvType, browserTypeLynx)
+				if err := os.Setenv(utils.EnvType, browserTypeLynx); err != nil {
+					return fmt.Errorf("could not set environment variable: %v", err)
+				}
 
 			// No need to check extra options here since it's a radio select and only valid options can be returned
 			default:
-				os.Setenv(utils.EnvType, browserTypeDummy)
+				if err := os.Setenv(utils.EnvType, browserTypeDummy); err != nil {
+					return fmt.Errorf("could not set environment variable: %v", err)
+				}
 			}
 
-			// TODO: Configure browser location (https://github.com/ncruces/zenity/wiki/Text-entry-dialog with title "Browser location configuration for Multiplex" and description "Specify your browser's binary location or command used to start it:"), then return nil to retry
+			browserLocation, err := zenity.Entry(
+				"Browser binary location or command:",
+				zenity.Title(fmt.Sprintf("Browser location configuration for %v", appName)),
+				zenity.OKLabel("Continue"),
+			)
+			if err != nil {
+				if errors.Is(zenity.ErrCanceled, err) {
+					return nil
+				}
+
+				return fmt.Errorf("could not display dialog: %v", err)
+			}
+
+			if err := os.Setenv(utils.EnvBrowser, browserLocation); err != nil {
+				return fmt.Errorf("could not set environment variable: %v", err)
+			}
 
 			return nil
 		} else {

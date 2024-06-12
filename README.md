@@ -404,7 +404,7 @@ Global Flags:
 
 ```shell
 $ hydrapp secrets show --help
-Show hydrapp secrets as env variables
+Show hydrapp secrets as environment variables
 
 Usage:
   hydrapp secrets show [flags]

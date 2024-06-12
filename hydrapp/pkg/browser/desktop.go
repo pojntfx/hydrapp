@@ -174,7 +174,7 @@ func LaunchBrowser(
 
 	// Abort if browser binary could not be found
 	if browserBinary[0] == "" {
-		handlePanic("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER env variable) \"%v\" and known binaries \"%v\"", browserBinary, browsers))
+		handlePanic("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER environment variable) \"%v\" and known binaries \"%v\"", browserBinary, browsers))
 	}
 
 	// Find browser type
@@ -212,7 +212,7 @@ func LaunchBrowser(
 
 	// Abort if browser type could not be found
 	if browserTypeOverride == "" {
-		handlePanic("could not launch unknown browser type", fmt.Errorf("tried to launch prefered browser type (set with the HYDRAPP_TYPE env variable) \"%v\" and known types \"%v\"", browserTypeOverride, browsers))
+		handlePanic("could not launch unknown browser type", fmt.Errorf("tried to launch prefered browser type (set with the HYDRAPP_TYPE environment variable) \"%v\" and known types \"%v\"", browserTypeOverride, browsers))
 	}
 
 	switch browserTypeOverride {

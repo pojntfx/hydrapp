@@ -13,7 +13,7 @@ import (
 var secretsShowCmd = &cobra.Command{
 	Use:     "show",
 	Aliases: []string{"s"},
-	Short:   "Show hydrapp secrets as env variables",
+	Short:   "Show hydrapp secrets as environment variables",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := viper.BindPFlags(cmd.PersistentFlags()); err != nil {
 			return err
