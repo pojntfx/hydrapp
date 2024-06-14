@@ -14,7 +14,7 @@ Build fast apps that run everywhere with Go and a browser engine of your choice.
 
 ## Overview
 
-hydrapp is a small Go framework similar to Electron with unique feature: It **can use (almost) any browser engine** to render the frontend!
+hydrapp is a small Go framework similar to Electron with a unique feature: It **can use (almost) any browser engine** to render the frontend!
 
 It enables you too ...
 

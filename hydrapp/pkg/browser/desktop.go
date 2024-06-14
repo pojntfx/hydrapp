@@ -45,7 +45,14 @@ func LaunchBrowser(
 
 	state *update.BrowserState,
 	handlePanic func(msg string, err error),
-) {
+	handleNoSupportedBrowserFound func(
+		appName,
+
+		hydrappBrowserEnv,
+		knownBinaries string,
+		err error,
+	) error,
+) bool {
 	browserBinary := []string{browserBinaryOverride}
 
 	// Process the browser types
@@ -172,9 +179,21 @@ func LaunchBrowser(
 		}
 	}
 
-	// Abort if browser binary could not be found
+	// Ask for configuration if browser binary could not be found
 	if browserBinary[0] == "" {
-		handlePanic("could not find a supported browser", fmt.Errorf("tried to launch preferred browser binary (set with the HYDRAPP_BROWSER environment variable) \"%v\" and known binaries \"%v\"", browserBinary, browsers))
+		if err := handleNoSupportedBrowserFound(
+			appName,
+
+			fmt.Sprintf("%v", browserBinary),
+			fmt.Sprintf("%v", browsers),
+
+			fmt.Errorf("could not find a supported browser"),
+		); err != nil {
+			handlePanic("could not call unsupported browser handler", err)
+		}
+
+		// Retry if configuration was successful
+		return true
 	}
 
 	// Find browser type
@@ -465,4 +484,6 @@ func LaunchBrowser(
 	case browserTypeDummy:
 		select {}
 	}
+
+	return false
 }

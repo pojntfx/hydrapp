@@ -61,22 +61,27 @@ func main() {
 
 	log.Println("Frontend URL:", frontendURL)
 
-	browser.LaunchBrowser(
-		frontendURL,
-		cfg.App.Name,
-		cfg.App.ID,
+	for {
+		if !browser.LaunchBrowser(
+			frontendURL,
+			cfg.App.Name,
+			cfg.App.ID,
 
-		os.Getenv(utils.EnvBrowser),
-		os.Getenv(utils.EnvType),
+			os.Getenv(utils.EnvBrowser),
+			os.Getenv(utils.EnvType),
 
-		browser.ChromiumLikeBrowsers,
-		browser.FirefoxLikeBrowsers,
-		browser.EpiphanyLikeBrowsers,
-		browser.LynxLikeBrowsers,
+			browser.ChromiumLikeBrowsers,
+			browser.FirefoxLikeBrowsers,
+			browser.EpiphanyLikeBrowsers,
+			browser.LynxLikeBrowsers,
 
-		browserState,
-		func(msg string, err error) {
-			utils.HandlePanic(cfg.App.Name, msg, err)
-		},
-	)
+			browserState,
+			func(msg string, err error) {
+				utils.HandlePanic(cfg.App.Name, msg, err)
+			},
+			browser.HandleNoSupportedBrowserFound,
+		) {
+			return
+		}
+	}
 }
