@@ -24,7 +24,8 @@ const (
 )
 
 var (
-	ErrNoBrowserOpenMethodFound = errors.New("no method to open a browser found")
+	ErrNoBrowserOpenMethodFound      = errors.New("no method to open a browser found")
+	ErrBrowserConfigurationCancelled = errors.New("browser configuration cancelled")
 )
 
 func HandleNoSupportedBrowserFound(
@@ -66,7 +67,7 @@ without success. Would you like to manually configure a browser?`,
 				zenity.Icon(zenity.InfoIcon),
 			); err != nil {
 				if errors.Is(zenity.ErrCanceled, err) {
-					return nil
+					return ErrBrowserConfigurationCancelled
 				}
 
 				return fmt.Errorf("could not display dialog: %v", err)
@@ -87,7 +88,7 @@ without success. Would you like to manually configure a browser?`,
 			)
 			if err != nil {
 				if errors.Is(zenity.ErrCanceled, err) {
-					return nil
+					return ErrBrowserConfigurationCancelled
 				}
 
 				return fmt.Errorf("could not display dialog: %v", err)
@@ -128,7 +129,7 @@ without success. Would you like to manually configure a browser?`,
 			)
 			if err != nil {
 				if errors.Is(zenity.ErrCanceled, err) {
-					return nil
+					return ErrBrowserConfigurationCancelled
 				}
 
 				return fmt.Errorf("could not display dialog: %v", err)
@@ -186,12 +187,12 @@ without success. Would you like to manually configure a browser?`,
 	}
 
 	if err := zenity.Info(
-		"Continue once you have downloaded and installed a supported ",
+		"Continue once you have downloaded and installed a supported browser",
 		zenity.Title(fmt.Sprintf("%v is waiting for browser installation", appName)),
 		zenity.OKLabel("Continue"),
 	); err != nil {
 		if errors.Is(zenity.ErrCanceled, err) {
-			return nil
+			return ErrBrowserConfigurationCancelled
 		}
 
 		return fmt.Errorf("could not display dialog: %v", err)
