@@ -30,7 +30,7 @@ fi
 GOFLAGS="${GOFLAGS}" sh -c "${GOGENERATE}"
 
 # Build
-CGO_ENABLED=0 bagop -j "$(nproc)" -b "${APP_ID}" -x "${GOEXCLUDE}" -d /hydrapp/dst -p "go build -o \$DST -ldflags='-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchTimestampRFC3339=${BRANCH_TIMESTAMP_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID}' ${GOMAIN}"
+CGO_ENABLED=0 bagop -j "$(nproc)" -b "${APP_ID}" -x "${GOEXCLUDE}" -d /hydrapp/dst -p "go build -o \$DST -ldflags='-X github.com/pojntfx/hydrapp/hydrapp/pkg/ui.SelfUpdaterBranchTimestampRFC3339=${BRANCH_TIMESTAMP_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/ui.SelfUpdaterBranchID=${BRANCH_ID}' ${GOMAIN}"
 
 for FILE in /hydrapp/dst/*; do
     gpg --detach-sign --armor "${FILE}"

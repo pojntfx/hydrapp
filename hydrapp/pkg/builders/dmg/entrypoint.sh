@@ -58,7 +58,7 @@ for ARCH in ${ARCHITECTURES}; do
     osxcross-macports install ${MACPORTS_ARGS} --static ${MACPORTS}
   fi
 
-  go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchTimestampRFC3339=${BRANCH_TIMESTAMP_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.BranchID=${BRANCH_ID} -X github.com/pojntfx/hydrapp/hydrapp/pkg/update.PackageType=dmg" -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
+  go build -ldflags="-X github.com/pojntfx/hydrapp/hydrapp/pkg/ui.SelfUpdaterBranchTimestampRFC3339=${BRANCH_TIMESTAMP_RFC3339} -X github.com/pojntfx/hydrapp/hydrapp/pkg/ui.SelfUpdaterBranchID=${BRANCH_ID} -X github.com/pojntfx/hydrapp/hydrapp/pkg/ui.SelfUpdaterPackageType=dmg" -o "/tmp/${APP_ID}.${GOOS}-${DEBARCH}" "${GOMAIN}"
 
   export BINARIES="${BINARIES} /tmp/${APP_ID}.${GOOS}-${DEBARCH}"
 done

@@ -1,4 +1,4 @@
-package browser
+package ui
 
 const (
 	prefsJSContent = `user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);

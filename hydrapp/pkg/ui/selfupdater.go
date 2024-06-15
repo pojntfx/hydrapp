@@ -1,4 +1,4 @@
-package update
+package ui
 
 import (
 	"context"
@@ -33,10 +33,6 @@ type BrowserState struct {
 
 var (
 	ErrNoEscalationMethodFound = errors.New("no escalation method could be found")
-
-	BranchTimestampRFC3339 = ""
-	BranchID               = ""
-	PackageType            = ""
 )
 
 type File struct {
@@ -64,18 +60,18 @@ func getBinIdentifier(goOS, goArch string) string {
 	return ""
 }
 
-func Update(
+func SelfUpdate(
 	ctx context.Context,
 
 	cfg *config.Root,
 	state *BrowserState,
 	handlePanic func(appName, msg string, err error),
 ) {
-	if (strings.TrimSpace(BranchTimestampRFC3339) == "" && strings.TrimSpace(BranchID) == "") || os.Getenv(utils.EnvSelfupdate) == "false" {
+	if (strings.TrimSpace(SelfUpdaterBranchTimestampRFC3339) == "" && strings.TrimSpace(SelfUpdaterBranchID) == "") || os.Getenv(EnvSelfUpdate) == "false" {
 		return
 	}
 
-	currentBinaryBuildTime, err := time.Parse(time.RFC3339, BranchTimestampRFC3339)
+	currentBinaryBuildTime, err := time.Parse(time.RFC3339, SelfUpdaterBranchTimestampRFC3339)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 	}
@@ -85,21 +81,21 @@ func Update(
 		handlePanic(cfg.App.Name, err.Error(), err)
 	}
 
-	switch PackageType {
+	switch SelfUpdaterPackageType {
 	case "dmg":
-		baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, cfg.DMG.Path), BranchID, "")
+		baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, cfg.DMG.Path), SelfUpdaterBranchID, "")
 
 	case "msi":
 		for _, msiCfg := range cfg.MSI {
 			if msiCfg.Architecture == runtime.GOARCH {
-				baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, msiCfg.Path), BranchID, "")
+				baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, msiCfg.Path), SelfUpdaterBranchID, "")
 
 				break
 			}
 		}
 
 	default:
-		baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, cfg.Binaries.Path), BranchID, "")
+		baseURL.Path = builders.GetPathForBranch(path.Join(baseURL.Path, cfg.Binaries.Path), SelfUpdaterBranchID, "")
 	}
 
 	indexURL, err := url.JoinPath(baseURL.String(), "index.json")
@@ -123,15 +119,15 @@ func Update(
 	}
 
 	updatedBinaryName := ""
-	switch PackageType {
+	switch SelfUpdaterPackageType {
 	case "dmg":
-		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + ".dmg"
+		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, SelfUpdaterBranchID) + "." + runtime.GOOS + ".dmg"
 
 	case "msi":
-		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + ".msi"
+		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, SelfUpdaterBranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + ".msi"
 
 	default:
-		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, BranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
+		updatedBinaryName = builders.GetAppIDForBranch(cfg.App.ID, SelfUpdaterBranchID) + "." + runtime.GOOS + "-" + utils.GetArchIdentifier(runtime.GOARCH) + getBinIdentifier(runtime.GOOS, runtime.GOARCH)
 	}
 
 	var (
@@ -369,7 +365,7 @@ func Update(
 		handlePanic(cfg.App.Name, err.Error(), err)
 	}
 
-	switch PackageType {
+	switch SelfUpdaterPackageType {
 	case "msi":
 		stopCmds := fmt.Sprintf(`(Stop-Process -PassThru -Id %v).WaitForExit();`, os.Getpid())
 		if state != nil && state.Cmd != nil && state.Cmd.Process != nil {

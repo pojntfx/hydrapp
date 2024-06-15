@@ -1,4 +1,4 @@
-package browser
+package ui
 
 import (
 	"fmt"
@@ -9,7 +9,6 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/update"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
@@ -43,7 +42,7 @@ func LaunchBrowser(
 	epiphanyLikeBrowsers Browser,
 	lynxLikeBrowsers Browser,
 
-	state *update.BrowserState,
+	state *BrowserState,
 	handlePanic func(msg string, err error),
 	handleNoSupportedBrowserFound func(
 		appName,
@@ -236,7 +235,7 @@ func LaunchBrowser(
 
 	switch browserTypeOverride {
 	// Launch Chromium-like browser
-	case browserTypeChromium:
+	case BrowserTypeChromium:
 		// Create a profile for the app
 		userConfigDir, err := os.UserConfigDir()
 		if err != nil {
@@ -276,10 +275,10 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		utils.WaitForLock(filepath.Join(userDataDir, "SingletonSocket"), handlePanic)
+		utils.WaitForFileRemoval(filepath.Join(userDataDir, "SingletonSocket"), handlePanic)
 
 	// Launch Firefox-like browser
-	case browserTypeFirefox:
+	case BrowserTypeFirefox:
 		// Create a profile for the app
 		execLine := append(
 			browserBinary,
@@ -386,10 +385,10 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		utils.WaitForLock(filepath.Join(profileDir, "cookies.sqlite-wal"), handlePanic)
+		utils.WaitForFileRemoval(filepath.Join(profileDir, "cookies.sqlite-wal"), handlePanic)
 
 	// Launch Epiphany-like browser
-	case browserTypeEpiphany:
+	case BrowserTypeEpiphany:
 		// Get the user's home directory in which the profiles should be created
 		home, err := os.UserHomeDir()
 		if err != nil {
@@ -450,10 +449,10 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		utils.WaitForLock(filepath.Join(profileDir, "ephy-history.db-wal"), handlePanic)
+		utils.WaitForFileRemoval(filepath.Join(profileDir, "ephy-history.db-wal"), handlePanic)
 
 	// Launch Lynx-like browser
-	case browserTypeLynx:
+	case BrowserTypeLynx:
 		// Create the browser instance
 		execLine := append(
 			browserBinary,
@@ -481,7 +480,7 @@ func LaunchBrowser(
 		if err := state.Cmd.Run(); err != nil {
 			handlePanic("could not launch browser", err)
 		}
-	case browserTypeDummy:
+	case BrowserTypeDummy:
 		select {}
 	}
 

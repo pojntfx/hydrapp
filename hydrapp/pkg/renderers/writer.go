@@ -1,14 +1,12 @@
-package utils
+package renderers
 
 import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 )
 
-func WriteRenders(workdir string, renders []renderers.Renderer, overwrite, ejecting bool) error {
+func WriteRenders(workdir string, renders []Renderer, overwrite, ejecting bool) error {
 	for _, renderer := range renders {
 		if path, content, err := renderer.Render(""); err != nil {
 			return err

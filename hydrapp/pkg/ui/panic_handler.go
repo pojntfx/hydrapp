@@ -1,4 +1,4 @@
-package utils
+package ui
 
 import (
 	"fmt"
@@ -6,6 +6,7 @@ import (
 	"runtime/debug"
 
 	"github.com/ncruces/zenity"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
 func HandlePanic(appName, msg string, err error) {
@@ -22,8 +23,8 @@ Strack trace:
 
 %v`,
 		appName,
-		Capitalize(msg),
-		Capitalize(err.Error()),
+		utils.Capitalize(msg),
+		utils.Capitalize(err.Error()),
 		string(debug.Stack()),
 	)
 

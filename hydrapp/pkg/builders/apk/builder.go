@@ -15,7 +15,6 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/apk"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
 const (
@@ -130,7 +129,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 		}
 	}
 
-	return utils.WriteRenders(
+	return renderers.WriteRenders(
 		filepath.Join(workdir, b.goMain),
 		[]renderers.Renderer{
 			apk.NewManifestRenderer(

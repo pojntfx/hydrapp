@@ -6,7 +6,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-func WaitForLock(path string, handlePanic func(msg string, err error)) {
+func WaitForFileRemoval(path string, handlePanic func(msg string, err error)) {
 	if _, err := os.Stat(path); err == nil {
 		// Wait until browser has exited
 		watcher, err := fsnotify.NewWatcher()

@@ -1,16 +1,16 @@
-package browser
+package ui
 
 const (
-	browserTypeChromium = "chromium"
-	browserTypeFirefox  = "firefox"
-	browserTypeEpiphany = "epiphany"
-	browserTypeLynx     = "lynx"
+	BrowserTypeChromium = "chromium"
+	BrowserTypeFirefox  = "firefox"
+	BrowserTypeEpiphany = "epiphany"
+	BrowserTypeLynx     = "lynx"
 
-	browserTypeDummy = "dummy"
+	BrowserTypeDummy = "dummy"
 )
 
 var ChromiumLikeBrowsers = Browser{
-	Name: browserTypeChromium,
+	Name: BrowserTypeChromium,
 	LinuxBinaries: [][]string{
 		{"google-chrome"},
 		{"google-chrome-stable"},
@@ -65,7 +65,7 @@ var ChromiumLikeBrowsers = Browser{
 }
 
 var FirefoxLikeBrowsers = Browser{
-	Name: browserTypeFirefox,
+	Name: BrowserTypeFirefox,
 	LinuxBinaries: [][]string{
 		{"firefox"},
 		{"firefox-esr"},
@@ -84,7 +84,7 @@ var FirefoxLikeBrowsers = Browser{
 }
 
 var EpiphanyLikeBrowsers = Browser{
-	Name: browserTypeEpiphany,
+	Name: BrowserTypeEpiphany,
 	LinuxBinaries: [][]string{
 		{"epiphany"},
 	},
@@ -96,7 +96,7 @@ var EpiphanyLikeBrowsers = Browser{
 }
 
 var LynxLikeBrowsers = Browser{
-	Name: browserTypeLynx,
+	Name: BrowserTypeLynx,
 	LinuxBinaries: [][]string{
 		{"lynx"},
 	},

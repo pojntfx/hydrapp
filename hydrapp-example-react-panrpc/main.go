@@ -13,11 +13,9 @@ import (
 
 	"github.com/pojntfx/hydrapp/hydrapp-example-react-panrpc/pkg/backend"
 	"github.com/pojntfx/hydrapp/hydrapp-example-react-panrpc/pkg/frontend"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/browser"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/config"
 	_ "github.com/pojntfx/hydrapp/hydrapp/pkg/fixes"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/update"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/ui"
 )
 
 //go:embed hydrapp.yaml
@@ -29,58 +27,58 @@ func main() {
 
 	cfg, err := config.Parse(bytes.NewBuffer(configFile))
 	if err != nil {
-		utils.HandlePanic("App", "could not parse config file", err)
+		ui.HandlePanic("App", "could not parse config file", err)
 
 		return
 	}
 
 	// Apply the self-update
-	browserState := &update.BrowserState{}
-	go update.Update(
+	browserState := &ui.BrowserState{}
+	go ui.SelfUpdate(
 		ctx,
 
 		cfg,
 		browserState,
-		utils.HandlePanic,
+		ui.HandlePanic,
 	)
 
 	// Start the backend
-	backendURL, stopBackend, err := backend.StartServer(ctx, os.Getenv(utils.EnvBackendLaddr), time.Second*10, true)
+	backendURL, stopBackend, err := backend.StartServer(ctx, os.Getenv(ui.EnvBackendLaddr), time.Second*10, true)
 	if err != nil {
-		utils.HandlePanic(cfg.App.Name, "could not start backend", err)
+		ui.HandlePanic(cfg.App.Name, "could not start backend", err)
 	}
 	defer stopBackend()
 
 	log.Println("Backend URL:", backendURL)
 
 	// Start the frontend
-	frontendURL, stopFrontend, err := frontend.StartServer(ctx, os.Getenv(utils.EnvFrontendLaddr), backendURL, true)
+	frontendURL, stopFrontend, err := frontend.StartServer(ctx, os.Getenv(ui.EnvFrontendLaddr), backendURL, true)
 	if err != nil {
-		utils.HandlePanic(cfg.App.Name, "could not start frontend", err)
+		ui.HandlePanic(cfg.App.Name, "could not start frontend", err)
 	}
 	defer stopFrontend()
 
 	log.Println("Frontend URL:", frontendURL)
 
 	for {
-		if !browser.LaunchBrowser(
+		if !ui.LaunchBrowser(
 			frontendURL,
 			cfg.App.Name,
 			cfg.App.ID,
 
-			os.Getenv(utils.EnvBrowser),
-			os.Getenv(utils.EnvType),
+			os.Getenv(ui.EnvBrowser),
+			os.Getenv(ui.EnvType),
 
-			browser.ChromiumLikeBrowsers,
-			browser.FirefoxLikeBrowsers,
-			browser.EpiphanyLikeBrowsers,
-			browser.LynxLikeBrowsers,
+			ui.ChromiumLikeBrowsers,
+			ui.FirefoxLikeBrowsers,
+			ui.EpiphanyLikeBrowsers,
+			ui.LynxLikeBrowsers,
 
 			browserState,
 			func(msg string, err error) {
-				utils.HandlePanic(cfg.App.Name, msg, err)
+				ui.HandlePanic(cfg.App.Name, msg, err)
 			},
-			browser.HandleNoSupportedBrowserFound,
+			ui.ConfigureBrowser,
 		) {
 			return
 		}

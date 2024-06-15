@@ -119,7 +119,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
 	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
 
-	return utils.WriteRenders(
+	return renderers.WriteRenders(
 		filepath.Join(workdir, b.goMain),
 		[]renderers.Renderer{
 			xdg.NewIconRenderer(

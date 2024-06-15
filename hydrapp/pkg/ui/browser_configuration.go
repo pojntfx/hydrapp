@@ -1,4 +1,4 @@
-package browser
+package ui
 
 import (
 	"bytes"
@@ -9,7 +9,6 @@ import (
 	"runtime"
 
 	"github.com/ncruces/zenity"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
 const (
@@ -28,7 +27,7 @@ var (
 	ErrBrowserConfigurationCancelled = errors.New("browser configuration cancelled")
 )
 
-func HandleNoSupportedBrowserFound(
+func ConfigureBrowser(
 	appName,
 
 	hydrappBrowserEnv,
@@ -96,28 +95,28 @@ without success. Would you like to manually configure a browser?`,
 
 			switch browserDescription {
 			case browserDescriptionChromium:
-				if err := os.Setenv(utils.EnvType, browserTypeChromium); err != nil {
+				if err := os.Setenv(EnvType, BrowserTypeChromium); err != nil {
 					return fmt.Errorf("could not set environment variable: %v", err)
 				}
 
 			case browserDescriptionFirefox:
-				if err := os.Setenv(utils.EnvType, browserTypeFirefox); err != nil {
+				if err := os.Setenv(EnvType, BrowserTypeFirefox); err != nil {
 					return fmt.Errorf("could not set environment variable: %v", err)
 				}
 
 			case browserDescriptionEpiphany:
-				if err := os.Setenv(utils.EnvType, browserTypeEpiphany); err != nil {
+				if err := os.Setenv(EnvType, BrowserTypeEpiphany); err != nil {
 					return fmt.Errorf("could not set environment variable: %v", err)
 				}
 
 			case browserDescriptionLynx:
-				if err := os.Setenv(utils.EnvType, browserTypeLynx); err != nil {
+				if err := os.Setenv(EnvType, BrowserTypeLynx); err != nil {
 					return fmt.Errorf("could not set environment variable: %v", err)
 				}
 
 			// No need to check extra options here since it's a radio select and only valid options can be returned
 			default:
-				if err := os.Setenv(utils.EnvType, browserTypeDummy); err != nil {
+				if err := os.Setenv(EnvType, BrowserTypeDummy); err != nil {
 					return fmt.Errorf("could not set environment variable: %v", err)
 				}
 			}
@@ -135,7 +134,7 @@ without success. Would you like to manually configure a browser?`,
 				return fmt.Errorf("could not display dialog: %v", err)
 			}
 
-			if err := os.Setenv(utils.EnvBrowser, browserLocation); err != nil {
+			if err := os.Setenv(EnvBrowser, browserLocation); err != nil {
 				return fmt.Errorf("could not set environment variable: %v", err)
 			}
 

@@ -13,7 +13,6 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/docs"
-	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 	uutils "github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
 
@@ -126,7 +125,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 		})
 	}
 
-	return utils.WriteRenders(
+	return renderers.WriteRenders(
 		filepath.Join(workdir, b.goMain),
 		[]renderers.Renderer{
 			docs.NewInstallationRenderer(
