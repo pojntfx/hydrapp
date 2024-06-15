@@ -15,7 +15,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -330,7 +330,7 @@ var buildCmd = &cobra.Command{
 					os.Exit(1)
 				}()
 
-				if err := cli.ContainerRemove(ctx, id, types.ContainerRemoveOptions{
+				if err := cli.ContainerRemove(ctx, id, container.RemoveOptions{
 					Force: true,
 				}); err != nil {
 					panic(err)
