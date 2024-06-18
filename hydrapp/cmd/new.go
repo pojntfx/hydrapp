@@ -3,7 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -288,7 +288,7 @@ var newCmd = &cobra.Command{
 				panic(errors.New(res.Status))
 			}
 
-			b, err := ioutil.ReadAll(res.Body)
+			b, err := io.ReadAll(res.Body)
 			if err != nil {
 				return err
 			}
@@ -401,12 +401,12 @@ var newCmd = &cobra.Command{
 				return err
 			}
 
-			if err := ioutil.WriteFile(filepath.Join(dir, "hydrapp.yaml"), b, 0664); err != nil {
+			if err := os.WriteFile(filepath.Join(dir, "hydrapp.yaml"), b, 0664); err != nil {
 				return err
 			}
 		}
 
-		if err := ioutil.WriteFile(filepath.Join(dir, "icon.png"), generators.IconTpl, 0664); err != nil {
+		if err := os.WriteFile(filepath.Join(dir, "icon.png"), generators.IconTpl, 0664); err != nil {
 			return err
 		}
 

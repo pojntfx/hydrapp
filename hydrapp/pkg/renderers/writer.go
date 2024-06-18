@@ -1,7 +1,6 @@
 package renderers
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 )
@@ -22,7 +21,7 @@ func WriteRenders(workdir string, renders []Renderer, overwrite, ejecting bool) 
 			}
 
 			if !exists || overwrite {
-				if err := ioutil.WriteFile(file, []byte(content), 0664); err != nil {
+				if err := os.WriteFile(file, []byte(content), 0664); err != nil {
 					return err
 				}
 			}
@@ -38,7 +37,7 @@ func WriteRenders(workdir string, renders []Renderer, overwrite, ejecting bool) 
 					return err
 				}
 
-				if err := ioutil.WriteFile(file, []byte(content), 0664); err != nil {
+				if err := os.WriteFile(file, []byte(content), 0664); err != nil {
 					return err
 				}
 			}

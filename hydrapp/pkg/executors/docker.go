@@ -8,8 +8,8 @@ import (
 	"os/user"
 	"runtime"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	eimage "github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/client"
 	cp "github.com/otiai10/copy"
 )
@@ -38,7 +38,7 @@ func DockerRunImage(
 		env["DST_GID"] = currentUser.Gid
 	}
 
-	images, err := cli.ImageList(ctx, types.ImageListOptions{})
+	images, err := cli.ImageList(ctx, eimage.ListOptions{})
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ o:
 	}
 
 	if pull || !imageExists {
-		reader, err := cli.ImagePull(ctx, image, types.ImagePullOptions{})
+		reader, err := cli.ImagePull(ctx, image, eimage.PullOptions{})
 		if err != nil {
 			return err
 		}

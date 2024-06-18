@@ -2,7 +2,6 @@ package ui
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -316,7 +315,7 @@ func LaunchBrowser(
 			}
 		}
 
-		filesInFirefoxDir, err := ioutil.ReadDir(firefoxDir)
+		filesInFirefoxDir, err := os.ReadDir(firefoxDir)
 		if err != nil {
 			handlePanic("could not get files in profiles directory", err)
 		}
@@ -339,7 +338,7 @@ func LaunchBrowser(
 			handlePanic("could not set profile directory", err)
 		}
 
-		if err := ioutil.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), 0664); err != nil {
+		if err := os.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), 0664); err != nil {
 			panic(err)
 		}
 
@@ -348,7 +347,7 @@ func LaunchBrowser(
 			panic(err)
 		}
 
-		if err := ioutil.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), 0664); err != nil {
+		if err := os.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), 0664); err != nil {
 			panic(err)
 		}
 
@@ -404,7 +403,7 @@ func LaunchBrowser(
 		}
 
 		// Create the .desktop file
-		if err := ioutil.WriteFile(
+		if err := os.WriteFile(
 			filepath.Join(profileDir, epiphanyID+".desktop"),
 			[]byte(fmt.Sprintf(
 				epiphanyDesktopFileTemplate,

@@ -1,7 +1,6 @@
 package generators
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"text/template"
@@ -14,7 +13,7 @@ func RenderTemplate(path string, tpl string, data any) error {
 			return err
 		}
 
-		return ioutil.WriteFile(path, []byte(tpl), 0664)
+		return os.WriteFile(path, []byte(tpl), 0664)
 	}
 
 	t, err := template.New(path).Parse(tpl)

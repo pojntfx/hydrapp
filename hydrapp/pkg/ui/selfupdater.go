@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -108,7 +107,7 @@ func SelfUpdate(
 		handlePanic(cfg.App.Name, err.Error(), err)
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		handlePanic(cfg.App.Name, err.Error(), err)
 	}
