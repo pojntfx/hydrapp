@@ -11,6 +11,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/fixes"
 	_ "github.com/pojntfx/hydrapp/hydrapp/pkg/fixes"
 
 	backend "{{ .GoMod }}/pkg/backend"
@@ -19,7 +20,7 @@ import (
 
 //export Java_{{ .JNIExport }}_MainActivity_LaunchBackend
 func Java_{{ .JNIExport }}_MainActivity_LaunchBackend(env *C.JNIEnv, activity C.jobject) C.jstring {
-	if err := PolyfillEnvironment(C.GoString(C.get_c_string(env, filesDir))); err != nil {
+	if err := fixes.PolyfillEnvironment(C.GoString(C.get_c_string(env, filesDir))); err != nil {
 		log.Fatalln("could not polyfill environment:", err)
 	}
 	
