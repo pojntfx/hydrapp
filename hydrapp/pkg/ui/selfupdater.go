@@ -31,7 +31,24 @@ type BrowserState struct {
 }
 
 var (
-	ErrNoEscalationMethodFound = errors.New("no escalation method could be found")
+	ErrNoEscalationMethodFound               = errors.New("no escalation method could be found")
+	ErrCouldNotParseCurrentBinaryBuildTime   = errors.New("could not parse current binary build time")
+	ErrCouldNotParseAppBaseURL               = errors.New("could not parse app base URL")
+	ErrCouldNotCreateIndexURL                = errors.New("could not create index URL")
+	ErrCouldNotRequestIndex                  = errors.New("could not request index")
+	ErrCouldNotReadIndex                     = errors.New("could not read index")
+	ErrCouldNotParseIndex                    = errors.New("could not parse index")
+	ErrCouldNotParseUpdatedBinaryBuildTime   = errors.New("could not parse updated binary build time")
+	ErrCouldNotCreateUpdatedBinaryURL        = errors.New("could not create updated binary URL")
+	ErrCouldNotCreateUpdatedSignatureURL     = errors.New("could not create updated signature URL")
+	ErrCouldNotCreateUpdatedRepoKeyURL       = errors.New("could not create updated repo key URL")
+	ErrCouldNotDisplayDialog                 = errors.New("could not display dialog")
+	ErrCouldNotCreateUpdatedBinaryFile       = errors.New("could not create updated binary file")
+	ErrCouldNotCreateUpdatedSignatureFile    = errors.New("could not create updated signature file")
+	ErrCouldNotCreateUpdatedRepoKeyFile      = errors.New("could not create updated repo key file")
+	ErrCouldNotDownloadDownloadConfiguration = errors.New("could not download download configuration")
+	ErrCouldNotParseContentLengthHeader      = errors.New("could not parse content length header")
+	ErrCouldNotCloseDialog                   = errors.New("could not close dialog")
 )
 
 type File struct {
@@ -72,12 +89,12 @@ func SelfUpdate(
 
 	currentBinaryBuildTime, err := time.Parse(time.RFC3339, SelfUpdaterBranchTimestampRFC3339)
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotParseCurrentBinaryBuildTime.Error(), errors.Join(ErrCouldNotParseCurrentBinaryBuildTime, err))
 	}
 
 	baseURL, err := url.Parse(cfg.App.BaseURL)
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotParseAppBaseURL.Error(), errors.Join(ErrCouldNotParseAppBaseURL, err))
 	}
 
 	switch SelfUpdaterPackageType {
@@ -99,22 +116,22 @@ func SelfUpdate(
 
 	indexURL, err := url.JoinPath(baseURL.String(), "index.json")
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotCreateIndexURL.Error(), errors.Join(ErrCouldNotCreateIndexURL, err))
 	}
 
 	res, err := http.DefaultClient.Get(indexURL)
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotRequestIndex.Error(), errors.Join(ErrCouldNotRequestIndex, err))
 	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotReadIndex.Error(), errors.Join(ErrCouldNotReadIndex, err))
 	}
 
 	var index []File
 	if err := json.Unmarshal(body, &index); err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotParseIndex.Error(), errors.Join(ErrCouldNotParseIndex, err))
 	}
 
 	updatedBinaryName := ""
@@ -141,23 +158,23 @@ func SelfUpdate(
 		if file.Name == updatedBinaryName {
 			updatedBinaryReleaseTime, err = time.Parse(time.RFC3339, file.Time)
 			if err != nil {
-				handlePanic(cfg.App.Name, err.Error(), err)
+				handlePanic(cfg.App.Name, ErrCouldNotParseUpdatedBinaryBuildTime.Error(), errors.Join(ErrCouldNotParseUpdatedBinaryBuildTime, err))
 			}
 
 			if currentBinaryBuildTime.Before(updatedBinaryReleaseTime) {
 				updatedBinaryURL, err = url.JoinPath(baseURL.String(), updatedBinaryName)
 				if err != nil {
-					handlePanic(cfg.App.Name, err.Error(), err)
-				}
-
-				updatedRepoKeyURL, err = url.JoinPath(baseURL.String(), "repo.asc")
-				if err != nil {
-					handlePanic(cfg.App.Name, err.Error(), err)
+					handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedBinaryURL.Error(), errors.Join(ErrCouldNotCreateUpdatedBinaryURL, err))
 				}
 
 				updatedSignatureURL, err = url.JoinPath(baseURL.String(), updatedBinaryName+".asc")
 				if err != nil {
-					handlePanic(cfg.App.Name, err.Error(), err)
+					handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedSignatureURL.Error(), errors.Join(ErrCouldNotCreateUpdatedSignatureURL, err))
+				}
+
+				updatedRepoKeyURL, err = url.JoinPath(baseURL.String(), "repo.asc")
+				if err != nil {
+					handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedRepoKeyURL.Error(), errors.Join(ErrCouldNotCreateUpdatedRepoKeyURL, err))
 				}
 			}
 
@@ -179,24 +196,24 @@ func SelfUpdate(
 			return
 		}
 
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
 	}
 
 	updatedBinaryFile, err := os.CreateTemp(os.TempDir(), updatedBinaryName)
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotCreateUpdatedBinaryFile, err))
 	}
 	defer os.Remove(updatedBinaryFile.Name())
 
 	updatedSignatureFile, err := os.CreateTemp(os.TempDir(), updatedBinaryName+".asc")
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedSignatureFile.Error(), errors.Join(ErrCouldNotCreateUpdatedSignatureFile, err))
 	}
 	defer os.Remove(updatedSignatureFile.Name())
 
 	updatedRepoKeyFile, err := os.CreateTemp(os.TempDir(), "repo.asc")
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedRepoKeyFile.Error(), errors.Join(ErrCouldNotCreateUpdatedRepoKeyFile, err))
 	}
 	defer os.Remove(updatedRepoKeyFile.Name())
 
@@ -221,24 +238,24 @@ func SelfUpdate(
 	for _, downloadConfiguration := range downloadConfigurations {
 		res, err := http.Get(downloadConfiguration.url)
 		if err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotDownloadDownloadConfiguration.Error(), errors.Join(ErrCouldNotDownloadDownloadConfiguration, err))
 		}
 		if res.StatusCode != http.StatusOK {
 			err := fmt.Errorf("%v", res.Status)
 
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotDownloadDownloadConfiguration.Error(), errors.Join(ErrCouldNotDownloadDownloadConfiguration, err))
 		}
 
 		totalSize, err := strconv.Atoi(res.Header.Get("Content-Length"))
 		if err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotParseContentLengthHeader.Error(), errors.Join(ErrCouldNotParseContentLengthHeader, err))
 		}
 
 		dialog, err := zenity.Progress(
 			zenity.Title(downloadConfiguration.description),
 		)
 		if err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
 		}
 
 		var dialogWg sync.WaitGroup
@@ -251,11 +268,11 @@ func SelfUpdate(
 				ticker.Stop()
 
 				if err := dialog.Complete(); err != nil {
-					handlePanic(cfg.App.Name, "could not open download progress dialog", err)
+					handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
 				}
 
 				if err := dialog.Close(); err != nil {
-					handlePanic(cfg.App.Name, "could not close download progress dialog", err)
+					handlePanic(cfg.App.Name, ErrCouldNotCloseDialog.Error(), errors.Join(ErrCouldNotCloseDialog, err))
 				}
 			}()
 
