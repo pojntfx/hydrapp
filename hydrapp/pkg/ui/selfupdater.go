@@ -49,6 +49,25 @@ var (
 	ErrCouldNotDownloadDownloadConfiguration = errors.New("could not download download configuration")
 	ErrCouldNotParseContentLengthHeader      = errors.New("could not parse content length header")
 	ErrCouldNotCloseDialog                   = errors.New("could not close dialog")
+	ErrCouldNotGetInfoOnUpdatedBinaryFile    = errors.New("could not get info on updated binary file")
+	ErrCouldNotSetProgressBarValue           = errors.New("could not set progress bar value")
+	ErrCouldNotSetProgressBarDescription     = errors.New("could not set progress bar description")
+	ErrCouldNotDownloadUpdatedBinaryFile     = errors.New("could not download updated binary file")
+	ErrCouldNotReadUpdatedRepoKey            = errors.New("could not read updated repo key")
+	ErrCouldNotParseUpdatedRepoKey           = errors.New("could not parse updated repo key")
+	ErrCouldNotCreateUpdatedKeyRing          = errors.New("could not create updated key ring")
+	ErrCouldNotReadUpdatedSignature          = errors.New("could not read updated signature")
+	ErrCouldNotParseUpdatedSignature         = errors.New("could not parse updated signature")
+	ErrCouldNotReadUpdatedBinaryFile         = errors.New("could not read updated binary file")
+	ErrCouldNotValidateUpdatedBinaryFile     = errors.New("could not validate updated binary file")
+	ErrCouldNotFindOldBinaryFile             = errors.New("could not find old binary file")
+	ErrCouldNotStartUpdateInstaller          = errors.New("could not start update installer")
+	ErrCouldNotCreateMountpointDirectory     = errors.New("could not create mountpoint directory")
+	ErrCouldNotAttachDMG                     = errors.New("could not attach DMG")
+	ErrCouldNotFindOldBinaryFileAbsolute     = errors.New("could not find old binary file's absolute path")
+	ErrCouldNotFindOldAppBundleAbsolute      = errors.New("could not find old app bundle's absolute path")
+	ErrCouldNotReplaceOldAppWithUpdatedApp   = errors.New("could not replace old app with updated app")
+	ErrCouldNotDetachDMG                     = errors.New("could not detach DMG")
 )
 
 type File struct {
@@ -284,7 +303,7 @@ func SelfUpdate(
 				case <-ticker.C:
 					stat, err := downloadConfiguration.dst.Stat()
 					if err != nil {
-						handlePanic(cfg.App.Name, "could not get info on updated binary", err)
+						handlePanic(cfg.App.Name, ErrCouldNotGetInfoOnUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotGetInfoOnUpdatedBinaryFile, err))
 					}
 
 					downloadedSize := stat.Size()
@@ -295,11 +314,11 @@ func SelfUpdate(
 					percentage := int((float64(downloadedSize) / float64(totalSize)) * 100)
 
 					if err := dialog.Value(percentage); err != nil {
-						handlePanic(cfg.App.Name, "could not set update download progress percentage", err)
+						handlePanic(cfg.App.Name, ErrCouldNotSetProgressBarValue.Error(), errors.Join(ErrCouldNotSetProgressBarValue, err))
 					}
 
 					if err := dialog.Text(fmt.Sprintf("%v%% (%v MB/%v MB)", percentage, downloadedSize/(1024*1024), totalSize/(1024*1024))); err != nil {
-						handlePanic(cfg.App.Name, "could not set update download progress description", err)
+						handlePanic(cfg.App.Name, ErrCouldNotSetProgressBarDescription.Error(), errors.Join(ErrCouldNotSetProgressBarDescription, err))
 					}
 
 					if percentage == 100 {
@@ -310,7 +329,7 @@ func SelfUpdate(
 		}()
 
 		if _, err := io.Copy(downloadConfiguration.dst, res.Body); err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotDownloadUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotDownloadUpdatedBinaryFile, err))
 		}
 
 		dialogWg.Wait()
@@ -321,64 +340,64 @@ func SelfUpdate(
 		zenity.Pulsate(),
 	)
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
 	}
 
 	if err := dialog.Text(fmt.Sprintf("Reading %v repo key and signature", cfg.App.Name)); err != nil {
-		handlePanic(cfg.App.Name, "could not set update validation progress description", err)
+		handlePanic(cfg.App.Name, ErrCouldNotSetProgressBarDescription.Error(), errors.Join(ErrCouldNotSetProgressBarDescription, err))
 	}
 
 	if _, err := updatedRepoKeyFile.Seek(0, io.SeekStart); err != nil {
-		handlePanic(cfg.App.Name, "could not read repo key", err)
+		handlePanic(cfg.App.Name, ErrCouldNotReadUpdatedRepoKey.Error(), errors.Join(ErrCouldNotReadUpdatedRepoKey, err))
 	}
 
 	updatedRepoKey, err := crypto.NewKeyFromArmoredReader(updatedRepoKeyFile)
 	if err != nil {
-		handlePanic(cfg.App.Name, "could not parse repo key", err)
+		handlePanic(cfg.App.Name, ErrCouldNotParseUpdatedRepoKey.Error(), errors.Join(ErrCouldNotParseUpdatedRepoKey, err))
 	}
 
 	updatedKeyRing, err := crypto.NewKeyRing(updatedRepoKey)
 	if err != nil {
-		handlePanic(cfg.App.Name, "could not create key ring", err)
+		handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedKeyRing.Error(), errors.Join(ErrCouldNotCreateUpdatedKeyRing, err))
 	}
 
 	if _, err := updatedSignatureFile.Seek(0, io.SeekStart); err != nil {
-		handlePanic(cfg.App.Name, "could not read signature", err)
+		handlePanic(cfg.App.Name, ErrCouldNotReadUpdatedSignature.Error(), errors.Join(ErrCouldNotReadUpdatedSignature, err))
 	}
 
 	rawUpdatedSignature, err := io.ReadAll(updatedSignatureFile)
 	if err != nil {
-		handlePanic(cfg.App.Name, "could not read signature", err)
+		handlePanic(cfg.App.Name, ErrCouldNotReadUpdatedSignature.Error(), errors.Join(ErrCouldNotReadUpdatedSignature, err))
 	}
 
 	updatedSignature, err := crypto.NewPGPSignatureFromArmored(string(rawUpdatedSignature))
 	if err != nil {
-		handlePanic(cfg.App.Name, "could not parse signature", err)
+		handlePanic(cfg.App.Name, ErrCouldNotParseUpdatedSignature.Error(), errors.Join(ErrCouldNotParseUpdatedSignature, err))
 	}
 
 	if err := dialog.Text(fmt.Sprintf("Validating %v binary with signature and key", cfg.App.Name)); err != nil {
-		handlePanic(cfg.App.Name, "could not set update validation progress description", err)
+		handlePanic(cfg.App.Name, ErrCouldNotSetProgressBarDescription.Error(), errors.Join(ErrCouldNotSetProgressBarDescription, err))
 	}
 
 	if _, err := updatedBinaryFile.Seek(0, io.SeekStart); err != nil {
-		handlePanic(cfg.App.Name, "could not read binary", err)
+		handlePanic(cfg.App.Name, ErrCouldNotReadUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotReadUpdatedBinaryFile, err))
 	}
 
 	if err := updatedKeyRing.VerifyDetachedStream(updatedBinaryFile, updatedSignature, crypto.GetUnixTime()); err != nil {
-		handlePanic(cfg.App.Name, "could not validate binary", err)
+		handlePanic(cfg.App.Name, ErrCouldNotValidateUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotValidateUpdatedBinaryFile, err))
 	}
 
 	if err := dialog.Complete(); err != nil {
-		handlePanic(cfg.App.Name, "could not open validation progress dialog", err)
+		handlePanic(cfg.App.Name, ErrCouldNotCloseDialog.Error(), errors.Join(ErrCouldNotCloseDialog, err))
 	}
 
 	if err := dialog.Close(); err != nil {
-		handlePanic(cfg.App.Name, "could not close validation progress dialog", err)
+		handlePanic(cfg.App.Name, ErrCouldNotCloseDialog.Error(), errors.Join(ErrCouldNotCloseDialog, err))
 	}
 
 	oldBinary, err := os.Executable()
 	if err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotFindOldBinaryFile.Error(), errors.Join(ErrCouldNotFindOldBinaryFile, err))
 	}
 
 	switch SelfUpdaterPackageType {
@@ -396,7 +415,7 @@ func SelfUpdate(
 		if output, err := exec.Command(powerShellBinary, `-Command`, fmt.Sprintf(`Start-Process '%v' -Verb RunAs -Wait -ArgumentList "%v; Start-Process msiexec.exe '/i %v'"`, powerShellBinary, stopCmds, updatedBinaryFile.Name())).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not start update installer with output: %s: %v", output, err)
 
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotStartUpdateInstaller.Error(), errors.Join(ErrCouldNotStartUpdateInstaller, err))
 		}
 
 		// We'll never reach this since we kill this process in the elevated shell and start the updated version
@@ -405,24 +424,24 @@ func SelfUpdate(
 	case "dmg":
 		mountpoint, err := os.MkdirTemp(os.TempDir(), "update-mountpoint")
 		if err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotCreateMountpointDirectory.Error(), errors.Join(ErrCouldNotCreateMountpointDirectory, err))
 		}
 		defer os.RemoveAll(mountpoint)
 
 		if output, err := exec.Command("hdiutil", "attach", "-mountpoint", mountpoint, updatedBinaryFile.Name()).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not attach DMG with output: %s: %v", output, err)
 
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotAttachDMG.Error(), errors.Join(ErrCouldNotAttachDMG, err))
 		}
 
 		appPath, err := filepath.Abs(filepath.Join(oldBinary, "..", ".."))
 		if err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotFindOldBinaryFileAbsolute.Error(), errors.Join(ErrCouldNotFindOldBinaryFileAbsolute, err))
 		}
 
 		appsPath, err := filepath.Abs(filepath.Join(appPath, ".."))
 		if err != nil {
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotFindOldAppBundleAbsolute.Error(), errors.Join(ErrCouldNotFindOldAppBundleAbsolute, err))
 		}
 
 		if output, err := exec.Command(
@@ -432,13 +451,13 @@ func SelfUpdate(
 		).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not replace old app with new app with output: %s: %v", output, err)
 
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotReplaceOldAppWithUpdatedApp.Error(), errors.Join(ErrCouldNotReplaceOldAppWithUpdatedApp, err))
 		}
 
 		if output, err := exec.Command("hdiutil", "unmount", mountpoint).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not detach DMG with output: %s: %v", output, err)
 
-			handlePanic(cfg.App.Name, err.Error(), err)
+			handlePanic(cfg.App.Name, ErrCouldNotDetachDMG.Error(), errors.Join(ErrCouldNotDetachDMG, err))
 		}
 
 	default:
