@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -18,6 +19,25 @@ const (
 	flatpakCmd     = "flatpak"
 	flatpakList    = "list"
 	flatpakColumns = "--columns=application"
+)
+
+var (
+	ErrCouldNotFindFlatpakSpawn                              = errors.New("could not find flatpak-spawn command")
+	ErrCouldNotListBrowserFlatpaks                           = errors.New("could not list available browser Flatpaks")
+	ErrCouldNotCallUnsupportedBrowserHandler                 = errors.New("could not call unsupported browser handler")
+	ErrCouldNotLaunchUnknownBrowserType                      = errors.New("could not launch unknown browser type")
+	ErrCouldNotGetUserConfigDir                              = errors.New("could not get user config directory")
+	ErrCouldNotCreateFirefoxProfile                          = errors.New("could not create Firefox profile")
+	ErrCouldNotGetUserHomeDir                                = errors.New("could not get user home directory")
+	ErrCouldNotListFilesInFirefoxProfilesDirectory           = errors.New("could not list files in Firefox profiles directory")
+	ErrCouldNotFindFirefoxProfileDirectory                   = errors.New("could not find Firefox profile directory")
+	ErrCouldNotSetFirefoxProfileDirectoryEnvironmentVariable = errors.New("could not set Firefox profile directory environment variable")
+	ErrCouldNotWriteFirefoxPrefsJSFile                       = errors.New("could not write Firefox prefs JS file")
+	ErrCouldNotCreateFirefoxChromeDirectory                  = errors.New("could not create Firefox chrome directory")
+	ErrCouldNotWriteFirefoxUserChromeCSSFile                 = errors.New("could not write Firefox userChrome CSS file")
+	ErrCouldNotCreateEpiphanyProfileDirectory                = errors.New("could not create Epiphany profile directory")
+	ErrCouldNotWriteDesktopFile                              = errors.New("could not write desktop file")
+	ErrCouldNotFindSupportedBrowser                          = errors.New("could not find a supported browser")
 )
 
 type Browser struct {
@@ -127,7 +147,7 @@ func LaunchBrowser(
 						// Find supported browser from Flatpak
 						apps, err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
 						if err != nil {
-							handlePanic("could not list available browser flatpaks", err)
+							handlePanic(ErrCouldNotListBrowserFlatpaks.Error(), errors.Join(ErrCouldNotListBrowserFlatpaks, err))
 						}
 
 						if strings.Contains(string(apps), flatpak[0]) {
@@ -140,7 +160,7 @@ func LaunchBrowser(
 						// Find supported browser in native install
 						apps, err := exec.Command(flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
 						if err != nil {
-							handlePanic("could not list available browser flatpaks", err)
+							handlePanic(ErrCouldNotListBrowserFlatpaks.Error(), errors.Join(ErrCouldNotListBrowserFlatpaks, err))
 						}
 
 						if strings.Contains(string(apps), flatpak[0]) {
@@ -185,9 +205,9 @@ func LaunchBrowser(
 			fmt.Sprintf("%v", browserBinary),
 			fmt.Sprintf("%v", browsers),
 
-			fmt.Errorf("could not find a supported browser"),
+			ErrCouldNotFindSupportedBrowser,
 		); err != nil {
-			handlePanic("could not call unsupported browser handler", err)
+			handlePanic(ErrCouldNotCallUnsupportedBrowserHandler.Error(), errors.Join(ErrCouldNotCallUnsupportedBrowserHandler, err))
 		}
 
 		// Retry if configuration was successful
@@ -229,7 +249,7 @@ func LaunchBrowser(
 
 	// Abort if browser type could not be found
 	if browserTypeOverride == "" {
-		handlePanic("could not launch unknown browser type", fmt.Errorf("tried to launch prefered browser type (set with the HYDRAPP_TYPE environment variable) \"%v\" and known types \"%v\"", browserTypeOverride, browsers))
+		handlePanic(ErrCouldNotLaunchUnknownBrowserType.Error(), errors.Join(ErrCouldNotLaunchUnknownBrowserType, fmt.Errorf("tried to launch preferred browser type (set with the HYDRAPP_TYPE environment variable) \"%v\" and known types \"%v\"", browserTypeOverride, browsers)))
 	}
 
 	switch browserTypeOverride {
@@ -238,7 +258,7 @@ func LaunchBrowser(
 		// Create a profile for the app
 		userConfigDir, err := os.UserConfigDir()
 		if err != nil {
-			handlePanic("could not get user's config directory", err)
+			handlePanic(ErrCouldNotGetUserConfigDir.Error(), errors.Join(ErrCouldNotGetUserConfigDir, err))
 		}
 		userDataDir := filepath.Join(userConfigDir, appID)
 
@@ -270,13 +290,13 @@ func LaunchBrowser(
 
 		// Start the browser
 		if err := state.Cmd.Run(); err != nil {
-			handlePanic("could not launch browser", err)
+			handlePanic(ErrCouldNotOpenBrowser.Error(), errors.Join(ErrCouldNotOpenBrowser, err))
 		}
 
 		// Wait till lock for browser has been removed
 		utils.WaitForFileRemoval(filepath.Join(userDataDir, "SingletonSocket"), handlePanic)
 
-	// Launch Firefox-like browser
+		// Launch Firefox-like browser
 	case BrowserTypeFirefox:
 		// Create a profile for the app
 		execLine := append(
@@ -291,13 +311,15 @@ func LaunchBrowser(
 			execLine[0],
 			execLine[1:]...,
 		).CombinedOutput(); err != nil {
-			handlePanic("could not create profile", fmt.Errorf("%v: %v", err, string(output)))
+			err := fmt.Errorf("could not create Firefox profile with output: %s: %v", output, err)
+
+			handlePanic(ErrCouldNotCreateFirefoxProfile.Error(), errors.Join(ErrCouldNotCreateFirefoxProfile, err))
 		}
 
 		// Get the user's home directory in which the profiles can be found
 		home, err := os.UserHomeDir()
 		if err != nil {
-			handlePanic("could not get user's home directory", err)
+			handlePanic(ErrCouldNotGetUserHomeDir.Error(), errors.Join(ErrCouldNotGetUserHomeDir, err))
 		}
 
 		// Get the profile's directory
@@ -305,7 +327,7 @@ func LaunchBrowser(
 		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 			userConfigDir, err := os.UserConfigDir()
 			if err != nil {
-				handlePanic("could not get user's config directory", err)
+				handlePanic(ErrCouldNotGetUserConfigDir.Error(), errors.Join(ErrCouldNotGetUserConfigDir, err))
 			}
 
 			if runtime.GOOS == "windows" {
@@ -317,7 +339,7 @@ func LaunchBrowser(
 
 		filesInFirefoxDir, err := os.ReadDir(firefoxDir)
 		if err != nil {
-			handlePanic("could not get files in profiles directory", err)
+			handlePanic(ErrCouldNotListFilesInFirefoxProfilesDirectory.Error(), errors.Join(ErrCouldNotListFilesInFirefoxProfilesDirectory, err))
 		}
 
 		profileSuffix := ""
@@ -330,25 +352,25 @@ func LaunchBrowser(
 		}
 
 		if profileSuffix == "" {
-			handlePanic("could not find profile directory generated by Firefox", fmt.Errorf("the profile's directory does not exist"))
+			handlePanic(ErrCouldNotFindFirefoxProfileDirectory.Error(), ErrCouldNotFindFirefoxProfileDirectory)
 		}
 
 		profileDir := filepath.Join(firefoxDir, profileSuffix)
 		if err := os.Setenv("PROFILE_DIR", profileDir); err != nil {
-			handlePanic("could not set profile directory", err)
+			handlePanic(ErrCouldNotSetFirefoxProfileDirectoryEnvironmentVariable.Error(), errors.Join(ErrCouldNotSetFirefoxProfileDirectoryEnvironmentVariable, err))
 		}
 
 		if err := os.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), 0664); err != nil {
-			panic(err)
+			handlePanic(ErrCouldNotWriteFirefoxPrefsJSFile.Error(), errors.Join(ErrCouldNotWriteFirefoxPrefsJSFile, err))
 		}
 
 		chromeDir := filepath.Join(profileDir, "chrome")
 		if err := os.MkdirAll(chromeDir, 0755); err != nil {
-			panic(err)
+			handlePanic(ErrCouldNotCreateFirefoxChromeDirectory.Error(), errors.Join(ErrCouldNotCreateFirefoxChromeDirectory, err))
 		}
 
 		if err := os.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), 0664); err != nil {
-			panic(err)
+			handlePanic(ErrCouldNotWriteFirefoxUserChromeCSSFile.Error(), errors.Join(ErrCouldNotWriteFirefoxUserChromeCSSFile, err))
 		}
 
 		// Create the browser instance
@@ -380,18 +402,18 @@ func LaunchBrowser(
 
 		// Start the browser
 		if err := state.Cmd.Run(); err != nil {
-			handlePanic("could not launch browser", err)
+			handlePanic(ErrCouldNotOpenBrowser.Error(), errors.Join(ErrCouldNotOpenBrowser, err))
 		}
 
 		// Wait till lock for browser has been removed
 		utils.WaitForFileRemoval(filepath.Join(profileDir, "cookies.sqlite-wal"), handlePanic)
 
-	// Launch Epiphany-like browser
+		// Launch Epiphany-like browser
 	case BrowserTypeEpiphany:
 		// Get the user's home directory in which the profiles should be created
 		home, err := os.UserHomeDir()
 		if err != nil {
-			handlePanic("could not get user's home directory", err)
+			handlePanic(ErrCouldNotGetUserHomeDir.Error(), errors.Join(ErrCouldNotGetUserHomeDir, err))
 		}
 
 		// Create the profile directory
@@ -399,7 +421,7 @@ func LaunchBrowser(
 		profileDir := filepath.Join(home, ".local", "share", epiphanyID)
 
 		if err := os.MkdirAll(filepath.Join(profileDir, ".app"), 0755); err != nil {
-			handlePanic("could not create profile directory", err)
+			handlePanic(ErrCouldNotCreateEpiphanyProfileDirectory.Error(), errors.Join(ErrCouldNotCreateEpiphanyProfileDirectory, err))
 		}
 
 		// Create the .desktop file
@@ -415,7 +437,7 @@ func LaunchBrowser(
 				epiphanyID,
 			)),
 			0664); err != nil {
-			handlePanic("could not write desktop file", err)
+			handlePanic(ErrCouldNotWriteDesktopFile.Error(), errors.Join(ErrCouldNotWriteDesktopFile, err))
 		}
 
 		// Create the browser instance
@@ -444,13 +466,13 @@ func LaunchBrowser(
 
 		// Start the browser
 		if err := state.Cmd.Run(); err != nil {
-			handlePanic("could not launch browser", err)
+			handlePanic(ErrCouldNotOpenBrowser.Error(), errors.Join(ErrCouldNotOpenBrowser, err))
 		}
 
 		// Wait till lock for browser has been removed
 		utils.WaitForFileRemoval(filepath.Join(profileDir, "ephy-history.db-wal"), handlePanic)
 
-	// Launch Lynx-like browser
+		// Launch Lynx-like browser
 	case BrowserTypeLynx:
 		// Create the browser instance
 		execLine := append(
@@ -477,7 +499,7 @@ func LaunchBrowser(
 
 		// Start the browser
 		if err := state.Cmd.Run(); err != nil {
-			handlePanic("could not launch browser", err)
+			handlePanic(ErrCouldNotOpenBrowser.Error(), errors.Join(ErrCouldNotOpenBrowser, err))
 		}
 	case BrowserTypeDummy:
 		select {}
