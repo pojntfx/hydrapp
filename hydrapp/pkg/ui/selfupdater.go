@@ -31,43 +31,47 @@ type BrowserState struct {
 }
 
 var (
-	ErrNoEscalationMethodFound               = errors.New("no escalation method could be found")
-	ErrCouldNotParseCurrentBinaryBuildTime   = errors.New("could not parse current binary build time")
-	ErrCouldNotParseAppBaseURL               = errors.New("could not parse app base URL")
-	ErrCouldNotCreateIndexURL                = errors.New("could not create index URL")
-	ErrCouldNotRequestIndex                  = errors.New("could not request index")
-	ErrCouldNotReadIndex                     = errors.New("could not read index")
-	ErrCouldNotParseIndex                    = errors.New("could not parse index")
-	ErrCouldNotParseUpdatedBinaryBuildTime   = errors.New("could not parse updated binary build time")
-	ErrCouldNotCreateUpdatedBinaryURL        = errors.New("could not create updated binary URL")
-	ErrCouldNotCreateUpdatedSignatureURL     = errors.New("could not create updated signature URL")
-	ErrCouldNotCreateUpdatedRepoKeyURL       = errors.New("could not create updated repo key URL")
-	ErrCouldNotDisplayDialog                 = errors.New("could not display dialog")
-	ErrCouldNotCreateUpdatedBinaryFile       = errors.New("could not create updated binary file")
-	ErrCouldNotCreateUpdatedSignatureFile    = errors.New("could not create updated signature file")
-	ErrCouldNotCreateUpdatedRepoKeyFile      = errors.New("could not create updated repo key file")
-	ErrCouldNotDownloadDownloadConfiguration = errors.New("could not download download configuration")
-	ErrCouldNotParseContentLengthHeader      = errors.New("could not parse content length header")
-	ErrCouldNotCloseDialog                   = errors.New("could not close dialog")
-	ErrCouldNotGetInfoOnUpdatedBinaryFile    = errors.New("could not get info on updated binary file")
-	ErrCouldNotSetProgressBarValue           = errors.New("could not set progress bar value")
-	ErrCouldNotSetProgressBarDescription     = errors.New("could not set progress bar description")
-	ErrCouldNotDownloadUpdatedBinaryFile     = errors.New("could not download updated binary file")
-	ErrCouldNotReadUpdatedRepoKey            = errors.New("could not read updated repo key")
-	ErrCouldNotParseUpdatedRepoKey           = errors.New("could not parse updated repo key")
-	ErrCouldNotCreateUpdatedKeyRing          = errors.New("could not create updated key ring")
-	ErrCouldNotReadUpdatedSignature          = errors.New("could not read updated signature")
-	ErrCouldNotParseUpdatedSignature         = errors.New("could not parse updated signature")
-	ErrCouldNotReadUpdatedBinaryFile         = errors.New("could not read updated binary file")
-	ErrCouldNotValidateUpdatedBinaryFile     = errors.New("could not validate updated binary file")
-	ErrCouldNotFindOldBinaryFile             = errors.New("could not find old binary file")
-	ErrCouldNotStartUpdateInstaller          = errors.New("could not start update installer")
-	ErrCouldNotCreateMountpointDirectory     = errors.New("could not create mountpoint directory")
-	ErrCouldNotAttachDMG                     = errors.New("could not attach DMG")
-	ErrCouldNotFindOldBinaryFileAbsolute     = errors.New("could not find old binary file's absolute path")
-	ErrCouldNotFindOldAppBundleAbsolute      = errors.New("could not find old app bundle's absolute path")
-	ErrCouldNotReplaceOldAppWithUpdatedApp   = errors.New("could not replace old app with updated app")
-	ErrCouldNotDetachDMG                     = errors.New("could not detach DMG")
+	ErrNoEscalationMethodFound                       = errors.New("no escalation method could be found")
+	ErrNoTerminalFound                               = errors.New("no terminal could be found")
+	ErrCouldNotParseCurrentBinaryBuildTime           = errors.New("could not parse current binary build time")
+	ErrCouldNotParseAppBaseURL                       = errors.New("could not parse app base URL")
+	ErrCouldNotCreateIndexURL                        = errors.New("could not create index URL")
+	ErrCouldNotRequestIndex                          = errors.New("could not request index")
+	ErrCouldNotReadIndex                             = errors.New("could not read index")
+	ErrCouldNotParseIndex                            = errors.New("could not parse index")
+	ErrCouldNotParseUpdatedBinaryBuildTime           = errors.New("could not parse updated binary build time")
+	ErrCouldNotCreateUpdatedBinaryURL                = errors.New("could not create updated binary URL")
+	ErrCouldNotCreateUpdatedSignatureURL             = errors.New("could not create updated signature URL")
+	ErrCouldNotCreateUpdatedRepoKeyURL               = errors.New("could not create updated repo key URL")
+	ErrCouldNotDisplayDialog                         = errors.New("could not display dialog")
+	ErrCouldNotCreateUpdatedBinaryFile               = errors.New("could not create updated binary file")
+	ErrCouldNotCreateUpdatedSignatureFile            = errors.New("could not create updated signature file")
+	ErrCouldNotCreateUpdatedRepoKeyFile              = errors.New("could not create updated repo key file")
+	ErrCouldNotDownloadDownloadConfiguration         = errors.New("could not download download configuration")
+	ErrCouldNotParseContentLengthHeader              = errors.New("could not parse content length header")
+	ErrCouldNotCloseDialog                           = errors.New("could not close dialog")
+	ErrCouldNotGetInfoOnUpdatedBinaryFile            = errors.New("could not get info on updated binary file")
+	ErrCouldNotSetProgressBarValue                   = errors.New("could not set progress bar value")
+	ErrCouldNotSetProgressBarDescription             = errors.New("could not set progress bar description")
+	ErrCouldNotDownloadUpdatedBinaryFile             = errors.New("could not download updated binary file")
+	ErrCouldNotReadUpdatedRepoKey                    = errors.New("could not read updated repo key")
+	ErrCouldNotParseUpdatedRepoKey                   = errors.New("could not parse updated repo key")
+	ErrCouldNotCreateUpdatedKeyRing                  = errors.New("could not create updated key ring")
+	ErrCouldNotReadUpdatedSignature                  = errors.New("could not read updated signature")
+	ErrCouldNotParseUpdatedSignature                 = errors.New("could not parse updated signature")
+	ErrCouldNotReadUpdatedBinaryFile                 = errors.New("could not read updated binary file")
+	ErrCouldNotValidateUpdatedBinaryFile             = errors.New("could not validate updated binary file")
+	ErrCouldNotFindOldBinaryFile                     = errors.New("could not find old binary file")
+	ErrCouldNotStartUpdateInstaller                  = errors.New("could not start update installer")
+	ErrCouldNotCreateMountpointDirectory             = errors.New("could not create mountpoint directory")
+	ErrCouldNotAttachDMG                             = errors.New("could not attach DMG")
+	ErrCouldNotFindOldBinaryFileAbsolute             = errors.New("could not find old binary file's absolute path")
+	ErrCouldNotFindOldAppBundleAbsolute              = errors.New("could not find old app bundle's absolute path")
+	ErrCouldNotReplaceOldAppWithUpdatedApp           = errors.New("could not replace old app with updated app")
+	ErrCouldNotDetachDMG                             = errors.New("could not detach DMG")
+	ErrCouldNotInstallUpdatedBinaryFile              = errors.New("could not install updated binary file")
+	ErrCouldNotChangePermissionsForUpdatedBinaryFile = errors.New("could not change permissions for updated binary file")
+	ErrCouldNotLaunchUpdatedBinaryFile               = errors.New("could not launch updated binary file")
 )
 
 type File struct {
@@ -476,7 +480,7 @@ func SelfUpdate(
 			if output, err := exec.Command(powerShellBinary, `-Command`, fmt.Sprintf(`Start-Process '%v' -Verb RunAs -Wait -ArgumentList "%v; Move-Item -Force '%v' '%v'; Start-Process '%v'"`, powerShellBinary, stopCmds, updatedBinaryFile.Name(), oldBinary, strings.Join(os.Args, " "))).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-				handlePanic(cfg.App.Name, err.Error(), err)
+				handlePanic(cfg.App.Name, ErrCouldNotInstallUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err))
 			}
 
 			// We'll never reach this since we kill this process in the elevated shell and start the updated version
@@ -484,7 +488,7 @@ func SelfUpdate(
 
 		case "darwin":
 			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
-				handlePanic(cfg.App.Name, err.Error(), err)
+				handlePanic(cfg.App.Name, ErrCouldNotChangePermissionsForUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotChangePermissionsForUpdatedBinaryFile, err))
 			}
 
 			if output, err := exec.Command(
@@ -494,12 +498,12 @@ func SelfUpdate(
 			).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-				handlePanic(cfg.App.Name, err.Error(), err)
+				handlePanic(cfg.App.Name, ErrCouldNotInstallUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err))
 			}
 
 		default:
 			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
-				handlePanic(cfg.App.Name, err.Error(), err)
+				handlePanic(cfg.App.Name, ErrCouldNotChangePermissionsForUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotChangePermissionsForUpdatedBinaryFile, err))
 			}
 
 			// Escalate using Polkit
@@ -507,33 +511,32 @@ func SelfUpdate(
 				if output, err := exec.Command(pkexec, "cp", "-f", updatedBinaryFile.Name(), oldBinary).CombinedOutput(); err != nil {
 					err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-					handlePanic(cfg.App.Name, err.Error(), err)
+					handlePanic(cfg.App.Name, ErrCouldNotInstallUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err))
 				}
 			} else {
-				// Escalate using using terminal emulator
-				xterm, err := exec.LookPath("xterm")
+				// Escalate manually using using terminal emulator as a fallback
+				terminal, err := exec.LookPath("xterm")
 				if err != nil {
-					err := fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
-
-					handlePanic(cfg.App.Name, err.Error(), err)
+					handlePanic(cfg.App.Name, ErrNoTerminalFound.Error(), errors.Join(ErrNoTerminalFound, err))
 				}
 
-				suid, err := exec.LookPath("sudo")
+				suid, err := exec.LookPath("run0")
 				if err != nil {
-					suid, err = exec.LookPath("doas")
+					suid, err = exec.LookPath("sudo")
 					if err != nil {
-						err := fmt.Errorf("%v: %w", ErrNoEscalationMethodFound, err)
-
-						handlePanic(cfg.App.Name, err.Error(), err)
+						suid, err = exec.LookPath("doas")
+						if err != nil {
+							handlePanic(cfg.App.Name, ErrNoEscalationMethodFound.Error(), errors.Join(ErrNoEscalationMethodFound, err))
+						}
 					}
 				}
 
 				if output, err := exec.Command(
-					xterm, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedBinaryFile.Name(), oldBinary),
+					terminal, "-T", "Authentication Required", "-e", fmt.Sprintf(`echo 'Authentication is needed to apply the update.' && %v cp -f '%v' '%v'`, suid, updatedBinaryFile.Name(), oldBinary),
 				).CombinedOutput(); err != nil {
 					err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-					handlePanic(cfg.App.Name, err.Error(), err)
+					handlePanic(cfg.App.Name, ErrCouldNotInstallUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err))
 				}
 			}
 		}
@@ -549,7 +552,7 @@ func SelfUpdate(
 		oldBinary,
 		os.Args,
 	); err != nil {
-		handlePanic(cfg.App.Name, err.Error(), err)
+		handlePanic(cfg.App.Name, ErrCouldNotLaunchUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotLaunchUpdatedBinaryFile, err))
 	}
 
 	os.Exit(0)
