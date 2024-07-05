@@ -15,7 +15,6 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
-	"sync"
 	"syscall"
 	"time"
 
@@ -72,6 +71,9 @@ var (
 	ErrCouldNotInstallUpdatedBinaryFile              = errors.New("could not install updated binary file")
 	ErrCouldNotChangePermissionsForUpdatedBinaryFile = errors.New("could not change permissions for updated binary file")
 	ErrCouldNotLaunchUpdatedBinaryFile               = errors.New("could not launch updated binary file")
+	ErrSelfUpdaterExternalContextCancelled           = errors.New("self updater external context cancelled")
+	ErrSelfUpdaterDownloadContextCancelled           = errors.New("self updater download context cancelled")
+	ErrSelfUpdaterProgressBarContextCancelled        = errors.New("self updater progress bar context cancelled")
 )
 
 type File struct {
@@ -281,21 +283,45 @@ func SelfUpdate(
 			handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
 		}
 
-		var dialogWg sync.WaitGroup
-		dialogWg.Add(1)
+		var errs error
+
+		// We use context.Background here so that we don't confuse a `ctx` cancellation, after which we should return, with a successful download
+		// We select beteween `downloadCtx` and `ctx` on all code paths so that we don't leak it
+		downloadCtx, cancelDownloadCtx := context.WithCancel(context.Background())
+		defer cancelDownloadCtx()
+
 		go func() {
+			defer cancelDownloadCtx()
+
+			if _, err := io.Copy(downloadConfiguration.dst, res.Body); err != nil {
+				errs = errors.Join(errs, errors.Join(ErrCouldNotDownloadUpdatedBinaryFile, err))
+
+				return
+			}
+		}()
+
+		// We use context.Background here so that we don't confuse a `ctx` cancellation, after which we should return, with a successful progress bar
+		// We select beteween `progressBarCtx` and `ctx` on all code paths so that we don't leak it
+		progressBarCtx, cancelProgressBarCtx := context.WithCancel(context.Background())
+		defer cancelProgressBarCtx()
+
+		go func() {
+			defer cancelProgressBarCtx()
+
 			ticker := time.NewTicker(time.Millisecond * 50)
 			defer func() {
-				defer dialogWg.Done()
-
 				ticker.Stop()
 
 				if err := dialog.Complete(); err != nil {
-					handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
+					errs = errors.Join(errs, errors.Join(ErrCouldNotDisplayDialog, err))
+
+					return
 				}
 
 				if err := dialog.Close(); err != nil {
-					handlePanic(cfg.App.Name, ErrCouldNotCloseDialog.Error(), errors.Join(ErrCouldNotCloseDialog, err))
+					errs = errors.Join(errs, errors.Join(ErrCouldNotCloseDialog, err))
+
+					return
 				}
 			}()
 
@@ -307,7 +333,9 @@ func SelfUpdate(
 				case <-ticker.C:
 					stat, err := downloadConfiguration.dst.Stat()
 					if err != nil {
-						handlePanic(cfg.App.Name, ErrCouldNotGetInfoOnUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotGetInfoOnUpdatedBinaryFile, err))
+						errs = errors.Join(errs, errors.Join(ErrCouldNotGetInfoOnUpdatedBinaryFile, err))
+
+						return
 					}
 
 					downloadedSize := stat.Size()
@@ -318,11 +346,15 @@ func SelfUpdate(
 					percentage := int((float64(downloadedSize) / float64(totalSize)) * 100)
 
 					if err := dialog.Value(percentage); err != nil {
-						handlePanic(cfg.App.Name, ErrCouldNotSetProgressBarValue.Error(), errors.Join(ErrCouldNotSetProgressBarValue, err))
+						errs = errors.Join(errs, errors.Join(ErrCouldNotSetProgressBarValue, err))
+
+						return
 					}
 
 					if err := dialog.Text(fmt.Sprintf("%v%% (%v MB/%v MB)", percentage, downloadedSize/(1024*1024), totalSize/(1024*1024))); err != nil {
-						handlePanic(cfg.App.Name, ErrCouldNotSetProgressBarDescription.Error(), errors.Join(ErrCouldNotSetProgressBarDescription, err))
+						errs = errors.Join(errs, errors.Join(ErrCouldNotSetProgressBarDescription, err))
+
+						return
 					}
 
 					if percentage == 100 {
@@ -332,11 +364,22 @@ func SelfUpdate(
 			}
 		}()
 
-		if _, err := io.Copy(downloadConfiguration.dst, res.Body); err != nil {
-			handlePanic(cfg.App.Name, ErrCouldNotDownloadUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotDownloadUpdatedBinaryFile, err))
-		}
+		select {
+		case <-ctx.Done():
+			if err := ctx.Err(); err != context.Canceled || errs != nil {
+				handlePanic(cfg.App.Name, ErrSelfUpdaterExternalContextCancelled.Error(), errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err))
+			}
 
-		dialogWg.Wait()
+		case <-downloadCtx.Done():
+			if err := downloadCtx.Err(); err != context.Canceled || errs != nil {
+				handlePanic(cfg.App.Name, ErrSelfUpdaterDownloadContextCancelled.Error(), errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err))
+			}
+
+		case <-progressBarCtx.Done():
+			if err := progressBarCtx.Err(); err != context.Canceled || errs != nil {
+				handlePanic(cfg.App.Name, ErrSelfUpdaterProgressBarContextCancelled.Error(), errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err))
+			}
+		}
 	}
 
 	dialog, err := zenity.Progress(
