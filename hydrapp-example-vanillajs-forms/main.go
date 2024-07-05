@@ -7,6 +7,8 @@ import (
 	"bytes"
 	"context"
 	_ "embed"
+	"errors"
+	"fmt"
 	"log"
 	"os"
 
@@ -25,25 +27,28 @@ func main() {
 
 	cfg, err := config.Parse(bytes.NewBuffer(configFile))
 	if err != nil {
-		ui.HandlePanic("App", "could not parse config file", err)
+		ui.HandlePanic("App", errors.Join(fmt.Errorf("could not parse config file"), err))
 
 		return
 	}
 
 	// Apply the self-update
 	browserState := &ui.BrowserState{}
-	go ui.SelfUpdate(
-		ctx,
+	go func() {
+		if err := ui.SelfUpdate(
+			ctx,
 
-		cfg,
-		browserState,
-		ui.HandlePanic,
-	)
+			cfg,
+			browserState,
+		); err != nil {
+			ui.HandlePanic(cfg.App.Name, err)
+		}
+	}()
 
 	// Start the frontend
 	frontendURL, stopFrontend, err := frontend.StartServer(ctx, os.Getenv(ui.EnvFrontendLaddr), true)
 	if err != nil {
-		ui.HandlePanic(cfg.App.Name, "could not start frontend", err)
+		ui.HandlePanic(cfg.App.Name, errors.Join(fmt.Errorf("could not start frontend"), err))
 	}
 	defer stopFrontend()
 
@@ -65,7 +70,7 @@ func main() {
 
 			browserState,
 			func(msg string, err error) {
-				ui.HandlePanic(cfg.App.Name, msg, err)
+				ui.HandlePanic(cfg.App.Name, errors.Join(fmt.Errorf("could not launch browser"), err))
 			},
 			ui.ConfigureBrowser,
 		) {

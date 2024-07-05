@@ -106,20 +106,19 @@ func SelfUpdate(
 
 	cfg *config.Root,
 	state *BrowserState,
-	handlePanic func(appName, msg string, err error),
-) {
+) error {
 	if (strings.TrimSpace(SelfUpdaterBranchTimestampRFC3339) == "" && strings.TrimSpace(SelfUpdaterBranchID) == "") || os.Getenv(EnvSelfUpdate) == "false" {
-		return
+		return nil
 	}
 
 	currentBinaryBuildTime, err := time.Parse(time.RFC3339, SelfUpdaterBranchTimestampRFC3339)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotParseCurrentBinaryBuildTime.Error(), errors.Join(ErrCouldNotParseCurrentBinaryBuildTime, err))
+		return errors.Join(ErrCouldNotParseCurrentBinaryBuildTime, err)
 	}
 
 	baseURL, err := url.Parse(cfg.App.BaseURL)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotParseAppBaseURL.Error(), errors.Join(ErrCouldNotParseAppBaseURL, err))
+		return errors.Join(ErrCouldNotParseAppBaseURL, err)
 	}
 
 	switch SelfUpdaterPackageType {
@@ -141,22 +140,22 @@ func SelfUpdate(
 
 	indexURL, err := url.JoinPath(baseURL.String(), "index.json")
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotCreateIndexURL.Error(), errors.Join(ErrCouldNotCreateIndexURL, err))
+		return errors.Join(ErrCouldNotCreateIndexURL, err)
 	}
 
 	res, err := http.DefaultClient.Get(indexURL)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotRequestIndex.Error(), errors.Join(ErrCouldNotRequestIndex, err))
+		return errors.Join(ErrCouldNotRequestIndex, err)
 	}
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotReadIndex.Error(), errors.Join(ErrCouldNotReadIndex, err))
+		return errors.Join(ErrCouldNotReadIndex, err)
 	}
 
 	var index []File
 	if err := json.Unmarshal(body, &index); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotParseIndex.Error(), errors.Join(ErrCouldNotParseIndex, err))
+		return errors.Join(ErrCouldNotParseIndex, err)
 	}
 
 	updatedBinaryName := ""
@@ -183,23 +182,23 @@ func SelfUpdate(
 		if file.Name == updatedBinaryName {
 			updatedBinaryReleaseTime, err = time.Parse(time.RFC3339, file.Time)
 			if err != nil {
-				handlePanic(cfg.App.Name, ErrCouldNotParseUpdatedBinaryBuildTime.Error(), errors.Join(ErrCouldNotParseUpdatedBinaryBuildTime, err))
+				return errors.Join(ErrCouldNotParseUpdatedBinaryBuildTime, err)
 			}
 
 			if currentBinaryBuildTime.Before(updatedBinaryReleaseTime) {
 				updatedBinaryURL, err = url.JoinPath(baseURL.String(), updatedBinaryName)
 				if err != nil {
-					handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedBinaryURL.Error(), errors.Join(ErrCouldNotCreateUpdatedBinaryURL, err))
+					return errors.Join(ErrCouldNotCreateUpdatedBinaryURL, err)
 				}
 
 				updatedSignatureURL, err = url.JoinPath(baseURL.String(), updatedBinaryName+".asc")
 				if err != nil {
-					handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedSignatureURL.Error(), errors.Join(ErrCouldNotCreateUpdatedSignatureURL, err))
+					return errors.Join(ErrCouldNotCreateUpdatedSignatureURL, err)
 				}
 
 				updatedRepoKeyURL, err = url.JoinPath(baseURL.String(), "repo.asc")
 				if err != nil {
-					handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedRepoKeyURL.Error(), errors.Join(ErrCouldNotCreateUpdatedRepoKeyURL, err))
+					return errors.Join(ErrCouldNotCreateUpdatedRepoKeyURL, err)
 				}
 			}
 
@@ -208,7 +207,7 @@ func SelfUpdate(
 	}
 
 	if strings.TrimSpace(updatedBinaryURL) == "" {
-		return
+		return nil
 	}
 
 	if err := zenity.Question(
@@ -218,27 +217,27 @@ func SelfUpdate(
 		zenity.CancelLabel("Ask me next time"),
 	); err != nil {
 		if errors.Is(err, zenity.ErrCanceled) {
-			return
+			return nil
 		}
 
-		handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
+		return errors.Join(ErrCouldNotDisplayDialog, err)
 	}
 
 	updatedBinaryFile, err := os.CreateTemp(os.TempDir(), updatedBinaryName)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotCreateUpdatedBinaryFile, err))
+		return errors.Join(ErrCouldNotCreateUpdatedBinaryFile, err)
 	}
 	defer os.Remove(updatedBinaryFile.Name())
 
 	updatedSignatureFile, err := os.CreateTemp(os.TempDir(), updatedBinaryName+".asc")
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedSignatureFile.Error(), errors.Join(ErrCouldNotCreateUpdatedSignatureFile, err))
+		return errors.Join(ErrCouldNotCreateUpdatedSignatureFile, err)
 	}
 	defer os.Remove(updatedSignatureFile.Name())
 
 	updatedRepoKeyFile, err := os.CreateTemp(os.TempDir(), "repo.asc")
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedRepoKeyFile.Error(), errors.Join(ErrCouldNotCreateUpdatedRepoKeyFile, err))
+		return errors.Join(ErrCouldNotCreateUpdatedRepoKeyFile, err)
 	}
 	defer os.Remove(updatedRepoKeyFile.Name())
 
@@ -263,24 +262,24 @@ func SelfUpdate(
 	for _, downloadConfiguration := range downloadConfigurations {
 		res, err := http.Get(downloadConfiguration.url)
 		if err != nil {
-			handlePanic(cfg.App.Name, ErrCouldNotDownloadDownloadConfiguration.Error(), errors.Join(ErrCouldNotDownloadDownloadConfiguration, err))
+			return errors.Join(ErrCouldNotDownloadDownloadConfiguration, err)
 		}
 		if res.StatusCode != http.StatusOK {
 			err := fmt.Errorf("%v", res.Status)
 
-			handlePanic(cfg.App.Name, ErrCouldNotDownloadDownloadConfiguration.Error(), errors.Join(ErrCouldNotDownloadDownloadConfiguration, err))
+			return errors.Join(ErrCouldNotDownloadDownloadConfiguration, err)
 		}
 
 		totalSize, err := strconv.Atoi(res.Header.Get("Content-Length"))
 		if err != nil {
-			handlePanic(cfg.App.Name, ErrCouldNotParseContentLengthHeader.Error(), errors.Join(ErrCouldNotParseContentLengthHeader, err))
+			return errors.Join(ErrCouldNotParseContentLengthHeader, err)
 		}
 
 		dialog, err := zenity.Progress(
 			zenity.Title(downloadConfiguration.description),
 		)
 		if err != nil {
-			handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
+			return errors.Join(ErrCouldNotDisplayDialog, err)
 		}
 
 		var errs error
@@ -367,17 +366,17 @@ func SelfUpdate(
 		select {
 		case <-ctx.Done():
 			if err := ctx.Err(); err != context.Canceled || errs != nil {
-				handlePanic(cfg.App.Name, ErrSelfUpdaterExternalContextCancelled.Error(), errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err))
+				return errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err)
 			}
 
 		case <-downloadCtx.Done():
 			if err := downloadCtx.Err(); err != context.Canceled || errs != nil {
-				handlePanic(cfg.App.Name, ErrSelfUpdaterDownloadContextCancelled.Error(), errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err))
+				return errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err)
 			}
 
 		case <-progressBarCtx.Done():
 			if err := progressBarCtx.Err(); err != context.Canceled || errs != nil {
-				handlePanic(cfg.App.Name, ErrSelfUpdaterProgressBarContextCancelled.Error(), errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err))
+				return errors.Join(ErrSelfUpdaterExternalContextCancelled, errs, err)
 			}
 		}
 	}
@@ -387,64 +386,64 @@ func SelfUpdate(
 		zenity.Pulsate(),
 	)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotDisplayDialog.Error(), errors.Join(ErrCouldNotDisplayDialog, err))
+		return errors.Join(ErrCouldNotDisplayDialog, err)
 	}
 
 	if err := dialog.Text(fmt.Sprintf("Reading %v repo key and signature", cfg.App.Name)); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotSetProgressBarDescription.Error(), errors.Join(ErrCouldNotSetProgressBarDescription, err))
+		return errors.Join(ErrCouldNotSetProgressBarDescription, err)
 	}
 
 	if _, err := updatedRepoKeyFile.Seek(0, io.SeekStart); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotReadUpdatedRepoKey.Error(), errors.Join(ErrCouldNotReadUpdatedRepoKey, err))
+		return errors.Join(ErrCouldNotReadUpdatedRepoKey, err)
 	}
 
 	updatedRepoKey, err := crypto.NewKeyFromArmoredReader(updatedRepoKeyFile)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotParseUpdatedRepoKey.Error(), errors.Join(ErrCouldNotParseUpdatedRepoKey, err))
+		return errors.Join(ErrCouldNotParseUpdatedRepoKey, err)
 	}
 
 	updatedKeyRing, err := crypto.NewKeyRing(updatedRepoKey)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotCreateUpdatedKeyRing.Error(), errors.Join(ErrCouldNotCreateUpdatedKeyRing, err))
+		return errors.Join(ErrCouldNotCreateUpdatedKeyRing, err)
 	}
 
 	if _, err := updatedSignatureFile.Seek(0, io.SeekStart); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotReadUpdatedSignature.Error(), errors.Join(ErrCouldNotReadUpdatedSignature, err))
+		return errors.Join(ErrCouldNotReadUpdatedSignature, err)
 	}
 
 	rawUpdatedSignature, err := io.ReadAll(updatedSignatureFile)
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotReadUpdatedSignature.Error(), errors.Join(ErrCouldNotReadUpdatedSignature, err))
+		return errors.Join(ErrCouldNotReadUpdatedSignature, err)
 	}
 
 	updatedSignature, err := crypto.NewPGPSignatureFromArmored(string(rawUpdatedSignature))
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotParseUpdatedSignature.Error(), errors.Join(ErrCouldNotParseUpdatedSignature, err))
+		return errors.Join(ErrCouldNotParseUpdatedSignature, err)
 	}
 
 	if err := dialog.Text(fmt.Sprintf("Validating %v binary with signature and key", cfg.App.Name)); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotSetProgressBarDescription.Error(), errors.Join(ErrCouldNotSetProgressBarDescription, err))
+		return errors.Join(ErrCouldNotSetProgressBarDescription, err)
 	}
 
 	if _, err := updatedBinaryFile.Seek(0, io.SeekStart); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotReadUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotReadUpdatedBinaryFile, err))
+		return errors.Join(ErrCouldNotReadUpdatedBinaryFile, err)
 	}
 
 	if err := updatedKeyRing.VerifyDetachedStream(updatedBinaryFile, updatedSignature, crypto.GetUnixTime()); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotValidateUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotValidateUpdatedBinaryFile, err))
+		return errors.Join(ErrCouldNotValidateUpdatedBinaryFile, err)
 	}
 
 	if err := dialog.Complete(); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotCloseDialog.Error(), errors.Join(ErrCouldNotCloseDialog, err))
+		return errors.Join(ErrCouldNotCloseDialog, err)
 	}
 
 	if err := dialog.Close(); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotCloseDialog.Error(), errors.Join(ErrCouldNotCloseDialog, err))
+		return errors.Join(ErrCouldNotCloseDialog, err)
 	}
 
 	oldBinary, err := os.Executable()
 	if err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotFindOldBinaryFile.Error(), errors.Join(ErrCouldNotFindOldBinaryFile, err))
+		return errors.Join(ErrCouldNotFindOldBinaryFile, err)
 	}
 
 	switch SelfUpdaterPackageType {
@@ -462,33 +461,33 @@ func SelfUpdate(
 		if output, err := exec.Command(powerShellBinary, `-Command`, fmt.Sprintf(`Start-Process '%v' -Verb RunAs -Wait -ArgumentList "%v; Start-Process msiexec.exe '/i %v'"`, powerShellBinary, stopCmds, updatedBinaryFile.Name())).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not start update installer with output: %s: %v", output, err)
 
-			handlePanic(cfg.App.Name, ErrCouldNotStartUpdateInstaller.Error(), errors.Join(ErrCouldNotStartUpdateInstaller, err))
+			return errors.Join(ErrCouldNotStartUpdateInstaller, err)
 		}
 
 		// We'll never reach this since we kill this process in the elevated shell and start the updated version
-		return
+		return nil
 
 	case "dmg":
 		mountpoint, err := os.MkdirTemp(os.TempDir(), "update-mountpoint")
 		if err != nil {
-			handlePanic(cfg.App.Name, ErrCouldNotCreateMountpointDirectory.Error(), errors.Join(ErrCouldNotCreateMountpointDirectory, err))
+			return errors.Join(ErrCouldNotCreateMountpointDirectory, err)
 		}
 		defer os.RemoveAll(mountpoint)
 
 		if output, err := exec.Command("hdiutil", "attach", "-mountpoint", mountpoint, updatedBinaryFile.Name()).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not attach DMG with output: %s: %v", output, err)
 
-			handlePanic(cfg.App.Name, ErrCouldNotAttachDMG.Error(), errors.Join(ErrCouldNotAttachDMG, err))
+			return errors.Join(ErrCouldNotAttachDMG, err)
 		}
 
 		appPath, err := filepath.Abs(filepath.Join(oldBinary, "..", ".."))
 		if err != nil {
-			handlePanic(cfg.App.Name, ErrCouldNotFindOldBinaryFileAbsolute.Error(), errors.Join(ErrCouldNotFindOldBinaryFileAbsolute, err))
+			return errors.Join(ErrCouldNotFindOldBinaryFileAbsolute, err)
 		}
 
 		appsPath, err := filepath.Abs(filepath.Join(appPath, ".."))
 		if err != nil {
-			handlePanic(cfg.App.Name, ErrCouldNotFindOldAppBundleAbsolute.Error(), errors.Join(ErrCouldNotFindOldAppBundleAbsolute, err))
+			return errors.Join(ErrCouldNotFindOldAppBundleAbsolute, err)
 		}
 
 		if output, err := exec.Command(
@@ -498,13 +497,13 @@ func SelfUpdate(
 		).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not replace old app with new app with output: %s: %v", output, err)
 
-			handlePanic(cfg.App.Name, ErrCouldNotReplaceOldAppWithUpdatedApp.Error(), errors.Join(ErrCouldNotReplaceOldAppWithUpdatedApp, err))
+			return errors.Join(ErrCouldNotReplaceOldAppWithUpdatedApp, err)
 		}
 
 		if output, err := exec.Command("hdiutil", "unmount", mountpoint).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not detach DMG with output: %s: %v", output, err)
 
-			handlePanic(cfg.App.Name, ErrCouldNotDetachDMG.Error(), errors.Join(ErrCouldNotDetachDMG, err))
+			return errors.Join(ErrCouldNotDetachDMG, err)
 		}
 
 	default:
@@ -523,15 +522,15 @@ func SelfUpdate(
 			if output, err := exec.Command(powerShellBinary, `-Command`, fmt.Sprintf(`Start-Process '%v' -Verb RunAs -Wait -ArgumentList "%v; Move-Item -Force '%v' '%v'; Start-Process '%v'"`, powerShellBinary, stopCmds, updatedBinaryFile.Name(), oldBinary, strings.Join(os.Args, " "))).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-				handlePanic(cfg.App.Name, ErrCouldNotInstallUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err))
+				return errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err)
 			}
 
 			// We'll never reach this since we kill this process in the elevated shell and start the updated version
-			return
+			return nil
 
 		case "darwin":
 			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
-				handlePanic(cfg.App.Name, ErrCouldNotChangePermissionsForUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotChangePermissionsForUpdatedBinaryFile, err))
+				return errors.Join(ErrCouldNotChangePermissionsForUpdatedBinaryFile, err)
 			}
 
 			if output, err := exec.Command(
@@ -541,12 +540,12 @@ func SelfUpdate(
 			).CombinedOutput(); err != nil {
 				err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-				handlePanic(cfg.App.Name, ErrCouldNotInstallUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err))
+				return errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err)
 			}
 
 		default:
 			if err := os.Chmod(updatedBinaryFile.Name(), 0755); err != nil {
-				handlePanic(cfg.App.Name, ErrCouldNotChangePermissionsForUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotChangePermissionsForUpdatedBinaryFile, err))
+				return errors.Join(ErrCouldNotChangePermissionsForUpdatedBinaryFile, err)
 			}
 
 			// Escalate using Polkit
@@ -554,13 +553,13 @@ func SelfUpdate(
 				if output, err := exec.Command(pkexec, "cp", "-f", updatedBinaryFile.Name(), oldBinary).CombinedOutput(); err != nil {
 					err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-					handlePanic(cfg.App.Name, ErrCouldNotInstallUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err))
+					return errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err)
 				}
 			} else {
 				// Escalate manually using using terminal emulator as a fallback
 				terminal, err := exec.LookPath("xterm")
 				if err != nil {
-					handlePanic(cfg.App.Name, ErrNoTerminalFound.Error(), errors.Join(ErrNoTerminalFound, err))
+					return errors.Join(ErrNoTerminalFound, err)
 				}
 
 				suid, err := exec.LookPath("run0")
@@ -569,7 +568,7 @@ func SelfUpdate(
 					if err != nil {
 						suid, err = exec.LookPath("doas")
 						if err != nil {
-							handlePanic(cfg.App.Name, ErrNoEscalationMethodFound.Error(), errors.Join(ErrNoEscalationMethodFound, err))
+							return errors.Join(ErrNoEscalationMethodFound, err)
 						}
 					}
 				}
@@ -579,7 +578,7 @@ func SelfUpdate(
 				).CombinedOutput(); err != nil {
 					err := fmt.Errorf("could not install updated binary with output: %s: %v", output, err)
 
-					handlePanic(cfg.App.Name, ErrCouldNotInstallUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err))
+					return errors.Join(ErrCouldNotInstallUpdatedBinaryFile, err)
 				}
 			}
 		}
@@ -595,8 +594,11 @@ func SelfUpdate(
 		oldBinary,
 		os.Args,
 	); err != nil {
-		handlePanic(cfg.App.Name, ErrCouldNotLaunchUpdatedBinaryFile.Error(), errors.Join(ErrCouldNotLaunchUpdatedBinaryFile, err))
+		return errors.Join(ErrCouldNotLaunchUpdatedBinaryFile, err)
 	}
 
+	// We manually exit here since we've forked the process
 	os.Exit(0)
+
+	return nil
 }
