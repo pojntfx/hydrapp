@@ -1,51 +1,51 @@
 package utils
 
 import (
+	"errors"
 	"os"
 
 	"github.com/fsnotify/fsnotify"
 )
 
-func WaitForFileRemoval(path string, handlePanic func(msg string, err error)) {
+var (
+	ErrCouldNotStartFileWatcher     = errors.New("could not start file watcher")
+	ErrCouldNotAddPathToFileWatcher = errors.New("could not add path to file watcher")
+	ErrCouldNotWatchFile            = errors.New("could not watch file")
+)
+
+func WaitForFileRemoval(path string) error {
 	if _, err := os.Stat(path); err == nil {
 		// Wait until browser has exited
 		watcher, err := fsnotify.NewWatcher()
 		if err != nil {
-			handlePanic("could not start lockfile watcher", err)
+			return errors.Join(ErrCouldNotStartFileWatcher, err)
 		}
 		defer watcher.Close()
 
-		done := make(chan struct{})
-		go func() {
-			for {
-				select {
-				case event, ok := <-watcher.Events:
-					if !ok {
-						return
-					}
-
-					// Stop the app
-					if event.Op&fsnotify.Remove == fsnotify.Remove {
-						done <- struct{}{}
-
-						return
-					}
-
-				case err, ok := <-watcher.Errors:
-					if !ok {
-						return
-					}
-
-					handlePanic("could not continue watching lockfile", err)
-				}
-			}
-		}()
-
-		err = watcher.Add(path)
-		if err != nil {
-			handlePanic("could not watch lockfile", err)
+		if err = watcher.Add(path); err != nil {
+			return errors.Join(ErrCouldNotAddPathToFileWatcher, err)
 		}
 
-		<-done
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return nil
+				}
+
+				if event.Op&fsnotify.Remove == fsnotify.Remove {
+					return nil
+				}
+
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return nil
+				}
+
+				return errors.Join(ErrCouldNotWatchFile, err)
+			}
+		}
 	}
+
+	return nil
 }

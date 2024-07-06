@@ -38,6 +38,7 @@ var (
 	ErrCouldNotCreateEpiphanyProfileDirectory                = errors.New("could not create Epiphany profile directory")
 	ErrCouldNotWriteDesktopFile                              = errors.New("could not write desktop file")
 	ErrCouldNotFindSupportedBrowser                          = errors.New("could not find a supported browser")
+	ErrCouldNotWaitForBrowserLockfileRemoval                 = errors.New("could not wait for browser lockfile removal")
 )
 
 type Browser struct {
@@ -294,7 +295,9 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		utils.WaitForFileRemoval(filepath.Join(userDataDir, "SingletonSocket"), handlePanic)
+		if err := utils.WaitForFileRemoval(filepath.Join(userDataDir, "SingletonSocket")); err != nil {
+			handlePanic(ErrCouldNotWaitForBrowserLockfileRemoval.Error(), errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err))
+		}
 
 		// Launch Firefox-like browser
 	case BrowserTypeFirefox:
@@ -406,7 +409,9 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		utils.WaitForFileRemoval(filepath.Join(profileDir, "cookies.sqlite-wal"), handlePanic)
+		if err := utils.WaitForFileRemoval(filepath.Join(profileDir, "cookies.sqlite-wal")); err != nil {
+			handlePanic(ErrCouldNotWaitForBrowserLockfileRemoval.Error(), errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err))
+		}
 
 		// Launch Epiphany-like browser
 	case BrowserTypeEpiphany:
@@ -470,7 +475,9 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		utils.WaitForFileRemoval(filepath.Join(profileDir, "ephy-history.db-wal"), handlePanic)
+		if err := utils.WaitForFileRemoval(filepath.Join(profileDir, "ephy-history.db-wal")); err != nil {
+			handlePanic(ErrCouldNotWaitForBrowserLockfileRemoval.Error(), errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err))
+		}
 
 		// Launch Lynx-like browser
 	case BrowserTypeLynx:
