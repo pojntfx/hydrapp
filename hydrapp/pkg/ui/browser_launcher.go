@@ -39,6 +39,7 @@ var (
 	ErrCouldNotWriteDesktopFile                              = errors.New("could not write desktop file")
 	ErrCouldNotFindSupportedBrowser                          = errors.New("could not find a supported browser")
 	ErrCouldNotWaitForBrowserLockfileRemoval                 = errors.New("could not wait for browser lockfile removal")
+	ErrUnknownBrowserType                                    = errors.New("unknown browser type")
 )
 
 type Browser struct {
@@ -63,7 +64,6 @@ func LaunchBrowser(
 	lynxLikeBrowsers Browser,
 
 	state *BrowserState,
-	handlePanic func(msg string, err error),
 	handleNoSupportedBrowserFound func(
 		appName,
 
@@ -71,7 +71,7 @@ func LaunchBrowser(
 		knownBinaries string,
 		err error,
 	) error,
-) bool {
+) (bool, error) {
 	browserBinary := []string{browserBinaryOverride}
 
 	// Process the browser types
@@ -148,7 +148,7 @@ func LaunchBrowser(
 						// Find supported browser from Flatpak
 						apps, err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
 						if err != nil {
-							handlePanic(ErrCouldNotListBrowserFlatpaks.Error(), errors.Join(ErrCouldNotListBrowserFlatpaks, err))
+							return false, errors.Join(ErrCouldNotListBrowserFlatpaks, err)
 						}
 
 						if strings.Contains(string(apps), flatpak[0]) {
@@ -161,7 +161,7 @@ func LaunchBrowser(
 						// Find supported browser in native install
 						apps, err := exec.Command(flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
 						if err != nil {
-							handlePanic(ErrCouldNotListBrowserFlatpaks.Error(), errors.Join(ErrCouldNotListBrowserFlatpaks, err))
+							return false, errors.Join(ErrCouldNotListBrowserFlatpaks, err)
 						}
 
 						if strings.Contains(string(apps), flatpak[0]) {
@@ -208,11 +208,11 @@ func LaunchBrowser(
 
 			ErrCouldNotFindSupportedBrowser,
 		); err != nil {
-			handlePanic(ErrCouldNotCallUnsupportedBrowserHandler.Error(), errors.Join(ErrCouldNotCallUnsupportedBrowserHandler, err))
+			return false, errors.Join(ErrCouldNotCallUnsupportedBrowserHandler, err)
 		}
 
 		// Retry if configuration was successful
-		return true
+		return true, nil
 	}
 
 	// Find browser type
@@ -250,7 +250,7 @@ func LaunchBrowser(
 
 	// Abort if browser type could not be found
 	if browserTypeOverride == "" {
-		handlePanic(ErrCouldNotLaunchUnknownBrowserType.Error(), errors.Join(ErrCouldNotLaunchUnknownBrowserType, fmt.Errorf("tried to launch preferred browser type (set with the HYDRAPP_TYPE environment variable) \"%v\" and known types \"%v\"", browserTypeOverride, browsers)))
+		return false, errors.Join(ErrCouldNotLaunchUnknownBrowserType, fmt.Errorf("tried to launch preferred browser type (set with the HYDRAPP_TYPE environment variable) \"%v\" and known types \"%v\"", browserTypeOverride, browsers))
 	}
 
 	switch browserTypeOverride {
@@ -259,7 +259,7 @@ func LaunchBrowser(
 		// Create a profile for the app
 		userConfigDir, err := os.UserConfigDir()
 		if err != nil {
-			handlePanic(ErrCouldNotGetUserConfigDir.Error(), errors.Join(ErrCouldNotGetUserConfigDir, err))
+			return false, errors.Join(ErrCouldNotGetUserConfigDir, err)
 		}
 		userDataDir := filepath.Join(userConfigDir, appID)
 
@@ -291,12 +291,12 @@ func LaunchBrowser(
 
 		// Start the browser
 		if err := state.Cmd.Run(); err != nil {
-			handlePanic(ErrCouldNotOpenBrowser.Error(), errors.Join(ErrCouldNotOpenBrowser, err))
+			return false, errors.Join(ErrCouldNotOpenBrowser, err)
 		}
 
 		// Wait till lock for browser has been removed
 		if err := utils.WaitForFileRemoval(filepath.Join(userDataDir, "SingletonSocket")); err != nil {
-			handlePanic(ErrCouldNotWaitForBrowserLockfileRemoval.Error(), errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err))
+			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
 		}
 
 		// Launch Firefox-like browser
@@ -316,13 +316,13 @@ func LaunchBrowser(
 		).CombinedOutput(); err != nil {
 			err := fmt.Errorf("could not create Firefox profile with output: %s: %v", output, err)
 
-			handlePanic(ErrCouldNotCreateFirefoxProfile.Error(), errors.Join(ErrCouldNotCreateFirefoxProfile, err))
+			return false, errors.Join(ErrCouldNotCreateFirefoxProfile, err)
 		}
 
 		// Get the user's home directory in which the profiles can be found
 		home, err := os.UserHomeDir()
 		if err != nil {
-			handlePanic(ErrCouldNotGetUserHomeDir.Error(), errors.Join(ErrCouldNotGetUserHomeDir, err))
+			return false, errors.Join(ErrCouldNotGetUserHomeDir, err)
 		}
 
 		// Get the profile's directory
@@ -330,7 +330,7 @@ func LaunchBrowser(
 		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 			userConfigDir, err := os.UserConfigDir()
 			if err != nil {
-				handlePanic(ErrCouldNotGetUserConfigDir.Error(), errors.Join(ErrCouldNotGetUserConfigDir, err))
+				return false, errors.Join(ErrCouldNotGetUserConfigDir, err)
 			}
 
 			if runtime.GOOS == "windows" {
@@ -342,7 +342,7 @@ func LaunchBrowser(
 
 		filesInFirefoxDir, err := os.ReadDir(firefoxDir)
 		if err != nil {
-			handlePanic(ErrCouldNotListFilesInFirefoxProfilesDirectory.Error(), errors.Join(ErrCouldNotListFilesInFirefoxProfilesDirectory, err))
+			return false, errors.Join(ErrCouldNotListFilesInFirefoxProfilesDirectory, err)
 		}
 
 		profileSuffix := ""
@@ -355,25 +355,25 @@ func LaunchBrowser(
 		}
 
 		if profileSuffix == "" {
-			handlePanic(ErrCouldNotFindFirefoxProfileDirectory.Error(), ErrCouldNotFindFirefoxProfileDirectory)
+			return false, ErrCouldNotFindFirefoxProfileDirectory
 		}
 
 		profileDir := filepath.Join(firefoxDir, profileSuffix)
 		if err := os.Setenv("PROFILE_DIR", profileDir); err != nil {
-			handlePanic(ErrCouldNotSetFirefoxProfileDirectoryEnvironmentVariable.Error(), errors.Join(ErrCouldNotSetFirefoxProfileDirectoryEnvironmentVariable, err))
+			return false, errors.Join(ErrCouldNotSetFirefoxProfileDirectoryEnvironmentVariable, err)
 		}
 
 		if err := os.WriteFile(filepath.Join(profileDir, "prefs.js"), []byte(prefsJSContent), 0664); err != nil {
-			handlePanic(ErrCouldNotWriteFirefoxPrefsJSFile.Error(), errors.Join(ErrCouldNotWriteFirefoxPrefsJSFile, err))
+			return false, errors.Join(ErrCouldNotWriteFirefoxPrefsJSFile, err)
 		}
 
 		chromeDir := filepath.Join(profileDir, "chrome")
 		if err := os.MkdirAll(chromeDir, 0755); err != nil {
-			handlePanic(ErrCouldNotCreateFirefoxChromeDirectory.Error(), errors.Join(ErrCouldNotCreateFirefoxChromeDirectory, err))
+			return false, errors.Join(ErrCouldNotCreateFirefoxChromeDirectory, err)
 		}
 
 		if err := os.WriteFile(filepath.Join(chromeDir, "userChrome.css"), []byte(userChromeCSSContent), 0664); err != nil {
-			handlePanic(ErrCouldNotWriteFirefoxUserChromeCSSFile.Error(), errors.Join(ErrCouldNotWriteFirefoxUserChromeCSSFile, err))
+			return false, errors.Join(ErrCouldNotWriteFirefoxUserChromeCSSFile, err)
 		}
 
 		// Create the browser instance
@@ -405,12 +405,12 @@ func LaunchBrowser(
 
 		// Start the browser
 		if err := state.Cmd.Run(); err != nil {
-			handlePanic(ErrCouldNotOpenBrowser.Error(), errors.Join(ErrCouldNotOpenBrowser, err))
+			return false, errors.Join(ErrCouldNotOpenBrowser, err)
 		}
 
 		// Wait till lock for browser has been removed
 		if err := utils.WaitForFileRemoval(filepath.Join(profileDir, "cookies.sqlite-wal")); err != nil {
-			handlePanic(ErrCouldNotWaitForBrowserLockfileRemoval.Error(), errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err))
+			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
 		}
 
 		// Launch Epiphany-like browser
@@ -418,7 +418,7 @@ func LaunchBrowser(
 		// Get the user's home directory in which the profiles should be created
 		home, err := os.UserHomeDir()
 		if err != nil {
-			handlePanic(ErrCouldNotGetUserHomeDir.Error(), errors.Join(ErrCouldNotGetUserHomeDir, err))
+			return false, errors.Join(ErrCouldNotGetUserHomeDir, err)
 		}
 
 		// Create the profile directory
@@ -426,7 +426,7 @@ func LaunchBrowser(
 		profileDir := filepath.Join(home, ".local", "share", epiphanyID)
 
 		if err := os.MkdirAll(filepath.Join(profileDir, ".app"), 0755); err != nil {
-			handlePanic(ErrCouldNotCreateEpiphanyProfileDirectory.Error(), errors.Join(ErrCouldNotCreateEpiphanyProfileDirectory, err))
+			return false, errors.Join(ErrCouldNotCreateEpiphanyProfileDirectory, err)
 		}
 
 		// Create the .desktop file
@@ -442,7 +442,7 @@ func LaunchBrowser(
 				epiphanyID,
 			)),
 			0664); err != nil {
-			handlePanic(ErrCouldNotWriteDesktopFile.Error(), errors.Join(ErrCouldNotWriteDesktopFile, err))
+			return false, errors.Join(ErrCouldNotWriteDesktopFile, err)
 		}
 
 		// Create the browser instance
@@ -471,12 +471,12 @@ func LaunchBrowser(
 
 		// Start the browser
 		if err := state.Cmd.Run(); err != nil {
-			handlePanic(ErrCouldNotOpenBrowser.Error(), errors.Join(ErrCouldNotOpenBrowser, err))
+			return false, errors.Join(ErrCouldNotOpenBrowser, err)
 		}
 
 		// Wait till lock for browser has been removed
 		if err := utils.WaitForFileRemoval(filepath.Join(profileDir, "ephy-history.db-wal")); err != nil {
-			handlePanic(ErrCouldNotWaitForBrowserLockfileRemoval.Error(), errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err))
+			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
 		}
 
 		// Launch Lynx-like browser
@@ -506,11 +506,26 @@ func LaunchBrowser(
 
 		// Start the browser
 		if err := state.Cmd.Run(); err != nil {
-			handlePanic(ErrCouldNotOpenBrowser.Error(), errors.Join(ErrCouldNotOpenBrowser, err))
+			return false, errors.Join(ErrCouldNotOpenBrowser, err)
 		}
+	// Launch dummy browser
 	case BrowserTypeDummy:
 		select {}
+	default:
+		if err := handleNoSupportedBrowserFound(
+			appName,
+
+			fmt.Sprintf("%v", browserBinary),
+			fmt.Sprintf("%v", browsers),
+
+			ErrUnknownBrowserType,
+		); err != nil {
+			return false, errors.Join(ErrCouldNotCallUnsupportedBrowserHandler, err)
+		}
+
+		// Retry if configuration was successful
+		return true, nil
 	}
 
-	return false
+	return false, nil
 }

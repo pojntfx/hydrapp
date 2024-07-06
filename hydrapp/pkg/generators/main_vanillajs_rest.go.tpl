@@ -63,22 +63,28 @@ func main() {
 	log.Println("Frontend URL:", frontendURL)
 
 	for {
-		if !ui.LaunchBrowser(
+		retry, err := ui.LaunchBrowser(
 			frontendURL,
 			cfg.App.Name,
 			cfg.App.ID,
+
 			os.Getenv(ui.EnvBrowser),
 			os.Getenv(ui.EnvType),
+
 			ui.ChromiumLikeBrowsers,
 			ui.FirefoxLikeBrowsers,
 			ui.EpiphanyLikeBrowsers,
 			ui.LynxLikeBrowsers,
+
 			browserState,
-			func(msg string, err error) {
-				ui.HandlePanic(cfg.App.Name, errors.Join(fmt.Errorf("could not launch browser"), err))
-			},
 			ui.ConfigureBrowser,
-		) {
+		)
+
+		if err != nil {
+			ui.HandlePanic(cfg.App.Name, err)
+		}
+
+		if !retry {
 			return
 		}
 	}
