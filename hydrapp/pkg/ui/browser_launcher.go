@@ -409,7 +409,14 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		if err := utils.WaitForFileRemoval(filepath.Join(profileDir, "cookies.sqlite-wal")); err != nil {
+		lockfilePath := filepath.Join(profileDir, "lock")
+		if runtime.GOOS == "windows" {
+			// TODO: It looks like Firefox doesn't delete this file anymore, it instead seems to change the timestamp
+			// Find another file on Windows that gets removed instead
+			lockfilePath = filepath.Join(profileDir, "parent.lock")
+		}
+
+		if err := utils.WaitForFileRemoval(lockfilePath); err != nil {
 			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
 		}
 
@@ -508,6 +515,9 @@ func LaunchBrowser(
 		if err := state.Cmd.Run(); err != nil {
 			return false, errors.Join(ErrCouldNotOpenBrowser, err)
 		}
+
+		// No need to wait till lock for browser has been removed in the case of Lynx since there are no profiles
+
 	// Launch dummy browser
 	case BrowserTypeDummy:
 		select {}
