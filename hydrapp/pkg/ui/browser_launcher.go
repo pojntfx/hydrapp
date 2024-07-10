@@ -299,7 +299,14 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		if err := utils.WaitForFileRemoval(filepath.Join(userDataDir, "SingletonSocket")); err != nil {
+		watch, close, err := utils.SetupFileWatcher(filepath.Join(userDataDir, "SingletonSocket"), false)
+		defer close()
+
+		if err != nil {
+			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
+		}
+
+		if err := watch(); err != nil {
 			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
 		}
 
@@ -415,14 +422,21 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		lockfilePath := filepath.Join(profileDir, "lock")
+		lockfilePath := filepath.Join(profileDir, ".parentlock")
 		if runtime.GOOS == "windows" {
 			// TODO: It looks like Firefox doesn't delete this file anymore, it instead seems to change the timestamp
 			// Find another file on Windows that gets removed instead
 			lockfilePath = filepath.Join(profileDir, "parent.lock")
 		}
 
-		if err := utils.WaitForFileRemoval(lockfilePath); err != nil {
+		watch, close, err := utils.SetupFileWatcher(lockfilePath, false)
+		defer close()
+
+		if err != nil {
+			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
+		}
+
+		if err := watch(); err != nil {
 			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
 		}
 
@@ -489,7 +503,14 @@ func LaunchBrowser(
 		}
 
 		// Wait till lock for browser has been removed
-		if err := utils.WaitForFileRemoval(filepath.Join(profileDir, "ephy-history.db-wal")); err != nil {
+		watch, close, err := utils.SetupFileWatcher(filepath.Join(profileDir, "ephy-history.db-wal"), false)
+		defer close()
+
+		if err != nil {
+			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
+		}
+
+		if err := watch(); err != nil {
 			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
 		}
 

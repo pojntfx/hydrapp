@@ -3,6 +3,7 @@ package utils
 import (
 	"errors"
 	"os"
+	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
 )
@@ -13,39 +14,52 @@ var (
 	ErrCouldNotWatchFile            = errors.New("could not watch file")
 )
 
-func WaitForFileRemoval(path string) error {
+func SetupFileWatcher(path string, watchDir bool) (waitForRemoval func() error, close func() error, err error) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
-		return errors.Join(ErrCouldNotStartFileWatcher, err)
+		return func() error { return nil }, func() error { return nil }, errors.Join(ErrCouldNotStartFileWatcher, err)
 	}
 	defer watcher.Close()
 
 	// Wait until browser has exited
-	if err = watcher.Add(path); err != nil {
+	watchPath := path
+	if watchDir {
+		watchPath = filepath.Dir(path)
+	}
+
+	if err = watcher.Add(watchPath); err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return nil
+			if watchDir {
+				if err := os.MkdirAll(watchPath, os.ModePerm); err != nil {
+					return func() error { return nil }, watcher.Close, err
+				}
+			} else {
+				return func() error { return nil }, watcher.Close, nil
+			}
 		}
 
-		return errors.Join(ErrCouldNotAddPathToFileWatcher, err)
+		return func() error { return nil }, watcher.Close, errors.Join(ErrCouldNotAddPathToFileWatcher, err)
 	}
 
-	for {
-		select {
-		case event, ok := <-watcher.Events:
-			if !ok {
-				return nil
-			}
+	return func() error {
+		for {
+			select {
+			case event, ok := <-watcher.Events:
+				if !ok {
+					return nil
+				}
 
-			if event.Op&fsnotify.Remove == fsnotify.Remove {
-				return nil
-			}
+				if (!watchDir || event.Name == path) && event.Op&fsnotify.Remove == fsnotify.Remove {
+					return nil
+				}
 
-		case err, ok := <-watcher.Errors:
-			if !ok {
-				return nil
-			}
+			case err, ok := <-watcher.Errors:
+				if !ok {
+					return nil
+				}
 
-			return errors.Join(ErrCouldNotWatchFile, err)
+				return errors.Join(ErrCouldNotWatchFile, err)
+			}
 		}
-	}
+	}, watcher.Close, nil
 }
