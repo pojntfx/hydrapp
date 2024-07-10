@@ -41,6 +41,9 @@ var (
 	ErrCouldNotFindSupportedBrowser                          = errors.New("could not find a supported browser")
 	ErrCouldNotWaitForBrowserLockfileRemoval                 = errors.New("could not wait for browser lockfile removal")
 	ErrUnknownBrowserType                                    = errors.New("unknown browser type")
+	ErrBrowserLauncherExternalContextCancelled               = errors.New("browser launcher external context cancelled")
+	ErrBrowserLauncherFilewatcherContextCancelled            = errors.New("browser launcher file watcher context cancelled")
+	ErrBrowserLauncherBrowserCommandBarContextCancelled      = errors.New("browser launcher browser command context cancelled")
 )
 
 type Browser struct {
@@ -396,7 +399,6 @@ func LaunchBrowser(
 					"--name=" + appName,
 					"--class=" + appName,
 					"--new-window",
-					"--no-first-run",
 					"-P",
 					appID,
 					url,
@@ -416,28 +418,90 @@ func LaunchBrowser(
 		state.Cmd.Stderr = os.Stderr
 		state.Cmd.Stdin = os.Stdin
 
-		// Start the browser
-		if err := state.Cmd.Run(); err != nil {
-			return false, errors.Join(ErrCouldNotOpenBrowser, err)
-		}
-
 		// Wait till lock for browser has been removed
-		lockfilePath := filepath.Join(profileDir, ".parentlock")
-		if runtime.GOOS == "windows" {
-			// TODO: It looks like Firefox doesn't delete this file anymore, it instead seems to change the timestamp
-			// Find another file on Windows that gets removed instead
-			lockfilePath = filepath.Join(profileDir, "parent.lock")
-		}
-
-		watch, close, err := utils.SetupFileWatcher(lockfilePath, false)
+		// For Firefox, we're waiting for a lockfile modification rather than a removal, so we need to start
+		// listening for write events before starting so that creating a second instance doesn't cause it to exit immediately
+		watch, close, err := utils.SetupFileWatcher(filepath.Join(profileDir, "storage.sqlite-journal"), true)
 		defer close()
 
 		if err != nil {
 			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
 		}
 
-		if err := watch(); err != nil {
-			return false, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err)
+		{
+			var errs error
+
+			// We use context.Background here so that we don't confuse a `ctx` cancellation, after which we should return, with a successful download
+			// We select beteween `filewatcherCtx` and `ctx` on all code paths so that we don't leak it
+			filewatcherCtx, cancelFilewatcherContext := context.WithCancel(context.Background())
+			defer cancelFilewatcherContext()
+
+			go func() {
+				defer cancelFilewatcherContext()
+
+				if err := watch(); err != nil {
+					errs = errors.Join(errs, errors.Join(ErrCouldNotWaitForBrowserLockfileRemoval, err))
+
+					return
+				}
+			}()
+
+			// We use context.Background here so that we don't confuse a `ctx` cancellation, after which we should return, with a successful progress bar
+			// We select beteween `browserCtx` and `ctx` on all code paths so that we don't leak it
+			browserCtx, cancelBrowserCtx := context.WithCancel(context.Background())
+			defer cancelBrowserCtx()
+
+			go func() {
+				defer cancelBrowserCtx()
+
+				// Start the browser
+				if err := state.Cmd.Run(); err != nil {
+					errs = errors.Join(errs, errors.Join(ErrCouldNotOpenBrowser, err))
+
+					return
+				}
+			}()
+
+			select {
+			case <-ctx.Done():
+				if err := ctx.Err(); err != context.Canceled || errs != nil {
+					return false, errors.Join(ErrBrowserLauncherExternalContextCancelled, errs, err)
+				}
+
+			case <-filewatcherCtx.Done():
+				if err := filewatcherCtx.Err(); err != context.Canceled || errs != nil {
+					return false, errors.Join(ErrBrowserLauncherFilewatcherContextCancelled, errs, err)
+				}
+
+				select {
+				case <-ctx.Done():
+					if err := ctx.Err(); err != context.Canceled || errs != nil {
+						return false, errors.Join(ErrBrowserLauncherExternalContextCancelled, errs, err)
+					}
+
+				case <-browserCtx.Done():
+					if err := browserCtx.Err(); err != context.Canceled || errs != nil {
+						return false, errors.Join(ErrBrowserLauncherBrowserCommandBarContextCancelled, errs, err)
+					}
+				}
+
+			case <-browserCtx.Done():
+				if err := browserCtx.Err(); err != context.Canceled || errs != nil {
+					return false, errors.Join(ErrBrowserLauncherBrowserCommandBarContextCancelled, errs, err)
+				}
+
+				select {
+				case <-ctx.Done():
+					if err := ctx.Err(); err != context.Canceled || errs != nil {
+						return false, errors.Join(ErrBrowserLauncherExternalContextCancelled, errs, err)
+					}
+
+				case <-filewatcherCtx.Done():
+					if err := filewatcherCtx.Err(); err != context.Canceled || errs != nil {
+						return false, errors.Join(ErrBrowserLauncherFilewatcherContextCancelled, errs, err)
+					}
+				}
+			}
 		}
 
 		// Launch Epiphany-like browser
