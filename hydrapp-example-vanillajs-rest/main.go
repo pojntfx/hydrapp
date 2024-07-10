@@ -66,6 +66,8 @@ func main() {
 
 	for {
 		retry, err := ui.LaunchBrowser(
+			ctx,
+
 			frontendURL,
 			cfg.App.Name,
 			cfg.App.ID,

@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -51,6 +52,8 @@ type Browser struct {
 }
 
 func LaunchBrowser(
+	ctx context.Context,
+
 	url,
 	appName,
 	appID,
@@ -126,7 +129,7 @@ func LaunchBrowser(
 			for _, binary := range browser.LinuxBinaries {
 				if runningInFlatpak {
 					// Find supported browser from Flatpak
-					if err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, "which", binary[0]).Run(); err == nil {
+					if err := exec.CommandContext(ctx, flatpakSpawnCmd, flatpakSpawnHost, "which", binary[0]).Run(); err == nil {
 						browserBinary = []string{binary[0]}
 
 						break i
@@ -146,7 +149,7 @@ func LaunchBrowser(
 				for _, flatpak := range browser.Flatpaks {
 					if runningInFlatpak {
 						// Find supported browser from Flatpak
-						apps, err := exec.Command(flatpakSpawnCmd, flatpakSpawnHost, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
+						apps, err := exec.CommandContext(ctx, flatpakSpawnCmd, flatpakSpawnHost, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
 						if err != nil {
 							return false, errors.Join(ErrCouldNotListBrowserFlatpaks, err)
 						}
@@ -159,7 +162,7 @@ func LaunchBrowser(
 						}
 					} else {
 						// Find supported browser in native install
-						apps, err := exec.Command(flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
+						apps, err := exec.CommandContext(ctx, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
 						if err != nil {
 							return false, errors.Join(ErrCouldNotListBrowserFlatpaks, err)
 						}
@@ -279,7 +282,8 @@ func LaunchBrowser(
 			)...,
 		)
 
-		state.Cmd = exec.Command(
+		state.Cmd = exec.CommandContext(
+			ctx,
 			execLine[0],
 			execLine[1:]...,
 		)
@@ -310,7 +314,8 @@ func LaunchBrowser(
 			}...,
 		)
 
-		if output, err := exec.Command(
+		if output, err := exec.CommandContext(
+			ctx,
 			execLine[0],
 			execLine[1:]...,
 		).CombinedOutput(); err != nil {
@@ -393,7 +398,8 @@ func LaunchBrowser(
 			)...,
 		)
 
-		state.Cmd = exec.Command(
+		state.Cmd = exec.CommandContext(
+			ctx,
 			execLine[0],
 			execLine[1:]...,
 		)
@@ -466,7 +472,8 @@ func LaunchBrowser(
 			)...,
 		)
 
-		state.Cmd = exec.Command(
+		state.Cmd = exec.CommandContext(
+			ctx,
 			execLine[0],
 			execLine[1:]...,
 		)
@@ -501,7 +508,8 @@ func LaunchBrowser(
 			)...,
 		)
 
-		state.Cmd = exec.Command(
+		state.Cmd = exec.CommandContext(
+			ctx,
 			execLine[0],
 			execLine[1:]...,
 		)
