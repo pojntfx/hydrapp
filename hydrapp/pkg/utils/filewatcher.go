@@ -14,22 +14,21 @@ var (
 	ErrCouldNotWatchFile            = errors.New("could not watch file")
 )
 
-func SetupFileWatcher(path string, watchDir bool) (waitForRemoval func() error, close func() error, err error) {
+func SetupFileWatcher(path string, dir bool) (watch func() error, close func() error, err error) {
 	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		return func() error { return nil }, func() error { return nil }, errors.Join(ErrCouldNotStartFileWatcher, err)
 	}
-	defer watcher.Close()
 
 	// Wait until browser has exited
 	watchPath := path
-	if watchDir {
+	if dir {
 		watchPath = filepath.Dir(path)
 	}
 
 	if err = watcher.Add(watchPath); err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			if watchDir {
+			if dir {
 				if err := os.MkdirAll(watchPath, os.ModePerm); err != nil {
 					return func() error { return nil }, watcher.Close, err
 				}
@@ -49,8 +48,14 @@ func SetupFileWatcher(path string, watchDir bool) (waitForRemoval func() error, 
 					return nil
 				}
 
-				if (!watchDir || event.Name == path) && event.Op&fsnotify.Remove == fsnotify.Remove {
-					return nil
+				if dir {
+					if event.Name == path && event.Op&fsnotify.Remove == fsnotify.Remove {
+						return nil
+					}
+				} else {
+					if event.Op&fsnotify.Remove == fsnotify.Remove {
+						return nil
+					}
 				}
 
 			case err, ok := <-watcher.Errors:
