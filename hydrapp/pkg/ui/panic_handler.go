@@ -14,7 +14,7 @@ var (
 	ErrCouldNotDisplayFatalErrorDialog = errors.New("could not display fatal error dial")
 )
 
-func HandlePanic(appName string, err error) {
+func HandleFatalPanic(appName string, err error) {
 	var (
 		errHead = err
 		errTail error

@@ -28,7 +28,7 @@ func main() {
 
 	cfg, err := config.Parse(bytes.NewBuffer(configFile))
 	if err != nil {
-		ui.HandlePanic("App", errors.Join(fmt.Errorf("could not parse config file"), err))
+		ui.HandleFatalPanic("App", errors.Join(fmt.Errorf("could not parse config file"), err))
 
 		return
 	}
@@ -42,14 +42,14 @@ func main() {
 			cfg,
 			browserState,
 		); err != nil {
-			ui.HandlePanic(cfg.App.Name, err)
+			ui.HandleFatalPanic(cfg.App.Name, err)
 		}
 	}()
 
 	// Start the backend
 	backendURL, stopBackend, err := backend.StartServer(ctx, os.Getenv(ui.EnvBackendLaddr), true)
 	if err != nil {
-		ui.HandlePanic(cfg.App.Name, errors.Join(fmt.Errorf("could not start backend"), err))
+		ui.HandleFatalPanic(cfg.App.Name, errors.Join(fmt.Errorf("could not start backend"), err))
 	}
 	defer stopBackend()
 
@@ -58,7 +58,7 @@ func main() {
 	// Start the frontend
 	frontendURL, stopFrontend, err := frontend.StartServer(ctx, os.Getenv(ui.EnvFrontendLaddr), backendURL, true)
 	if err != nil {
-		ui.HandlePanic(cfg.App.Name, errors.Join(fmt.Errorf("could not start frontend"), err))
+		ui.HandleFatalPanic(cfg.App.Name, errors.Join(fmt.Errorf("could not start frontend"), err))
 	}
 	defer stopFrontend()
 
@@ -83,7 +83,7 @@ func main() {
 		)
 
 		if err != nil {
-			ui.HandlePanic(cfg.App.Name, err)
+			ui.HandleFatalPanic(cfg.App.Name, err)
 		}
 
 		if !retry {
