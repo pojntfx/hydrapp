@@ -21,11 +21,12 @@ jobs:
             image: ghcr.io/pojntfx/hydrapp-build-apk
             arch: "linux/amd64"
             runner: ubuntu-latest
-          - id: hydrapp-build-apk-linux-arm64-v8
-            src: hydrapp/pkg/builders/apk
-            image: ghcr.io/pojntfx/hydrapp-build-apk
-            arch: "linux/arm64/v8"
-            runner: ubicloud-standard-4-arm
+          # Disabled since Google doesn't publish `sdkmanager`-provided tools for arm64
+          # - id: hydrapp-build-apk-linux-arm64-v8
+          #   src: hydrapp/pkg/builders/apk
+          #   image: ghcr.io/pojntfx/hydrapp-build-apk
+          #   arch: "linux/arm64/v8"
+          #   runner: ubicloud-standard-4-arm
 
           - id: hydrapp-build-deb-linux-amd64
             src: hydrapp/pkg/builders/deb
