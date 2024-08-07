@@ -19,7 +19,7 @@ jobs:
             src: .
             os: golang:bookworm
             flags: -e '-v /tmp/ccache:/root/.cache/go-build'
-            cmd: GOFLAGS="-short" ./Hydrunfile test
+            cmd: GOFLAGS="-short" ./Hydrunfile test hydrapp
             dst: out/nonexistent
             runner: ubuntu-latest
 
