@@ -16,7 +16,7 @@ Build fast apps that run everywhere with Go and a browser engine of your choice.
 
 hydrapp is a small Go framework similar to Electron with a unique feature: It **can use (almost) any browser engine** to render the frontend!
 
-It enables you to ...
+It enables you to:
 
 - **Build apps in Go and JS:** Use the speedy and easy-to-learn Go language to create your app's backend, then use your web tech know-how to develop a top-notch, user-friendly frontend.
 - **Connect frontend and backend with ease:** With hydrapp and [panrpc](https://github.com/pojntfx/panrpc), you can easily call functions between the frontend and backend without any complicated manual setup.
@@ -33,21 +33,21 @@ Its static binaries are available on [GitHub releases](https://github.com/pojntf
 On Linux, you can install them like so:
 
 ```shell
-$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.linux-$(uname -m)"
+$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/download/release-main/hydrapp.linux-$(uname -m)"
 $ sudo install /tmp/hydrapp /usr/local/bin
 ```
 
 On macOS, you can use the following:
 
 ```shell
-$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.darwin-$(uname -m)"
+$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/download/release-main/hydrapp.darwin-$(uname -m)"
 $ sudo install /tmp/hydrapp /usr/local/bin
 ```
 
 On Windows, the following should work (using PowerShell as administrator):
 
 ```shell
-PS> Invoke-WebRequest https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.windows-x86_64.exe -OutFile \Windows\System32\hydrapp.exe
+PS> Invoke-WebRequest https://github.com/pojntfx/hydrapp/releases/download/release-main/hydrapp.windows-x86_64.exe -OutFile \Windows\System32\hydrapp.exe
 ```
 
 You can find binaries for more operating systems and architectures on [GitHub releases](https://github.com/pojntfx/hydrapp/releases).
