@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: {{"${{"}} matrix.target.runner {{"}}"}}
     permissions:
       contents: read
     strategy:
@@ -21,48 +21,77 @@ jobs:
             exclude: deb|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-deb.{{ .AppID }}
+            runner: ubuntu-latest
+          - id: hydrapp-deb-amd64.{{ .AppID }}
             src: .
             pkg: .
-            exclude: apk|dmg|flatpak|msi|rpm|binaries|tests
+            exclude: deb/arm64|apk|dmg|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubuntu-latest
+          - id: hydrapp-deb-arm64.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: deb/amd64|apk|dmg|flatpak|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubuntu-latest
           - id: hydrapp-dmg.{{ .AppID }}
             src: .
             pkg: .
             exclude: apk|deb|flatpak|msi|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-flatpak.{{ .AppID }}
+            runner: ubuntu-latest
+          - id: hydrapp-flatpak-amd64.{{ .AppID }}
             src: .
             pkg: .
-            exclude: apk|deb|dmg|msi|rpm|binaries|tests
+            exclude: apk|deb|flatpak/arm64|dmg|msi|rpm|binaries|tests
             tag: main
             dst: out/*
+            runner: ubuntu-latest
+          - id: hydrapp-flatpak-arm64.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|deb|flatpak/amd64|dmg|msi|rpm|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubuntu-latest
           - id: hydrapp-msi.{{ .AppID }}
             src: .
             pkg: .
             exclude: apk|deb|flatpak|dmg|rpm|binaries|tests
             tag: main
             dst: out/*
-          - id: hydrapp-rpm.{{ .AppID }}
+            runner: ubuntu-latest
+          - id: hydrapp-rpm-amd64.{{ .AppID }}
             src: .
             pkg: .
-            exclude: apk|deb|flatpak|dmg|msi|binaries|tests
+            exclude: apk|deb|flatpak|dmg|rpm/arm64|msi|binaries|tests
             tag: main
             dst: out/*
+            runner: ubuntu-latest
+          - id: hydrapp-rpm-arm64.{{ .AppID }}
+            src: .
+            pkg: .
+            exclude: apk|deb|flatpak|dmg|rpm/amd64|msi|binaries|tests
+            tag: main
+            dst: out/*
+            runner: ubuntu-latest
           - id: hydrapp-binaries.{{ .AppID }}
             src: .
             pkg: .
             exclude: apk|deb|flatpak|dmg|msi|rpm|tests
             tag: main
             dst: out/*
+            runner: ubuntu-latest
           - id: hydrapp-tests.{{ .AppID }}
             src: .
             pkg: .
             exclude: apk|deb|flatpak|dmg|msi|rpm|binaries
             tag: main
             dst: out/*
+            runner: ubuntu-latest
 
     steps:
       - name: Maximize build space
@@ -78,7 +107,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Set up hydrapp
         run: |
-          curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.linux-$(uname -m)" 
+          curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/download/release-main/hydrapp.linux-$(uname -m)" 
           sudo install /tmp/hydrapp /usr/local/bin
       - name: Setup Java/APK keystore
         working-directory: .
@@ -153,4 +182,3 @@ jobs:
       - name: Publish to GitHub pages
         id: publish
         uses: actions/deploy-pages@v4
-
