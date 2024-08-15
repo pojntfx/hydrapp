@@ -150,7 +150,7 @@ func StartServer(ctx context.Context, addr string, heartbeat time.Duration, loca
 				if err := recover(); err != nil {
 					w.WriteHeader(http.StatusInternalServerError)
 
-					log.Printf("Client disconnected with error: %v", err)
+					log.Println("Client disconnected with error:", err)
 				}
 			}()
 
@@ -180,11 +180,16 @@ func StartServer(ctx context.Context, addr string, heartbeat time.Duration, loca
 				conn := websocket.NetConn(ctx, c, websocket.MessageText)
 				defer conn.Close()
 
+				linkCtx, cancelLinkCtx := context.WithCancel(r.Context())
+				defer cancelLinkCtx()
+
 				encoder := json.NewEncoder(conn)
 				decoder := json.NewDecoder(conn)
 
 				go func() {
 					if err := registry.LinkStream(
+						linkCtx,
+
 						func(v rpc.Message[json.RawMessage]) error {
 							return encoder.Encode(v)
 						},
