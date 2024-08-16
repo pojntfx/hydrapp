@@ -122,8 +122,6 @@ func StartServer(ctx context.Context, addr string, heartbeat time.Duration, loca
 	registry := rpc.NewRegistry[remote, json.RawMessage](
 		service,
 
-		ctx,
-
 		&rpc.RegistryHooks{
 			OnClientConnect: func(remoteID string) {
 				log.Printf("%v clients connected", clients.Add(1))
