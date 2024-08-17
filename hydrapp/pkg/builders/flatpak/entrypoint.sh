@@ -43,13 +43,7 @@ flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64
 # Export `.flatpak` to out dir
 flatpak --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" build-bundle '/hydrapp/dst' "/hydrapp/dst/${APP_ID}.linux-${DEBARCH}.flatpak" "${APP_ID}"
 
-echo "[Flatpak Repo]
-Title=hydrapp Flatpak repo
-Url=${BASE_URL}
-Homepage=${BASE_URL}
-Description=Flatpaks for hydrapp
-GPGKey=$(base64 -w 0 /tmp/repo.asc)
-" >/hydrapp/dst/hydrapp.flatpakrepo
+perl -pi -e 'my $key = `base64 -w 0 /tmp/repo.asc`; chomp($key); s+\{ PGPPublicKey \}+$key+g' /hydrapp/dst/hydrapp.flatpakrepo
 
 if [ "${DST_UID}" != "" ] && [ "${DST_GID}" != "" ]; then
     chown -R "${DST_UID}:${DST_GID}" /hydrapp/dst

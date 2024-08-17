@@ -234,6 +234,10 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.goFlags,
 				b.goGenerate,
 			),
+			flatpak.NewRepoRenderer(
+				appName,
+				b.appURL,
+			),
 		},
 		b.overwrite,
 		ejecting,
