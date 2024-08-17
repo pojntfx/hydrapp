@@ -1,5 +1,5 @@
 [Flatpak Repo]
-Title={{ .AppName }} Flatpak repo
+Title={{ .AppName }} Flatpak Repo
 Url={{ .AppURL }}
 Homepage={{ .AppURL }}
 Description=Flatpaks for {{ .AppName }}
