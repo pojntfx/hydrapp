@@ -6,7 +6,7 @@ import (
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 )
 
-//go:embed config.yml.tpl
+//go:embed config.yml
 var configTemplate string
 
 type configData struct {
@@ -17,7 +17,7 @@ func NewConfigRenderer(
 	appName string,
 ) renderers.Renderer {
 	return renderers.NewRenderer(
-		"config.yml.tpl",
+		"config.yml",
 		configTemplate,
 		configData{appName},
 	)
