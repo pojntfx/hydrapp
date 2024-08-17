@@ -142,6 +142,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			),
 			apk.NewHeaderRenderer(),
 			apk.NewImplementationRenderer(),
+			apk.NewConfigRenderer(
+				appName,
+			),
 		},
 		b.overwrite,
 		ejecting,

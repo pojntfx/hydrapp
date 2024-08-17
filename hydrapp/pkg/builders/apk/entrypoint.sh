@@ -69,21 +69,13 @@ rm -rf "/hydrapp/dst/"*
 cd "/hydrapp/dst" || exit 1
 
 fdroid init
-cat >'config.yml' <<EOT
----
-sdk_path: "${ANDROID_HOME}"
-repo_url: "${BASE_URL}"
-repo_name: hydrapp F-Droid Repo
-repo_description: >-
-  Android apps for hydrapp.
-repo_icon: icon.png
-repo_keyalias: ${ANDROID_CERT_ALIAS}
-keystore: keystore.p12
-keystorepass: "$(echo ${JAVA_KEYSTORE_PASSWORD} | base64 -d)"
-keypass: "$(echo ${JAVA_CERTIFICATE_PASSWORD} | base64 -d)"
-keydname: CN=${ANDROID_CERT_CN}
-apksigner: /usr/bin/apksigner
-EOT
+cp -f config.yml.tpl config.yml
+perl -p -i -e 's/\{ ANDROID_HOME \}/$ENV{ANDROID_HOME}/g' config.yml
+perl -p -i -e 's/\{ BASE_URL \}/$ENV{BASE_URL}/g' config.yml
+perl -p -i -e 's/\{ ANDROID_CERT_ALIAS \}/$ENV{ANDROID_CERT_ALIAS}/g' config.yml
+perl -p -i -e 's/\{ JAVA_KEYSTORE_PASSWORD \}/`echo $ENV{JAVA_KEYSTORE_PASSWORD} | base64 -d`/g' config.yml
+perl -p -i -e 's/\{ JAVA_CERTIFICATE_PASSWORD \}/`echo $ENV{JAVA_CERTIFICATE_PASSWORD} | base64 -d`/g' config.yml
+perl -p -i -e 's/\{ ANDROID_CERT_CN \}/$ENV{ANDROID_CERT_CN}/g' config.yml
 
 cp "/tmp/out/${APP_ID}.apk" 'repo/'
 cp "${BASEDIR}/icon.png" .
