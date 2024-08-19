@@ -68,14 +68,9 @@ EOT
 
 apt-ftparchive generate 'apt-ftparchive.conf'
 
-cat >"${OS}-${DISTRO}.conf" <<EOT
-APT::FTPArchive::Release::Codename "${DISTRO}";
-APT::FTPArchive::Release::Origin "hydrapp APT Repo";
-APT::FTPArchive::Release::Components "main";
-APT::FTPArchive::Release::Label "Packages for hydrapp";
-APT::FTPArchive::Release::ARCHITECTURE "${ARCHITECTURE} source";
-APT::FTPArchive::Release::Suite "${DISTRO}";
-EOT
+cp -f ${BASEDIR}/repo.conf "${OS}-${DISTRO}.conf"
+perl -p -i -e 's/\{ DISTRO \}/$ENV{"DISTRO"}/g' "${OS}-${DISTRO}.conf"
+perl -p -i -e 's/\{ ARCHITECTURE \}/$ENV{"ARCHITECTURE"}/g' "${OS}-${DISTRO}.conf"
 
 apt-ftparchive -c "${OS}-${DISTRO}.conf" release "." >"Release"
 

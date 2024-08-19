@@ -288,6 +288,9 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.goFlags,
 				b.goGenerate,
 			),
+			deb.NewRepoRenderer(
+				appName,
+			),
 		},
 		b.overwrite,
 		ejecting,
