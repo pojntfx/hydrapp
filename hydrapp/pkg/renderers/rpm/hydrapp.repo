@@ -1,4 +1,4 @@
-[YUM Repo]
+[yum-repo]
 name={{ .AppName }} YUM Repo
 baseurl={{ .BaseURL }}
 enabled=1
