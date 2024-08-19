@@ -10,15 +10,17 @@ import (
 var configTemplate string
 
 type configData struct {
-	AppName string
+	AppName,
+	BaseURL string
 }
 
 func NewConfigRenderer(
-	appName string,
+	appName,
+	baseURL string,
 ) renderers.Renderer {
 	return renderers.NewRenderer(
 		"config.yml",
 		configTemplate,
-		configData{appName},
+		configData{appName, baseURL},
 	)
 }

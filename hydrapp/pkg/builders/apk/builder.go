@@ -107,6 +107,7 @@ type Builder struct {
 func (b *Builder) Render(workdir string, ejecting bool) error {
 	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
 	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
+	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID, "") + "/repo" // F-Droid requires the path to end with `/repo`: `CRITICAL: repo_url needs to end with /repo`
 
 	if strings.TrimSpace(b.branchID) != "" {
 		jniBindingsPath := filepath.Join(workdir, b.goMain, "android.go")
@@ -144,6 +145,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			apk.NewImplementationRenderer(),
 			apk.NewConfigRenderer(
 				appName,
+				baseURL,
 			),
 		},
 		b.overwrite,

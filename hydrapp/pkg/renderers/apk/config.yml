@@ -1,6 +1,6 @@
 ---
 sdk_path: "{ ANDROID_HOME }"
-repo_url: "{ BASE_URL }"
+repo_url: "{{ .BaseURL }}"
 repo_name: {{ .AppName }} F-Droid Repo
 repo_description: >-
   Android apps for {{ .AppName }}.

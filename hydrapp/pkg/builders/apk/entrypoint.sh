@@ -71,7 +71,6 @@ cd "/hydrapp/dst" || exit 1
 fdroid init
 cp -f ${BASEDIR}/config.yml config.yml
 perl -p -i -e 's/\{ ANDROID_HOME \}/$ENV{"ANDROID_HOME"}/g' config.yml
-perl -p -i -e 's/\{ BASE_URL \}/$ENV{"BASE_URL"}/g' config.yml
 perl -p -i -e 's/\{ ANDROID_CERT_ALIAS \}/$ENV{"ANDROID_CERT_ALIAS"}/g' config.yml
 perl -p -i -e 's/\{ JAVA_KEYSTORE_PASSWORD \}/`echo $ENV{"JAVA_KEYSTORE_PASSWORD"} | base64 -d`/ge' config.yml
 perl -p -i -e 's/\{ JAVA_CERTIFICATE_PASSWORD \}/`echo $ENV{"JAVA_CERTIFICATE_PASSWORD"} | base64 -d`/ge' config.yml
