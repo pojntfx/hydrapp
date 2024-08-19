@@ -132,6 +132,7 @@ type Builder struct {
 func (b *Builder) Render(workdir string, ejecting bool) error {
 	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
 	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
+	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID, "")
 
 	return renderers.WriteRenders(
 		filepath.Join(workdir, b.goMain),
@@ -255,6 +256,10 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 				b.goFlags,
 				b.goGenerate,
 				b.branchTimestamp,
+			),
+			rpm.NewRepoRenderer(
+				appID,
+				baseURL,
 			),
 		},
 		b.overwrite,

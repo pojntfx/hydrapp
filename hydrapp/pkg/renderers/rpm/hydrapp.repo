@@ -1,0 +1,6 @@
+[YUM Repo]
+name={{ .AppName }} YUM Repo
+baseurl={{ .BaseURL }}
+enabled=1
+gpgcheck=1
+gpgkey={{ .BaseURL }}/repodata/repo.asc
