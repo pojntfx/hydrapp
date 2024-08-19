@@ -1,6 +1,6 @@
 [Flatpak Repo]
 Title={{ .AppName }} Flatpak Repo
-Url={{ .AppURL }}
+Url={{ .BaseURL }}
 Homepage={{ .AppURL }}
 Description=Flatpaks for {{ .AppName }}
 GPGKey={ PGPPublicKey }

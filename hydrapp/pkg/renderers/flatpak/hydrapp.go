@@ -12,15 +12,17 @@ var repoTemplate string
 type repoData struct {
 	AppName string
 	AppURL  string
+	BaseURL string
 }
 
 func NewRepoRenderer(
 	appName,
-	appURL string,
+	appURL,
+	baseURL string,
 ) renderers.Renderer {
 	return renderers.NewRenderer(
 		"hydrapp.flatpakrepo",
 		repoTemplate,
-		repoData{appName, appURL},
+		repoData{appName, appURL, baseURL},
 	)
 }

@@ -118,6 +118,7 @@ type Builder struct {
 func (b *Builder) Render(workdir string, ejecting bool) error {
 	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
 	appName := builders.GetAppNameForBranch(b.appName, b.branchName)
+	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID, "")
 
 	return renderers.WriteRenders(
 		filepath.Join(workdir, b.goMain),
@@ -237,6 +238,7 @@ func (b *Builder) Render(workdir string, ejecting bool) error {
 			flatpak.NewRepoRenderer(
 				appName,
 				b.appURL,
+				baseURL,
 			),
 		},
 		b.overwrite,
