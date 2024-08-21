@@ -44,14 +44,15 @@ type CodeOfConductMDData struct {
 }
 
 type ReadmeMDData struct {
-	AppName        string
-	AppSummary     string
-	AppGitWeb      string
-	AppDescription string
-	AppBaseURL     string
-	AppGit         string
-	CurrentYear    string
-	ReleaseAuthor  string
-	LicenseSPDX    string
-	Dir            string
+	AppName                       string
+	AppSummary                    string
+	AppGitWeb                     string
+	AppDescription                string
+	AppBaseURL                    string
+	AppGit                        string
+	CurrentYear                   string
+	ReleaseAuthor                 string
+	LicenseSPDX                   string
+	Dir                           string
+	ExperimentalGithubPagesAction bool
 }

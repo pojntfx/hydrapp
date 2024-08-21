@@ -39,7 +39,11 @@ To contribute, please use the [GitHub flow](https://guides.github.com/introducti
 To build and start a development version of {{ .AppName }} locally, run the following:
 
 ```shell
+{{- if .ExperimentalGithubPagesAction }}
+$ git clone {{ .AppGit }} --single-branch
+{{- else }}
 $ git clone {{ .AppGit }}
+{{- end }}
 $ cd {{ .Dir }}
 $ go generate ./...
 $ go run .
