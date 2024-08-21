@@ -1,0 +1,14 @@
+Codename: sid
+Components: main
+Date: Wed, 21 Aug 2024 04:26:32 +0000
+Label: DEB packages for hydrapp React and panrpc Example (Main)
+Origin: hydrapp React and panrpc Example (Main) APT Repo
+Suite: sid
+MD5Sum:
+ db9c9a2346c1f8c6b8e8b4d9ce4e230e              201 Release
+SHA1:
+ f04057d1f640c31989d8387f1037e035f9e0b6ab              201 Release
+SHA256:
+ 05ab5b7fb00e706b0fa77100e0964e8aba340d4946948674fa67476dc5ad71b0              201 Release
+SHA512:
+ 4a1092920c7c1b6527e43150c022c7fc07d34d95afbd6f7bfd9dba66ec3954c40e69b162d1899b8c2ed8a3a4eb789155cd740f7b18b0c26106e25bf3f1c40d21              201 Release

@@ -1,0 +1,6 @@
+[hydrapp-repo]
+name=hydrapp YUM Repo
+baseurl=https://pojntfx.github.io/hydrapp/hydrapp-example-vanillajs-forms/rpm/fedora/40/aarch64/main
+enabled=1
+gpgcheck=1
+gpgkey=https://pojntfx.github.io/hydrapp/hydrapp-example-vanillajs-forms/rpm/fedora/40/aarch64/main/repodata/repo.asc
