@@ -149,7 +149,11 @@ jobs:
     needs: build-linux
     environment:
       name: github-pages
+      {{- if .ExperimentalGithubPagesAction }}
       url: {{"${{"}} steps.publish.outputs.page_url {{"}}"}}
+      {{- else }}
+      url: {{"${{"}} steps.setup.outputs.base_url {{"}}"}}
+      {{- end }}
 
     steps:
       - name: Checkout
@@ -173,6 +177,7 @@ jobs:
 
           cd /tmp/github-pages/
           tree --timefmt '%Y-%m-%dT%H:%M:%SZ' -T 'hydrapp Repositories' --du -h -D -H . -o 'index.html'
+      {{- if .ExperimentalGithubPagesAction }}
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload GitHub Pages artifact
@@ -182,3 +187,16 @@ jobs:
       - name: Publish to GitHub pages
         id: publish
         uses: actions/deploy-pages@v4
+      {{- else }}
+      - name: Setup GitHub Pages
+        id: setup
+        uses: actions/configure-pages@v5
+      - name: Publish to GitHub pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: {{"${{"}} secrets.GITHUB_TOKEN {{"}}"}}
+          publish_dir: /tmp/github-pages/
+          keep_files: true
+          user_name: github-actions[bot]
+          user_email: github-actions[bot]@users.noreply.github.com
+      {{- end }} 

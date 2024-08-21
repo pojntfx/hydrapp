@@ -30,7 +30,8 @@ type PackageJSONData struct {
 }
 
 type HydrappYAMLData struct {
-	AppID string
+	AppID                         string
+	ExperimentalGithubPagesAction bool
 }
 
 type ProjectTypeOption struct {

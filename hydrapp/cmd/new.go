@@ -25,7 +25,8 @@ import (
 )
 
 const (
-	noNetworkFlag = "no-network"
+	noNetworkFlag                     = "no-network"
+	experimentalGithubPagesActionFlag = "experimental-github-pages-action"
 
 	vanillaJSRESTKey  = "vanillajs-rest"
 	vanillaJSFormsKey = "vanillajs-forms"
@@ -693,7 +694,8 @@ var newCmd = &cobra.Command{
 			filepath.Join(dir, ".github", "workflows", "hydrapp.yaml"),
 			generators.HydrappYAMLTpl,
 			generators.HydrappYAMLData{
-				AppID: appID,
+				AppID:                         appID,
+				ExperimentalGithubPagesAction: viper.GetBool(experimentalGithubPagesActionFlag),
 			},
 		); err != nil {
 			return err
@@ -749,6 +751,7 @@ You can find more information in the generated README.
 
 func init() {
 	newCmd.PersistentFlags().Bool(noNetworkFlag, false, "Disable all network interaction")
+	newCmd.PersistentFlags().Bool(experimentalGithubPagesActionFlag, false, "(Experimental) Use the GitHub Actions-based deploy strategy for GitHub pages instead of pushing to the gh-pages branch in the generated CI/CD configuration (disables support for publishing more than one hydrapp branch)")
 
 	viper.AutomaticEnv()
 

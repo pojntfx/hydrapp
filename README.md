@@ -328,8 +328,9 @@ Aliases:
   new, n
 
 Flags:
-  -h, --help         help for new
-      --no-network   Disable all network interaction
+      --experimental-github-pages-action   (Experimental) Use the GitHub Actions-based deploy strategy for GitHub pages instead of pushing to the gh-pages branch in the generated CI/CD configuration (disables support for publishing more than one hydrapp branch)
+  -h, --help                               help for new
+      --no-network                         Disable all network interaction
 
 Global Flags:
       --secrets string   Secrets file to use (default "/home/pojntfx/.local/share/hydrapp/secrets.yaml")
