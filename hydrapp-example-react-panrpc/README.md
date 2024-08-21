@@ -39,7 +39,7 @@ To contribute, please use the [GitHub flow](https://guides.github.com/introducti
 To build and start a development version of hydrapp React and panrpc Example locally, run the following:
 
 ```shell
-$ git clone https://github.com/pojntfx/hydrapp.git
+$ git clone https://github.com/pojntfx/hydrapp.git --single-branch
 $ cd hydrapp
 $ go generate ./hydrapp-example-react-panrpc/...
 $ go run ./hydrapp-example-react-panrpc
