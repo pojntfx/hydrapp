@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Wed, 20 Mar 2024 22:25:57 +0100
+Source: com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main
+Architecture: source
+Version: 0.0.1~1724305433
+Distribution: unstable
+Urgency: medium
+Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changed-By: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changes:
+ com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main (0.0.1~1724305433) unstable; urgency=medium
+ .
+   * Initial release
+Checksums-Sha1:
+ a754799e1204116cb92486148ba6366dd06916af 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433.dsc
+ add8883736a7537c949f09763f4536262e33362e 1780140 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433.tar.xz
+ 9c4a772691d460b5279f4558b69ffe08c7e675e0 20774 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433_arm64.buildinfo
+Checksums-Sha256:
+ 72e6478593b39c513cabfd2f964daa6b700076287a1298f1d81fb0aef24fc993 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433.dsc
+ b513d797b01302049a4089d1091e46f2d7800a2a4e1f2eac9fae3bdf0f770307 1780140 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433.tar.xz
+ 31d70fb22f6ac344a0c20e2544869e3b4e0bbde886c0875c70a4acb1e91b397c 20774 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433_arm64.buildinfo
+Files:
+ 3b7a102fad234faed6c33902faca6fc6 1204 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433.dsc
+ 8b152fcbc39655c94abcb557b3b78004 1780140 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433.tar.xz
+ d4b58fcc8fa4bd40587dd8a0cfa741af 20774 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.1~1724305433_arm64.buildinfo
