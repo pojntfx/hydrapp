@@ -223,7 +223,7 @@ out/
 
 While we can of course manually copy the contents of the `out` directory and distribute the native system packages to our users this way, it is much easier to use a repository and CI/CD action to build, distribute and update them automatically. We'll use GitHub Actions to build the native system packages and GitHub Pages to distribute them in this example (we've specified the `github.com/myusername/myapp` repository in [1. Creating a New App](#1-creating-a-new-app) earlier), but you are of course free to use any alternative forge such as [Gitea/Forgejo](https://forgejo.org/) or [GitLab](https://about.gitlab.com/) or even your own web server if you prefer.
 
-For this example, let's start by creating our repository by heading over to [github.com/new](https://github.com/new). Once you have created the repository, enable GitHub pages by heading over to `Settings → Pages` in the repository you've just created and setting the source to "GitHub Actions" like so:
+Let's start with creating our repository by visiting [github.com/new](https://github.com/new). After creating the repository, navigate to `Settings → Pages` to enable GitHub Pages. hydrapp defaults to using the branch-based GitHub Pages workflow, which allows you to publish multiple versions of your app simultaneously (see [How can I provide an alpha, beta, insider etc. channel/edition/version of my app?](#how-can-i-provide-an-alpha-beta-insider-etc-channeleditionversion-of-my-app) for more information). To enable this, set the source to "Deploy from a branch" like so:
 
 <p align="center">
   <img src="./docs/screenshot-enable-github-pages.png" width="300px" alt="Screenshot of the GitHub pages source setting" title="Screenshot of the GitHub pages source setting">
@@ -269,7 +269,13 @@ After pushing the app to the repository, the GitHub action should automatically 
   <img src="./docs/screenshot-show-actions-pipeline.png" width="650px" alt="Screenshot of the GitHub actions pipeline" title="Screenshot of the GitHub actions pipeline">
 </p>
 
-After the action has run, the generated packages and installation instructions will be published to GitHub pages. You can find the link to them in the generated `README.md` or by heading to the URL reported by the `publish-linux` action; they should look something like this:
+Once the action has run, the generated packages and installation instructions are ready for publishing to GitHub Pages. This process usually happens automatically with the action, but the first deployment requires a manual step. To do this, navigate to `Settings → Pages` and select the `gh-pages` branch, as shown below:
+
+<p align="center">
+  <img src="./docs/screenshot-set-github-pages-branch.png" width="300px" alt="Screenshot of the GitHub Pages branch setting" title="Screenshot of the GitHub Pages branch setting">
+</p>
+
+After saving your changes, GitHub will begin deploying to GitHub Pages. You can track the deployment's progress by visiting `Actions → pages-build-deployment`. The link to the installation instructions can be found in the generated `README.md` or at the URL provided by the earlier `publish-linux` action. It should look something like this:
 
 ![Screenshot of the generated installation instructions](./docs/screenshot-generated-installation-instructions.png)
 
