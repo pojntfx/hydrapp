@@ -593,34 +593,9 @@ Note that while the DEB and RPM builds automatically include these packages as d
 
 hydrapp supports publishing different branches of your app by default through Git. The default branch is `main`, which is the latest release version; if you want to publish a beta version, it's as easy as creating a branch named `beta` and pushing to it, and the same goes for an `alpha` or `insider` edition. Installation instructions for these branches will be generated and published just like for the `main` branch, and the branches are integrated with the update system; you can find them by swapping out `main` in the URL with your branch name (e.g. `beta`).
 
-To enable support for hydrapp branches on GitHub pages, due to [a limitation](https://github.com/actions/upload-pages-artifact/issues/57), you need to change your `.github/workflows/hydrapp.yaml` like so:
+Due to a [known limitation](https://github.com/actions/upload-pages-artifact/issues/57) with the GitHub Actions-based GitHub Pages workflow, hydrapp defaults to the branch-based GitHub Pages workflow. The primary drawback of this approach is that the built assets are stored in a branch of the repository, which can slow down clone operations. This issue is mitigated by automatically adding the `--single-branch` option to the generated installation instructions.
 
-```diff
-# ...
-     needs: build-linux
-     environment:
-       name: github-pages
--      url: ${{ steps.publish.outputs.page_url }}
-# ...
--      - name: Setup GitHub Pages
--        uses: actions/configure-pages@v5
--      - name: Upload GitHub Pages artifact
--        uses: actions/upload-pages-artifact@v3
--        with:
--          path: /tmp/github-pages/
-       - name: Publish to GitHub pages
--        id: publish
--        uses: actions/deploy-pages@v4
-+        uses: peaceiris/actions-gh-pages@v4
-+        with:
-+          github_token: ${{ secrets.GITHUB_TOKEN }}
-+          publish_dir: /tmp/github-pages/
-+          keep_files: true
-+          user_name: github-actions[bot]
-+          user_email: github-actions[bot]@users.noreply.github.com
-```
-
-This changes the action to publish to the `gh-pages` branch instead of using the newer artifact-based system. You'll also need to [enable publishing from a branch](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-from-a-branch) to use this new GitHub pages source.
+If you don't need support for publishing multiple branches of your app or prefer not to store the built assets in a branch, you can pass the `--experimental-github-pages-action` flag to `hydrapp new`. This will switch to the GitHub Actions-based GitHub Pages workflow, publishing built assets only for tagged releases, and not storing them in a branch of the repository itself. You must also [enable publishing with a custom GitHub Actions workflow](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow) to use this workflow as the source for your GitHub Pages configuration.
 
 ### How can I customize the MSI/WIX installer files, Android permissions, Flatpak configuration, RPM spec file etc.?
 
