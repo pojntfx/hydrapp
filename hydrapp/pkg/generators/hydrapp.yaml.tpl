@@ -185,6 +185,7 @@ jobs:
         with:
           path: /tmp/github-pages/
       - name: Publish to GitHub pages
+        if: startsWith(github.ref, 'refs/tags/v')
         id: publish
         uses: actions/deploy-pages@v4
       {{- else }}
