@@ -14,14 +14,14 @@ go:
   tests: go test ./hydrapp-example-react-panrpc/...
   img: ghcr.io/pojntfx/hydrapp-build-tests:main
 releases:
-- version: 0.0.1
-  date: 2024-03-20T22:27:54.45489588+01:00
-  description: Initial release
-  author: Felicitas Pojtinger
-  email: felicitas@pojtinger.com
 - version: 0.0.2
   date: 2024-08-23T15:00:00+01:00
   description: Maintenance updates to match the state of the art of hydrapp apps
+  author: Felicitas Pojtinger
+  email: felicitas@pojtinger.com
+- version: 0.0.1
+  date: 2024-03-20T22:27:54.45489588+01:00
+  description: Initial release
   author: Felicitas Pojtinger
   email: felicitas@pojtinger.com
 deb:

@@ -23,7 +23,7 @@ It enables you to:
 - **Build apps in Go and JS:** Use the speedy and easy-to-learn Go language to create your app's backend, then use your web tech know-how to develop a top-notch, user-friendly frontend.
 - **Connect frontend and backend with ease:** With hydrapp and [panrpc](https://github.com/pojntfx/panrpc), you can easily call functions between the frontend and backend without any complicated manual setup.
 - **Compatible with all browsers:** hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit/GNOME Web, and even Android WebView.
-- **Cross-compile easily with full CGo support:** hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using non-Linux machines.
+- **Cross-compile easily with full CGo support:** hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using any non-Linux machines.
 - **Effortlessly build, sign, distribute, and update your app:** hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, DMG, APK, and static binaries for all other platforms. hydrapp can also generate APT, DNF/YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
 
 ## Installation
@@ -534,6 +534,20 @@ It is also possible to use an unsupported browser (or no browser at all), use a 
 | `HYDRAPP_FRONTEND_LADDR` | Listen address for the frontend (`localhost:0` by default)                                                  |
 | `HYDRAPP_BROWSER`        | Binary of browser to display the frontend with                                                              |
 | `HYDRAPP_TYPE`           | Type of browser to display the frontend with (one of `chromium`, `firefox`, `epiphany`, `lynx` and `dummy`) |
+
+### How does hydrapp differ from Electron or Tauri?
+
+**Electron** embeds Chromium, requiring each Electron app to ship with its own copy. This results in large bundle sizes and significant maintenance work to keep the embedded Chromium version up-to-date and secure. Additionally, Electron apps face challenges with cross-compilation, particularly when native C code or binary signing is involved, making it difficult to build for macOS or Windows from Linux.
+
+It does also not support Android, offers only basic self-updating functionality, and lacks out-of-the-box support for modern Linux packaging formats like Flatpak (see [Electron's self-updating support](https://www.electronjs.org/docs/latest/tutorial/updates)). Moreover, Electron doesn't produce reproducible binaries or RPM/DEB source packages.
+
+**Tauri** uses WebKit on Linux and macOS, and WebView2 (Chromium) on Windows (see [Tauri's webview versions](https://tauri.app/v1/references/webview-versions/)). However, WebKit lacks several modern web features, including some important Wasm features, particularly on Linux where WebRTC, for example, is not supported (see the [WebKitGTK issues](https://gitlab.gnome.org/GNOME/epiphany/-/issues/1185)). Tauri's Android support is still unstable (see [Tauri 2.0.0 Release Candidate](https://v2.tauri.app/blog/tauri-2-0-0-release-candidate/#development-server-for-mobile)).
+
+Like Electron, Tauri also cannot be easily cross-compiled when native C code is involved, meaning a Mac is required to build macOS versions, and a Windows PC is required to build Windows versions (see [Tauri's cross-platform building guide](https://tauri.app/v1/guides/building/cross-platform/)). Additionally, Tauri requires considerable effort and boilerplate to package correctly for RPM and DEB (see [Tauri's RPM packaging guide](https://v2.tauri.app/distribute/rpm/)).
+
+In contrast, **hydrapp** does not embed any browser. Instead, it leverages the system's installed browser (Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit/GNOME Web, and Android WebView) in app mode, resulting in much smaller bundle sizes. Since there's no need to ship a copy of Chromium, maintenance is simplified to managing a single browser installation and monitoring it for security vulnerabilities, which is usually taken care of by your operating system already. hydrapp also fully supports Android out of the box, including update distribution via F-Droid, and enables easy cross-compilation from a Linux machine to any supported platform, even with native C dependencies.
+
+App distribution is integrated into hydrapp, and hydrapp-based applications can be deployed across platforms without relying on proprietary infrastructure or extensive configuration, requiring only a standard web server or services like GitHub pages. On platforms with free repository systems (e.g. Linux and Android), hydrapp seamlessly integrates by generating valid, signed repositories, while on those that lack such a system (e.g. Windows and macOS), a self-updater handles the task. Additionally, it generates self-describing installation guides for all platforms, produces fully reproducible binaries, and creates source packages for supported platforms, allowing users to easily rebuild a hydrapp app locally and verify hashes for added security.
 
 ### How do I disable builds for a specific platform like Windows or Debian?
 
