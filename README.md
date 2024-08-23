@@ -22,7 +22,7 @@ It enables you to:
 - **Connect frontend and backend with ease:** With hydrapp and [panrpc](https://github.com/pojntfx/panrpc), you can easily call functions between the frontend and backend without any complicated manual setup.
 - **Compatible with all browsers:** hydrapp works with any pre-installed browser by starting it in PWA mode, so you can render your app on Chrome, Edge, Brave, Firefox/Gecko, Epiphany/Webkit/GNOME Web, and even Android WebView.
 - **Cross-compile easily with full CGo support:** hydrapp simplifies cross-compilation with a container-based environment that includes MacPorts, MSYS2 on WINE, APT, and DNF, making it easy to distribute binaries without using non-Linux machines.
-- **Effortlessly build, sign, distribute, and update your app:** hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, DMG, APK, and static binaries for all other platforms. hydrapp can also generate APT, YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
+- **Effortlessly build, sign, distribute, and update your app:** hydrapp streamlines your app's delivery with an integrated CI/CD workflow, producing reproducible packages for DEB, RPM, Flatpak, MSI, DMG, APK, and static binaries for all other platforms. hydrapp can also generate APT, DNF/YUM, and Flatpak repositories for Linux and F-Droid repositories for Android. Self-updating for Windows, macOS, and other platforms is also available.
 
 ## Installation
 
@@ -608,19 +608,25 @@ $ hydrapp build --eject
 This will render all the template configuration files using the values from `hydrapp.yaml` and write them to their respective locations. If you only want to change a specific configuration file (such as `AndroidManifest.xml` to add permissions to an Android app or `INSTALLATION.md` to modify the installation instructions), feel free to delete the ones you want to keep as in their default state - if hydrapp doesn't find an overwrite file, it falls back to the default internal one. You can also pass in `--overwrite` to overwrite your customizations with the default ones. hydrapp can eject all the following configuration files for maximum flexibility (based on the app from the [tutorial](#tutorial)):
 
 ```plaintext
-.
 ├── AndroidManifest.xml # APK/Android activity configuration, metadata, permissions, minimum versions, app ID etc.
-├── com.github.example.myapp.main.desktop # Desktop Linux app launcher metadata
-├── com.github.example.myapp.main.metainfo.xml # Desktop Linux app store metadata, license, changelog and description
-├── com.github.example.myapp.main.spec # RPM build configuration, changelog and dependencies
-├── com.github.example.myapp.main.wxl # MSI/WIX installer/Windows metadata, file registry entries and start menu configuration
-├── com.github.example.myapp.main.json # Flatpak metadata, build configuration and dependencies
+├── com.github.example.myapp.desktop # Desktop Linux app launcher metadata
+├── com.github.example.myapp.json # Flatpak metadata, build configuration and dependencies
+├── com.github.example.myapp.metainfo.xml # Desktop Linux app store metadata, license, changelog and description
+├── com.github.example.myapp.spec # RPM build configuration, changelog and dependencies
+├── com.github.example.myapp.wxl # MSI/WIX installer/Windows metadata, file registry entries and start menu configuration
+├── config.yml # APK/Android F-Droid repositoy configuration
 ├── debian/* # DEB build configuration, changelog and dependencies
 ├── hydrapp_android.c # APK/Android/Java/JNI C functions
 ├── hydrapp_android.h # APK/Android/Java/JNI C headers
+├── hydrapp.flatpakrepo # Flatpak repository
+├── hydrapp.repo # DNF/YUM repository configuration for RPM package builds
+├── icon-*x*.png # Resolution-specific icon
+├── icon.icns # macOS-specific icon
+├── icon.ico # Windows-specific icon
 ├── Info.plist # DMG/macOS launcher configuration
 ├── INSTALLATION.md # Markdown template for the auto-generated installation instructions
-└── MainActivity.java # APK/Android/Java main activity
+├── MainActivity.java # APK/Android/Java main activity
+└── repo.conf # APT repository configuration for DEB package builds
 ```
 
 For more information on ejecting, see the [`build` command reference](#build).
