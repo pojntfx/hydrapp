@@ -6,6 +6,8 @@ Build fast apps that run everywhere with Go and a browser engine of your choice.
 
 <br/>
 
+![Project header](./docs/header.svg)
+
 [![hydrapp CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrapp.yaml)
 [![hydrun CI](https://github.com/pojntfx/hydrapp/actions/workflows/hydrun.yaml/badge.svg)](https://github.com/pojntfx/hydrapp/actions/workflows/hydrun.yaml)
 ![Go Version](https://img.shields.io/badge/go%20version-%3E=1.21-61CFDD.svg)
@@ -644,6 +646,7 @@ hydrapp-based apps receive updates automatically, either through their system's 
 - [WINE](https://www.winehq.org/) allows for running MSYS2 inside a Docker container.
 - [tpoechtrager/osxcross](https://github.com/tpoechtrager/osxcross) enables CGo cross-compilation from Linux to macOS.
 - [indygreg/apple-platform-rs](https://github.com/indygreg/apple-platform-rs) enables code-signing macOS binaries from Linux.
+- [Font Awesome](https://fontawesome.com/) provides the assets used for the header.
 
 ## Contributing
 
