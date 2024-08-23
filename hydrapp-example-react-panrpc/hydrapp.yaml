@@ -19,6 +19,11 @@ releases:
   description: Initial release
   author: Felicitas Pojtinger
   email: felicitas@pojtinger.com
+- version: 0.0.2
+  date: 2024-08-23T15:00:00+01:00
+  description: Maintenance updates to match the state of the art of hydrapp apps
+  author: Felicitas Pojtinger
+  email: felicitas@pojtinger.com
 deb:
 - path: deb/debian/sid/x86_64
   os: debian
