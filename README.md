@@ -33,21 +33,21 @@ Its static binaries are available on [GitHub releases](https://github.com/pojntf
 On Linux, you can install them like so:
 
 ```shell
-$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/download/release-main/hydrapp.linux-$(uname -m)"
+$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.linux-$(uname -m)"
 $ sudo install /tmp/hydrapp /usr/local/bin
 ```
 
 On macOS, you can use the following:
 
 ```shell
-$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/download/release-main/hydrapp.darwin-$(uname -m)"
+$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.darwin-$(uname -m)"
 $ sudo install /tmp/hydrapp /usr/local/bin
 ```
 
 On Windows, the following should work (using PowerShell as administrator):
 
 ```shell
-PS> Invoke-WebRequest https://github.com/pojntfx/hydrapp/releases/download/release-main/hydrapp.windows-x86_64.exe -OutFile \Windows\System32\hydrapp.exe
+PS> Invoke-WebRequest https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.windows-x86_64.exe -OutFile \Windows\System32\hydrapp.exe
 ```
 
 You can find binaries for more operating systems and architectures on [GitHub releases](https://github.com/pojntfx/hydrapp/releases).
