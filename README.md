@@ -299,10 +299,10 @@ To make getting started with hydrapp easier, take a look at the following exampl
 
 If you want to see how hydrapp is being used in production, take a look the following apps:
 
-- [**Connmapper**](https://github.com/pojntfx/connmapper): An app to visualize your system's internet connections on a globe <br/> <a display="inline" href="https://github.com/pojntfx/connmapper">
+- [**Connmapper**](https://github.com/pojntfx/connmapper): An app to visualize your system's internet connections on a globe <br/> <a display="inline" href="https://github.com/pojntfx/connmapper" target="_blank">
   <img src="https://raw.githubusercontent.com/pojntfx/connmapper/main/docs/screenshot-globe.png" width="45%" alt="A screenshot of the globe on a system with lots of internet connections" title="A screenshot of the globe on a system with lots of internet connections">
   </a>
-- [**LatenSee**](https://github.com/loopholelabs/latensee): A Valkey/Redis latency visualization tool <br/> <a display="inline" href="https://github.com/loopholelabs/latensee">
+- [**LatenSee**](https://github.com/loopholelabs/latensee): A Valkey/Redis latency visualization tool <br/> <a display="inline" href="https://github.com/loopholelabs/latensee" target="_blank">
   <img src="https://raw.githubusercontent.com/loopholelabs/latensee/main/docs/screenshot-visualizer-light.png" width="45%" alt="Screenshot of the visualizer" title="Screenshot of the visualizer">
   </a>
 
