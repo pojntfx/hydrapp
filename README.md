@@ -283,7 +283,7 @@ After saving your changes, GitHub will begin deploying to GitHub Pages. You can 
 
 Once your users install the app using these instructions, they'll receive updates automatically, either through their system's native package manager (for DEBs, RPMs, Flatpaks and APKs) or hydrapp's own self-updater (for MSIs, DMGs and static binaries for all other platforms).
 
-**🚀 That's it!** You've successfully created, started, iterated on, packaged and published your first hydrapp app. We can't wait to see what you're going to build next with hydrapp! Be sure to take a look at the [reference](#reference), [examples](#examples) and [frequently asked questions](#faq) for more information.
+**🚀 That's it!** You've successfully created, started, iterated on, packaged and published your first hydrapp app. We can't wait to see what you're going to build next with hydrapp! Be sure to take a look at the [reference](#reference), [examples](#examples), [showcase](#showcase) and [frequently asked questions](#faq) for more information.
 
 ## Reference
 
@@ -294,6 +294,17 @@ To make getting started with hydrapp easier, take a look at the following exampl
 - [**Vanilla JS and REST**](./hydrapp-example-vanillajs-rest/): Simple starter project with a REST API to connect the Vanilla JS frontend and backend
 - [**Vanilla JS and Forms**](./hydrapp-example-vanillajs-forms/): Traditional starter project with Web 1.0-style forms to connect the Vanilla JS frontend and backend
 - [**React and panrpc**](./hydrapp-example-react-panrpc/): Complete starter project with panrpc RPCs to connect the React frontend and backend
+
+### Showcase
+
+If you want to see how hydrapp is being used in production, take a look the following apps:
+
+- [**Connmapper**](https://github.com/pojntfx/connmapper): An app to visualize your system's internet connections on a globe <br/> <a display="inline" href="https://github.com/pojntfx/connmapper">
+  <img src="https://raw.githubusercontent.com/pojntfx/connmapper/main/docs/screenshot-globe.png" width="45%" alt="A screenshot of the globe on a system with lots of internet connections" title="A screenshot of the globe on a system with lots of internet connections">
+  </a>
+- [**LatenSee**](https://github.com/loopholelabs/latensee): A Valkey/Redis latency visualization tool <br/> <a display="inline" href="https://github.com/loopholelabs/latensee">
+  <img src="https://raw.githubusercontent.com/loopholelabs/latensee/main/docs/screenshot-visualizer-light.png" width="45%" alt="Screenshot of the visualizer" title="Screenshot of the visualizer">
+  </a>
 
 ### Command Line Arguments
 
