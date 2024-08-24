@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Fri, 23 Aug 2024 15:00:00 +0100
+Source: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main
+Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main
+Architecture: source amd64
+Version: 0.0.2~1724453926
+Distribution: unstable
+Urgency: medium
+Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changed-By: Felicitas Pojtinger <felicitas@pojtinger.com>
+Description:
+ com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main - hydrapp Vanilla JS and REST app
+Changes:
+ com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main (0.0.2~1724453926) unstable; urgency=medium
+ .
+   * Maintenance updates to match the state of the art of hydrapp apps
+Checksums-Sha1:
+ 6b26575942aa20931f60ebc7180bd05318485fe2 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926.dsc
+ 9b92b3a62d5e382c6bebf875cc78edd90792ed66 3195756 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926.tar.xz
+ 1a5adbf4500e4f2c3181331675f6096f6d4edddb 20789 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926_amd64.buildinfo
+ 94ba308e2b589f15014704db2dda01e13e83786d 2607216 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926_amd64.deb
+Checksums-Sha256:
+ bd549e6b0a9bf57db9d60c91a18d1ecc3d74737d9b58899f1ff5329e37341b56 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926.dsc
+ 96655619af95194b02d54d890b383bb417f1ca8bcb150c37b811ca23b2f683ce 3195756 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926.tar.xz
+ 35c8f57e2c74ef917ca74683c31bbb1b83660f1c7a8fd8867e2f43357797f68a 20789 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926_amd64.buildinfo
+ 0923ee64e6ffdbf4748e408c40d7531a48d94efaf76cb832d7ceae71aad4d4fe 2607216 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926_amd64.deb
+Files:
+ 79442d919ef94b0e64664ba03e2d9104 1197 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926.dsc
+ 0e3f5c649933a39a5cf53cc8d7ce3783 3195756 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926.tar.xz
+ 40c52776ae1fd516e2dc6e1de6e46447 20789 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926_amd64.buildinfo
+ 2f32bf6c997babda602ae6408e340c31 2607216 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724453926_amd64.deb
