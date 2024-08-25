@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main
 Architecture: arm64 source
 Version: 0.0.2~1724463477
 Checksums-Md5:
- 40d0d84eadab43f325ec27dc73cdb295 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477.dsc
+ c284582915d3106a1f96364a25c77340 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477.dsc
  7e64620d4a88d27210924172f25d8470 3051000 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477_arm64.deb
 Checksums-Sha1:
- de5926ede6cc4db00e3c6f435b80d8151416f9be 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477.dsc
+ a4e71d1d85e4ab23250e0be13a04f266c4940cac 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477.dsc
  df7da3eabd97478b0a3a90fe9fe1f0c402e65c44 3051000 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477_arm64.deb
 Checksums-Sha256:
- 43d061929196d1ab671db7bdced566b86b241cc025a3a3c0380a2cbd71562e19 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477.dsc
+ 574d3a1b48046e0e20bc3d7fca52d2bd607002c34067ef2d717d0ad57add0ce3 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477.dsc
  004911fad99d820403b46d3cae3d72aae61f5c6df419c8550a2751315a28d15e 3051000 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724463477_arm64.deb
 Build-Origin: Debian
 Build-Architecture: arm64
-Build-Date: Sat, 24 Aug 2024 02:07:35 +0000
+Build-Date: Sun, 25 Aug 2024 01:01:12 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main-0.0.2~1724463477
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -98,7 +98,7 @@ Installed-Build-Depends:
  libc6-dev (= 2.39-7),
  libcap-ng0 (= 0.8.5-2),
  libcap2 (= 1:2.66-5),
- libcares2 (= 1.33.0-1),
+ libcares2 (= 1.33.1-1),
  libcc1-0 (= 14.2.0-3),
  libcom-err2 (= 1.47.1-1),
  libcrypt-dev (= 1:4.4.36-5),

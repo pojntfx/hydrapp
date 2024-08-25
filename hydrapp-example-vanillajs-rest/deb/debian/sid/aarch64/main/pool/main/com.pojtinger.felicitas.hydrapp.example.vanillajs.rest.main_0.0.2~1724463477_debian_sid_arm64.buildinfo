@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main
 Architecture: arm64 source
 Version: 0.0.2~1724463477
 Checksums-Md5:
- cd7c04ec8dfdd5d4628ae9953f60510e 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477.dsc
+ cea65947c0419dd73ef26b7d51498fe0 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477.dsc
  f3136bb71fb69ff0dbae9923b03ab56c 2255472 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477_arm64.deb
 Checksums-Sha1:
- 4921f51bf6935bca492260f050e5cde8a12d6e21 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477.dsc
+ 49992beda7a7207b1d40e1ffbcc557ec45e5443d 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477.dsc
  00c0d593ba38d14b6c4ac66db39b964810cd8791 2255472 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477_arm64.deb
 Checksums-Sha256:
- 7b0d9883d504c93d77ad3f6b0604f4b97510a9c79e991ee16802b8e88ea82b00 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477.dsc
+ 02bd20cdb8189fd6fd6753396ac71ba69483807eaa6bbd37bcb61823ad6c8b6f 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477.dsc
  d52ca56b9beb76aa6965c5d5e2dd42382852a5b44836deece5c9ad96c07bd157 2255472 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724463477_arm64.deb
 Build-Origin: Debian
 Build-Architecture: arm64
-Build-Date: Sat, 24 Aug 2024 02:09:16 +0000
+Build-Date: Sun, 25 Aug 2024 01:01:23 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main-0.0.2~1724463477
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -98,7 +98,7 @@ Installed-Build-Depends:
  libc6-dev (= 2.39-7),
  libcap-ng0 (= 0.8.5-2),
  libcap2 (= 1:2.66-5),
- libcares2 (= 1.33.0-1),
+ libcares2 (= 1.33.1-1),
  libcc1-0 (= 14.2.0-3),
  libcom-err2 (= 1.47.1-1),
  libcrypt-dev (= 1:4.4.36-5),

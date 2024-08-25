@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.react.panrpc.main
 Architecture: arm64 source
 Version: 0.0.2~1724463477
 Checksums-Md5:
- 21397ace49aa9fac8a0e7031aa39ada8 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477.dsc
+ 5fbae2992b34e594f246e7e826840266 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477.dsc
  75694213ca99b4f4bff90ebcb2e6a5c1 3215456 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477_arm64.deb
 Checksums-Sha1:
- ba13857881c2808d78fde8564a61fd0e364c2085 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477.dsc
+ e42ff3659fe45a93d2999be1f9dc8f823cd2baf6 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477.dsc
  25df61c5faad1e8762ab10bbad6c45bf90473da4 3215456 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477_arm64.deb
 Checksums-Sha256:
- e815b6195cecd06df9d9b5c913c8e47d9feeb13f120fbb9a6d5619f6b913540b 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477.dsc
+ 1b9b8a3c9cc598df39587bbe435d1ff758fdd59b480548278e64c09eaeb23d17 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477.dsc
  54a45ee0d03a4c69d062aba4a9b4002a014747e935e82e51ae01bc65a1d692f4 3215456 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724463477_arm64.deb
 Build-Origin: Debian
 Build-Architecture: arm64
-Build-Date: Sat, 24 Aug 2024 02:08:10 +0000
+Build-Date: Sun, 25 Aug 2024 01:01:12 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.react.panrpc.main-0.0.2~1724463477
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -98,7 +98,7 @@ Installed-Build-Depends:
  libc6-dev (= 2.39-7),
  libcap-ng0 (= 0.8.5-2),
  libcap2 (= 1:2.66-5),
- libcares2 (= 1.33.0-1),
+ libcares2 (= 1.33.1-1),
  libcc1-0 (= 14.2.0-3),
  libcom-err2 (= 1.47.1-1),
  libcrypt-dev (= 1:4.4.36-5),
