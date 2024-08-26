@@ -1,14 +1,14 @@
 Codename: sid
 Components: main
-Date: Sun, 25 Aug 2024 01:01:26 +0000
+Date: Mon, 26 Aug 2024 20:12:07 +0000
 Label: DEB packages for hydrapp Vanilla JS and REST (Main)
 Origin: hydrapp Vanilla JS and REST (Main) APT Repo
 Suite: sid
 MD5Sum:
- 6eb66353cc933afb232ebb8bc1a8d17a              191 Release
+ b0341e9f8365a8b2251523378ac9c5d2              191 Release
 SHA1:
- 16b453fb001a7e8bd2ecb5c6b7a75089676378ba              191 Release
+ ca18f924e66beee0e89dac6128a1367293dd5a3b              191 Release
 SHA256:
- 1d6ae55ed8d8df1244efa37178af6aaecb6735eb866e9d5cc6e496ce404075cf              191 Release
+ abfd142cfa78238320b9adbe9afb89f46ab2e471449f704765fe8f07a3121feb              191 Release
 SHA512:
- 253740ee7c92c4a88d2a9a8654eb1e776b1ec9de102f6958dd1cf91485c2de8c847c13b319d525a09512f795b056576db80fc4f77116bc7f9ea30efc7a76df5e              191 Release
+ 266d00d3471c39cbb1ae751b5a78745e51438838138febbdccf6b56df5816711ca86887eebc21cee6e9aa2439bd13ffadd2825179b48b66b2b6342a50dc54273              191 Release
