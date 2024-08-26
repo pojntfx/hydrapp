@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+ <meta name="Author" content="Made by 'tree'">
+ <meta name="GENERATOR" content="tree v2.1.0 (c) 1996 - 2022 by Steve Baker, Thomas Moore, Francesc Rocher, Florian Sesser, Kyosuke Tokoro">
+ <title>hydrapp React and panrpc Example</title>
+ <style type="text/css">
+  BODY { font-family : monospace, sans-serif;  color: black;}
+  P { font-family : monospace, sans-serif; color: black; margin:0px; padding: 0px;}
+  A:visited { text-decoration : none; margin : 0px; padding : 0px;}
+  A:link    { text-decoration : none; margin : 0px; padding : 0px;}
+  A:hover   { text-decoration: underline; background-color : yellow; margin : 0px; padding : 0px;}
+  A:active  { margin : 0px; padding : 0px;}
+  .VERSION { font-size: small; font-family : arial, sans-serif; }
+  .NORM  { color: black;  }
+  .FIFO  { color: purple; }
+  .CHAR  { color: yellow; }
+  .DIR   { color: blue;   }
+  .BLOCK { color: yellow; }
+  .LINK  { color: aqua;   }
+  .SOCK  { color: fuchsia;}
+  .EXEC  { color: green;  }
+ </style>
+</head>
+<body>
+	<h1>hydrapp React and panrpc Example</h1><p>
+	[554M&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./">.</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:31]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.darwin-aarch64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.darwin-aarch64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.darwin-aarch64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.darwin-aarch64.asc</a><br>
+	|-- [&nbsp;17M&nbsp;Aug&nbsp;26&nbsp;22:31]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.darwin-x86_64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.darwin-x86_64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.darwin-x86_64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.darwin-x86_64.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:31]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.dragonfly-x86_64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.dragonfly-x86_64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.dragonfly-x86_64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.dragonfly-x86_64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:32]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-aarch64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-aarch64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-aarch64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-aarch64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:32]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-armv7l">com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-armv7l</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-armv7l.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-armv7l.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:31]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-i686">com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-i686</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-i686.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-i686.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:32]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-x86_64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-x86_64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-x86_64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.freebsd-x86_64.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:32]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.illumos-x86_64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.illumos-x86_64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.illumos-x86_64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.illumos-x86_64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:33]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-aarch64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-aarch64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-aarch64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-aarch64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:33]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-armv7l">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-armv7l</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-armv7l.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-armv7l.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:33]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-i686">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-i686</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-i686.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-i686.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:34]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips.asc</a><br>
+	|-- [&nbsp;17M&nbsp;Aug&nbsp;26&nbsp;22:34]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips64.asc</a><br>
+	|-- [&nbsp;17M&nbsp;Aug&nbsp;26&nbsp;22:34]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips64le">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips64le</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips64le.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mips64le.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:34]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mipsle">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mipsle</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mipsle.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-mipsle.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:34]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-ppc64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-ppc64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-ppc64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-ppc64.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:34]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-ppc64le">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-ppc64le</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-ppc64le.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-ppc64le.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:34]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-riscv64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-riscv64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-riscv64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-riscv64.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:34]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-s390x">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-s390x</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-s390x.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-s390x.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:33]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-x86_64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-x86_64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-x86_64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.linux-x86_64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:35]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-aarch64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-aarch64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-aarch64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-aarch64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:35]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-armv7l">com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-armv7l</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-armv7l.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-armv7l.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:35]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-i686">com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-i686</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-i686.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-i686.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:35]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-x86_64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-x86_64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-x86_64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.netbsd-x86_64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:36]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-aarch64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-aarch64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-aarch64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-aarch64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:36]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-armv7l">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-armv7l</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-armv7l.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-armv7l.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:36]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-i686">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-i686</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-i686.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-i686.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-ppc64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-ppc64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-ppc64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-ppc64.asc</a><br>
+	|-- [&nbsp;15M&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-riscv64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-riscv64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-riscv64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-riscv64.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:36]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-x86_64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-x86_64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-x86_64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.openbsd-x86_64.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.solaris-x86_64">com.pojtinger.felicitas.hydrapp.example.react.panrpc.solaris-x86_64</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.solaris-x86_64.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.solaris-x86_64.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-aarch64.exe">com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-aarch64.exe</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-aarch64.exe.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-aarch64.exe.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-armv7l.exe">com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-armv7l.exe</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-armv7l.exe.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-armv7l.exe.asc</a><br>
+	|-- [&nbsp;16M&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-i686.exe">com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-i686.exe</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-i686.exe.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-i686.exe.asc</a><br>
+	|-- [&nbsp;17M&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-x86_64.exe">com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-x86_64.exe</a><br>
+	|-- [&nbsp;228&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-x86_64.exe.asc">com.pojtinger.felicitas.hydrapp.example.react.panrpc.windows-x86_64.exe.asc</a><br>
+	`-- [&nbsp;656&nbsp;Aug&nbsp;26&nbsp;22:37]&nbsp;&nbsp;&nbsp;&nbsp;<a href="./repo.asc">repo.asc</a><br>
+<br><br><p>
+
+ 554M used in 1 directory, 71 files
+
+</p>
+	<hr>
+	<p class="VERSION">
+		 tree v2.1.0 (c) 1996 - 2022 by Steve Baker and Thomas Moore <br>
+		 HTML output hacked and copyleft (c) 1998 by Francesc Rocher <br>
+		 JSON output hacked and copyleft (c) 2014 by Florian Sesser <br>
+		 Charsets / OS/2 support (c) 2001 by Kyosuke Tokoro
+	</p>
+</body>
+</html>

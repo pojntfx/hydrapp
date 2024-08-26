@@ -1,0 +1,13 @@
+---
+sdk_path: "/root/Android/Sdk"
+repo_url: "https://pojntfx.github.io/hydrapp/hydrapp-example-vanillajs-forms/apk/stable/repo"
+repo_name: hydrapp Vanilla JS and Forms F-Droid Repo
+repo_description: >-
+  Android apps for hydrapp Vanilla JS and Forms.
+repo_icon: icon.png
+repo_keyalias: anonymous hydrapp developer
+keystore: keystore.p12
+keystorepass: "IIhljuLFgW5cZnYg8FLiITYE03LXoE09"
+keypass: "7f7y5KxPTUk20GMJa1bpssCg1VIOSOHt"
+keydname: CN=Anonymous Hydrapp Developer
+apksigner: /usr/bin/apksigner
