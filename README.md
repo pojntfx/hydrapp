@@ -225,7 +225,7 @@ out/
 
 While we can of course manually copy the contents of the `out` directory and distribute the native system packages to our users this way, it is much easier to use a repository and CI/CD action to build, distribute and update them automatically. We'll use GitHub Actions to build the native system packages and GitHub Pages to distribute them in this example (we've specified the `github.com/myusername/myapp` repository in [1. Creating a New App](#1-creating-a-new-app) earlier), but you are of course free to use any alternative forge such as [Gitea/Forgejo](https://forgejo.org/) or [GitLab](https://about.gitlab.com/) or even your own web server if you prefer.
 
-Let's start with creating our repository by visiting [github.com/new](https://github.com/new). After creating the repository, navigate to `Settings → Pages` to enable GitHub Pages. hydrapp defaults to using the branch-based GitHub Pages workflow, which allows you to publish multiple versions of your app simultaneously (see [How can I provide an alpha, beta, insider etc. channel/edition/version of my app?](#how-can-i-provide-an-alpha-beta-insider-etc-channeleditionversion-of-my-app) for more information). To enable this, set the source to "Deploy from a branch" like so:
+Let's start with creating our repository by visiting [github.com/new](https://github.com/new). After creating the repository, navigate to `Settings → Pages` to enable GitHub Pages. hydrapp defaults to using the branch-based GitHub Pages workflow, which allows you to publish multiple versions of your app simultaneously (see [How can I provide a tagged, alpha, beta, insider etc. channel/edition/version of my app?](#how-can-i-provide-a-tagged-alpha-beta-insider-etc-channeleditionversion-of-my-app) for more information). To enable this, set the source to "Deploy from a branch" like so:
 
 <p align="center">
   <img src="./docs/screenshot-enable-github-pages.png" width="300px" alt="Screenshot of the GitHub pages source setting" title="Screenshot of the GitHub pages source setting">
@@ -287,7 +287,7 @@ After saving your changes, GitHub will begin deploying to GitHub Pages. You can 
 
 ![Screenshot of the generated installation instructions](./docs/screenshot-generated-installation-instructions.png)
 
-Once your users install the app using these instructions, they'll receive updates automatically, either through their system's native package manager (for DEBs, RPMs, Flatpaks and APKs) or hydrapp's own self-updater (for MSIs, DMGs and static binaries for all other platforms).
+Once your users install the app using these instructions, they'll receive updates automatically, either through their system's native package manager (for DEBs, RPMs, Flatpaks and APKs) or hydrapp's own self-updater (for MSIs, DMGs and static binaries for all other platforms). It is also possible to use a versioned deployment flow; see [How can I provide a tagged, alpha, beta, insider etc. channel/edition/version of my app?](#how-can-i-provide-a-tagged-alpha-beta-insider-etc-channeleditionversion-of-my-app) for more information.
 
 **🚀 That's it!** You've successfully created, started, iterated on, packaged and published your first hydrapp app. We can't wait to see what you're going to build next with hydrapp! Be sure to take a look at the [reference](#reference), [examples](#examples), [showcase](#showcase) and [frequently asked questions](#faq) for more information.
 
@@ -622,9 +622,18 @@ rpm:
 
 Note that while the DEB and RPM builds automatically include these packages as dependencies, for DMG and MSI builds, you must still ensure that the necessary runtime libraries are installed on your users' systems unless you manually set up static linking.
 
-### How can I provide an alpha, beta, insider etc. channel/edition/version of my app?
+### How can I provide a tagged, alpha, beta, insider etc. channel/edition/version of my app?
 
 hydrapp supports publishing different branches of your app by default through Git. The default branch is `main`, which is the latest release version; if you want to publish a beta version, it's as easy as creating a branch named `beta` and pushing to it, and the same goes for an `alpha` or `insider` edition. Installation instructions for these branches will be generated and published just like for the `main` branch, and the branches are integrated with the update system; you can find them by swapping out `main` in the URL with your branch name (e.g. `beta`).
+
+The branch-based approach means that every commit you push to the repository triggers an automatic update for your users, which can be beneficial during early development. However, once your app is ready for a versioned workflow - where only stable releases are made available to users - consider adding your release notes to the `releases` field in your `hydrapp.yaml` file. After that, commit, push your changes and finally add a Git tag starting with `v` like so:
+
+```shell
+$ git tag v0.1.0
+$ git push -u origin --tags
+```
+
+Be sure to update the download link in your generated `README.md` with the link to the stable release, which usually means replacing `docs/main/INSTALLATION.html` with `docs/stable/INSTALLATION.html`.
 
 Due to a [known limitation](https://github.com/actions/upload-pages-artifact/issues/57) with the GitHub Actions-based GitHub Pages workflow, hydrapp defaults to the branch-based GitHub Pages workflow. The primary drawback of this approach is that the built assets are stored in a branch of the repository, which can slow down clone operations. This issue is mitigated by automatically adding the `--single-branch` option to the generated installation instructions.
 
