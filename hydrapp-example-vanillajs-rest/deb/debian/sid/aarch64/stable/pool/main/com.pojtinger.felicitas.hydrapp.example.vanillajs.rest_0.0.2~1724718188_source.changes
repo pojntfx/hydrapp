@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Fri, 23 Aug 2024 15:00:00 +0100
+Source: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest
+Architecture: source
+Version: 0.0.2~1724718188
+Distribution: unstable
+Urgency: medium
+Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changed-By: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changes:
+ com.pojtinger.felicitas.hydrapp.example.vanillajs.rest (0.0.2~1724718188) unstable; urgency=medium
+ .
+   * Maintenance updates to match the state of the art of hydrapp apps
+Checksums-Sha1:
+ 383b8ff52fdaa812b0518e62d3b319eb925f8631 1167 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188.dsc
+ 8c4b9b7ee71ac7cdfac7430752e1c61dfeef4608 3234052 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188.tar.xz
+ 7739675e10ca8647e41afad2bff53cdbf3a26bd5 20723 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188_arm64.buildinfo
+Checksums-Sha256:
+ c38b3580eef4ec397b841fd024185b5486f034b78c206ea77c380c4fd569bbeb 1167 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188.dsc
+ ed2f27f6eed6c2bb9dec1dec52dcc71563caa913b4d9558017208bd61642c9f9 3234052 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188.tar.xz
+ 27ba7e0c285ef1a1fc2d22675dc8fc22efa03add89c337c588f327eb808bae4a 20723 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188_arm64.buildinfo
+Files:
+ 6c5dffd798cb7fe757e108a7428fa833 1167 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188.dsc
+ 858d9545f0dcafd5166de59cdf7cca6a 3234052 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188.tar.xz
+ d2f218799b4cfb3546b238297fb42485 20723 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest_0.0.2~1724718188_arm64.buildinfo
