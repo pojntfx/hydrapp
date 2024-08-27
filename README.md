@@ -277,6 +277,12 @@ Once the action has run, the generated packages and installation instructions ar
   <img src="./docs/screenshot-set-github-pages-branch.png" width="300px" alt="Screenshot of the GitHub Pages branch setting" title="Screenshot of the GitHub Pages branch setting">
 </p>
 
+You will also need to change the environment protection rule for the `github-pages` environment to support tagged releases and releases on other channels (otherwise you'll get a deployment error like "Tag v0.2.3 is not allowed to deploy to github-pages due to environment protection rules."). To do this, navigate to `Settings → Environments → github-pages` and click on "Add deployment branch or tag rule", set "Ref type" to "Tag" and set `v*` as the name pattern like so:
+
+<p align="center">
+  <img src="./docs/screenshot-add-tag-rule.png" width="300px" alt="Screenshot of the GitHub deployment branches and tags setting" title="Screenshot of the GitHub deployment branches and tags setting">
+</p>
+
 After saving your changes, GitHub will begin deploying to GitHub Pages. You can track the deployment's progress by visiting `Actions → pages-build-deployment`. The link to the installation instructions can be found in the generated `README.md` or at the URL provided by the earlier `publish-linux` action. It should look something like this:
 
 ![Screenshot of the generated installation instructions](./docs/screenshot-generated-installation-instructions.png)
