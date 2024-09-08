@@ -12,14 +12,14 @@ Changes:
  .
    * Maintenance updates to match the state of the art of hydrapp apps
 Checksums-Sha1:
- 4539fa1edc6eca0bfd2f6b0a0808dfedc1be4aa7 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
- 072fc2f7d03d0a908585fd3cc9ee161a4a48d2da 3234312 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.tar.xz
- c87df64177a655ad3a4e333bfa3594012a671990 20786 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_amd64.buildinfo
+ 13751e632c85bbec75fc4cf6756af07de917a463 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
+ 0ebd3d9ac4ae889039e756ca7a21467bcb892023 3234468 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.tar.xz
+ d5189382d8cbfe3476d7068975729ef516d7f84a 20786 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_amd64.buildinfo
 Checksums-Sha256:
- 3533c790161580f8e2d866a1fb2189265f13d291550765c2278f05aff29fd5b1 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
- d40735db71808d68fa3c36e2f54c0010ca7e22f1de564363f9212511b2ea34e6 3234312 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.tar.xz
- 765cd6f180c9dfdb05c703bf0f563b3d9be5ba0028cd654f18162a496ea65c65 20786 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_amd64.buildinfo
+ 7995ed432c0f31b6fa869076ee143cc7717db8e61f715b5f88c4a4e75ac6173e 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
+ 3e38b7786a1eeb5e36fb91115d465b5304125c80a6a51145581c243187de2df0 3234468 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.tar.xz
+ 061a3bf4426d101661dc4dc64b4386c8c20b5c18cb88dfdcab5429bdd549ae37 20786 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_amd64.buildinfo
 Files:
- 520c4aeccb1f2d4b12460bed0d6c0da5 1197 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
- 6175354d9f7247a12b4ad7925ef1d243 3234312 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.tar.xz
- 3b1fa0650076e2b2912624381476df46 20786 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_amd64.buildinfo
+ 229520ca83f59336aefb37428aa33dd5 1197 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
+ ceb62b699595653c9f2bda8dd225db6f 3234468 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.tar.xz
+ 160c500dfab53cc5a000769c2ce6cff3 20786 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_amd64.buildinfo

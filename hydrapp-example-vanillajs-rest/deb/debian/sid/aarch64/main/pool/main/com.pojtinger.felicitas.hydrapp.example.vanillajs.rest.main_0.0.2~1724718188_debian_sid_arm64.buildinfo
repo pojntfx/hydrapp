@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main
 Architecture: arm64 source
 Version: 0.0.2~1724718188
 Checksums-Md5:
- a1b2ec3567823e6f9e268eeb4081b619 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
+ f29d65c1846a8423ed5c863009422ee8 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
  462efad1656bb6b9454d5a7dbb107856 2256816 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_arm64.deb
 Checksums-Sha1:
- 8c43d782999b278f9765391b34cbe2e4746f17db 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
+ 03a9efe8601d059f58e6177d8f8c5aa62dfdd332 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
  b90a87f3ac90bbe731e8f8eda73ccafc0da748eb 2256816 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_arm64.deb
 Checksums-Sha256:
- 4101752fd17ce0f980e0acbda6df608c8402be249aafd950c50a233ddeb12510 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
+ b999186b03b0b6911e666f937daafe8d56d048bf5278b55e87bb16baa71be79b 1197 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188.dsc
  846045ef1b4ead0e4d875a20aa895a2f8b5825f6533a126d8cf5a7ffd9ea5ad6 2256816 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1724718188_arm64.deb
 Build-Origin: Debian
 Build-Architecture: arm64
-Build-Date: Sun, 01 Sep 2024 00:58:59 +0000
+Build-Date: Sun, 08 Sep 2024 01:00:31 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main-0.0.2~1724718188
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -113,7 +113,7 @@ Installed-Build-Depends:
  libdpkg-perl (= 1.22.11),
  libelf1t64 (= 0.191-2),
  liberror-perl (= 0.17029-2),
- libexpat1 (= 2.6.2-2),
+ libexpat1 (= 2.6.3-1),
  libffi8 (= 3.4.6-1),
  libfile-stripnondeterminism-perl (= 1.14.0-1),
  libgcc-14-dev (= 14.2.0-4),
@@ -164,7 +164,7 @@ Installed-Build-Depends:
  libmpfr6 (= 4.2.1-1+b1),
  libncursesw6 (= 6.5-2),
  libnettle8t64 (= 3.10-1),
- libnghttp2-14 (= 1.62.1-2),
+ libnghttp2-14 (= 1.63.0-1),
  libnghttp3-9 (= 1.4.0-1),
  libngtcp2-16 (= 1.6.0-1),
  libngtcp2-crypto-gnutls8 (= 1.6.0-1),
@@ -186,8 +186,8 @@ Installed-Build-Depends:
  libpython3.12-stdlib (= 3.12.5-4),
  libreadline8t64 (= 8.2-5),
  librtmp1 (= 2.4+20151223.gitfa8646d.1-2+b4),
- libsasl2-2 (= 2.1.28+dfsg1-7),
- libsasl2-modules-db (= 2.1.28+dfsg1-7),
+ libsasl2-2 (= 2.1.28+dfsg1-8),
+ libsasl2-modules-db (= 2.1.28+dfsg1-8),
  libseccomp2 (= 2.5.5-1+b1),
  libselinux1 (= 3.7-3),
  libsframe1 (= 2.43.1-3),
@@ -195,12 +195,12 @@ Installed-Build-Depends:
  libsmartcols1 (= 2.40.2-7),
  libsqlite3-0 (= 3.46.1-1),
  libssh2-1t64 (= 1.11.0-7),
- libssl-dev (= 3.3.1-7),
- libssl3t64 (= 3.3.1-7),
+ libssl-dev (= 3.3.2-1),
+ libssl3t64 (= 3.3.2-1),
  libstdc++-14-dev (= 14.2.0-4),
  libstdc++6 (= 14.2.0-4),
  libstemmer0d (= 2.2.0-4+b1),
- libsystemd0 (= 256.5-1),
+ libsystemd0 (= 256.5-2),
  libtasn1-6 (= 4.19.0-3+b2),
  libtiff6 (= 4.5.1+git230720-5),
  libtinfo6 (= 6.5-2),
@@ -210,11 +210,11 @@ Installed-Build-Depends:
  libtsan2 (= 14.2.0-4),
  libubsan1 (= 14.2.0-4),
  libuchardet0 (= 0.0.8-1+b1),
- libudev1 (= 256.5-1),
+ libudev1 (= 256.5-2),
  libunistring5 (= 1.2-1),
  libuuid1 (= 2.40.2-7),
- libuv1-dev (= 1.48.0-5),
- libuv1t64 (= 1.48.0-5),
+ libuv1-dev (= 1.48.0-6),
+ libuv1t64 (= 1.48.0-6),
  libwebp7 (= 1.4.0-0.1),
  libxml2 (= 2.12.7+dfsg-3+b1),
  libxxhash0 (= 0.8.2-2+b1),
@@ -570,8 +570,8 @@ Installed-Build-Depends:
  node-yargs-parser (= 21.1.1+~21.0.0-4),
  nodejs (= 20.17.0+dfsg-2),
  npm (= 9.2.0~ds1-3),
- openssl (= 3.3.1-7),
- openssl-provider-legacy (= 3.3.1-7),
+ openssl (= 3.3.2-1),
+ openssl-provider-legacy (= 3.3.2-1),
  patch (= 2.7.6-7),
  perl (= 5.38.2-5),
  perl-base (= 5.38.2-5),
@@ -583,7 +583,7 @@ Installed-Build-Depends:
  python3-jaraco.context (= 6.0.0-1),
  python3-jaraco.functools (= 4.0.2-1),
  python3-minimal (= 3.12.5-1),
- python3-more-itertools (= 10.3.0-1),
+ python3-more-itertools (= 10.4.0-1),
  python3-packaging (= 24.1-1),
  python3-pkg-resources (= 73.0.1-1),
  python3-typeguard (= 4.3.0-1),

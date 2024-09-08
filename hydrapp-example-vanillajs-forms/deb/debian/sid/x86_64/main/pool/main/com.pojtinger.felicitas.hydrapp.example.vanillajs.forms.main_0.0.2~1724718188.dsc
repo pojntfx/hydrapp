@@ -12,8 +12,8 @@ Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), golang-go (>= 1.21), ca-ce
 Package-List:
  com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main deb utils optional arch=any
 Checksums-Sha1:
- 102e3f6a43e2b00f6c48ef043ba1f5dcb13a2d52 3235604 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.tar.xz
+ 8e75dfe2c958ebdb55b21eb3dadad825dbd2f308 3234632 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.tar.xz
 Checksums-Sha256:
- 879a734b890d7f7ee14a1c67f216909297d0ce1692c389ef623751445c1c0136 3235604 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.tar.xz
+ 543ca0d20ed6fd3840eaaaacf7ab94bfd539e55ae31595b3aa0453ed25d2a097 3234632 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.tar.xz
 Files:
- 6b62e3a0724a1473834b70f49e776481 3235604 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.tar.xz
+ 5b5a90966f3f6932ff6ffb80a8ef6029 3234632 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.tar.xz

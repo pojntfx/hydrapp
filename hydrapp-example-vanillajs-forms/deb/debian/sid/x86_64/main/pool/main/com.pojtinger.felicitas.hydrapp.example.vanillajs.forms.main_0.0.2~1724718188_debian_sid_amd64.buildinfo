@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main
 Architecture: amd64 source
 Version: 0.0.2~1724718188
 Checksums-Md5:
- 3a4b6b0afd01030de7508d02a5ef2550 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.dsc
+ 422c5d19057d5b0bcd12c449c9cd42fa 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.dsc
  5b33070262f2e2ab340875fd5db0e780 3499736 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188_amd64.deb
 Checksums-Sha1:
- cabfef524b0e58654904cf609360b553094e5e22 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.dsc
+ 32461cd8b6545c41f8651ba2f4e010803be8e878 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.dsc
  f60f338d280dd0fe1b1168cf80175e61beeda8ad 3499736 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188_amd64.deb
 Checksums-Sha256:
- 0a4abb7506aeb3cd62ba8029acac54fe24294929d83c8ec5227a8f17df65f7c2 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.dsc
+ 59fa18efa2d0bd954316936ca7ea19bc8d3c9eb2fc7a2308ebb7605d684617ac 1204 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188.dsc
  9e4e7f635a134e3edf0f72eb1fa9c4b418263e380c83545b5ee2f7cee10cfa03 3499736 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1724718188_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 01 Sep 2024 01:02:32 +0000
+Build-Date: Sun, 08 Sep 2024 01:01:21 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main-0.0.2~1724718188
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -113,7 +113,7 @@ Installed-Build-Depends:
  libdpkg-perl (= 1.22.11),
  libelf1t64 (= 0.191-2),
  liberror-perl (= 0.17029-2),
- libexpat1 (= 2.6.2-2),
+ libexpat1 (= 2.6.3-1),
  libffi8 (= 3.4.6-1),
  libfile-stripnondeterminism-perl (= 1.14.0-1),
  libgcc-14-dev (= 14.2.0-4),
@@ -164,7 +164,7 @@ Installed-Build-Depends:
  libmpfr6 (= 4.2.1-1+b1),
  libncursesw6 (= 6.5-2),
  libnettle8t64 (= 3.10-1),
- libnghttp2-14 (= 1.62.1-2),
+ libnghttp2-14 (= 1.63.0-1),
  libnghttp3-9 (= 1.4.0-1),
  libngtcp2-16 (= 1.6.0-1),
  libngtcp2-crypto-gnutls8 (= 1.6.0-1),
@@ -182,13 +182,13 @@ Installed-Build-Depends:
  libpng16-16t64 (= 1.6.43-5),
  libpsl5t64 (= 0.21.2-1.1),
  libpython3-stdlib (= 3.12.5-1),
- libpython3.12-minimal (= 3.12.5-4),
- libpython3.12-stdlib (= 3.12.5-4),
+ libpython3.12-minimal (= 3.12.6-1),
+ libpython3.12-stdlib (= 3.12.6-1),
  libquadmath0 (= 14.2.0-4),
  libreadline8t64 (= 8.2-5),
  librtmp1 (= 2.4+20151223.gitfa8646d.1-2+b4),
- libsasl2-2 (= 2.1.28+dfsg1-7),
- libsasl2-modules-db (= 2.1.28+dfsg1-7),
+ libsasl2-2 (= 2.1.28+dfsg1-8),
+ libsasl2-modules-db (= 2.1.28+dfsg1-8),
  libseccomp2 (= 2.5.5-1+b1),
  libselinux1 (= 3.7-3),
  libsframe1 (= 2.43.1-3),
@@ -196,12 +196,12 @@ Installed-Build-Depends:
  libsmartcols1 (= 2.40.2-7),
  libsqlite3-0 (= 3.46.1-1),
  libssh2-1t64 (= 1.11.0-7),
- libssl-dev (= 3.3.1-7),
- libssl3t64 (= 3.3.1-7),
+ libssl-dev (= 3.3.2-1),
+ libssl3t64 (= 3.3.2-1),
  libstdc++-14-dev (= 14.2.0-4),
  libstdc++6 (= 14.2.0-4),
  libstemmer0d (= 2.2.0-4+b1),
- libsystemd0 (= 256.5-1),
+ libsystemd0 (= 256.5-2),
  libtasn1-6 (= 4.19.0-3+b2),
  libtiff6 (= 4.5.1+git230720-5),
  libtinfo6 (= 6.5-2),
@@ -211,17 +211,17 @@ Installed-Build-Depends:
  libtsan2 (= 14.2.0-4),
  libubsan1 (= 14.2.0-4),
  libuchardet0 (= 0.0.8-1+b1),
- libudev1 (= 256.5-1),
+ libudev1 (= 256.5-2),
  libunistring5 (= 1.2-1),
  libuuid1 (= 2.40.2-7),
- libuv1-dev (= 1.48.0-5),
- libuv1t64 (= 1.48.0-5),
+ libuv1-dev (= 1.48.0-6),
+ libuv1t64 (= 1.48.0-6),
  libwebp7 (= 1.4.0-0.1),
  libxml2 (= 2.12.7+dfsg-3+b1),
  libxxhash0 (= 0.8.2-2+b1),
  libyaml-0-2 (= 0.2.5-1+b1),
  libzstd1 (= 1.5.6+dfsg-1),
- linux-libc-dev (= 6.10.6-1),
+ linux-libc-dev (= 6.10.7-1),
  m4 (= 1.4.19-4),
  make (= 4.3-4.1),
  man-db (= 2.13.0-1),
@@ -571,8 +571,8 @@ Installed-Build-Depends:
  node-yargs-parser (= 21.1.1+~21.0.0-4),
  nodejs (= 20.17.0+dfsg-2),
  npm (= 9.2.0~ds1-3),
- openssl (= 3.3.1-7),
- openssl-provider-legacy (= 3.3.1-7),
+ openssl (= 3.3.2-1),
+ openssl-provider-legacy (= 3.3.2-1),
  patch (= 2.7.6-7),
  perl (= 5.38.2-5),
  perl-base (= 5.38.2-5),
@@ -584,13 +584,13 @@ Installed-Build-Depends:
  python3-jaraco.context (= 6.0.0-1),
  python3-jaraco.functools (= 4.0.2-1),
  python3-minimal (= 3.12.5-1),
- python3-more-itertools (= 10.3.0-1),
+ python3-more-itertools (= 10.4.0-1),
  python3-packaging (= 24.1-1),
  python3-pkg-resources (= 73.0.1-1),
  python3-typeguard (= 4.3.0-1),
  python3-typing-extensions (= 4.12.2-2),
- python3.12 (= 3.12.5-4),
- python3.12-minimal (= 3.12.5-4),
+ python3.12 (= 3.12.6-1),
+ python3.12-minimal (= 3.12.6-1),
  readline-common (= 8.2-5),
  rpcsvc-proto (= 1.4.3-1),
  sed (= 4.9-2),
