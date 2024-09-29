@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.react.panrpc.main
 Architecture: arm64 source
 Version: 0.0.2~1724718188
 Checksums-Md5:
- 8d3ad9c25ee4b675e9456aed2f73ec6c 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188.dsc
+ 20b5595cab0876b7973e4cd0e0fff7a6 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188.dsc
  ab1d088ba03f12db09ed46643362fca3 3318076 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188_arm64.deb
 Checksums-Sha1:
- bb974c371fb503210de0319253ea6c93a8133047 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188.dsc
+ 5d43702ea50353a52f7055f541bff3b6aa1bb1c5 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188.dsc
  6a684e99391380eff1f065f949c3b545247987ce 3318076 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188_arm64.deb
 Checksums-Sha256:
- 331a120df14dc657e58a915d276eaa814ef6f82b0220a5aca210d38b3903e4ae 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188.dsc
+ d4aeed0eeba18e8474222fe93c5e090ded3937efd85d79a479771da6399fdf8c 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188.dsc
  3b732db5689c25bdbff074133150c42a4ff0edc083764c3b02192f817dafed16 3318076 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1724718188_arm64.deb
 Build-Origin: Debian
 Build-Architecture: arm64
-Build-Date: Sun, 22 Sep 2024 00:30:26 +0000
+Build-Date: Sun, 29 Sep 2024 00:57:30 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.react.panrpc.main-0.0.2~1724718188
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -92,10 +92,10 @@ Installed-Build-Depends:
  libblkid1 (= 2.40.2-8),
  libbrotli1 (= 1.1.0-2+b4),
  libbz2-1.0 (= 1.0.8-6),
- libc-bin (= 2.40-2),
- libc-dev-bin (= 2.40-2),
- libc6 (= 2.40-2),
- libc6-dev (= 2.40-2),
+ libc-bin (= 2.40-3),
+ libc-dev-bin (= 2.40-3),
+ libc6 (= 2.40-3),
+ libc6-dev (= 2.40-3),
  libcap-ng0 (= 0.8.5-2),
  libcap2 (= 1:2.66-5),
  libcares2 (= 1.33.1-2),
@@ -178,7 +178,7 @@ Installed-Build-Depends:
  libpcre2-8-0 (= 10.42-4+b1),
  libperl5.38t64 (= 5.38.2-5),
  libpipeline1 (= 1.5.8-1),
- libpng16-16t64 (= 1.6.44-1),
+ libpng16-16t64 (= 1.6.44-2),
  libpsl5t64 (= 0.21.2-1.1),
  libpython3-stdlib (= 3.12.6-1),
  libpython3.12-minimal (= 3.12.6-1),
@@ -215,11 +215,11 @@ Installed-Build-Depends:
  libuv1-dev (= 1.48.0-6),
  libuv1t64 (= 1.48.0-6),
  libwebp7 (= 1.4.0-0.1),
- libxml2 (= 2.12.7+dfsg-3+b1),
+ libxml2 (= 2.12.7+dfsg+really2.9.14-0.1),
  libxxhash0 (= 0.8.2-2+b1),
  libyaml-0-2 (= 0.2.5-1+b1),
  libzstd1 (= 1.5.6+dfsg-1),
- linux-libc-dev (= 6.10.9-1),
+ linux-libc-dev (= 6.10.11-1),
  m4 (= 1.4.19-4),
  make (= 4.3-4.1),
  man-db (= 2.13.0-1),
@@ -244,7 +244,7 @@ Installed-Build-Depends:
  node-argparse (= 2.0.1-2),
  node-arrify (= 2.0.1-3),
  node-assert (= 2.0.0+~cs3.9.8-2),
- node-async (= 3.2.6+dfsg-1),
+ node-async (= 3.2.6+dfsg-2),
  node-async-each (= 1.0.3-3),
  node-babel-helper-define-polyfill-provider (= 0.3.3~0~20220913+ds1-1),
  node-babel-plugin-add-module-exports (= 1.0.4+dfsg1~cs5.8.0-4),
@@ -393,7 +393,7 @@ Installed-Build-Depends:
  node-isarray (= 2.0.5-4),
  node-isexe (= 2.0.0+~2.0.1-5),
  node-isobject (= 4.0.0-2),
- node-istanbul (= 0.4.5+repack10+~cs98.25.59-2),
+ node-istanbul (= 0.4.5+repack10+~cs98.25.59-3),
  node-jest-debbundle (= 29.6.2~ds1+~cs73.45.28-5),
  node-jest-worker (= 29.6.2~ds1+~cs73.45.28-5),
  node-js-tokens (= 8.0.0-2),
@@ -423,7 +423,7 @@ Installed-Build-Depends:
  node-mime (= 3.0.0+dfsg+~cs6.97.2-1),
  node-mime-types (= 2.1.35-2),
  node-mimic-fn (= 4.0.0-5),
- node-mimic-response (= 3.1.0-8),
+ node-mimic-response (= 3.1.0-9),
  node-minimatch (= 9.0.3-5),
  node-minimist (= 1.2.8+~cs5.3.5-1),
  node-minipass (= 5.0.0+~cs10.3.21-2),
@@ -582,7 +582,7 @@ Installed-Build-Depends:
  python3-jaraco.context (= 6.0.0-1),
  python3-jaraco.functools (= 4.0.2-1),
  python3-minimal (= 3.12.6-1),
- python3-more-itertools (= 10.4.0-1),
+ python3-more-itertools (= 10.5.0-1),
  python3-packaging (= 24.1-1),
  python3-pkg-resources (= 74.1.2-2),
  python3-typeguard (= 4.3.0-1),
