@@ -467,6 +467,7 @@ var buildCmd = &cobra.Command{
 					cfg.App.License,
 					cfg.App.Homepage,
 					cfg.App.Git,
+					c.Packages,
 					cfg.Releases,
 					viper.GetBool(overwriteFlag),
 					branchID,

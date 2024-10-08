@@ -5,12 +5,14 @@ import (
 	"encoding/base64"
 	"io"
 	"path/filepath"
+	"strings"
 
 	"github.com/docker/docker/client"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/builders"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/executors"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/flatpak"
+	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/rpm"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/renderers/xdg"
 	"github.com/pojntfx/hydrapp/hydrapp/pkg/utils"
 )
@@ -42,6 +44,7 @@ func NewBuilder(
 	appSPDX, // App SPDX license identifier
 	appURL, // App URL
 	appGit string, // App Git repo URL
+	references []rpm.Package, // Flatpak references to install
 	releases []renderers.Release, // App releases
 	overwrite bool, // Overwrite files even if they exist
 	branchID, // Branch ID
@@ -73,6 +76,7 @@ func NewBuilder(
 		appSPDX,
 		appURL,
 		appGit,
+		references,
 		releases,
 		overwrite,
 		branchID,
@@ -106,8 +110,9 @@ type Builder struct {
 	appSPDX,
 	appURL,
 	appGit string
-	releases  []renderers.Release
-	overwrite bool
+	references []rpm.Package
+	releases   []renderers.Release
+	overwrite  bool
 	branchID,
 	branchName,
 	goMain,
@@ -251,6 +256,11 @@ func (b *Builder) Build() error {
 	appID := builders.GetAppIDForBranch(b.appID, b.branchID)
 	baseURL := builders.GetPathForBranch(b.baseURL, b.branchID, "")
 
+	references := []string{}
+	for _, reference := range b.references {
+		references = append(references, `"`+reference.Name+"//"+reference.Version+`"`)
+	}
+
 	return executors.DockerRunImage(
 		b.ctx,
 		b.cli,
@@ -268,6 +278,7 @@ func (b *Builder) Build() error {
 			"PGP_KEY_ID":       b.pgpKeyID,
 			"BASE_URL":         baseURL,
 			"ARCHITECTURE":     b.architecture,
+			"FLATPAKREFS":      strings.Join(references, " "),
 			"GOMAIN":           b.goMain,
 		},
 		b.Render,

@@ -58,8 +58,9 @@ type DMG struct {
 }
 
 type Flatpak struct {
-	Path         string `yaml:"path"`
-	Architecture string `yaml:"architecture"`
+	Path         string        `yaml:"path"`
+	Architecture string        `yaml:"architecture"`
+	Packages     []rpm.Package `yaml:"packages"`
 }
 
 type MSI struct {

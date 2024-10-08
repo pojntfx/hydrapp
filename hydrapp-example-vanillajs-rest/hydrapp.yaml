@@ -51,8 +51,10 @@ dmg:
 flatpak:
 - path: flatpak/x86_64
   architecture: amd64
+  packages: []
 - path: flatpak/aarch64
   architecture: arm64
+  packages: []
 msi:
 - path: msi/x86_64
   architecture: amd64

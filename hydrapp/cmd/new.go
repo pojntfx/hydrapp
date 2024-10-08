@@ -357,6 +357,7 @@ var newCmd = &cobra.Command{
 				flatpaks = append(flatpaks, config.Flatpak{
 					Path:         path.Join("flatpak", utils.GetArchIdentifier(arch)),
 					Architecture: arch,
+					Packages:     []rpm.Package{},
 				})
 			}
 			cfg.Flatpak = flatpaks

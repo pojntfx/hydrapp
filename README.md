@@ -596,6 +596,7 @@ dmg:
 # flatpak:
 # - path: flatpak/x86_64
 #   architecture: amd64
+#   packages: []
 msi:
   - path: msi/x86_64
     architecture: amd64
@@ -620,7 +621,7 @@ rpm:
 #   packages: []
 ```
 
-Note that while the DEB and RPM builds automatically include these packages as dependencies, for DMG and MSI builds, you must still ensure that the necessary runtime libraries are installed on your users' systems unless you manually set up static linking.
+For a real-world example of this, check out [Connmapper](https://github.com/pojntfx/connmapper). Note that while the DEB and RPM builds automatically include these packages as dependencies, for DMG and MSI builds, you must still ensure that the necessary runtime libraries are installed on your users' systems unless you manually set up static linking.
 
 ### How can I provide a tagged, alpha, beta, insider etc. channel/edition/version of my app?
 

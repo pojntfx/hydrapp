@@ -37,6 +37,11 @@ fi
 # Install pre-build SDKs
 flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//23.08" "org.freedesktop.Sdk//23.08" "org.freedesktop.Sdk.Extension.golang//23.08" "org.freedesktop.Sdk.Extension.node20//23.08"
 
+# Install extra references
+if [ "${FLATPAKREFS}" != "" ]; then
+    flatpak install -y --arch="${DEBARCH}" 'flathub' ${FLATPAKREFS}
+fi
+
 # Build app and export to repo
 flatpak-builder -y --arch="${DEBARCH}" --gpg-sign="$(echo ${PGP_KEY_ID} | base64 -d)" --repo='/hydrapp/dst' --force-clean "build-dir" "${GOMAIN}/${APP_ID}.json"
 
