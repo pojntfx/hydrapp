@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Fri, 23 Aug 2024 15:00:00 +0100
+Source: com.pojtinger.felicitas.hydrapp.example.react.panrpc.main
+Binary: com.pojtinger.felicitas.hydrapp.example.react.panrpc.main
+Architecture: source arm64
+Version: 0.0.2~1728367867
+Distribution: unstable
+Urgency: medium
+Maintainer: Felicitas Pojtinger <felicitas@pojtinger.com>
+Changed-By: Felicitas Pojtinger <felicitas@pojtinger.com>
+Description:
+ com.pojtinger.felicitas.hydrapp.example.react.panrpc.main - hydrapp React and panrpc example app
+Changes:
+ com.pojtinger.felicitas.hydrapp.example.react.panrpc.main (0.0.2~1728367867) unstable; urgency=medium
+ .
+   * Maintenance updates to match the state of the art of hydrapp apps
+Checksums-Sha1:
+ 7313eeb39de02dd83565ef5971f9ab0ed565fc59 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867.dsc
+ f9576400ba05e86f334acf860a0e147123998ccc 3232912 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867.tar.xz
+ 5e4726c0f562f64d2eb80e5145287098dc2dbcd7 20751 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867_arm64.buildinfo
+ 4e71b42979c6f8fd5928de6b5e2b061dca0add0f 3319948 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867_arm64.deb
+Checksums-Sha256:
+ d16b4625aaaf267deda056c2499c635b99cc99ab38cdbaeeb2293064fe644210 1183 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867.dsc
+ 3b1a2d9af0736a595445a13eabdc7583ef16122703457b0c1234383c5cd39b46 3232912 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867.tar.xz
+ c8ffda82075fc9774465e5da710e7626a16547cc41a03e4047cfd0c6e7619c0f 20751 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867_arm64.buildinfo
+ db399320b5c2d0868adf01f9bcc5e28f3b9fd99c1ca73f3533103a62d169a37f 3319948 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867_arm64.deb
+Files:
+ a2fb925cac6e02937e4b66949b1238ae 1183 utils optional com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867.dsc
+ 2dc003c3d2c30c9e04ed7e6107d8721d 3232912 utils optional com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867.tar.xz
+ 39925907785c53fdef9ed0b8b23f163f 20751 utils optional com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867_arm64.buildinfo
+ 046cf5f0af324230c5aef151491c74b3 3319948 utils optional com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1728367867_arm64.deb
