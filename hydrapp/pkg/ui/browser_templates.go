@@ -24,8 +24,13 @@ user_pref("browser.link.open_newwindow", 1);`
 #searchbar,
 #PersonalToolbar,
 #tabbrowser-tabs,
-#TabsToolbar #firefox-view-button {
+#TabsToolbar #firefox-view-button,
+#alltabs-button {
   visibility: collapse !important;
+}
+
+#navigator-toolbox {
+    border: 0 !important;
 }
 
 #navigator-toolbox[inFullscreen] {
