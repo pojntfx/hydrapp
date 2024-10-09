@@ -125,17 +125,26 @@ func LaunchBrowser(
 
 	// Find browser binary
 	browserIsFlatpak := false
+	browserIsInSandbox := false
 	if browserBinary[0] == "" {
 	i:
 		for _, browser := range browsers {
 			// Find native browser
 			for _, binary := range browser.LinuxBinaries {
 				if runningInFlatpak {
-					// Find supported browser from Flatpak
+					// Find supported browser on host from Flatpak
 					if err := exec.CommandContext(ctx, flatpakSpawnCmd, flatpakSpawnHost, "which", binary[0]).Run(); err == nil {
 						browserBinary = []string{binary[0]}
 
 						break i
+					} else {
+						// Find supported browser in sandbox from Flatpak
+						if _, err := exec.LookPath(binary[0]); err == nil {
+							browserBinary = []string{binary[0]}
+							browserIsInSandbox = true
+
+							break i
+						}
 					}
 				} else {
 					// Find supported browser in native install
@@ -249,8 +258,8 @@ func LaunchBrowser(
 		browserBinary = append([]string{flatpakCmd, "run", "--filesystem=home", "--socket=wayland"}, browserBinary...) // These Flatpak flags are required for Wayland support under Firefox and profile support under Epiphany
 	}
 
-	// Add `flatpak-spawn` prefix if running in Flatpak
-	if runningInFlatpak {
+	// Add `flatpak-spawn` prefix if running in Flatpak, but the browser is not in the sandbox
+	if runningInFlatpak && !browserIsInSandbox {
 		browserBinary = append([]string{flatpakSpawnCmd, flatpakSpawnHost}, browserBinary...)
 	}
 
