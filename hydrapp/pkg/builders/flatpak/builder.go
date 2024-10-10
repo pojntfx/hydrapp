@@ -258,7 +258,7 @@ func (b *Builder) Build() error {
 
 	references := []string{}
 	for _, reference := range b.references {
-		references = append(references, `"`+reference.Name+"//"+reference.Version+`"`)
+		references = append(references, reference.Name+"//"+reference.Version)
 	}
 
 	return executors.DockerRunImage(
