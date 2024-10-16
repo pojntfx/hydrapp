@@ -20,6 +20,9 @@ export BASEDIR="${PWD}/${GOMAIN}"
 echo "%_signature gpg
 %_gpg_name $(echo ${PGP_KEY_ID} | base64 -d)" >"${HOME}/.rpmmacros"
 
+# Use `fuse-overlayfs` to allow using Docker in Docker for builds
+sed -i 's/#mount_program/mount_program/' /usr/share/containers/storage.conf
+
 # Build tarball and source package
 export PACKAGE="${APP_ID}-${PACKAGE_VERSION}"
 export SUFFIX="${BRANCH_TIMESTAMP_UNIX}.${PACKAGE_SUFFIX}"
