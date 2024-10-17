@@ -1,9 +1,11 @@
-go 1.21.1
+go 1.22.0
+
+toolchain go1.22.7
 
 use (
 	.
 	./hydrapp
-	./hydrapp-example-vanillajs-rest
-	./hydrapp-example-vanillajs-forms
 	./hydrapp-example-react-panrpc
+	./hydrapp-example-vanillajs-forms
+	./hydrapp-example-vanillajs-rest
 )
