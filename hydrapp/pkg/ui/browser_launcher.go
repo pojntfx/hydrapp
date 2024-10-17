@@ -131,49 +131,23 @@ func LaunchBrowser(
 		for _, browser := range browsers {
 			// Find native browser
 			for _, binary := range browser.LinuxBinaries {
-				if runningInFlatpak {
-					// Find supported browser on host from Flatpak
-					if err := exec.CommandContext(ctx, flatpakSpawnCmd, flatpakSpawnHost, "which", binary[0]).Run(); err == nil {
-						browserBinary = []string{binary[0]}
+				// Find supported native browser in native install or in Flatpak sandbox
+				if _, err := exec.LookPath(binary[0]); err == nil {
+					browserBinary = []string{binary[0]}
 
-						break i
-					} else {
-						// Find supported browser in sandbox from Flatpak
-						if _, err := exec.LookPath(binary[0]); err == nil {
-							browserBinary = []string{binary[0]}
-							browserIsInSandbox = true
-
-							break i
-						}
+					if runningInFlatpak {
+						browserIsInSandbox = true
 					}
-				} else {
-					// Find supported browser in native install
-					if _, err := exec.LookPath(binary[0]); err == nil {
-						browserBinary = []string{binary[0]}
 
-						break i
-					}
+					break i
 				}
 			}
 
 			// Find Flatpak browser
 			if _, err := exec.LookPath(flatpakCmd); err == nil {
 				for _, flatpak := range browser.Flatpaks {
-					if runningInFlatpak {
-						// Find supported browser from Flatpak
-						apps, err := exec.CommandContext(ctx, flatpakSpawnCmd, flatpakSpawnHost, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
-						if err != nil {
-							return false, errors.Join(ErrCouldNotListBrowserFlatpaks, err)
-						}
-
-						if strings.Contains(string(apps), flatpak[0]) {
-							browserBinary = []string{flatpak[0]}
-							browserIsFlatpak = true
-
-							break i
-						}
-					} else {
-						// Find supported browser in native install
+					if !runningInFlatpak {
+						// Find supported Flatpak browser in native install
 						apps, err := exec.CommandContext(ctx, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
 						if err != nil {
 							return false, errors.Join(ErrCouldNotListBrowserFlatpaks, err)
@@ -207,6 +181,39 @@ func LaunchBrowser(
 						browserBinary = []string{binary[0]}
 
 						break i
+					}
+				}
+			}
+		}
+	}
+
+	if browserBinary[0] == "" && runningInFlatpak {
+	k:
+		for _, browser := range browsers {
+			// Find native browser
+			for _, binary := range browser.LinuxBinaries {
+				// Find supported native browser on host from Flatpak
+				if err := exec.CommandContext(ctx, flatpakSpawnCmd, flatpakSpawnHost, "which", binary[0]).Run(); err == nil {
+					browserBinary = []string{binary[0]}
+
+					break k
+				}
+			}
+
+			// Find Flatpak browser
+			if _, err := exec.LookPath(flatpakCmd); err == nil {
+				for _, flatpak := range browser.Flatpaks {
+					// Find supported Flatpak browser on host from Flatpak
+					apps, err := exec.CommandContext(ctx, flatpakSpawnCmd, flatpakSpawnHost, flatpakCmd, flatpakList, flatpakColumns).CombinedOutput()
+					if err != nil {
+						return false, errors.Join(ErrCouldNotListBrowserFlatpaks, err)
+					}
+
+					if strings.Contains(string(apps), flatpak[0]) {
+						browserBinary = []string{flatpak[0]}
+						browserIsFlatpak = true
+
+						break k
 					}
 				}
 			}
@@ -535,10 +542,8 @@ func LaunchBrowser(
 			[]byte(fmt.Sprintf(
 				epiphanyDesktopFileTemplate,
 				appName,
-				appName,
 				profileDir,
 				url,
-				appName,
 				epiphanyID,
 			)),
 			0664); err != nil {

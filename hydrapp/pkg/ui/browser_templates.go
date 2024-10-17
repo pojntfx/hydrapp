@@ -57,7 +57,7 @@ user_pref("browser.link.open_newwindow", 1);`
 
 	epiphanyDesktopFileTemplate = `[Desktop Entry]
 Name=%v
-Exec=epiphany --name="%v" --class="%v" --new-window --application-mode --profile="%v" "%v"
+Exec=epiphany --new-window --application-mode --profile="%v" "%v"
 StartupNotify=true
 Terminal=false
 Type=Application
