@@ -33,7 +33,7 @@ user_pref("browser.link.open_newwindow", 1);`
     border: 0 !important;
 }
 
-#navigator-toolbox[inFullscreen] {
+:root[sizemode="fullscreen"] #navigator-toolbox {
     position: relative;
     z-index: 1;
     height: 3px;
@@ -42,14 +42,14 @@ user_pref("browser.link.open_newwindow", 1);`
     overflow: hidden;
 }
 
-#navigator-toolbox[inFullscreen]:hover {
+:root[sizemode="fullscreen"] #navigator-toolbox:hover {
     height: auto;
     margin-bottom: 0px;
     opacity: 1;
     overflow: show;
 }
 
-#content-deck[inFullscreen]{
+:root[sizemode="fullscreen"] #content-deck{
     position:relative;
     z-index: 0;
 }
