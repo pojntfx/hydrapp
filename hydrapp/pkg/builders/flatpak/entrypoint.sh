@@ -35,7 +35,7 @@ elif [ "${ARCHITECTURE}" = "arm64" ]; then
 fi
 
 # Install pre-build SDKs
-flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//23.08" "org.freedesktop.Sdk//23.08" "org.freedesktop.Sdk.Extension.golang//23.08" "org.freedesktop.Sdk.Extension.node20//23.08"
+flatpak install -y --arch="${DEBARCH}" 'flathub' "org.freedesktop.Platform//24.08" "org.freedesktop.Sdk//24.08" "org.freedesktop.Sdk.Extension.golang//24.08" "org.freedesktop.Sdk.Extension.node20//24.08"
 
 # Install extra references
 if [ "${FLATPAKREFS}" != "" ]; then
