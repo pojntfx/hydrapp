@@ -23,41 +23,23 @@ user_pref("browser.sessionstore.resume_from_crash", false);
 user_pref("ui.key.menuAccessKeyFocuses", false);`
 	userChromeCSSContent = `@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-#nav-bar,
-#urlbar-container,
-#searchbar,
+#TabsToolbar-customization-target {
+  visibility: hidden !important;
+}
+
 #PersonalToolbar,
-#tabbrowser-tabs,
-#TabsToolbar #firefox-view-button,
-#alltabs-button {
-  visibility: collapse !important;
+#tabbrowser-tabs {
+  display: none !important;
 }
 
-#navigator-toolbox {
-    border: 0 !important;
-}
-
-:root[sizemode="fullscreen"] #navigator-toolbox {
-    position: relative;
-    z-index: 1;
-    height: 3px;
-    margin-bottom: -3px;
-    opacity: 0;
-    overflow: hidden;
-}
-
-:root[sizemode="fullscreen"] #navigator-toolbox:hover {
-    height: auto;
-    margin-bottom: 0px;
-    opacity: 1;
-    overflow: show;
-}
-
-:root[sizemode="fullscreen"] #content-deck{
-    position:relative;
-    z-index: 0;
-}
-`
+#nav-bar {
+  z-index: -1;
+  height: 0;
+  width: 0;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  border: 0 !important;
+}`
 
 	epiphanyDesktopFileTemplate = `[Desktop Entry]
 Name=%v
