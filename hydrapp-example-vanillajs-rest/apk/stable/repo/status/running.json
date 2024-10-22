@@ -1,1 +1,1 @@
-{"/etc/issue.net":"Debian GNU/Linux 12","commandLine":["/usr/bin/fdroid gpgsign"],"endTimestamp":1729125620701,"signed":["com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.apk","entry.json","index-v1.json","index-v2.json"],"startTimestamp":1729125619000,"subcommand":"gpgsign"}
+{"/etc/issue.net":"Debian GNU/Linux 12","commandLine":["/usr/bin/fdroid gpgsign"],"endTimestamp":1729580783977,"signed":["com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.apk","entry.json","index-v1.json","index-v2.json"],"startTimestamp":1729580782000,"subcommand":"gpgsign"}
