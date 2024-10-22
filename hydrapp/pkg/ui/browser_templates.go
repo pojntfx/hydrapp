@@ -16,7 +16,11 @@ user_pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", 
 user_pref("disableResetPrompt", true);
 user_pref("trailhead.firstrun.branches", "nofirstrun-empty");
 user_pref("browser.aboutwelcome.enabled", false);
-user_pref("browser.link.open_newwindow", 1);`
+user_pref("browser.link.open_newwindow", 1);
+user_pref("full-screen-api.macos-native-full-screen", true);
+user_pref("browser.fullscreen.autohide", true);
+user_pref("browser.sessionstore.resume_from_crash", false);
+user_pref("ui.key.menuAccessKeyFocuses", false);`
 	userChromeCSSContent = `@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 #nav-bar,
