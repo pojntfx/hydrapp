@@ -28,7 +28,7 @@
         "install -D out/{{ .AppID }} /app/bin/{{ .AppID }}",
         "for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do cp {{ .GoMain }}/icon-${icon}.png out/icon-${icon}.png; done",
         "desktop-file-install --dir=/app/share/applications {{ .GoMain }}/{{ .AppID }}.desktop",
-        "appstream-util validate-relax {{ .GoMain }}/{{ .AppID }}.metainfo.xml",
+        "appstreamcli validate {{ .GoMain }}/{{ .AppID }}.metainfo.xml",
         "install -D -m 0644 {{ .GoMain }}/{{ .AppID }}.metainfo.xml /app/share/metainfo/{{ .AppID }}.metainfo.xml",
         "for icon in 16x16 22x22 24x24 32x32 36x36 48x48 64x64 72x72 96x96 128x128 192x192 256x256 512x512; do install -D -m 0644 out/icon-${icon}.png /app/share/icons/hicolor/${icon}/apps/{{ .AppID }}.png; done"
       ],
