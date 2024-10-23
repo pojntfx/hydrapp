@@ -285,18 +285,26 @@ func LaunchBrowser(
 		}
 		userDataDir := filepath.Join(userConfigDir, appID)
 
+		execArgs := []string{
+			"--name=" + appName,
+			"--class=" + appName,
+			"--user-data-dir=" + userDataDir,
+			"--no-first-run",
+			"--no-default-browser-check",
+			"--app=" + url,
+		}
+
+		// If we are on Linux, in a Flatpak sandbox, are running a browser that itself is in the sandbox and
+		// are on Wayland, enable the Ozone platform abstraction layer for Chromium to support launching Chromium in Wayland
+		if runtime.GOOS == "linux" && runningInFlatpak && browserIsInSandbox && os.Getenv("XDG_SESSION_TYPE") == "wayland" {
+			execArgs = append(execArgs, "--ozone-platform-hint=auto")
+		}
+
 		// Create the browser instance
 		execLine := append(
 			browserBinary,
 			append(
-				[]string{
-					"--name=" + appName,
-					"--class=" + appName,
-					"--user-data-dir=" + userDataDir,
-					"--no-first-run",
-					"--no-default-browser-check",
-					"--app=" + url,
-				},
+				execArgs,
 				os.Args[1:]...,
 			)...,
 		)
