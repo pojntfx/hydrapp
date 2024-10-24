@@ -42,12 +42,14 @@ user_pref("ui.key.menuAccessKeyFocuses", false);`
 }`
 
 	epiphanyDesktopFileTemplate = `[Desktop Entry]
-Name=%v
-Exec=epiphany --new-window --application-mode --profile="%v" "%v"
+Exec=%v --new-window --application-mode --profile="%v" "%v"
 StartupNotify=true
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;
 StartupWMClass=%v
-X-Purism-FormFactor=Workstation;Mobile;`
+X-Purism-FormFactor=Workstation;Mobile;
+Name=%v
+Icon=%v
+NoDisplay=true`
 )

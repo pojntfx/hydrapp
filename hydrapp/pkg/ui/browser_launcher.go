@@ -38,6 +38,7 @@ var (
 	ErrCouldNotWriteFirefoxUserChromeCSSFile                 = errors.New("could not write Firefox userChrome CSS file")
 	ErrCouldNotCreateEpiphanyProfileDirectory                = errors.New("could not create Epiphany profile directory")
 	ErrCouldNotWriteDesktopFile                              = errors.New("could not write desktop file")
+	ErrCouldNotSymlinkDesktopFile                            = errors.New("could not symlink desktop file")
 	ErrCouldNotFindSupportedBrowser                          = errors.New("could not find a supported browser")
 	ErrCouldNotWaitForBrowserLockfileRemoval                 = errors.New("could not wait for browser lockfile removal")
 	ErrUnknownBrowserType                                    = errors.New("unknown browser type")
@@ -530,33 +531,61 @@ func LaunchBrowser(
 
 		// Launch Epiphany-like browser
 	case BrowserTypeEpiphany:
-		// Get the user's home directory in which the profiles should be created
-		home, err := os.UserHomeDir()
-		if err != nil {
-			return false, errors.Join(ErrCouldNotGetUserHomeDir, err)
+		// Get the user's data directory in which the profiles should be created
+		dataHomeDir := os.Getenv("XDG_DATA_HOME")
+		if strings.TrimSpace(dataHomeDir) == "" {
+			userHomeDir, err := os.UserHomeDir()
+			if err != nil {
+				return false, errors.Join(ErrCouldNotGetUserHomeDir, err)
+			}
+
+			dataHomeDir = filepath.Join(userHomeDir, ".local", "share")
 		}
 
 		// Create the profile directory
 		epiphanyID := "org.gnome.Epiphany.WebApp_" + appID
-		profileDir := filepath.Join(home, ".local", "share", epiphanyID)
 
-		if err := os.MkdirAll(filepath.Join(profileDir, ".app"), 0755); err != nil {
+		applicationsDir := filepath.Join(dataHomeDir, "applications")
+		if err := os.MkdirAll(applicationsDir, 0755); err != nil {
 			return false, errors.Join(ErrCouldNotCreateEpiphanyProfileDirectory, err)
 		}
 
+		profileDir := filepath.Join(dataHomeDir, epiphanyID)
+		if err := os.MkdirAll(filepath.Join(profileDir, ".app"), 0755); err != nil {
+			panic(err)
+		}
+		defer os.RemoveAll(profileDir)
+
 		// Create the .desktop file
+		desktopFilePath := filepath.Join(applicationsDir, epiphanyID+".desktop")
 		if err := os.WriteFile(
-			filepath.Join(profileDir, epiphanyID+".desktop"),
+			desktopFilePath,
 			[]byte(fmt.Sprintf(
 				epiphanyDesktopFileTemplate,
-				appName,
+				browserBinary[0],
 				profileDir,
 				url,
 				epiphanyID,
+				appName,
+				appID,
 			)),
-			0664); err != nil {
+			0664,
+		); err != nil {
 			return false, errors.Join(ErrCouldNotWriteDesktopFile, err)
 		}
+		defer os.RemoveAll(desktopFilePath)
+
+		// Symlink .desktop file to expected XDG directories
+		xdgApplicationsDir := filepath.Join(dataHomeDir, "xdg-desktop-portal", "applications")
+		if err := os.MkdirAll(xdgApplicationsDir, 0755); err != nil {
+			return false, errors.Join(ErrCouldNotSymlinkDesktopFile, err)
+		}
+
+		xdgApplicationsDesktopFilePath := filepath.Join(xdgApplicationsDir, epiphanyID+".desktop")
+		if err := os.Symlink(desktopFilePath, xdgApplicationsDesktopFilePath); err != nil {
+			return false, errors.Join(ErrCouldNotSymlinkDesktopFile, err)
+		}
+		defer os.RemoveAll(xdgApplicationsDesktopFilePath)
 
 		// Create the browser instance
 		execLine := append(
