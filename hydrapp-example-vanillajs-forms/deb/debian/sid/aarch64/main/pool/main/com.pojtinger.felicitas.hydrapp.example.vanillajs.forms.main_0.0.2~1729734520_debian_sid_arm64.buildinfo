@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main
 Architecture: arm64 source
 Version: 0.0.2~1729734520
 Checksums-Md5:
- 068c92e0efdf7b27d387386f30614bb0 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520.dsc
+ b8e618c9e784963c2881f5c2ea477cf9 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520.dsc
  3e096652c17c60201550aaca0b89bd11 3154992 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520_arm64.deb
 Checksums-Sha1:
- b1eddcbb1c627e19db6cf153a5030162cb98b412 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520.dsc
+ 4d09796e38af8389513b7547f106b2b4e5259fb1 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520.dsc
  51919df7af4dae4ad32f50e8e935a071461fa852 3154992 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520_arm64.deb
 Checksums-Sha256:
- 75d46d617993cbb51fbb502d6f84cc0d2225b29595b472ec2ffe10a022bc7b13 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520.dsc
+ 907440fc16646bd6899a1e9b0f49b0327642824cf7c79d98e299df0963308d84 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520.dsc
  03b5618ac00e7beab0d03890b27a91022019e2289408b79a5277608b4b6b7244 3154992 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1729734520_arm64.deb
 Build-Origin: Debian
 Build-Architecture: arm64
-Build-Date: Thu, 24 Oct 2024 02:16:36 +0000
+Build-Date: Sun, 27 Oct 2024 00:57:16 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main-0.0.2~1729734520
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -141,12 +141,12 @@ Installed-Build-Depends:
  libjs-typedarray-to-buffer (= 4.0.0-2),
  libjs-util (= 0.12.5+~1.0.10-1),
  libk5crypto3 (= 1.21.3-3),
- libkeyutils1 (= 1.6.3-3.1),
+ libkeyutils1 (= 1.6.3-4),
  libkrb5-3 (= 1.21.3-3),
  libkrb5support0 (= 1.21.3-3),
  libldap-2.5-0 (= 2.5.18+dfsg-3+b1),
  liblsan0 (= 14.2.0-7),
- liblzma5 (= 5.6.2-2),
+ liblzma5 (= 5.6.3-1),
  libmagic-mgc (= 1:5.45-3),
  libmagic1t64 (= 1:5.45-3),
  libmd0 (= 1.1.0-2),
@@ -572,7 +572,7 @@ Installed-Build-Depends:
  python3-minimal (= 3.12.6-1),
  python3-more-itertools (= 10.5.0-1),
  python3-packaging (= 24.1-1),
- python3-pkg-resources (= 74.1.2-2),
+ python3-pkg-resources (= 75.2.0-1),
  python3-typeguard (= 4.3.0-1),
  python3-typing-extensions (= 4.12.2-2),
  python3.12 (= 3.12.7-1),
@@ -589,7 +589,7 @@ Installed-Build-Depends:
  usr-is-merged (= 39),
  util-linux (= 2.40.2-9),
  webpack (= 5.94.0+dfsg1+~cs11.18.26-2),
- xz-utils (= 5.6.2-2),
+ xz-utils (= 5.6.3-1),
  zlib1g (= 1:1.3.dfsg+really1.3.1-1)
 Environment:
  DEB_BUILD_OPTIONS="parallel=4"

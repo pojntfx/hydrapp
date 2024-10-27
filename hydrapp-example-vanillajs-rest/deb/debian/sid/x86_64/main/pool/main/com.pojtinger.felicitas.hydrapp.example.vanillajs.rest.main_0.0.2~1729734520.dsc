@@ -12,8 +12,8 @@ Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), golang-go (>= 1.21), ca-ce
 Package-List:
  com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main deb utils optional arch=any
 Checksums-Sha1:
- ccf00f1802070b51b3228da84e04a659f3f6aec0 3238700 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1729734520.tar.xz
+ 5a9f23b118dbf0700e0b475c9342192c571aa24d 3236720 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1729734520.tar.xz
 Checksums-Sha256:
- f6efdda4dd23d5ca92451ea2bdf7835a09048891359784d52d8f6e0b28360531 3238700 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1729734520.tar.xz
+ bb41afb049ce0759def603e37613f4d128c2f691513179046baaca4514f37e82 3236720 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1729734520.tar.xz
 Files:
- 342bff5f7519706f1323f11fb42a9257 3238700 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1729734520.tar.xz
+ 2b6a219ce58491901e27275f1817afa3 3236720 com.pojtinger.felicitas.hydrapp.example.vanillajs.rest.main_0.0.2~1729734520.tar.xz
