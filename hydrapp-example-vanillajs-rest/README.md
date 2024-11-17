@@ -36,7 +36,7 @@ All arguments passed to the binary will be forwarded to the browser used to disp
 
 To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-To build and start a development version of hydrapp Vanilla JS and REST locally, run the following:
+To build and start a development version of hydrapp Vanilla JS and REST locally, first install [Go](https://go.dev/), then run the following:
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git --single-branch

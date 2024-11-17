@@ -693,7 +693,7 @@ hydrapp-based apps receive updates automatically, either through their system's 
 
 To contribute, please use the [GitHub flow](https://guides.github.com/introduction/flow/) and follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-To build and start a development version of one of the examples locally, run the following:
+To build and start a development version of one of the examples locally, first install [Go](https://go.dev/) and [npm](https://www.npmjs.com/), then run the following:
 
 ```shell
 $ git clone https://github.com/pojntfx/hydrapp.git --single-branch
