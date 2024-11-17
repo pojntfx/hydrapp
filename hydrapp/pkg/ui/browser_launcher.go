@@ -367,6 +367,11 @@ func LaunchBrowser(
 
 		// Get the profile's directory
 		firefoxDir := filepath.Join(home, ".mozilla", "firefox")
+		if _, err := os.Stat(firefoxDir); err != nil {
+			// Fall back to non-standard (e.g. snap) profile directories
+			firefoxDir = filepath.Join(home, "snap", "firefox", "common", ".mozilla", "firefox")
+		}
+
 		if runtime.GOOS == "windows" || runtime.GOOS == "darwin" {
 			userConfigDir, err := os.UserConfigDir()
 			if err != nil {
