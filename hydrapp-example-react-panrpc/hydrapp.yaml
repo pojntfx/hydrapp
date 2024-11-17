@@ -61,14 +61,14 @@ msi:
   include: ^\\b$
   packages: []
 rpm:
-- path: rpm/fedora/40/x86_64
-  trailer: fc40
-  distro: fedora-40
+- path: rpm/fedora/41/x86_64
+  trailer: fc41
+  distro: fedora-41
   architecture: amd64
   packages: []
-- path: rpm/fedora/40/aarch64
-  trailer: fc40
-  distro: fedora-40
+- path: rpm/fedora/41/aarch64
+  trailer: fc41
+  distro: fedora-41
   architecture: arm64
   packages: []
 apk:
