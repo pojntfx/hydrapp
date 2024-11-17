@@ -167,9 +167,9 @@ Android</a></li>
 <code>amd64</code></a></li>
 <li><a href="#debian-sid-on-arm64"><span class="toc-section-number">1.3</span> Debian Sid on
 <code>arm64</code></a></li>
-<li><a href="#fedora-40-on-amd64"><span class="toc-section-number">1.4</span> Fedora 40 on
+<li><a href="#fedora-41-on-amd64"><span class="toc-section-number">1.4</span> Fedora 41 on
 <code>amd64</code></a></li>
-<li><a href="#fedora-40-on-arm64"><span class="toc-section-number">1.5</span> Fedora 40 on
+<li><a href="#fedora-41-on-arm64"><span class="toc-section-number">1.5</span> Fedora 41 on
 <code>arm64</code></a></li>
 <li><a href="#macos"><span class="toc-section-number">1.6</span>
 macOS</a></li>
@@ -272,18 +272,18 @@ EOT</code></pre>
 <p>hydrapp React and panrpc Example should now be installed and receive
 updates automatically.</p>
 </section>
-<section id="fedora-40-on-amd64" data-number="0.4">
+<section id="fedora-41-on-amd64" data-number="0.4">
 <h2 data-number="1.4"><span class="header-section-number">1.4</span>
-Fedora 40 on <code>amd64</code></h2>
+Fedora 41 on <code>amd64</code></h2>
 <p>To install the prebuilt binary package, run the following:</p>
 <pre class="shell"><code>pkexec sudo bash - &lt;&lt;&#39;EOT&#39;
-dnf config-manager --add-repo &#39;https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//rpm/fedora/40/x86_64/stable/repodata/hydrapp.repo&#39;
+dnf config-manager --add-repo &#39;https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//rpm/fedora/41/x86_64/stable/repodata/hydrapp.repo&#39;
 dnf install -y &#39;com.pojtinger.felicitas.hydrapp.example.react.panrpc&#39;
 EOT</code></pre>
 <p>To install the source package, build the binary package locally and
 install it, run the following:</p>
 <pre class="shell"><code>pkexec sudo bash - &lt;&lt;&#39;EOT&#39;
-dnf config-manager --add-repo &#39;https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//rpm/fedora/40/x86_64/stable/repodata/hydrapp.repo&#39;
+dnf config-manager --add-repo &#39;https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//rpm/fedora/41/x86_64/stable/repodata/hydrapp.repo&#39;
 
 dnf install -y rpm-build
 dnf download --source -y &#39;com.pojtinger.felicitas.hydrapp.example.react.panrpc&#39;
@@ -294,18 +294,18 @@ EOT</code></pre>
 <p>hydrapp React and panrpc Example should now be installed and receive
 updates automatically.</p>
 </section>
-<section id="fedora-40-on-arm64" data-number="0.5">
+<section id="fedora-41-on-arm64" data-number="0.5">
 <h2 data-number="1.5"><span class="header-section-number">1.5</span>
-Fedora 40 on <code>arm64</code></h2>
+Fedora 41 on <code>arm64</code></h2>
 <p>To install the prebuilt binary package, run the following:</p>
 <pre class="shell"><code>pkexec sudo bash - &lt;&lt;&#39;EOT&#39;
-dnf config-manager --add-repo &#39;https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//rpm/fedora/40/aarch64/stable/repodata/hydrapp.repo&#39;
+dnf config-manager --add-repo &#39;https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//rpm/fedora/41/aarch64/stable/repodata/hydrapp.repo&#39;
 dnf install -y &#39;com.pojtinger.felicitas.hydrapp.example.react.panrpc&#39;
 EOT</code></pre>
 <p>To install the source package, build the binary package locally and
 install it, run the following:</p>
 <pre class="shell"><code>pkexec sudo bash - &lt;&lt;&#39;EOT&#39;
-dnf config-manager --add-repo &#39;https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//rpm/fedora/40/aarch64/stable/repodata/hydrapp.repo&#39;
+dnf config-manager --add-repo &#39;https://pojntfx.github.io/hydrapp/hydrapp-example-react-panrpc//rpm/fedora/41/aarch64/stable/repodata/hydrapp.repo&#39;
 
 dnf install -y rpm-build
 dnf download --source -y &#39;com.pojtinger.felicitas.hydrapp.example.react.panrpc&#39;
