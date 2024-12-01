@@ -12,8 +12,8 @@ Build-Depends: debhelper (>= 12.10), git (>= 2.20.1), golang-go (>= 1.21), ca-ce
 Package-List:
  com.pojtinger.felicitas.hydrapp.example.react.panrpc.main deb utils optional arch=any
 Checksums-Sha1:
- 8ed33b93de3b481daff0d66206e0ae4b418f0bbc 3234360 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.tar.xz
+ 9c371c4252e02c624ecd66f2354a32defac60a98 3234296 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.tar.xz
 Checksums-Sha256:
- 379d5e90dfa47ea0d5d6b63cbfa5997281f1546221ea39794702b627b96c95d8 3234360 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.tar.xz
+ 79c612e48a54cd8a6e93bb4871f791e9ad3899e57d2dd9ec2f4b78641eda64dc 3234296 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.tar.xz
 Files:
- f1c301ed6bd82c8bda4cc91f6e4a7a80 3234360 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.tar.xz
+ 07ff7bf01cb44359c847d9190a064283 3234296 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.tar.xz

@@ -15,17 +15,17 @@ Changes:
  .
    * Maintenance updates to match the state of the art of hydrapp apps
 Checksums-Sha1:
- b4165e4aa669ff6e53d2854248f57b8882ccefb5 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.dsc
- eb7add11b0f6405f8d920bf498eb57b62559c978 3237788 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.tar.xz
- 61b95d0c7bcb79a5efa80c59565e686d282c55e8 20523 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.buildinfo
- b2161bd3322c3aa85b4171108d4252839f3226ed 3157276 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.deb
+ f0cb83326d320524052b7700cf4e5b7e0951fe53 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.dsc
+ ab8e185a6e8b22daab8da75ecde190fd336026f3 3237792 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.tar.xz
+ 1d9b1a0453b5bc794fe20e1276f390633018c1a7 20593 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.buildinfo
+ 0f4810aeab74b42de409a87a1f993f634c1cb90e 3154444 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.deb
 Checksums-Sha256:
- 3bb1111abe6872f036ed25c8bcf1489b21dee20b87576926be30e928a002851f 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.dsc
- a797710b96d610b0914219c5be49792cf4b911b0cd54650b6ca9a211527d041a 3237788 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.tar.xz
- af552fe8bb4b5a14579c4466031863072ca278a2f1f1d85f555e7cf2cce2a1e5 20523 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.buildinfo
- 03e83d62657ac2721b4edf0ed6c0a0fbaea278543834249263735f03c8c5badd 3157276 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.deb
+ c947179c0e1c9201ce465816d065503ccf0f74e697011de9a4110047c61cffed 1199 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.dsc
+ 74033e0b2aa9cba68c50ca89159a4f70333f101526fae5b088d9a5f17a677cd5 3237792 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.tar.xz
+ 2175a6240d6a0d205df7a5af41285be3b5d999adc049ffab2f1b14d764241a04 20593 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.buildinfo
+ 615a2724a571875286feda1524f13dd7eb82d17c01bb5f031e252e8e5b0862ee 3154444 com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.deb
 Files:
- db38b4c8c9135e81dd9248f01954983a 1199 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.dsc
- d90eb3110c2a2a776c0d067944a2992a 3237788 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.tar.xz
- cfdea0a43efd55895802639c97c8e083 20523 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.buildinfo
- 0d3b30e23ce6d93172d737e31c2b0845 3157276 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.deb
+ 02a06868d5c91bc3541a9b4c662faa48 1199 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.dsc
+ a146346dade81a42fd7221616044ad00 3237792 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799.tar.xz
+ 6c57cf7cb03af33f102438eaacfa213f 20593 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.buildinfo
+ 3da24b3c537d87a60d7ac821146860b7 3154444 utils optional com.pojtinger.felicitas.hydrapp.example.vanillajs.forms.main_0.0.2~1731811799_arm64.deb

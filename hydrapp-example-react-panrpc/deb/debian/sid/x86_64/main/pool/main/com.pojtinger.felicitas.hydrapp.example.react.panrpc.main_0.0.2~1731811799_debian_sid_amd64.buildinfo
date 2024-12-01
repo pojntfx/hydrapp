@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.react.panrpc.main
 Architecture: amd64 source
 Version: 0.0.2~1731811799
 Checksums-Md5:
- 43d452dd582d996f6af79555d3cf65dc 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.dsc
- 7779c2098fb2103979cd1005cae6b8da 3798100 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799_amd64.deb
+ 9e14fc7055da1e37092527088f349ea2 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.dsc
+ dee17d6c1b4a9cdeccde51f13bc1e053 3798092 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799_amd64.deb
 Checksums-Sha1:
- 736308d25c89b724a47152229b4f45bfd3fcd512 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.dsc
- 39fec6ec783fbee715d45c1779ee5b021c24feb2 3798100 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799_amd64.deb
+ 5552791d917f804916ca4b4f0943e19f08b49612 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.dsc
+ 4c65337edbcf143d54653d8e5424787031a22121 3798092 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799_amd64.deb
 Checksums-Sha256:
- 203a4aa17bf30317a83cec0beab0593efcbab029ec4f3d197f4ac10d3d78562b 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.dsc
- 0c4e9e0809eee5b2ca4f7639d658aedb7f4521583f88a7d37d8631bba0bfdbd1 3798100 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799_amd64.deb
+ 76ef71276027c3d35a4b09ae0dcc96e42e89c9793a7d6e9285a0a5a29a517308 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799.dsc
+ 29627566e6e7bfe43a30d5eaef46f3cc42710b9937338aa9588648351de6b176 3798092 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1731811799_amd64.deb
 Build-Origin: Debian
 Build-Architecture: amd64
-Build-Date: Sun, 24 Nov 2024 00:59:41 +0000
+Build-Date: Sun, 01 Dec 2024 01:11:43 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.react.panrpc.main-0.0.2~1731811799
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -27,9 +27,9 @@ Installed-Build-Depends:
  base-files (= 13.6),
  base-passwd (= 3.6.5),
  bash (= 5.2.32-1+b2),
- binutils (= 2.43.1-5),
- binutils-common (= 2.43.1-5),
- binutils-x86-64-linux-gnu (= 2.43.1-5),
+ binutils (= 2.43.50.20241126-3),
+ binutils-common (= 2.43.50.20241126-3),
+ binutils-x86-64-linux-gnu (= 2.43.50.20241126-3),
  bsdextrautils (= 2.40.2-11),
  bsdutils (= 1:2.40.2-11),
  build-essential (= 12.12),
@@ -44,7 +44,7 @@ Installed-Build-Depends:
  debconf (= 1.5.87),
  debhelper (= 13.20),
  debianutils (= 5.21),
- desktop-file-utils (= 0.27-2),
+ desktop-file-utils (= 0.28-1),
  dh-autoreconf (= 20),
  dh-strip-nondeterminism (= 1.14.0-1),
  diffutils (= 1:3.10-1),
@@ -87,7 +87,7 @@ Installed-Build-Depends:
  libattr1 (= 1:2.5.2-2),
  libaudit-common (= 1:4.0.2-2),
  libaudit1 (= 1:4.0.2-2),
- libbinutils (= 2.43.1-5),
+ libbinutils (= 2.43.50.20241126-3),
  libblkid1 (= 2.40.2-11),
  libbrotli1 (= 1.1.0-2+b6),
  libbz2-1.0 (= 1.0.8-6),
@@ -95,18 +95,18 @@ Installed-Build-Depends:
  libc-dev-bin (= 2.40-4),
  libc6 (= 2.40-4),
  libc6-dev (= 2.40-4),
- libcap-ng0 (= 0.8.5-3+b1),
+ libcap-ng0 (= 0.8.5-4),
  libcap2 (= 1:2.66-5+b1),
  libcares2 (= 1.34.2-1),
  libcc1-0 (= 14.2.0-8),
- libcom-err2 (= 1.47.1-1+b1),
+ libcom-err2 (= 1.47.2~rc1-1),
  libcrypt-dev (= 1:4.4.36-5),
  libcrypt1 (= 1:4.4.36-5),
- libctf-nobfd0 (= 2.43.1-5),
- libctf0 (= 2.43.1-5),
+ libctf-nobfd0 (= 2.43.50.20241126-3),
+ libctf0 (= 2.43.50.20241126-3),
  libcurl3t64-gnutls (= 8.11.0-1),
  libdb5.3t64 (= 5.3.28+dfsg2-9),
- libdebconfclient0 (= 0.273),
+ libdebconfclient0 (= 0.274),
  libdebhelper-perl (= 13.20),
  libdpkg-perl (= 1.22.11),
  libelf1t64 (= 0.192-4),
@@ -122,7 +122,7 @@ Installed-Build-Depends:
  libgmp10 (= 2:6.3.0+dfsg-2+b2),
  libgnutls30t64 (= 3.8.8-2),
  libgomp1 (= 14.2.0-8),
- libgprofng0 (= 2.43.1-5),
+ libgprofng0 (= 2.43.50.20241126-3),
  libgssapi-krb5-2 (= 1.21.3-3),
  libhogweed6t64 (= 3.10-1+b1),
  libhwasan0 (= 14.2.0-8),
@@ -156,11 +156,11 @@ Installed-Build-Depends:
  libncursesw6 (= 6.5-2+b1),
  libnettle8t64 (= 3.10-1+b1),
  libnghttp2-14 (= 1.64.0-1),
- libnghttp3-9 (= 1.4.0-1+b1),
- libngtcp2-16 (= 1.6.0-1),
- libngtcp2-crypto-gnutls8 (= 1.6.0-1),
- libnode-dev (= 20.18.0+dfsg-2),
- libnode115 (= 20.18.0+dfsg-2),
+ libnghttp3-9 (= 1.6.0-2),
+ libngtcp2-16 (= 1.9.1-1),
+ libngtcp2-crypto-gnutls8 (= 1.9.1-1),
+ libnode-dev (= 20.18.1+dfsg-1),
+ libnode115 (= 20.18.1+dfsg-1),
  libnsl2 (= 1.3.0-3+b3),
  libp11-kit0 (= 0.25.5-2+b1),
  libpam-modules (= 1.5.3-7+b1),
@@ -179,9 +179,9 @@ Installed-Build-Depends:
  librtmp1 (= 2.4+20151223.gitfa8646d.1-2+b5),
  libsasl2-2 (= 2.1.28+dfsg1-8),
  libsasl2-modules-db (= 2.1.28+dfsg1-8),
- libseccomp2 (= 2.5.5-1+b3),
+ libseccomp2 (= 2.5.5-2),
  libselinux1 (= 3.7-3+b1),
- libsframe1 (= 2.43.1-5),
+ libsframe1 (= 2.43.50.20241126-3),
  libsmartcols1 (= 2.40.2-11),
  libsqlite3-0 (= 3.46.1-1),
  libssh2-1t64 (= 1.11.1-1),
@@ -190,7 +190,7 @@ Installed-Build-Depends:
  libstdc++-14-dev (= 14.2.0-8),
  libstdc++6 (= 14.2.0-8),
  libstemmer0d (= 2.2.0-4+b2),
- libsystemd0 (= 257~rc2-3),
+ libsystemd0 (= 257~rc3-1),
  libtasn1-6 (= 4.19.0-3+b3),
  libtinfo6 (= 6.5-2+b1),
  libtirpc-common (= 1.3.4+ds-1.3),
@@ -199,7 +199,7 @@ Installed-Build-Depends:
  libtsan2 (= 14.2.0-8),
  libubsan1 (= 14.2.0-8),
  libuchardet0 (= 0.0.8-1+b2),
- libudev1 (= 257~rc2-3),
+ libudev1 (= 257~rc3-1),
  libunistring5 (= 1.2-1+b1),
  libuuid1 (= 2.40.2-11),
  libuv1-dev (= 1.48.0-7),
@@ -208,7 +208,7 @@ Installed-Build-Depends:
  libxmlb2 (= 0.3.21-1),
  libyaml-0-2 (= 0.2.5-1+b2),
  libzstd1 (= 1.5.6+dfsg-1+b1),
- linux-libc-dev (= 6.11.9-1),
+ linux-libc-dev (= 6.11.10-1),
  m4 (= 1.4.19-4),
  make (= 4.3-4.1),
  man-db (= 2.13.0-1),
@@ -345,7 +345,7 @@ Installed-Build-Depends:
  node-globby (= 13.1.3+~cs16.25.40-3),
  node-got (= 11.8.5+~cs58.13.36-5),
  node-graceful-fs (= 4.2.10-1),
- node-gyp (= 10.2.0+~5.0.0-1),
+ node-gyp (= 10.3.0+~5.0.0-1),
  node-has-flag (= 5.0.1-1),
  node-has-unicode (= 2.0.1-5),
  node-hosted-git-info (= 6.1.1-2),
@@ -556,7 +556,7 @@ Installed-Build-Depends:
  node-yallist (= 4.0.0+~4.0.1-1),
  node-yargs (= 16.2.0+~16.0.4-7),
  node-yargs-parser (= 21.1.1+~21.0.0-4),
- nodejs (= 20.18.0+dfsg-2),
+ nodejs (= 20.18.1+dfsg-1),
  npm (= 9.2.0~ds1-3),
  openssl (= 3.3.2-2),
  openssl-provider-legacy (= 3.3.2-2),
