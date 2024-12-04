@@ -28,7 +28,8 @@ user_pref("ui.key.menuAccessKeyFocuses", false);`
 }
 
 #PersonalToolbar,
-#tabbrowser-tabs {
+#tabbrowser-tabs,
+#urlbar {
   display: none !important;
 }
 
@@ -39,6 +40,7 @@ user_pref("ui.key.menuAccessKeyFocuses", false);`
   min-height: 0 !important;
   min-width: 0 !important;
   border: 0 !important;
+  overflow: hidden;
 }`
 
 	epiphanyDesktopFileTemplate = `[Desktop Entry]
