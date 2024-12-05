@@ -42,7 +42,7 @@ $ sudo install /tmp/hydrapp /usr/local/bin
 On macOS, you can use the following:
 
 ```shell
-$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.darwin-$(uname -m)"
+$ curl -L -o /tmp/hydrapp "https://github.com/pojntfx/hydrapp/releases/latest/download/hydrapp.darwin-$( [ "$(uname -m)" = "arm64" ] && echo "aarch64" || uname -m )"
 $ sudo install /tmp/hydrapp /usr/local/bin
 ```
 
