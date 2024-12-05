@@ -21,19 +21,20 @@ user_pref("full-screen-api.macos-native-full-screen", true);
 user_pref("browser.fullscreen.autohide", true);
 user_pref("browser.sessionstore.resume_from_crash", false);
 user_pref("ui.key.menuAccessKeyFocuses", false);`
-	userChromeCSSContent = `@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+	userChromeCSSContent = `@namespace html url("http://www.w3.org/1999/xhtml");
+@namespace xul url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
-#TabsToolbar-customization-target {
+xul|hbox#TabsToolbar-customization-target {
   visibility: hidden !important;
 }
 
-#PersonalToolbar,
-#tabbrowser-tabs,
-#urlbar {
+xul|toolbar#PersonalToolbar,
+xul|tabs#tabbrowser-tabs,
+xul|hbox#urlbar-background {
   display: none !important;
 }
 
-#nav-bar {
+xul|toolbar#nav-bar {
   z-index: -1;
   height: 0;
   width: 0;
@@ -41,6 +42,11 @@ user_pref("ui.key.menuAccessKeyFocuses", false);`
   min-width: 0 !important;
   border: 0 !important;
   overflow: hidden;
+}
+
+html|div#urlbar {
+  --urlbar-width: 0px !important;
+  --urlbar-height: 0px !important;
 }`
 
 	epiphanyDesktopFileTemplate = `[Desktop Entry]
