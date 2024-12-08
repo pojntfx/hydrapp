@@ -4,17 +4,17 @@ Binary: com.pojtinger.felicitas.hydrapp.example.react.panrpc.main
 Architecture: arm64 source
 Version: 0.0.2~1733366633
 Checksums-Md5:
- bf6adf8cccad03b3197d244c68df4c5a 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633.dsc
+ 713c686a5021ca437a454ab8fd7fd631 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633.dsc
  f7bfb4b9bdc47eeade2b897fe85024bf 3356428 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633_arm64.deb
 Checksums-Sha1:
- ed13516458cbb693536c034e86f36041b56345ec 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633.dsc
+ b67bf33c858f785cc9d83e960873302c92d860c5 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633.dsc
  4db90fab444af3962aa43c955036461a7f7083a9 3356428 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633_arm64.deb
 Checksums-Sha256:
- c03d77a988e07eabe7602513279707c21b22966540bcfd661e8e4e2a99257ab3 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633.dsc
+ f91b88873cd34486ee8b61f734e0efca010dc1fb97fd324ed8f1f79c2c8ca7ff 1178 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633.dsc
  9d7168facf1a04dda8db87ea2163ee9f5863fa0b1f8bcdf19ddbe428baf6a062 3356428 com.pojtinger.felicitas.hydrapp.example.react.panrpc.main_0.0.2~1733366633_arm64.deb
 Build-Origin: Debian
 Build-Architecture: arm64
-Build-Date: Thu, 05 Dec 2024 04:06:36 +0000
+Build-Date: Sun, 08 Dec 2024 01:02:49 +0000
 Build-Path: /build/com.pojtinger.felicitas.hydrapp.example.react.panrpc.main-0.0.2~1733366633
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
@@ -26,12 +26,12 @@ Installed-Build-Depends:
  autotools-dev (= 20220109.1),
  base-files (= 13.6),
  base-passwd (= 3.6.5),
- bash (= 5.2.32-1+b2),
+ bash (= 5.2.37-1),
  binutils (= 2.43.50.20241204-2),
  binutils-aarch64-linux-gnu (= 2.43.50.20241204-2),
  binutils-common (= 2.43.50.20241204-2),
- bsdextrautils (= 2.40.2-11),
- bsdutils (= 1:2.40.2-11),
+ bsdextrautils (= 2.40.2-12),
+ bsdutils (= 1:2.40.2-12),
  build-essential (= 12.12),
  bzip2 (= 1.0.8-6),
  ca-certificates (= 20240203),
@@ -72,7 +72,7 @@ Installed-Build-Depends:
  golang-go (= 2:1.23~2),
  golang-src (= 2:1.23~2),
  grep (= 3.11-4+b1),
- groff-base (= 1.23.0-5),
+ groff-base (= 1.23.0-6),
  gyp (= 0.16.2-1),
  gzip (= 1.12-1.1+b1),
  handlebars (= 3:4.7.7+~4.1.0-1),
@@ -88,7 +88,7 @@ Installed-Build-Depends:
  libaudit-common (= 1:4.0.2-2),
  libaudit1 (= 1:4.0.2-2),
  libbinutils (= 2.43.50.20241204-2),
- libblkid1 (= 2.40.2-11),
+ libblkid1 (= 2.40.2-12),
  libbrotli1 (= 1.1.0-2+b6),
  libbz2-1.0 (= 1.0.8-6),
  libc-bin (= 2.40-4),
@@ -97,7 +97,7 @@ Installed-Build-Depends:
  libc6-dev (= 2.40-4),
  libcap-ng0 (= 0.8.5-4),
  libcap2 (= 1:2.66-5+b1),
- libcares2 (= 1.34.2-1),
+ libcares2 (= 1.34.3-1),
  libcc1-0 (= 14.2.0-9),
  libcom-err2 (= 1.47.2~rc1-2),
  libcrypt-dev (= 1:4.4.36-5),
@@ -150,7 +150,7 @@ Installed-Build-Depends:
  libmagic-mgc (= 1:5.45-3+b1),
  libmagic1t64 (= 1:5.45-3+b1),
  libmd0 (= 1.1.0-2+b1),
- libmount1 (= 2.40.2-11),
+ libmount1 (= 2.40.2-12),
  libmpc3 (= 1.3.1-1+b3),
  libmpfr6 (= 4.2.1-1+b2),
  libncursesw6 (= 6.5-2+b1),
@@ -181,7 +181,7 @@ Installed-Build-Depends:
  libseccomp2 (= 2.5.5-2),
  libselinux1 (= 3.7-3+b1),
  libsframe1 (= 2.43.50.20241204-2),
- libsmartcols1 (= 2.40.2-11),
+ libsmartcols1 (= 2.40.2-12),
  libsqlite3-0 (= 3.46.1-1),
  libssh2-1t64 (= 1.11.1-1),
  libssl-dev (= 3.3.2-2),
@@ -200,14 +200,14 @@ Installed-Build-Depends:
  libuchardet0 (= 0.0.8-1+b2),
  libudev1 (= 257~rc3-1),
  libunistring5 (= 1.3-1),
- libuuid1 (= 2.40.2-11),
+ libuuid1 (= 2.40.2-12),
  libuv1-dev (= 1.48.0-7),
  libuv1t64 (= 1.48.0-7),
  libxml2 (= 2.12.7+dfsg+really2.9.14-0.2+b1),
  libxmlb2 (= 0.3.21-1),
  libyaml-0-2 (= 0.2.5-1+b2),
  libzstd1 (= 1.5.6+dfsg-1+b1),
- linux-libc-dev (= 6.11.10-1),
+ linux-libc-dev (= 6.12.3-1),
  m4 (= 1.4.19-4),
  make (= 4.3-4.1+b1),
  man-db (= 2.13.0-1),
@@ -587,7 +587,7 @@ Installed-Build-Depends:
  terser (= 5.31.3-1),
  tzdata (= 2024b-4),
  usr-is-merged (= 39),
- util-linux (= 2.40.2-11),
+ util-linux (= 2.40.2-12),
  webpack (= 5.96.1+dfsg1+~cs11.18.26-1),
  xz-utils (= 5.6.3-1+b1),
  zlib1g (= 1:1.3.dfsg+really1.3.1-1+b1)
