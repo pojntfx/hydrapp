@@ -62,6 +62,6 @@ For more information, see the [hydrapp documentation](../README.md).
 
 ## License
 
-hydrapp Vanilla JS and Forms (c) 2024 Felicitas Pojtinger and contributors
+hydrapp Vanilla JS and Forms (c) 2025 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: Apache-2.0

@@ -73,6 +73,6 @@ For more information, see the [hydrapp documentation](../README.md).
 
 ## License
 
-hydrapp React and panrpc Example (c) 2024 Felicitas Pojtinger and contributors
+hydrapp React and panrpc Example (c) 2025 Felicitas Pojtinger and contributors
 
 SPDX-License-Identifier: Apache-2.0
