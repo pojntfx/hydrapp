@@ -69,7 +69,7 @@ To install the prebuilt binary package, run the following:
 
 ```shell
 pkexec sudo bash - <<'EOT'
-dnf config-manager --add-repo '{{ .URL }}'
+dnf config-manager addrepo --from-repofile='{{ .URL }}'
 dnf install -y '{{ $appID }}'
 EOT
 ```
@@ -78,7 +78,7 @@ To install the source package, build the binary package locally and install it, 
 
 ```shell
 pkexec sudo bash - <<'EOT'
-dnf config-manager --add-repo '{{ .URL }}'
+dnf config-manager addrepo --from-repofile='{{ .URL }}'
 
 dnf install -y rpm-build
 dnf download --source -y '{{ $appID }}'
